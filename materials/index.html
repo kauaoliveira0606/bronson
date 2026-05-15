@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You Booked Your Call – Rewire Elite Performance</title>
+
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1554159749234800');
+  fbq('track', 'Schedule');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1554159749234800&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+  <!-- Open Graph / Link Preview -->
+  <meta property="og:title" content="You Booked Your Call – Rewire Elite Performance">
+  <meta property="og:description" content="Your call is confirmed. See what to expect and how to prepare before your strategy session.">
+  <meta property="og:image" content="https://rewire-elite.vercel.app/preview.png">
+  <meta property="og:url" content="https://rewire-elite.vercel.app/thankyou">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://rewire-elite.vercel.app/preview.png">
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Background */
+    .bg {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(160deg, #000 0%, #040d18 45%, #000 100%);
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .ray {
+      position: absolute;
+      width: 1px;
+      border-radius: 9999px;
+      transform-origin: top center;
+      animation: ray-pulse ease-in-out infinite alternate;
+    }
+    @keyframes ray-pulse {
+      0%   { opacity: 0.06; }
+      100% { opacity: 0.18; }
+    }
+    .ray:nth-child(1) { height: 100vh; left: 28%; top: 0; background: linear-gradient(to bottom, rgba(30,10,200,0), rgba(40,20,220,0.6) 40%, rgba(60,30,255,0.9) 70%, rgba(30,10,180,0)); transform: rotate(8deg); animation-duration: 6s; width: 1.5px; }
+    .ray:nth-child(2) { height: 85vh; left: 31%; top: 5%; background: linear-gradient(to bottom, rgba(20,5,160,0), rgba(35,15,200,0.4) 50%, rgba(20,5,140,0)); transform: rotate(8.5deg); animation-duration: 8s; animation-delay: 1s; }
+    .ray:nth-child(3) { height: 90vh; left: 65%; top: 10%; background: linear-gradient(to bottom, rgba(20,5,170,0), rgba(50,20,240,0.55) 45%, rgba(80,40,255,0.8) 65%, rgba(20,5,150,0)); transform: rotate(11deg); animation-duration: 7s; animation-delay: 2s; width: 1.5px; }
+    .meteor {
+      position: absolute;
+      top: -120px;
+      width: 1.5px;
+      border-radius: 9999px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.9) 50%, rgba(255,255,255,0));
+      animation: meteor-fall linear infinite;
+    }
+    @keyframes meteor-fall {
+      0%   { transform: translateY(0) translateX(0) rotate(15deg); opacity: 0; }
+      5%   { opacity: 1; }
+      95%  { opacity: 0.5; }
+      100% { transform: translateY(110vh) translateX(90px) rotate(15deg); opacity: 0; }
+    }
+    .meteor:nth-child(4)  { left:  4%; height: 70px; animation-duration: 4.2s; animation-delay: 0s; }
+    .meteor:nth-child(5)  { left: 12%; height: 55px; animation-duration: 5.8s; animation-delay: 1.4s; }
+    .meteor:nth-child(6)  { left: 22%; height: 85px; animation-duration: 3.9s; animation-delay: 2.8s; }
+    .meteor:nth-child(7)  { left: 38%; height: 60px; animation-duration: 5.1s; animation-delay: 0.7s; }
+    .meteor:nth-child(8)  { left: 50%; height: 90px; animation-duration: 4.6s; animation-delay: 3.3s; }
+    .meteor:nth-child(9)  { left: 63%; height: 65px; animation-duration: 6.2s; animation-delay: 1.1s; }
+    .meteor:nth-child(10) { left: 74%; height: 75px; animation-duration: 4.4s; animation-delay: 2.0s; }
+    .meteor:nth-child(11) { left: 83%; height: 50px; animation-duration: 5.5s; animation-delay: 0.4s; }
+    .meteor:nth-child(12) { left: 91%; height: 80px; animation-duration: 3.7s; animation-delay: 1.8s; }
+
+    .page { position: relative; z-index: 1; }
+
+    /* Sticky top bar */
+    .sticky-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: #1a47ff;
+      padding: 11px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 2px 20px rgba(26,71,255,0.5);
+    }
+    .sticky-bar-text {
+      font-size: clamp(0.78rem, 1.8vw, 0.92rem);
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+    }
+    .sticky-bar-text strong { font-weight: 900; }
+
+    /* Header */
+    header {
+      margin-top: 52px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 14px 20px 4px;
+      width: 100%;
+      text-align: center;
+    }
+    .logo-wrap {
+      display: block;
+      margin: 0 auto;
+      width: 200px;
+      max-width: 70%;
+    }
+    .logo-wrap img {
+      width: 100%;
+      display: block;
+      mix-blend-mode: screen;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 60px 24px 10px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .booked-label {
+      font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #4a9eff;
+      margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-size: clamp(1.4rem, 5vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.2;
+      background: linear-gradient(180deg, #ffffff 0%, #e0e8f0 30%, #ffffff 60%, #c8d4dc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 28px;
+    }
+
+    /* Mission Progress */
+    .mission-card {
+      background: linear-gradient(135deg, #07121f, #0c1d38);
+      border: 1px solid rgba(74,158,255,0.25);
+      border-radius: 16px;
+      padding: 24px 28px 20px;
+      max-width: 680px;
+      margin: 0 auto 10px;
+      text-align: left;
+    }
+    .mission-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .mission-title {
+      font-size: 1.1rem;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      text-transform: none;
+      color: #fff;
+    }
+    .mission-status { display: none; }
+    .mission-header div { display: flex; flex-direction: column; }
+    .progress-bar-wrap { margin-bottom: 28px; }
+    .progress-bar-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #1a3aff, #4a9eff);
+      border-radius: 999px;
+      transition: width 1.5s ease;
+      box-shadow: 0 0 10px rgba(74,158,255,0.6);
+    }
+    .stages-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .stage-line {
+      position: absolute;
+      top: 26px;
+      height: 2px;
+      width: 28%;
+      z-index: 0;
+    }
+    .left-line { left: 17%; background: #00e676; }
+    .right-line { right: 17%; background: rgba(255,255,255,0.1); }
+    .completed-line { background: linear-gradient(90deg, #00e676, rgba(245,158,11,0.6)); }
+    .stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 1;
+      flex: 1;
+    }
+    .stage-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .stage.done .stage-icon {
+      background: #071828;
+      border: 2px solid #00e676;
+      box-shadow: 0 0 16px rgba(0,230,118,0.3);
+    }
+    .stage.active .stage-icon {
+      background: #0d1f10;
+      border: 2px solid #f59e0b;
+      box-shadow: 0 0 20px rgba(245,158,11,0.4);
+    }
+    .stage.locked .stage-icon {
+      background: #07121f;
+      border: 2px solid rgba(255,255,255,0.15);
+    }
+    @keyframes pulse-ring-anim {
+      0%   { box-shadow: 0 0 0 0 rgba(245,158,11,0.5), 0 0 20px rgba(245,158,11,0.4); }
+      70%  { box-shadow: 0 0 0 10px rgba(245,158,11,0), 0 0 20px rgba(245,158,11,0.4); }
+      100% { box-shadow: 0 0 0 0 rgba(245,158,11,0), 0 0 20px rgba(245,158,11,0.4); }
+    }
+    .pulse-ring { animation: pulse-ring-anim 1.8s ease-out infinite; }
+    .stage-num {
+      font-size: 0.6rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .stage.done .stage-num { color: #00e676; }
+    .stage.active .stage-num { color: #f59e0b; }
+    .stage.locked .stage-num { color: rgba(255,255,255,0.3); }
+    .stage-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .stage.done .stage-label { color: rgba(255,255,255,0.85); }
+    .stage.active .stage-label { color: rgba(255,255,255,0.85); }
+    .stage.locked .stage-label { color: rgba(255,255,255,0.3); }
+    .mission-footer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .mission-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #f59e0b;
+      flex-shrink: 0;
+      animation: dot-pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes dot-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .mission-footer-text {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Countdown */
+    .countdown-wrap {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .countdown-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(135deg, #07121f, #0d2240);
+      border: 1px solid rgba(74,158,255,0.3);
+      border-radius: 10px;
+      padding: 10px 18px;
+      min-width: 64px;
+    }
+    .countdown-num {
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 900;
+      color: #4a9eff;
+      line-height: 1;
+    }
+    .countdown-label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-top: 5px;
+    }
+    .countdown-sep {
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 900;
+      color: #4a9eff;
+      align-self: center;
+      padding-bottom: 20px;
+    }
+
+    /* Attention bar */
+    .attention-bar {
+      background: linear-gradient(135deg, #060e1f, #0a1d3f);
+      border: 2px solid rgba(74,158,255,0.55);
+      border-radius: 14px;
+      max-width: 680px;
+      margin: 0 auto 20px;
+      padding: 18px 24px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(74,158,255,0.12), inset 0 0 30px rgba(74,158,255,0.03);
+      position: relative;
+      overflow: hidden;
+    }
+    .attention-bar::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(74,158,255,0.15), transparent 50%, rgba(74,158,255,0.08));
+      pointer-events: none;
+    }
+    .attention-bar .tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fff;
+      background: linear-gradient(135deg, #1a3aff, #4a9eff);
+      border-radius: 999px;
+      padding: 6px 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 0 16px rgba(74,158,255,0.4);
+    }
+    .attention-bar p {
+      font-size: clamp(0.82rem, 2vw, 1.15rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.5;
+    }
+    .attention-bar p span {
+      color: #4a9eff;
+    }
+    .attention-bar .sub-note {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      margin-top: 10px;
+    }
+
+    /* Video section */
+    .video-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px 48px;
+    }
+    .video-label {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: clamp(0.78rem, 2vw, 1.2rem);
+      font-style: italic;
+      color: #7dd8f8;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .video-border-wrap {
+      position: relative;
+      border-radius: 10px;
+      padding: 2px;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(30,80,255,0.2);
+    }
+    .video-border-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -100%;
+      background: conic-gradient(from 0deg, transparent 0deg, transparent 120deg, #1a3aff 165deg, #5aabff 180deg, #1a3aff 195deg, transparent 240deg, transparent 360deg);
+      animation: border-chase 3.5s linear infinite;
+      z-index: 0;
+    }
+    @keyframes border-chase {
+      to { transform: rotate(360deg); }
+    }
+    .video-wrap {
+      position: relative;
+      z-index: 1;
+      background: #000;
+      border-radius: 9px;
+      overflow: hidden;
+    }
+
+    /* What Happens Next */
+    .next-section {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      text-align: center;
+    }
+    .next-section h2 {
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 28px;
+    }
+    .next-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: left;
+    }
+    .next-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: linear-gradient(135deg, #07121f, #0d2240);
+      border: 1px solid rgba(74,158,255,0.2);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1a3aff, #4a9eff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 900;
+      color: #fff;
+    }
+    .step-text {
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.65;
+    }
+    .step-text strong {
+      color: #fff;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.95rem;
+    }
+
+    /* Got Questions */
+    .questions-section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+    }
+    .questions-section h2 {
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      font-weight: 900;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .questions-section .q-sub {
+      text-align: center;
+      font-size: clamp(0.88rem, 1.8vw, 1rem);
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 40px;
+      line-height: 1.7;
+      max-width: 620px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .q-item {
+      margin-bottom: 40px;
+    }
+    .q-title {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .q-video {
+      position: relative;
+      border-radius: 10px;
+      padding: 2px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(30,80,255,0.15);
+      background: linear-gradient(135deg, #07121f, #0d2240);
+    }
+
+    /* Testimonials */
+    .testimonials {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+    .testimonials h2 {
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      font-weight: 900;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 32px;
+    }
+    .t-grid {
+      columns: 3 280px;
+      column-gap: 14px;
+    }
+    .t-card {
+      position: relative;
+      padding: 2px;
+      overflow: hidden;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      break-inside: avoid;
+    }
+    .t-card::before {
+      display: none;
+    }
+    .t-card-inner {
+      position: relative;
+      z-index: 1;
+      border-radius: 9px;
+      overflow: hidden;
+      background: #05101e;
+    }
+    .t-card-inner img {
+      width: 100%;
+      display: block;
+    }
+
+    /* Footer */
+    footer {
+      background: #000;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 32px 20px;
+      text-align: center;
+    }
+    footer img { width: 140px; opacity: 0.5; margin-bottom: 16px; display: block; margin-left: auto; margin-right: auto; mix-blend-mode: screen; }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .footer-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .footer-disc {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.4);
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.65;
+      text-align: center;
+    }
+    .footer-disc strong {
+      display: block;
+      color: rgba(255,255,255,0.6);
+      margin: 10px 0 4px;
+    }
+  </style>
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+<div class="bg">
+  <div class="ray"></div>
+  <div class="ray"></div>
+  <div class="ray"></div>
+  <div class="meteor"></div>
+  <div class="meteor"></div>
+  <div class="meteor"></div>
+  <div class="meteor"></div>
+  <div class="meteor"></div>
+  <div class="meteor"></div>
+  <div class="meteor"></div>
+  <div class="meteor"></div>
+  <div class="meteor"></div>
+</div>
+
+<!-- Sticky Bar -->
+<div class="sticky-bar">
+  <span>📞</span>
+  <span class="sticky-bar-text"><strong>Your coach is reviewing your application right now</strong> — keep your phone nearby</span>
+</div>
+
+<div class="page">
+
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1><span id="hero-name"></span>You Booked Your Call!</h1>
+
+    <!-- Attention Bar -->
+    <div class="attention-bar">
+      <span class="tag">⚡ Attention</span>
+      <p>You will receive a phone call from my team.<br>Keep your phone nearby right now.</p>
+    </div>
+
+    <!-- Countdown Timer -->
+
+  </section>
+
+  <!-- Next Steps Video -->
+  <section class="video-section">
+    <p class="video-label">Watch this quick video for your important next steps</p>
+    <div class="video-border-wrap">
+      <div class="video-wrap">
+        <vturb-smartplayer id="vid-6a066e37f1bab801cdceb10c" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+        <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a066e37f1bab801cdceb10c/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission Progress -->
+  <div style="padding: 0 20px 48px; max-width: 740px; margin: 0 auto;">
+    <div class="mission-card">
+      <div class="mission-header">
+        <div>
+          <span class="mission-title">APPLICATION STATUS</span>
+          <span class="mission-status">Mission Progress</span>
+        </div>
+      </div>
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="stages-wrap">
+        <div class="stage-line left-line completed-line"></div>
+        <div class="stage-line right-line"></div>
+
+        <div class="stage done">
+          <div class="stage-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00e676" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="stage-num">STAGE 1</span>
+          <span class="stage-label">Application<br>Submitted</span>
+        </div>
+
+        <div class="stage active">
+          <div class="stage-icon pulse-ring">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#f59e0b"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+          </div>
+          <span class="stage-num">STAGE 2</span>
+          <span class="stage-label">Awaiting<br>Your Call</span>
+        </div>
+
+        <div class="stage locked">
+          <div class="stage-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <span class="stage-num">STAGE 3</span>
+          <span class="stage-label">Scheduled<br>Gameplan Call</span>
+        </div>
+      </div>
+
+      <div class="mission-footer">
+        <span class="mission-dot"></span>
+        <span class="mission-footer-text">Coach will be calling you soon</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- What Happens Next -->
+  <section class="next-section">
+    <h2>What Happens Next...</h2>
+    <div class="next-steps">
+      <div class="next-step">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <strong>Keep Your Phone On You</strong>
+          A member of our team will be calling you within the next 5 minutes. Make sure your phone is on and nearby so you don't miss the call.
+        </div>
+      </div>
+      <div class="next-step">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <strong>Watch The Video Above</strong>
+          While you wait, watch the short video above. It covers exactly what to expect on the call and how to prepare so you get the most out of it.
+        </div>
+      </div>
+      <div class="next-step">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <strong>Answer Your Questions Below</strong>
+          Got questions before the call? We've answered the most common ones below with short videos. Watch them to come prepared.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Got Questions -->
+  <section class="questions-section">
+    <p style="text-align:center; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.18em; color: #4a9eff; margin-bottom: 10px; text-transform: uppercase;">Watch Before Your Call</p>
+    <h2>Got Questions? Watch These First.</h2>
+    <p class="q-sub">The coach will skip the basics if you watch these — come prepared, you'll get way more out of the call and go straight into your plan.</p>
+
+    <div class="q-item">
+      <p class="q-title">Is this a long term play?</p>
+      <div class="q-video">
+        <vturb-smartplayer id="vid-6a066e3b89e22adb559dd0a0" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+        <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a066e3b89e22adb559dd0a0/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+      </div>
+    </div>
+
+    <div class="q-item">
+      <p class="q-title">What other expenses are there?</p>
+      <div class="q-video">
+        <vturb-smartplayer id="vid-6a066e2d4d688ba705677cf0" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+        <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a066e2d4d688ba705677cf0/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+      </div>
+    </div>
+
+    <div class="q-item">
+      <p class="q-title">How fast can I see results?</p>
+      <div class="q-video">
+        <vturb-smartplayer id="vid-6a066e2889e22adb559dd082" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+        <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a066e2889e22adb559dd082/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+      </div>
+    </div>
+
+    <div class="q-item">
+      <p class="q-title">What makes me (Bronny) different?</p>
+      <div class="q-video">
+        <vturb-smartplayer id="vid-6a066e32c551db43115e87c3" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+        <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a066e32c551db43115e87c3/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+      </div>
+    </div>
+
+
+  </section>
+
+  <!-- YouTube Training Section -->
+  <section style="max-width: 860px; margin: 0 auto; padding: 0 20px 60px; text-align: center;">
+    <p style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.18em; color: #4a9eff; text-transform: uppercase; margin-bottom: 10px;">Free Training</p>
+    <h2 style="font-size: clamp(1.3rem, 3vw, 1.9rem); font-weight: 900; color: #fff; margin-bottom: 10px;">Watch My Trainings</h2>
+    <p style="font-size: clamp(0.88rem, 1.8vw, 1rem); color: rgba(255,255,255,0.85); font-weight: 600; margin-bottom: 28px; line-height: 1.6;">How I'll personally coach you to 5/6 figures in ecom</p>
+    <div style="position: relative; border-radius: 12px; padding: 2px; overflow: hidden; box-shadow: 0 0 40px rgba(30,80,255,0.2); background: linear-gradient(135deg, #1a3aff, #4a9eff, #1a3aff);">
+      <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; background: #000;">
+        <iframe src="https://www.youtube.com/embed/D9PPbxnjti4?modestbranding=1&rel=0&color=white" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 10px;" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials">
+    <h2>More Wins From The Community</h2>
+    <p style="text-align:center; font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 700; color: #7dd8f8; margin-bottom: 32px; letter-spacing: 0.02em;">Real screenshots, real results, real people</p>
+
+    <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"I'm already doing $500/day in sales" - Zach</p>
+      <vturb-smartplayer id="vid-6a06402316c0af42e4012ebf" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+      <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a06402316c0af42e4012ebf/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+    </div>
+
+    <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"I've learned a ton from this program and the fact that I'm building a business that I can sell one day is the best part" - Landon</p>
+      <vturb-smartplayer id="vid-6a064036def534041ec3fb81" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+      <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a064036def534041ec3fb81/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+    </div>
+
+    <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"I went from the biggest hater to someone who will actually vouch for Bronson" - Carlee</p>
+      <vturb-smartplayer id="vid-6a06402c89e22adb559d8427" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+      <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a06402c89e22adb559d8427/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+    </div>
+
+    <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"The community inside of this program is great! I love bouncing ideas off of other members and seeing how they succeed." - Johnathan</p>
+      <vturb-smartplayer id="vid-6a064046f1bab801cdce6723" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+      <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a064046f1bab801cdce6723/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+    </div>
+
+    <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"Bronson really does give you all of the information and details that you need to succeed" - Ryan</p>
+      <vturb-smartplayer id="vid-6a06404116c0af42e4012f45" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+      <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a06404116c0af42e4012f45/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+    </div>
+
+    <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"I've made over $16,000 since I've started, not that long ago." - Dan</p>
+      <vturb-smartplayer id="vid-6a0640174d688ba705672fa5" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+      <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a0640174d688ba705672fa5/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+    </div>
+
+    <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"I made my first thousands here" - Nate</p>
+      <vturb-smartplayer id="vid-6a06404bc551db43115e3bab" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+      <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a06404bc551db43115e3bab/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+    </div>
+
+    <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"The whitelabel method has worked the best for me" - Wes</p>
+      <vturb-smartplayer id="vid-6a064051c551db43115e3bd7" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+      <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a064051c551db43115e3bd7/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+    </div>
+
+    <h2 style="text-align:center; margin: 48px 0 32px;">Some More Member Wins...</h2>
+
+    <div style="display:flex; flex-wrap:wrap; gap:16px; justify-content:center; padding: 0 20px 40px;">
+      <img src="/pre1on1prep/1.webp" alt="Member Win" style="width:100%; max-width:480px; border-radius:10px;">
+      <img src="/pre1on1prep/2.webp" alt="Member Win" style="width:100%; max-width:480px; border-radius:10px;">
+      <img src="/pre1on1prep/3.webp" alt="Member Win" style="width:100%; max-width:480px; border-radius:10px;">
+      <img src="/pre1on1prep/4.webp" alt="Member Win" style="width:100%; max-width:480px; border-radius:10px;">
+      <img src="/pre1on1prep/5.webp" alt="Member Win" style="width:100%; max-width:480px; border-radius:10px;">
+    </div>
+
+    <h2 style="text-align:center; margin: 48px 0 16px;">Our Members Are Killing It With Our Paid Ads Strategy That They Have Access Too...</h2>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">A member did $30k in the last 23 days!!</p>
+    <div style="text-align:center; padding: 0 20px 24px;">
+      <img src="/pre1on1prep/6.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
+    </div>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">Tiktok Ads crushing it for another member in the Skin Care Niche 8.79x ROAS</p>
+    <div style="text-align:center; padding: 0 20px 24px;">
+      <img src="/pre1on1prep/7.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
+    </div>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">Another NEW student, less than 1 month into the group. Nice 3.59 ROAS and scaling!!</p>
+    <div style="text-align:center; padding: 0 20px 24px;">
+      <img src="/pre1on1prep/8.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
+    </div>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">I know you see the dates at the bottom. No old screenshots here!</p>
+    <div style="text-align:center; padding: 0 20px 24px;">
+      <img src="/pre1on1prep/9.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
+    </div>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">Clothing brand owner. First drop took some time to sell out but look at that ROAS.</p>
+    <div style="text-align:center; padding: 0 20px 24px;">
+      <img src="/pre1on1prep/10.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
+    </div>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">Organic hair & skin care brand owner ripping sales with Meta ads. 3.61x ROAS</p>
+    <div style="text-align:center; padding: 0 20px 24px;">
+      <img src="/pre1on1prep/11.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
+    </div>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">Supplement brand owner getting into the BIG numbers. $100k+ months incoming!!!</p>
+    <div style="text-align:center; padding: 0 20px 40px;">
+      <img src="/pre1on1prep/12.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
+    </div>
+
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="terms.html" target="_blank">Terms</a>
+      <a href="/terms" target="_blank">Privacy Policy</a>
+    </div>
+    <div class="footer-disc">
+      <strong>Meta Compliance & Earnings Disclaimer</strong>
+      This website is not endorsed by, affiliated with, or associated with Meta Platforms, Inc. (formerly Facebook, Inc.). Facebook is a trademark of Meta Platforms, Inc.
+      <strong>Earnings Disclaimer</strong>
+      IMPORTANT: Results are not typical. We do not guarantee any specific income, sales, or financial results. Your results depend on effort, experience, market conditions, and individual circumstances. Past performance does not guarantee future results. Testimonials represent individual experiences and are not typical.
+      <br><br>© 2025 Ad Ventur. All Rights Reserved.
+    </div>
+  </footer>
+
+</div>
+
+<!-- Name injection from URL -->
+<script>
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    var name = params.get('name') || params.get('first_name') || '';
+    if (name) {
+      name = decodeURIComponent(name).trim();
+      name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+      document.getElementById('hero-name').textContent = name + ', ';
+    }
+  })();
+</script>
+
+<!-- Progress Bar Animation -->
+<script>
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      document.getElementById('progressFill').style.width = '50%';
+    }, 400);
+  });
+</script>
+
+<!-- Countdown Timer Script -->
+<script>
+  var total = 5 * 60;
+  var mEl = document.getElementById('minutes');
+  var sEl = document.getElementById('seconds');
+  var interval = setInterval(function() {
+    if (total <= 0) { clearInterval(interval); return; }
+    total--;
+    var m = Math.floor(total / 60);
+    var s = total % 60;
+    mEl.textContent = m < 10 ? '0' + m : m;
+    sEl.textContent = s < 10 ? '0' + s : s;
+  }, 1000);
+</script>
+
+<!-- Vturb Players -->
+<script type="text/javascript">
+  var players = [
+    "69eb97ba79a9b357d90c83f2",
+    "69eb97e2c0499600c50c9d83",
+    "69eb97d1634564adcf50b6db",
+    "69e83d87af7645fdd1e12c44",
+    "69eb97a6c0499600c50c9cc2",
+    "69eb97b0e1dcfbd062a1d05b",
+    "69eb97e8715b20730f89ea31",
+    "69e83df80b351269d46f14de",
+    "69eb97abefb9293f97517167",
+    "69eb979f8151708c5bc6a014",
+    "69eb97b4e47d7b09a8de1c95",
+    "69eb97be634564adcf50b69f",
+    "69eb97c679a9b357d90c8406",
+    "69e0fc2f31710251e5b215e7",
+    "69e0fc6ced35062270c4b051"
+  ];
+  players.forEach(function(id) {
+    var s = document.createElement("script");
+    s.src = "https://scripts.converteai.net/8d027798-f897-4edf-8711-0177c4b0c53f/players/" + id + "/v4/player.js";
+    s.async = true;
+    document.head.appendChild(s);
+  });
+</script>
+
+</body>
+</html>
