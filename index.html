@@ -525,4 +525,23 @@ src="https://www.facebook.com/tr?id=930673332466368&ev=PageView&noscript=1"
   }
 })();
 </script>
+
+<style>
+  @media screen and (max-width: 480px) {
+    .desktop-only { display: block !important; }
+    .mobile-only { display: none !important; }
+    .c-row { display: flex !important; flex-wrap: wrap !important; }
+    .inner { max-width: 100% !important; overflow-x: hidden !important; }
+    img { max-width: 100% !important; height: auto !important; }
+    vturb-smartplayer { width: 100% !important; }
+    [class*="cheading"], [class*="csub-heading"] { padding: 0 16px !important; }
+    .hl_page-preview--content { overflow-x: hidden !important; }
+  }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  document.querySelectorAll(".mobile-only").forEach(function(el){ el.style.display = "none"; });
+  document.querySelectorAll(".desktop-only").forEach(function(el){ el.classList.remove("desktop-only"); });
+});
+</script>
 </body></html>
