@@ -647,6 +647,32 @@
     </div>
 
     <!-- Countdown Timer -->
+    <div id="countdown-wrap" style="display:flex; justify-content:center; align-items:center; gap:12px; margin:28px auto 8px; font-family:'Montserrat',sans-serif;">
+      <div style="background:#0d1b2e; border:1px solid rgba(74,158,255,0.3); border-radius:10px; padding:14px 24px; text-align:center; min-width:90px;">
+        <div id="cd-minutes" style="font-size:2rem; font-weight:700; color:#4a9eff; line-height:1;">05</div>
+        <div style="font-size:0.65rem; font-weight:600; color:rgba(74,158,255,0.7); letter-spacing:0.12em; margin-top:4px;">MINUTES</div>
+      </div>
+      <div style="font-size:2rem; font-weight:700; color:#4a9eff; margin-bottom:18px;">:</div>
+      <div style="background:#0d1b2e; border:1px solid rgba(74,158,255,0.3); border-radius:10px; padding:14px 24px; text-align:center; min-width:90px;">
+        <div id="cd-seconds" style="font-size:2rem; font-weight:700; color:#4a9eff; line-height:1;">00</div>
+        <div style="font-size:0.65rem; font-weight:600; color:rgba(74,158,255,0.7); letter-spacing:0.12em; margin-top:4px;">SECONDS</div>
+      </div>
+    </div>
+    <script>
+    (function(){
+      var total = 5 * 60;
+      var remaining = total;
+      function update() {
+        var m = Math.floor(remaining / 60);
+        var s = remaining % 60;
+        document.getElementById('cd-minutes').textContent = m < 10 ? '0' + m : m;
+        document.getElementById('cd-seconds').textContent = s < 10 ? '0' + s : s;
+        if (remaining > 0) remaining--;
+      }
+      update();
+      setInterval(update, 1000);
+    })();
+    </script>
 
   </section>
 
