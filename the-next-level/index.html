@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Next Level – Ad Ventur</title>
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="apple-touch-icon" href="/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <meta property="og:image" content="https://ad-ventur.com/preview.png">
+  <meta property="og:image:width" content="2560">
+  <meta property="og:image:height" content="1440">
+  <meta name="twitter:image" content="https://ad-ventur.com/preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 20px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+    }
+    .header-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7dd8f8;
+      margin-top: 12px;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0px 24px 80px;
+    }
+
+    .page-title {
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.25;
+      margin-top: 8px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .page-title span {
+      background: #1a47ff;
+      color: #fff;
+      padding: 2px 10px;
+      border-radius: 4px;
+      display: inline;
+    }
+
+    .page-subtitle {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.75;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    /* Watch first box */
+    .watch-box {
+      background: linear-gradient(135deg, #07121f, #0d2240);
+      border: 1px solid rgba(74,158,255,0.2);
+      border-radius: 14px;
+      padding: 32px 28px;
+      margin-bottom: 56px;
+      text-align: center;
+    }
+    .watch-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7dd8f8;
+      margin-bottom: 12px;
+    }
+    .watch-headline {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .watch-body {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.75;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #1a47ff;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 14px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #1338d4; }
+
+    /* Section headings */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7dd8f8;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 28px;
+      line-height: 1.3;
+    }
+
+    /* Program cards */
+    .program-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+    .program-card {
+      background: linear-gradient(135deg, #07121f, #0d2240);
+      border: 1px solid rgba(74,158,255,0.2);
+      border-radius: 12px;
+      padding: 24px 28px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .card-icon {
+      font-size: 1.6rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .card-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #7dd8f8;
+      margin-bottom: 4px;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .card-body {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.7;
+    }
+
+    /* Is this you */
+    .criteria-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 56px;
+    }
+    .criteria-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.65;
+    }
+    .criteria-dot {
+      width: 8px;
+      height: 8px;
+      background: #1a47ff;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    /* CTA block */
+    .cta-block {
+      background: linear-gradient(135deg, #07121f, #0d2240);
+      border: 1px solid rgba(74,158,255,0.2);
+      border-radius: 14px;
+      padding: 40px 28px;
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .cta-block .section-title { margin-bottom: 12px; }
+    .cta-sub {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    /* FAQ */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 56px;
+    }
+    .faq-item {
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .faq-question {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: none;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-align: left;
+      padding: 18px 22px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      transition: background 0.2s;
+    }
+    .faq-question:hover { background: rgba(255,255,255,0.06); }
+    .faq-chevron {
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      color: #7dd8f8;
+      transition: transform 0.2s;
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      display: none;
+      padding: 0 22px 20px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.8;
+    }
+    .faq-item.open .faq-answer { display: block; }
+
+    /* Footer */
+    footer {
+      background: #000;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 32px 20px;
+      text-align: center;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .footer-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .footer-disc {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.45);
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 480px) {
+      .program-card { flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <p class="header-label">For Those Ready to Go All In</p>
+</header>
+
+<div class="container">
+
+  <h1 class="page-title">You already know you want this. Now it's time to <span style="white-space:nowrap;">make it real.</span></h1>
+  <p class="page-subtitle">This page is for people who have seen the opportunity, done the research, and are serious about building a brand that generates real income. Here's exactly what Ad Ventur gives you.</p>
+
+  <!-- Watch first -->
+  <div class="watch-box">
+    <p class="watch-label">Before Your Gameplan Call</p>
+    <p class="watch-headline">Get a full breakdown of how the program works and what to expect on your call.</p>
+    <p class="watch-body">The materials page walks you through everything — what we teach, how students are progressing, and what the path forward looks like. Review it before your call so you can come prepared with real questions.</p>
+    <a href="/materials" target="_blank" class="btn">Review the Materials &rarr;</a>
+  </div>
+
+  <!-- Inside the program -->
+  <p class="section-label">What You're Getting</p>
+  <h2 class="section-title">Inside the Ad Ventur program.</h2>
+
+  <div class="program-grid">
+    <div class="program-card">
+      <div class="card-icon">🏷️</div>
+      <div>
+        <p class="card-badge">Core Foundation</p>
+        <p class="card-title">Brand Building from Scratch</p>
+        <p class="card-body">You'll build a real private-label brand, not a generic store. That means a product line under your own name, with real margins, real positioning, and something you can own and eventually sell.</p>
+      </div>
+    </div>
+    <div class="program-card">
+      <div class="card-icon">📦</div>
+      <div>
+        <p class="card-badge">Supplier Access</p>
+        <p class="card-title">Direct Access to Our Vetted Suppliers</p>
+        <p class="card-body">Skip the guesswork. You'll get direct access to the same suppliers our top students use. That means lower costs, better quality, and a product pipeline that's already been tested.</p>
+      </div>
+    </div>
+    <div class="program-card">
+      <div class="card-icon">📣</div>
+      <div>
+        <p class="card-badge">Paid Traffic</p>
+        <p class="card-title">Full Ad Training Across Every Platform</p>
+        <p class="card-body">Meta, TikTok, Google. You'll learn how to run profitable campaigns on all of them, with full breakdowns, live audits of your ads, and strategies that are working right now.</p>
+      </div>
+    </div>
+    <div class="program-card">
+      <div class="card-icon">📞</div>
+      <div>
+        <p class="card-badge">Direct Support</p>
+        <p class="card-title">3 Zoom Calls Per Week + 24/7 Access</p>
+        <p class="card-body">You're not buying a course and figuring it out alone. Three live coaching calls every week, plus 24/7 support so you're never stuck. Direct access to the team whenever you need it.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Is this you -->
+  <p class="section-label">Is This You?</p>
+  <h2 class="section-title">This is built for a specific type of person.</h2>
+
+  <div class="criteria-list">
+    <div class="criteria-item">
+      <div class="criteria-dot"></div>
+      You're done watching other people build brands and wondering why it's not you.
+    </div>
+    <div class="criteria-item">
+      <div class="criteria-dot"></div>
+      You've looked into e-commerce before but didn't have the right system, support, or guidance to make it work.
+    </div>
+    <div class="criteria-item">
+      <div class="criteria-dot"></div>
+      You want to build something that generates income consistently, not just a one-time win.
+    </div>
+    <div class="criteria-item">
+      <div class="criteria-dot"></div>
+      You're willing to put in real work. You're not looking for a shortcut, you're looking for the right path.
+    </div>
+    <div class="criteria-item">
+      <div class="criteria-dot"></div>
+      You want direct access to people who have already done it and can show you exactly how.
+    </div>
+    <div class="criteria-item">
+      <div class="criteria-dot"></div>
+      You're ready to make a decision and move, not sit on the fence for another six months.
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h2 class="section-title">You're almost there.</h2>
+    <p class="cta-sub">Review the materials before your call. Come prepared, come with questions, and come ready to have a real conversation about what this looks like for you.</p>
+    <a href="/materials" target="_blank" class="btn">Review the Materials &rarr;</a>
+  </div>
+
+  <!-- FAQ -->
+  <p class="section-label">Common Questions</p>
+  <h2 class="section-title">FAQs.</h2>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-question">
+        Do I need experience to join?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        No. Most of our students come in with zero e-commerce experience. The program is built to take you from scratch to a running brand. What matters is your commitment, not your starting point.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">
+        What makes this different from other e-commerce courses?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        We don't teach generic dropshipping. We teach you to build a real brand with real products under your name. You also get direct supplier access, live coaching three times a week, and 24/7 support. It's a program, not a course you buy and forget about.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">
+        How fast can I expect to see results?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        It depends on how much time and effort you put in. Students who show up consistently and implement what they learn tend to see traction within their first 30 to 90 days. We never promise a specific number, but we can show you real results from real students.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">
+        What does the 1-on-1 coaching look like?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        You get three live Zoom calls per week with the team, plus 24/7 access for questions in between. Calls include strategy, ad reviews, product feedback, and anything else you need to move forward. You're never left figuring it out alone.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">
+        What happens on the gameplan call?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        The gameplan call is a 1-on-1 conversation with our team. We learn about your goals, walk you through the program in full detail, answer every question you have, and figure out if this is the right fit. No pressure, no hard sell. If it's not right for you, we'll tell you.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="/terms" target="_blank">Terms</a>
+    <a href="/privacy" target="_blank">Privacy Policy</a>
+  </div>
+  <p class="footer-disc">This site is not affiliated with or endorsed by Facebook, Meta, TikTok, or Google. Results mentioned are not typical and are not a guarantee of what you will experience. Individual results vary based on effort, experience, and market conditions.</p>
+  <br>
+  <p class="footer-disc">© 2025 Ad Ventur. All Rights Reserved.</p>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+
+</body>
+</html>
