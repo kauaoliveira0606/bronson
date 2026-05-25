@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deposit – Ad Ventur</title>
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="apple-touch-icon" href="/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <meta property="og:image" content="https://ad-ventur.com/preview.png">
+  <meta property="og:image:width" content="2560">
+  <meta property="og:image:height" content="1440">
+  <meta name="twitter:image" content="https://ad-ventur.com/preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7dd8f8;
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .hero-sub {
+      font-size: 1rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.05em;
+    }
+
+    /* Sneak peek box */
+    .peek-box {
+      background: linear-gradient(135deg, #07121f, #0d2240);
+      border: 1px solid rgba(74,158,255,0.2);
+      border-radius: 14px;
+      padding: 36px 28px;
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .peek-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7dd8f8;
+      margin-bottom: 12px;
+    }
+    .peek-title {
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+    .peek-body {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.75;
+      margin-bottom: 10px;
+    }
+    .peek-warning {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 28px;
+      letter-spacing: 0.03em;
+    }
+    .btn {
+      display: inline-block;
+      background: #1a47ff;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 14px 36px;
+      border-radius: 8px;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #1338d4; }
+
+    /* Results section */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7dd8f8;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .section-title {
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 8px;
+      line-height: 1.3;
+      text-align: center;
+    }
+    .section-sub {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.55);
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .results-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .result-item {
+      text-align: center;
+    }
+    .result-label {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .result-item img {
+      width: 100%;
+      max-width: 480px;
+      border-radius: 10px;
+    }
+
+    footer {
+      background: #000;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 32px 20px;
+      text-align: center;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .footer-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .footer-disc {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.45);
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <p class="hero-eyebrow">Ad Ventur</p>
+    <h1 class="hero-title">Congrats On Locking In Your Spot</h1>
+    <p class="hero-sub">You Made The Deposit Commitment...</p>
+  </div>
+
+  <!-- Sneak peek -->
+  <div class="peek-box">
+    <p class="peek-label">Exclusive Preview</p>
+    <h2 class="peek-title">Watch This Video To See What's Next</h2>
+    <p class="peek-body">This document below is a sneak peek to what's inside of the program.</p>
+    <p class="peek-warning">DO NOT SHARE THIS DOCUMENT</p>
+    <a href="/materials" target="_blank" class="btn">Access The Sneak Peek</a>
+  </div>
+
+  <!-- Results -->
+  <p class="section-label">Success Stories</p>
+  <h2 class="section-title">Here Are Just A Few Of Our Success Stories</h2>
+  <p class="section-sub">Real students. Real results.</p>
+
+  <div class="results-grid">
+    <div class="result-item">
+      <p class="result-label">Ryan with a 20k/m personal record</p>
+      <img src="/13.png" alt="Ryan Result">
+    </div>
+    <div class="result-item">
+      <p class="result-label">Jaden with an $8k day</p>
+      <img src="/14.jpeg" alt="Jaden Result">
+    </div>
+    <div class="result-item">
+      <p class="result-label">Tyler with 100k in two weeks</p>
+      <img src="/15.jpeg" alt="Tyler Result">
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="/terms" target="_blank">Terms</a>
+    <a href="/privacy" target="_blank">Privacy Policy</a>
+  </div>
+  <p class="footer-disc">Results shown are not typical and do not represent average outcomes. Individual results vary based on effort, experience, and market conditions. This is not a guarantee of income or financial results.</p>
+  <br>
+  <p class="footer-disc">© 2025 Ad Ventur. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
