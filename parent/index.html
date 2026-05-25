@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For Parents – Ad Ventur</title>
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="apple-touch-icon" href="/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <meta property="og:image" content="https://ad-ventur.com/preview.png">
+  <meta property="og:image:width" content="2560">
+  <meta property="og:image:height" content="1440">
+  <meta name="twitter:image" content="https://ad-ventur.com/preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 20px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+    }
+    .header-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7dd8f8;
+      margin-top: 12px;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    .page-title {
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.25;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .page-title span {
+      background: #1a47ff;
+      color: #fff;
+      padding: 2px 10px;
+      border-radius: 4px;
+      display: inline;
+    }
+
+    /* Video section */
+    .video-section {
+      background: linear-gradient(135deg, #07121f, #0d2240);
+      border: 1px solid rgba(74,158,255,0.2);
+      border-radius: 14px;
+      padding: 32px 28px;
+      margin-bottom: 48px;
+      text-align: center;
+    }
+    .video-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7dd8f8;
+      margin-bottom: 12px;
+    }
+    .video-headline {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+    .video-body {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.75;
+      margin-bottom: 24px;
+    }
+    .btn {
+      display: inline-block;
+      background: #1a47ff;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 14px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #1338d4; }
+
+    /* Section headings */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7dd8f8;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 28px;
+      line-height: 1.3;
+    }
+
+    /* Curriculum cards */
+    .curriculum-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+    .curriculum-card {
+      background: linear-gradient(135deg, #07121f, #0d2240);
+      border: 1px solid rgba(74,158,255,0.2);
+      border-radius: 12px;
+      padding: 24px 28px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .card-icon {
+      font-size: 1.6rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .card-body {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.7;
+    }
+
+    /* Transparency section */
+    .transparency-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 56px;
+    }
+    .transparency-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 20px 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+    }
+    .check-icon {
+      width: 22px;
+      height: 22px;
+      background: #1a47ff;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 900;
+      margin-top: 1px;
+    }
+    .transparency-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .transparency-body {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.7;
+    }
+
+    /* CTA block */
+    .cta-block {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .cta-block .section-title {
+      margin-bottom: 12px;
+    }
+    .cta-sub {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    /* FAQ */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 56px;
+    }
+    .faq-item {
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .faq-question {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: none;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-align: left;
+      padding: 18px 22px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      transition: background 0.2s;
+    }
+    .faq-question:hover { background: rgba(255,255,255,0.06); }
+    .faq-chevron {
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      color: #7dd8f8;
+      transition: transform 0.2s;
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      display: none;
+      padding: 0 22px 20px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.8;
+    }
+    .faq-item.open .faq-answer { display: block; }
+
+    /* Footer */
+    footer {
+      background: #000;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 32px 20px;
+      text-align: center;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .footer-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .footer-disc {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.45);
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 480px) {
+      .curriculum-card { flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <p class="header-label">For Parents &amp; Guardians</p>
+</header>
+
+<div class="container">
+
+  <h1 class="page-title">Your child wants to build an <span>e-commerce brand</span>. Here's what the program actually teaches.</h1>
+
+  <!-- Video section -->
+  <div class="video-section">
+    <p class="video-label">This message was made specifically for you</p>
+    <p class="video-headline">We want you to feel fully confident before your child moves forward.</p>
+    <p class="video-body">
+      Before the call happens, we want you to understand exactly what Ad Ventur is, what we teach, and what your child would be doing. This is a legitimate skill-based business program — not a get-rich-quick scheme. Read through this page with your child so you're both on the same page.
+    </p>
+    <a href="/pre1on1prep" class="btn">Go to Pre-Call Prep &rarr;</a>
+  </div>
+
+  <!-- Curriculum -->
+  <p class="section-label">What We Teach</p>
+  <h2 class="section-title">The curriculum, explained plainly.</h2>
+
+  <div class="curriculum-grid">
+    <div class="curriculum-card">
+      <div class="card-icon">🏷️</div>
+      <div>
+        <p class="card-title">Brand Building</p>
+        <p class="card-body">Students learn how to build a private-label e-commerce brand from scratch — not a generic dropshipping store. This means creating a real product line under their own brand, positioned to stand out and sell at premium margins.</p>
+      </div>
+    </div>
+    <div class="curriculum-card">
+      <div class="card-icon">📦</div>
+      <div>
+        <p class="card-title">Supplier & Product Sourcing</p>
+        <p class="card-body">We give direct access to vetted suppliers. Students learn how to source quality products, negotiate pricing, and build a real inventory model — not a low-margin, high-churn dropshipping operation.</p>
+      </div>
+    </div>
+    <div class="curriculum-card">
+      <div class="card-icon">📣</div>
+      <div>
+        <p class="card-title">Paid Advertising</p>
+        <p class="card-body">Students are trained on every major paid ads platform — Meta, TikTok, Google — and learn how to run profitable campaigns that generate consistent revenue. Full breakdowns and audits are included.</p>
+      </div>
+    </div>
+    <div class="curriculum-card">
+      <div class="card-icon">💻</div>
+      <div>
+        <p class="card-title">Remote Business Operations</p>
+        <p class="card-body">Everything is run online. Students learn how to manage their brand independently, from home or anywhere in the world. The goal is a fully functioning business they can operate on their own schedule.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transparency -->
+  <p class="section-label">Our Commitment to You</p>
+  <h2 class="section-title">What we want you to know before moving forward.</h2>
+
+  <div class="transparency-list">
+    <div class="transparency-item">
+      <div class="check-icon">✓</div>
+      <div>
+        <p class="transparency-title">We welcome your involvement</p>
+        <p class="transparency-body">Parents are encouraged to join the onboarding call. We believe transparency builds trust, and we want you to hear directly from Bronson about what your child will be doing.</p>
+      </div>
+    </div>
+    <div class="transparency-item">
+      <div class="check-icon">✓</div>
+      <div>
+        <p class="transparency-title">No income guarantees</p>
+        <p class="transparency-body">We will never promise a specific number. Results depend entirely on how much effort your child puts in. We share real student results to show what's possible — not what's guaranteed.</p>
+      </div>
+    </div>
+    <div class="transparency-item">
+      <div class="check-icon">✓</div>
+      <div>
+        <p class="transparency-title">This requires real work</p>
+        <p class="transparency-body">Building a brand takes time and effort. This is not passive income or a shortcut. Your child will need to show up consistently, implement what they learn, and treat this like a real business.</p>
+      </div>
+    </div>
+    <div class="transparency-item">
+      <div class="check-icon">✓</div>
+      <div>
+        <p class="transparency-title">Full visibility into the program</p>
+        <p class="transparency-body">You're welcome to review the curriculum, sit in on the call, and ask any questions you have. We have nothing to hide and want you to feel confident in what your child is stepping into.</p>
+      </div>
+    </div>
+    <div class="transparency-item">
+      <div class="check-icon">✓</div>
+      <div>
+        <p class="transparency-title">Pricing is discussed openly on the call</p>
+        <p class="transparency-body">We have multiple program options at different investment levels. Cost, payment options, and what's included will all be explained transparently on the call — before any decision is made.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h2 class="section-title">Ready to get on the same page as your child?</h2>
+    <p class="cta-sub">Review the pre-call prep together before the call. It'll give you both a clear picture of what to expect and what questions to ask.</p>
+    <a href="/pre1on1prep" class="btn">Go to Pre-Call Prep &rarr;</a>
+  </div>
+
+  <!-- FAQ -->
+  <p class="section-label">Common Questions</p>
+  <h2 class="section-title">FAQs from parents.</h2>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-question">
+        Is there an age requirement?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        We work with students 18 and older. For students under 18, parental consent and involvement is required before enrollment.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">
+        Is this a legitimate program or a scam?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        Ad Ventur is a real business education program. We teach verifiable e-commerce skills used by real businesses. Our student results are documented and real. Bronson himself built a successful brand before coaching others to do the same. You're welcome to ask any questions on the call.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">
+        How much time does this take?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        That depends on how fast your child wants to move. The program is self-paced with weekly live coaching calls. Students who put in consistent daily time tend to see the fastest progress. There's no deadline — they work at their own pace.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">
+        What is the call actually for?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        The call is a 1-on-1 conversation with Bronson to understand your child's goals, explain the program in full detail, answer any questions you both have, and determine if it's a good fit. There is no pressure. If it's not the right fit, we'll say so.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">
+        How much does it cost?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        We have multiple program tiers at different investment levels. All pricing, payment options, and what's included at each level will be explained on the call. Nothing is hidden. You'll have all the information before making any decision.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">
+        Can I be on the call with my child?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        Absolutely. We encourage it. Having a parent on the call means everyone is aligned from the start, which makes for a much stronger foundation if your child does decide to move forward.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="/terms" target="_blank">Terms</a>
+    <a href="/privacy" target="_blank">Privacy Policy</a>
+  </div>
+  <p class="footer-disc">This site is not affiliated with or endorsed by Facebook, Meta, TikTok, or Google. Results mentioned are not typical and are not a guarantee of what you or your child will experience. Individual results vary based on effort, experience, and market conditions.</p>
+  <br>
+  <p class="footer-disc">© 2025 Ad Ventur. All Rights Reserved.</p>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+
+</body>
+</html>
