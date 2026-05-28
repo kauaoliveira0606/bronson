@@ -297,15 +297,7 @@
       ${card('Cash / Booked Call', booked ? $(Math.round(cash / booked)) : '$0', 'green')}
     </div>`;
 
-    const headers = ['Date','Closer','Booked','Showed','Kept','Closed','Close Rate (Kept)','Show Rate','Cancellations','DQ','Cash Collected','Revenue'];
-    const rows = records.map(r => {
-      const fl = f(r);
-      const b = n(fl['Calls booked']), s = n(fl['Calls Showed']), c = n(fl['Cancelled calls']), dc = n(fl['Deals closed']), dq = n(fl['Disqualified calls']);
-      const k = b - c;
-      return [fl['Date']||'', fl['Closers name']||'', b, s, k, dc, pct(dc,k), pct(s,b), c, dq, $(fl['Total cash collected']), $(fl['Total revenue'])];
-    });
-
-    document.getElementById('tab-sales').innerHTML = html + makeTable(headers, rows);
+    document.getElementById('tab-sales').innerHTML = html;
   }
 
   function renderAll() {
