@@ -57,13 +57,27 @@
     .tab-content { display: none; padding: 24px; }
     .tab-content.active { display: block; }
 
+    /* Hero metrics row */
+    .hero-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+    .hero-card { background: linear-gradient(135deg, #07121f, #0d2240); border: 1px solid rgba(74,158,255,0.3); border-radius: 12px; padding: 22px 20px; position: relative; overflow: hidden; }
+    .hero-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #1a47ff, #7dd8f8); }
+    .hero-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7dd8f8; margin-bottom: 10px; }
+    .hero-value { font-size: 2rem; font-weight: 900; color: #fff; line-height: 1; }
+    .hero-value.green { color: #4ade80; }
+
+    /* Divider */
+    .section-divider { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #7dd8f8; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(74,158,255,0.15); }
+
     /* Stat cards */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-bottom: 28px; }
-    .stat-card { background: linear-gradient(135deg, #07121f, #0d2240); border: 1px solid rgba(74,158,255,0.15); border-radius: 10px; padding: 16px 18px; }
-    .stat-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #7dd8f8; margin-bottom: 8px; }
-    .stat-value { font-size: 1.45rem; font-weight: 900; color: #fff; line-height: 1; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 28px; }
+    .stat-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px 16px; }
+    .stat-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #7dd8f8; margin-bottom: 7px; }
+    .stat-value { font-size: 1.3rem; font-weight: 900; color: #fff; line-height: 1; }
     .stat-value.green { color: #4ade80; }
     .stat-value.yellow { color: #facc15; }
+
+    @media (max-width: 700px) { .hero-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 400px) { .hero-grid { grid-template-columns: 1fr 1fr; } .hero-value { font-size: 1.5rem; } }
 
     .loading { text-align: center; padding: 60px 0; color: #fff; font-size: 0.82rem; }
 
@@ -277,25 +291,34 @@
 
     const kept = booked - cancelled;
 
-    const html = `<div class="stats-grid">
-      ${card('Calls Booked', booked)}
-      ${card('Live Calls', showed)}
-      ${card('Kept Calls', kept)}
-      ${card('Deals Closed', closed)}
-      ${card('Deposits', deps)}
-      ${card('Close Rate (Booked)', pct(closed, booked), 'yellow')}
-      ${card('Close Rate (Kept)', pct(closed, kept), 'yellow')}
-      ${card('Show Rate (Kept)', pct(showed, kept), 'yellow')}
-      ${card('Show Rate', pct(showed, booked), 'yellow')}
-      ${card('Cancellations', cancelled)}
-      ${card('Cancellation Rate', pct(cancelled, booked), 'yellow')}
-      ${card('DQ Rate', pct(disq, showed), 'yellow')}
-      ${card('Cash Collected', $(cash), 'green')}
-      ${card('Revenue Generated', $(rev), 'green')}
-      ${card('Deposits Collected', $(depCash), 'green')}
-      ${card('AOV', closed ? $(Math.round(cash / closed)) : '$0', 'green')}
-      ${card('Cash / Booked Call', booked ? $(Math.round(cash / booked)) : '$0', 'green')}
-    </div>`;
+    const cashPerBooked = booked ? Math.round(cash / booked) : 0;
+
+    const html = `
+      <div class="hero-grid">
+        <div class="hero-card"><p class="hero-label">Cash / Booked Call</p><p class="hero-value green">${$(cashPerBooked)}</p></div>
+        <div class="hero-card"><p class="hero-label">Cash Collected</p><p class="hero-value green">${$(cash)}</p></div>
+        <div class="hero-card"><p class="hero-label">ROAS</p><p class="hero-value">—</p></div>
+        <div class="hero-card"><p class="hero-label">Ad Spend</p><p class="hero-value">—</p></div>
+      </div>
+
+      <p class="section-divider">Performance Metrics</p>
+      <div class="stats-grid">
+        ${card('Calls Booked', booked)}
+        ${card('Live Calls', showed)}
+        ${card('Kept Calls', kept)}
+        ${card('Deals Closed', closed)}
+        ${card('Deposits', deps)}
+        ${card('Cancellations', cancelled)}
+        ${card('Close Rate (Booked)', pct(closed, booked), 'yellow')}
+        ${card('Close Rate (Kept)', pct(closed, kept), 'yellow')}
+        ${card('Show Rate', pct(showed, booked), 'yellow')}
+        ${card('Show Rate (Kept)', pct(showed, kept), 'yellow')}
+        ${card('Cancellation Rate', pct(cancelled, booked), 'yellow')}
+        ${card('DQ Rate', pct(disq, showed), 'yellow')}
+        ${card('Revenue Generated', $(rev), 'green')}
+        ${card('Deposits Collected', $(depCash), 'green')}
+        ${card('AOV', closed ? $(Math.round(cash / closed)) : '$0', 'green')}
+      </div>`;
 
     document.getElementById('tab-sales').innerHTML = html;
   }
