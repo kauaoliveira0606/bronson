@@ -330,9 +330,9 @@
   async function loadAll() {
     document.getElementById('tab-sales').innerHTML = '<div class="loading">Loading...</div>';
     const [closer, dialer, followup] = await Promise.all([
-      fetchAll('EOD Closer Table'),
-      fetchAll('EOD Dialer Table'),
-      fetchAll('Follow Up Payment Table')
+      fetchAll('EOD Closer'),
+      fetchAll('EOD Dialer'),
+      fetchAll('Follow Up Payment')
     ]);
     cache = { closer, dialer, followup };
     document.getElementById('lastUpdated').textContent = 'Last updated: ' + new Date().toLocaleString();
