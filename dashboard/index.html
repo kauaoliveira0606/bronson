@@ -156,16 +156,23 @@
   let filterTo   = null;
 
   // Gate
+  function unlock() {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    loadAll();
+  }
+
   function checkPass() {
     if (document.getElementById('passInput').value === PASS) {
-      document.getElementById('gate').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'block';
-      loadAll();
+      localStorage.setItem('av_auth', '1');
+      unlock();
     } else {
       document.getElementById('gateError').style.display = 'block';
     }
   }
   document.getElementById('passInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPass(); });
+
+  if (localStorage.getItem('av_auth') === '1') unlock();
 
   // Tabs
   function switchTab(id, btn) {
