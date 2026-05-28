@@ -114,10 +114,8 @@
   </div>
 
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('postCall', this)">Post Call Notes</button>
-    <button class="tab-btn" onclick="switchTab('closer', this)">EOD Closer</button>
-    <button class="tab-btn" onclick="switchTab('dialer', this)">EOD Dialer</button>
-    <button class="tab-btn" onclick="switchTab('followup', this)">Follow Up Payments</button>
+    <button class="tab-btn active" onclick="switchTab('sales', this)">Sales Dashboard</button>
+    <button class="tab-btn" onclick="switchTab('setter', this)">Setter Dashboard</button>
   </div>
 
   <div class="filter-bar">
@@ -139,10 +137,8 @@
     </div>
   </div>
 
-  <div id="tab-postCall" class="tab-content active"><div class="loading">Loading...</div></div>
-  <div id="tab-closer" class="tab-content"><div class="loading">Loading...</div></div>
-  <div id="tab-dialer" class="tab-content"><div class="loading">Loading...</div></div>
-  <div id="tab-followup" class="tab-content"><div class="loading">Loading...</div></div>
+  <div id="tab-sales" class="tab-content active"><div class="loading">Loading...</div></div>
+  <div id="tab-setter" class="tab-content"><div class="loading">Coming soon...</div></div>
 </div>
 
 <script>
@@ -151,7 +147,7 @@
   const PASS  = '500k/m';
 
   // Cached records
-  let cache = { postCall: [], closer: [], dialer: [], followup: [] };
+  let cache = { closer: [], dialer: [], followup: [] };
   let filterFrom = null;
   let filterTo   = null;
 
@@ -264,129 +260,66 @@
     return `<div class="table-wrap"><table><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table></div>`;
   }
 
-  // Renderers (use cached data + current filter)
-  function renderPostCall() {
-    const records = filterRecords(cache.postCall, 'Date');
-    const f = r => r.fields;
-    const cash = records.reduce((s,r) => s + n(f(r)['Cash Collected']), 0);
-    const rev  = records.reduce((s,r) => s + n(f(r)['Total Revenue']), 0);
-    const outcomes = {};
-    records.forEach(r => { const o = f(r)['Call Outcome'] || 'Unknown'; outcomes[o] = (outcomes[o]||0)+1; });
-    const html = `<div class="stats-grid">
-      ${card('Total Calls', records.length)}
-      ${card('Cash Collected', $(cash), 'green')}
-      ${card('Total Revenue', $(rev), 'green')}
-      ${Object.entries(outcomes).map(([k,v]) => card(k, v)).join('')}
-    </div>`;
-    const headers = ['Date','Closer','Setter','Lead Name','Outcome','Offer','Cash Collected','Total Revenue','Lead Source'];
-    const rows = records.map(r => {
-      const fl = f(r);
-      return [fl['Date']||'', [fl['First Name'],fl['Last Name']].filter(Boolean).join(' '), fl['Setters Name']||'', fl['Full Name (Lead)']||'', badge(fl['Call Outcome']), fl['Offer Pitched On/Closed']||'', $(fl['Cash Collected']), $(fl['Total Revenue']), fl['Source of Lead (Where they came from)']||''];
-    });
-    document.getElementById('tab-postCall').innerHTML = html + makeTable(headers, rows);
-  }
-
-  function renderCloser() {
+  // Renderers
+  function renderSales() {
     const records = filterRecords(cache.closer, 'Date');
     const f = r => r.fields;
-    const booked  = records.reduce((s,r) => s + n(f(r)['Calls booked']), 0);
-    const showed  = records.reduce((s,r) => s + n(f(r)['Calls Showed']), 0);
-    const offers  = records.reduce((s,r) => s + n(f(r)['Offers made']), 0);
-    const closed  = records.reduce((s,r) => s + n(f(r)['Deals closed']), 0);
-    const cash    = records.reduce((s,r) => s + n(f(r)['Total cash collected']), 0);
-    const rev     = records.reduce((s,r) => s + n(f(r)['Total revenue']), 0);
-    const deps    = records.reduce((s,r) => s + n(f(r)['Deposits']), 0);
-    const depCash = records.reduce((s,r) => s + n(f(r)['Deposits cash collected']), 0);
-    const fu      = records.reduce((s,r) => s + n(f(r)['Follow up Payments collected ($)']), 0);
+
+    const booked    = records.reduce((s,r) => s + n(f(r)['Calls booked']), 0);
+    const showed    = records.reduce((s,r) => s + n(f(r)['Calls Showed']), 0);
+    const cancelled = records.reduce((s,r) => s + n(f(r)['Cancelled calls']), 0);
+    const disq      = records.reduce((s,r) => s + n(f(r)['Disqualified calls']), 0);
+    const closed    = records.reduce((s,r) => s + n(f(r)['Deals closed']), 0);
+    const deps      = records.reduce((s,r) => s + n(f(r)['Deposits']), 0);
+    const cash      = records.reduce((s,r) => s + n(f(r)['Total cash collected']), 0);
+    const rev       = records.reduce((s,r) => s + n(f(r)['Total revenue']), 0);
+    const depCash   = records.reduce((s,r) => s + n(f(r)['Deposits cash collected']), 0);
+
+    const kept = booked - cancelled;
+
     const html = `<div class="stats-grid">
       ${card('Calls Booked', booked)}
-      ${card('Calls Showed', showed)}
-      ${card('Show Rate', pct(showed, booked), 'yellow')}
-      ${card('Offers Made', offers)}
+      ${card('Live Calls', showed)}
+      ${card('Kept Calls', kept)}
       ${card('Deals Closed', closed)}
-      ${card('Close Rate', pct(closed, offers), 'yellow')}
-      ${card('Cash Collected', $(cash), 'green')}
-      ${card('Total Revenue', $(rev), 'green')}
       ${card('Deposits', deps)}
-      ${card('Deposit Cash', $(depCash), 'green')}
-      ${card('Follow Up $', $(fu), 'green')}
-    </div>`;
-    const headers = ['Date','Closer','Booked','Showed','Show Rate','Cancelled','Disqualified','Offers','Closed','Close Rate','Cash Collected','Revenue'];
-    const rows = records.map(r => {
-      const fl = f(r);
-      const b = n(fl['Calls booked']), s = n(fl['Calls Showed']), om = n(fl['Offers made']), dc = n(fl['Deals closed']);
-      return [fl['Date']||'', fl['Closers name']||'', b, s, pct(s,b), n(fl['Cancelled calls']), n(fl['Disqualified calls']), om, dc, pct(dc,om), $(fl['Cash collected']), $(fl['Total revenue'])];
-    });
-    document.getElementById('tab-closer').innerHTML = html + makeTable(headers, rows);
-  }
-
-  function renderDialer() {
-    const records = filterRecords(cache.dialer, 'Date');
-    const f = r => r.fields;
-    const dials   = records.reduce((s,r) => s + n(f(r)['# of outbound dials']), 0);
-    const pickups = records.reduce((s,r) => s + n(f(r)['How many people picked up (pickups)']), 0);
-    const sets    = records.reduce((s,r) => s + n(f(r)['# calls booked/sets']), 0);
-    const showed  = records.reduce((s,r) => s + n(f(r)['# Call showed']), 0);
-    const cash    = records.reduce((s,r) => s + n(f(r)['Total cash collected']), 0);
-    const rev     = records.reduce((s,r) => s + n(f(r)['Total revenue']), 0);
-    const convos  = records.reduce((s,r) => s + n(f(r)['How many convos did you have today (over 2 min)']), 0);
-    const qual    = records.reduce((s,r) => s + n(f(r)['How many qualified leads did you speak to']), 0);
-    const html = `<div class="stats-grid">
-      ${card('Total Dials', dials.toLocaleString())}
-      ${card('Pickups', pickups.toLocaleString())}
-      ${card('Pickup Rate', pct(pickups, dials), 'yellow')}
-      ${card('Sets', sets)}
-      ${card('Set Rate', pct(sets, dials), 'yellow')}
-      ${card('Showed', showed)}
-      ${card('Convos 2min+', convos)}
-      ${card('Qualified Leads', qual)}
+      ${card('Close Rate (Booked)', pct(closed, booked), 'yellow')}
+      ${card('Close Rate (Kept)', pct(closed, kept), 'yellow')}
+      ${card('Show Rate (Kept)', pct(showed, kept), 'yellow')}
+      ${card('Show Rate', pct(showed, booked), 'yellow')}
+      ${card('Cancellations', cancelled)}
+      ${card('Cancellation Rate', pct(cancelled, booked), 'yellow')}
+      ${card('DQ Rate', pct(disq, showed), 'yellow')}
       ${card('Cash Collected', $(cash), 'green')}
-      ${card('Total Revenue', $(rev), 'green')}
+      ${card('Revenue Generated', $(rev), 'green')}
+      ${card('Deposits Collected', $(depCash), 'green')}
+      ${card('AOV', closed ? $(Math.round(cash / closed)) : '$0', 'green')}
+      ${card('Cash / Booked Call', booked ? $(Math.round(cash / booked)) : '$0', 'green')}
     </div>`;
-    const headers = ['Date','Setter','Dials','Pickups','Pickup Rate','Sets','Set Rate','Showed','Convos','Cash Collected','Revenue'];
-    const rows = records.map(r => {
-      const fl = f(r);
-      const d = n(fl['# of outbound dials']), p = n(fl['How many people picked up (pickups)']), s = n(fl['# calls booked/sets']);
-      return [fl['Date']||'', fl['Setter Name']||'', d, p, pct(p,d), s, pct(s,d), n(fl['# Call showed']), n(fl['How many convos did you have today (over 2 min)']), $(fl['Total cash collected']), $(fl['Total revenue'])];
-    });
-    document.getElementById('tab-dialer').innerHTML = html + makeTable(headers, rows);
-  }
 
-  function renderFollowUp() {
-    const records = cache.followup; // no date field, always show all
-    const f = r => r.fields;
-    const collected = records.reduce((s,r) => s + n(f(r)['Cash collected']), 0);
-    const owed      = records.reduce((s,r) => s + n(f(r)['How much cash is owed']), 0);
-    const html = `<div class="stats-grid">
-      ${card('Total Records', records.length)}
-      ${card('Cash Collected', $(collected), 'green')}
-      ${card('Cash Owed', $(owed), 'yellow')}
-      ${card('Total Pipeline', $(collected + owed))}
-    </div>`;
-    const headers = ['Closer','Setter','Lead Name','Lead Email','Offer','Cash Collected','Cash Owed','Source'];
+    const headers = ['Date','Closer','Booked','Showed','Kept','Closed','Close Rate (Kept)','Show Rate','Cancellations','DQ','Cash Collected','Revenue'];
     const rows = records.map(r => {
       const fl = f(r);
-      return [fl['Closer Name']||'', fl['Setter Name']||'', fl['Lead full name']||'', fl['Lead email']||'', fl['Offer closed on']||'', $(fl['Cash collected']), $(fl['How much cash is owed']), fl['Source of Appointment']||''];
+      const b = n(fl['Calls booked']), s = n(fl['Calls Showed']), c = n(fl['Cancelled calls']), dc = n(fl['Deals closed']), dq = n(fl['Disqualified calls']);
+      const k = b - c;
+      return [fl['Date']||'', fl['Closers name']||'', b, s, k, dc, pct(dc,k), pct(s,b), c, dq, $(fl['Total cash collected']), $(fl['Total revenue'])];
     });
-    document.getElementById('tab-followup').innerHTML = html + makeTable(headers, rows);
+
+    document.getElementById('tab-sales').innerHTML = html + makeTable(headers, rows);
   }
 
   function renderAll() {
-    renderPostCall();
-    renderCloser();
-    renderDialer();
-    renderFollowUp();
+    renderSales();
   }
 
   async function loadAll() {
-    document.querySelectorAll('.tab-content').forEach(t => t.innerHTML = '<div class="loading">Loading...</div>');
-    const [postCall, closer, dialer, followup] = await Promise.all([
-      fetchAll('Post Call Note Table'),
+    document.getElementById('tab-sales').innerHTML = '<div class="loading">Loading...</div>';
+    const [closer, dialer, followup] = await Promise.all([
       fetchAll('EOD Closer Table'),
       fetchAll('EOD Dialer Table'),
       fetchAll('Follow Up Payment Table')
     ]);
-    cache = { postCall, closer, dialer, followup };
+    cache = { closer, dialer, followup };
     document.getElementById('lastUpdated').textContent = 'Last updated: ' + new Date().toLocaleString();
     renderAll();
   }
