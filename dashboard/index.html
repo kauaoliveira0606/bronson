@@ -97,6 +97,34 @@
     .badge-blue { background: rgba(96,165,250,0.12); color: #60a5fa; }
     .no-records { color: #fff; font-size: 0.82rem; padding: 20px 0; }
 
+    /* Scorecard */
+    .sc-week-banner { background: linear-gradient(135deg, #07121f, #0d2240); border: 1px solid rgba(74,158,255,0.2); border-radius: 10px; padding: 16px 22px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .sc-week-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #7dd8f8; }
+    .sc-week-dates { font-size: 0.9rem; font-weight: 900; color: #fff; }
+    .sc-section { margin-bottom: 28px; border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.07); }
+    .sc-section-header { display: flex; align-items: center; gap: 10px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; padding: 12px 18px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .sc-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .sc-table-wrap { overflow-x: auto; }
+    .sc-table { width: 100%; border-collapse: collapse; font-size: 0.74rem; min-width: 700px; }
+    .sc-table thead tr { background: rgba(0,0,0,0.3); }
+    .sc-table th { padding: 9px 14px; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: rgba(255,255,255,0.35); white-space: nowrap; border-bottom: 1px solid rgba(255,255,255,0.06); text-align: center; }
+    .sc-table th.sc-metric-col { text-align: left; min-width: 200px; }
+    .sc-table th.sc-today-th { color: #7dd8f8; }
+    .sc-table th.sc-week-th { color: rgba(74,158,255,0.7); border-left: 1px solid rgba(74,158,255,0.12); }
+    .sc-table td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.04); text-align: center; vertical-align: middle; }
+    .sc-table td.sc-metric-name { text-align: left; font-weight: 600; font-size: 0.74rem; color: #fff; white-space: normal; min-width: 200px; }
+    .sc-table td.sc-cell { color: #fff; }
+    .sc-table td.sc-today-cell { background: rgba(74,158,255,0.05); }
+    .sc-table td.sc-week-col { background: rgba(74,158,255,0.03); border-left: 1px solid rgba(74,158,255,0.1); }
+    .sc-table tr:last-child td { border-bottom: none; }
+    .sc-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .sc-table tr:hover td.sc-today-cell { background: rgba(74,158,255,0.07); }
+    .sc-empty { color: rgba(255,255,255,0.18); font-size: 0.72rem; }
+    .sc-val { font-weight: 700; }
+    .sc-pct-cell { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+    .sc-bar-track { width: 56px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+    .sc-bar-fill { height: 100%; border-radius: 2px; }
+
     @media (max-width: 600px) {
       .dash-header { padding: 14px 16px; }
       .filter-bar { padding: 12px 16px; }
@@ -130,6 +158,7 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('sales', this)">Sales Dashboard</button>
     <button class="tab-btn" onclick="switchTab('setter', this)">Setter Dashboard</button>
+    <button class="tab-btn" onclick="switchTab('scorecard', this)">Scorecard</button>
   </div>
 
   <div class="filter-bar">
@@ -153,6 +182,7 @@
 
   <div id="tab-sales" class="tab-content active"><div class="loading">Loading...</div></div>
   <div id="tab-setter" class="tab-content"><div class="loading">Coming soon...</div></div>
+  <div id="tab-scorecard" class="tab-content"><div class="loading">Loading scorecard...</div></div>
 </div>
 
 <script>
@@ -190,6 +220,7 @@
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + id).classList.add('active');
     btn.classList.add('active');
+    document.querySelector('.filter-bar').style.display = id === 'scorecard' ? 'none' : '';
   }
 
   // Date helpers
@@ -329,6 +360,7 @@
 
   async function loadAll() {
     document.getElementById('tab-sales').innerHTML = '<div class="loading">Loading...</div>';
+    document.getElementById('tab-scorecard').innerHTML = '<div class="loading">Loading scorecard...</div>';
     const [closer, dialer, followup] = await Promise.all([
       fetchAll('EOD Closer'),
       fetchAll('EOD Dialer'),
@@ -337,6 +369,157 @@
     cache = { closer, dialer, followup };
     document.getElementById('lastUpdated').textContent = 'Last updated: ' + new Date().toLocaleString();
     renderAll();
+    loadScorecard();
+  }
+
+  // Scorecard
+  const SCORECARD_URL = 'https://script.google.com/macros/s/AKfycbzITjxX8GTMAqQKlzwvTKw1Jj5xGjiSBtHqWNjxlNwsu4s9ADNTnnRfuhVOFp9WzUEb0g/exec';
+
+  const SC_GROUPS = [
+    { label: 'Paid Traffic', color: '#1a47ff', metrics: [
+      { name: 'Ad Spend Meta', fmt: 'dollar' },
+      { name: 'Cost Per Click', fmt: 'dollar' },
+      { name: 'CPM (1000)', fmt: 'dollar' },
+      { name: 'CTR Link', fmt: 'pct' },
+      { name: 'Hook Rate', fmt: 'pct' },
+      { name: 'Landing Page Connect Rate', fmt: 'pct' },
+    ]},
+    { label: 'VSL', color: '#7c3aed', metrics: [
+      { name: 'VSL Page Visits', fmt: 'number' },
+      { name: 'VSL Play Rate', fmt: 'pct' },
+      { name: 'VSL Engagement Rate', fmt: 'pct' },
+      { name: 'VSL Conversion rate (Booked call/VSL plays)', fmt: 'pct' },
+    ]},
+    { label: 'Applications', color: '#0891b2', metrics: [
+      { name: 'Applications Submited (meta)', fmt: 'number' },
+      { name: 'Application Completion Rate (meta)', fmt: 'pct' },
+      { name: 'Cost Per Qualified Application (Meta)', fmt: 'dollar' },
+    ]},
+    { label: 'Email', color: '#059669', metrics: [
+      { name: 'Confirmation Email Open Rate', fmt: 'pct' },
+      { name: 'Confirmation Email Click Thru Rate', fmt: 'pct' },
+    ]},
+    { label: 'Dialing', color: '#d97706', metrics: [
+      { name: 'Dials', fmt: 'number' },
+      { name: 'Pick up rate', fmt: 'pct' },
+      { name: 'Connect rate to booked calls', fmt: 'pct' },
+    ]},
+    { label: 'Calls & Closing', color: '#e11d48', metrics: [
+      { name: 'Total Calls Booked', fmt: 'number' },
+      { name: 'Total Calls Show', fmt: 'number' },
+      { name: 'Total Show Up Rate', fmt: 'pct' },
+      { name: 'Setter booked calls', fmt: 'number' },
+      { name: 'setter booked calls shown', fmt: 'number' },
+      { name: 'setter booked call show up rate', fmt: 'pct' },
+      { name: 'Cancelled calls (Not setter booked calls)', fmt: 'number' },
+      { name: 'Canceled Calls (Setter booked calls)', fmt: 'number' },
+      { name: 'Closing DQ Rate', fmt: 'pct' },
+      { name: 'Close Rate', fmt: 'pct' },
+    ]},
+    { label: 'Revenue', color: '#16a34a', metrics: [
+      { name: 'AOV Sales Team (past 30 days)', fmt: 'dollar' },
+      { name: 'Sales - Deals closed', fmt: 'number' },
+      { name: 'Depos', fmt: 'number' },
+      { name: 'Cash Collected', fmt: 'dollar' },
+      { name: 'Roas', fmt: 'number' },
+      { name: 'Cost per Booked Call', fmt: 'dollar' },
+      { name: 'Cash collected per booked call', fmt: 'dollar' },
+    ]},
+  ];
+
+  let scorecardData = null;
+
+  function scFmtVal(v, fmt) {
+    if (v === '' || v === null || v === undefined) return null;
+    const num = parseFloat(v);
+    if (isNaN(num)) return null;
+    if (fmt === 'dollar') {
+      return { display: '$' + num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) };
+    }
+    if (fmt === 'pct') {
+      const pv = num <= 1 ? num * 100 : num;
+      return { display: pv.toFixed(1) + '%', bar: Math.min(pv, 100) };
+    }
+    return { display: num % 1 === 0 ? num.toString() : num.toFixed(2) };
+  }
+
+  function scCell(v, fmt, color, isToday) {
+    const result = scFmtVal(v, fmt);
+    const cls = 'sc-cell' + (isToday ? ' sc-today-cell' : '');
+    if (!result) return `<td class="${cls}"><span class="sc-empty">—</span></td>`;
+    if (result.bar !== undefined) {
+      return `<td class="${cls}"><div class="sc-pct-cell"><span class="sc-val">${result.display}</span><div class="sc-bar-track"><div class="sc-bar-fill" style="width:${result.bar}%;background:${color}"></div></div></div></td>`;
+    }
+    return `<td class="${cls}"><span class="sc-val">${result.display}</span></td>`;
+  }
+
+  function renderScorecard() {
+    if (!scorecardData) return;
+    const data = scorecardData;
+    const dateRow = data[1];
+    const DAY_COLS = [1,2,3,4,5,6,7];
+    const SUMMARY_COL = 9;
+    const today = new Date().toISOString().substring(0,10);
+    const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+    const dayLabels = DAY_COLS.map(i => {
+      if (!dateRow[i]) return '';
+      const d = new Date(dateRow[i]);
+      return DAY_NAMES[d.getUTCDay()] + ' ' + (d.getUTCMonth()+1) + '/' + d.getUTCDate();
+    });
+
+    const firstDate = new Date(dateRow[1]);
+    const lastDate  = new Date(dateRow[7]);
+    const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const weekRange = `${MONTHS[firstDate.getUTCMonth()]} ${firstDate.getUTCDate()} - ${MONTHS[lastDate.getUTCMonth()]} ${lastDate.getUTCDate()}, ${lastDate.getUTCFullYear()}`;
+
+    const todayColIdx = DAY_COLS.find(i => dateRow[i] && new Date(dateRow[i]).toISOString().substring(0,10) === today);
+
+    const metricMap = {};
+    data.forEach(row => { if (row[0]) metricMap[row[0].trim().toLowerCase()] = row; });
+
+    let html = `<div class="sc-week-banner"><span class="sc-week-title">Current Week</span><span class="sc-week-dates">${weekRange}</span></div>`;
+
+    SC_GROUPS.forEach(group => {
+      const ths = dayLabels.map((label, i) => {
+        const isTd = DAY_COLS[i] === todayColIdx;
+        return `<th class="${isTd ? 'sc-today-th' : ''}">${label || '—'}</th>`;
+      }).join('');
+
+      const trs = group.metrics.map(m => {
+        const row = metricMap[m.name.trim().toLowerCase()];
+        const tds = DAY_COLS.map(i => scCell(row ? row[i] : null, m.fmt, group.color, i === todayColIdx)).join('');
+        const sumResult = scFmtVal(row ? row[SUMMARY_COL] : null, m.fmt);
+        const sumTd = sumResult
+          ? `<td class="sc-cell sc-week-col"><span class="sc-val">${sumResult.display}</span></td>`
+          : `<td class="sc-cell sc-week-col"><span class="sc-empty">—</span></td>`;
+        return `<tr><td class="sc-metric-name">${m.name}</td>${tds}${sumTd}</tr>`;
+      }).join('');
+
+      html += `<div class="sc-section">
+        <div class="sc-section-header" style="border-left:3px solid ${group.color};padding-left:14px;">
+          <span class="sc-dot" style="background:${group.color}"></span>${group.label}
+        </div>
+        <div class="sc-table-wrap"><table class="sc-table">
+          <thead><tr>
+            <th class="sc-metric-col">Metric</th>${ths}<th class="sc-week-th">Weekly</th>
+          </tr></thead>
+          <tbody>${trs}</tbody>
+        </table></div>
+      </div>`;
+    });
+
+    document.getElementById('tab-scorecard').innerHTML = html;
+  }
+
+  async function loadScorecard() {
+    try {
+      const res = await fetch(SCORECARD_URL);
+      scorecardData = await res.json();
+      renderScorecard();
+    } catch(e) {
+      document.getElementById('tab-scorecard').innerHTML = '<div class="loading">Failed to load scorecard. Check the Apps Script URL.</div>';
+    }
   }
 </script>
 </body>
