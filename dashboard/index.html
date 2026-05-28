@@ -276,18 +276,18 @@
 
   // Renderers
   function renderSales() {
-    const records = filterRecords(cache.closer, 'Date');
+    const records = filterRecords(cache.closer, 'Date').filter(r => r.fields['Calls Booked'] !== undefined || r.fields['Total Cash Collected'] !== undefined);
     const f = r => r.fields;
 
-    const booked    = records.reduce((s,r) => s + n(f(r)['Calls booked']), 0);
+    const booked    = records.reduce((s,r) => s + n(f(r)['Calls Booked']), 0);
     const showed    = records.reduce((s,r) => s + n(f(r)['Calls Showed']), 0);
-    const cancelled = records.reduce((s,r) => s + n(f(r)['Cancelled calls']), 0);
-    const disq      = records.reduce((s,r) => s + n(f(r)['Disqualified calls']), 0);
-    const closed    = records.reduce((s,r) => s + n(f(r)['Deals closed']), 0);
+    const cancelled = records.reduce((s,r) => s + n(f(r)['Cancelled Calls']), 0);
+    const disq      = records.reduce((s,r) => s + n(f(r)['Disqualified Calls']), 0);
+    const closed    = records.reduce((s,r) => s + n(f(r)['Deals Closed']), 0);
     const deps      = records.reduce((s,r) => s + n(f(r)['Deposits']), 0);
-    const cash      = records.reduce((s,r) => s + n(f(r)['Total cash collected']), 0);
-    const rev       = records.reduce((s,r) => s + n(f(r)['Total revenue']), 0);
-    const depCash   = records.reduce((s,r) => s + n(f(r)['Deposits cash collected']), 0);
+    const cash      = records.reduce((s,r) => s + n(f(r)['Total Cash Collected']), 0);
+    const rev       = records.reduce((s,r) => s + n(f(r)['Total Revenue']), 0);
+    const depCash   = records.reduce((s,r) => s + n(f(r)['Deposits Cash Collected']), 0);
 
     const kept = booked - cancelled;
 
