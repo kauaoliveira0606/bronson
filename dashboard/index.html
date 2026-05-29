@@ -75,6 +75,7 @@
     .stat-value { font-size: 1.3rem; font-weight: 900; color: #fff; line-height: 1; }
     .stat-value.green { color: #4ade80; }
     .stat-value.yellow { color: #facc15; }
+    .stat-value.red { color: #f87171; }
 
     @media (max-width: 700px) { .hero-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 400px) { .hero-grid { grid-template-columns: 1fr 1fr; } .hero-value { font-size: 1.5rem; } }
@@ -329,6 +330,31 @@
 
     const cashPerBooked = booked ? Math.round(cash / booked) : 0;
 
+    // KPI goals from scorecard
+    function getScGoal(metricName) {
+      if (!scorecardData) return null;
+      const row = scorecardData.find(r => r[0] && r[0].trim().toLowerCase() === metricName.toLowerCase());
+      if (!row) return null;
+      const g = parseFloat(row[8]);
+      return isNaN(g) ? null : g;
+    }
+    function kpiClass(rawVal, goal) {
+      if (goal === null) return 'yellow';
+      if (rawVal >= goal) return 'green';
+      if (rawVal >= goal * 0.8) return 'yellow';
+      return 'red';
+    }
+
+    const closeRateGoal  = getScGoal('close rate');
+    const showRateGoal   = getScGoal('total show up rate');
+    const dqRateGoal     = getScGoal('closing dq rate');
+
+    const closeRateBookedRaw = booked ? closed / booked : 0;
+    const closeRateKeptRaw   = kept   ? closed / kept   : 0;
+    const showRateRaw        = booked ? showed / booked : 0;
+    const showRateKeptRaw    = kept   ? showed / kept   : 0;
+    const dqRateRaw          = showed ? disq   / showed : 0;
+
     // Pull ad spend from scorecard (sum of daily columns B-H)
     let adSpend = 0;
     if (scorecardData) {
@@ -354,12 +380,12 @@
         ${card('Deals Closed', closed)}
         ${card('Deposits', deps)}
         ${card('Cancellations', cancelled)}
-        ${card('Close Rate (Booked)', pct(closed, booked), 'yellow')}
-        ${card('Close Rate (Kept)', pct(closed, kept), 'yellow')}
-        ${card('Show Rate', pct(showed, booked), 'yellow')}
-        ${card('Show Rate (Kept)', pct(showed, kept), 'yellow')}
+        ${card('Close Rate (Booked)', pct(closed, booked), kpiClass(closeRateBookedRaw, closeRateGoal))}
+        ${card('Close Rate (Kept)', pct(closed, kept), kpiClass(closeRateKeptRaw, closeRateGoal))}
+        ${card('Show Rate', pct(showed, booked), kpiClass(showRateRaw, showRateGoal))}
+        ${card('Show Rate (Kept)', pct(showed, kept), kpiClass(showRateKeptRaw, showRateGoal))}
         ${card('Cancellation Rate', pct(cancelled, booked), 'yellow')}
-        ${card('DQ Rate', pct(disq, showed), 'yellow')}
+        ${card('DQ Rate', pct(disq, showed), dqRateGoal !== null ? kpiClass(dqRateRaw, dqRateGoal) : 'yellow')}
         ${card('Revenue Generated', $(rev), 'green')}
         ${card('Deposits Collected', $(depCash), 'green')}
         ${card('AOV', closed ? $(Math.round(cash / closed)) : '$0', 'green')}
