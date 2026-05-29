@@ -324,12 +324,21 @@
 
     const cashPerBooked = booked ? Math.round(cash / booked) : 0;
 
+    // Pull ad spend from scorecard (sum of daily columns B-H)
+    let adSpend = 0;
+    if (scorecardData) {
+      const adRow = scorecardData.find(r => r[0] && r[0].trim().toLowerCase() === 'ad spend meta');
+      if (adRow) adSpend = [1,2,3,4,5,6,7].reduce((s,i) => s + (parseFloat(adRow[i]) || 0), 0);
+    }
+    const roas = adSpend ? (cash / adSpend).toFixed(2) + 'x' : '—';
+    const adSpendDisplay = adSpend ? $(adSpend) : '—';
+
     const html = `
       <div class="hero-grid">
         <div class="hero-card"><p class="hero-label">Cash / Booked Call</p><p class="hero-value green">${$(cashPerBooked)}</p></div>
         <div class="hero-card"><p class="hero-label">Cash Collected</p><p class="hero-value green">${$(cash)}</p></div>
-        <div class="hero-card"><p class="hero-label">ROAS</p><p class="hero-value">—</p></div>
-        <div class="hero-card"><p class="hero-label">Ad Spend</p><p class="hero-value">—</p></div>
+        <div class="hero-card"><p class="hero-label">ROAS</p><p class="hero-value ${adSpend ? 'green' : ''}">${roas}</p></div>
+        <div class="hero-card"><p class="hero-label">Ad Spend</p><p class="hero-value">${adSpendDisplay}</p></div>
       </div>
 
       <p class="section-divider">Performance Metrics</p>
@@ -517,6 +526,7 @@
       const res = await fetch(SCORECARD_URL);
       scorecardData = await res.json();
       renderScorecard();
+      renderSales(); // refresh sales so Ad Spend + ROAS populate
     } catch(e) {
       document.getElementById('tab-scorecard').innerHTML = '<div class="loading">Failed to load scorecard. Check the Apps Script URL.</div>';
     }
