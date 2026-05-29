@@ -367,14 +367,16 @@
       const adRow = scorecardData.find(r => r[0] && r[0].trim().toLowerCase() === 'ad spend meta');
       if (adRow) adSpend = [1,2,3,4,5,6,7].reduce((s,i) => s + (parseFloat(adRow[i]) || 0), 0);
     }
-    const roas = adSpend ? (cash / adSpend).toFixed(2) + 'x' : '—';
+    const roasRaw = adSpend ? cash / adSpend : 0;
+    const roas = adSpend ? roasRaw.toFixed(2) + 'x' : '—';
+    const roasColor = adSpend ? kpiClass(roasRaw, 3) : '';
     const adSpendDisplay = adSpend ? $(adSpend) : '—';
 
     const html = `
       <div class="hero-grid">
         <div class="hero-card"><p class="hero-label">Cash / Booked Call</p><p class="hero-value green">${$(cashPerBooked)}</p></div>
         <div class="hero-card"><p class="hero-label">Cash Collected</p><p class="hero-value green">${$(cash)}</p></div>
-        <div class="hero-card"><p class="hero-label">ROAS</p><p class="hero-value">${roas}</p></div>
+        <div class="hero-card"><p class="hero-label">ROAS</p><p class="hero-value ${roasColor}">${roas}</p></div>
         <div class="hero-card"><p class="hero-label">Ad Spend</p><p class="hero-value">${adSpendDisplay}</p></div>
       </div>
 
