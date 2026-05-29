@@ -124,6 +124,11 @@
     .sc-pct-cell { display: flex; flex-direction: column; align-items: center; gap: 5px; }
     .sc-bar-track { width: 56px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
     .sc-bar-fill { height: 100%; border-radius: 2px; }
+    .sc-table td.sc-green { background: rgba(74,222,128,0.1); color: #4ade80; }
+    .sc-table td.sc-yellow { background: rgba(250,204,21,0.1); color: #facc15; }
+    .sc-table td.sc-red { background: rgba(248,113,113,0.1); color: #f87171; }
+    .sc-table th.sc-goal-th { color: rgba(255,255,255,0.5); border-left: 1px solid rgba(255,255,255,0.07); }
+    .sc-table td.sc-goal-col { border-left: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.45); font-size: 0.7rem; font-weight: 700; }
 
     @media (max-width: 600px) {
       .dash-header { padding: 14px 16px; }
@@ -452,12 +457,28 @@
     return { display: num % 1 === 0 ? num.toString() : num.toFixed(2) };
   }
 
-  function scCell(v, fmt, color, isToday) {
+  function kpiColor(rawVal, rawGoal) {
+    if (rawGoal === '' || rawGoal === null || rawGoal === undefined) return null;
+    const g = parseFloat(rawGoal);
+    if (isNaN(g)) return null;
+    if (rawVal === '' || rawVal === null || rawVal === undefined) return null;
+    const v = parseFloat(rawVal);
+    if (isNaN(v)) return null;
+    if (v >= g) return 'sc-green';
+    if (v >= g * 0.8) return 'sc-yellow';
+    return 'sc-red';
+  }
+
+  function scCell(v, fmt, color, isToday, goal) {
     const result = scFmtVal(v, fmt);
-    const cls = 'sc-cell' + (isToday ? ' sc-today-cell' : '');
+    const kpi = kpiColor(v, goal);
+    let cls = 'sc-cell';
+    if (kpi) cls += ' ' + kpi;
+    else if (isToday) cls += ' sc-today-cell';
     if (!result) return `<td class="${cls}"><span class="sc-empty">—</span></td>`;
     if (result.bar !== undefined) {
-      return `<td class="${cls}"><div class="sc-pct-cell"><span class="sc-val">${result.display}</span><div class="sc-bar-track"><div class="sc-bar-fill" style="width:${result.bar}%;background:${color}"></div></div></div></td>`;
+      const barColor = kpi ? (kpi === 'sc-green' ? '#4ade80' : kpi === 'sc-yellow' ? '#facc15' : '#f87171') : color;
+      return `<td class="${cls}"><div class="sc-pct-cell"><span class="sc-val">${result.display}</span><div class="sc-bar-track"><div class="sc-bar-fill" style="width:${result.bar}%;background:${barColor}"></div></div></div></td>`;
     }
     return `<td class="${cls}"><span class="sc-val">${result.display}</span></td>`;
   }
@@ -497,12 +518,17 @@
 
       const trs = group.metrics.map(m => {
         const row = metricMap[m.name.trim().toLowerCase()];
-        const tds = DAY_COLS.map(i => scCell(row ? row[i] : null, m.fmt, group.color, i === todayColIdx)).join('');
+        const goal = row ? row[8] : null;
+        const goalResult = scFmtVal(goal, m.fmt);
+        const goalTd = goalResult
+          ? `<td class="sc-goal-col"><span>${goalResult.display}</span></td>`
+          : `<td class="sc-goal-col"><span class="sc-empty">—</span></td>`;
+        const tds = DAY_COLS.map(i => scCell(row ? row[i] : null, m.fmt, group.color, i === todayColIdx, goal)).join('');
         const sumResult = scFmtVal(row ? row[SUMMARY_COL] : null, m.fmt);
         const sumTd = sumResult
           ? `<td class="sc-cell sc-week-col"><span class="sc-val">${sumResult.display}</span></td>`
           : `<td class="sc-cell sc-week-col"><span class="sc-empty">—</span></td>`;
-        return `<tr><td class="sc-metric-name">${m.name}</td>${tds}${sumTd}</tr>`;
+        return `<tr><td class="sc-metric-name">${m.name}</td>${goalTd}${tds}${sumTd}</tr>`;
       }).join('');
 
       html += `<div class="sc-section">
@@ -511,7 +537,7 @@
         </div>
         <div class="sc-table-wrap"><table class="sc-table">
           <thead><tr>
-            <th class="sc-metric-col">Metric</th>${ths}<th class="sc-week-th">Weekly</th>
+            <th class="sc-metric-col">Metric</th><th class="sc-goal-th">Daily Goal</th>${ths}<th class="sc-week-th">Weekly</th>
           </tr></thead>
           <tbody>${trs}</tbody>
         </table></div>
