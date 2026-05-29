@@ -344,6 +344,12 @@
       if (rawVal >= goal * 0.8) return 'yellow';
       return 'red';
     }
+    function kpiClassInverse(rawVal, goal) {
+      if (goal === null) return 'yellow';
+      if (rawVal <= goal) return 'green';
+      if (rawVal <= goal * 1.2) return 'yellow';
+      return 'red';
+    }
 
     const closeRateGoal  = getScGoal('close rate');
     const showRateGoal   = getScGoal('total show up rate');
@@ -384,8 +390,8 @@
         ${card('Close Rate (Kept)', pct(closed, kept), kpiClass(closeRateKeptRaw, closeRateGoal))}
         ${card('Show Rate', pct(showed, booked), kpiClass(showRateRaw, showRateGoal))}
         ${card('Show Rate (Kept)', pct(showed, kept), kpiClass(showRateKeptRaw, showRateGoal))}
-        ${card('Cancellation Rate', pct(cancelled, booked), 'yellow')}
-        ${card('DQ Rate', pct(disq, showed), dqRateGoal !== null ? kpiClass(dqRateRaw, dqRateGoal) : 'yellow')}
+        ${card('Cancellation Rate', pct(cancelled, booked))}
+        ${card('DQ Rate', pct(disq, showed), kpiClassInverse(dqRateRaw, dqRateGoal))}
         ${card('Revenue Generated', $(rev))}
         ${card('Deposits Collected', $(depCash))}
         ${card('AOV', closed ? $(Math.round(cash / closed)) : '$0')}
