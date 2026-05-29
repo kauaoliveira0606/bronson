@@ -524,10 +524,13 @@
           ? `<td class="sc-goal-col"><span>${goalResult.display}</span></td>`
           : `<td class="sc-goal-col"><span class="sc-empty">—</span></td>`;
         const tds = DAY_COLS.map(i => scCell(row ? row[i] : null, m.fmt, group.color, i === todayColIdx, goal)).join('');
-        const sumResult = scFmtVal(row ? row[SUMMARY_COL] : null, m.fmt);
+        const sumRaw = row ? row[SUMMARY_COL] : null;
+        const sumResult = scFmtVal(sumRaw, m.fmt);
+        const sumKpi = kpiColor(sumRaw, goal);
+        const sumCls = 'sc-cell sc-week-col' + (sumKpi ? ' ' + sumKpi : '');
         const sumTd = sumResult
-          ? `<td class="sc-cell sc-week-col"><span class="sc-val">${sumResult.display}</span></td>`
-          : `<td class="sc-cell sc-week-col"><span class="sc-empty">—</span></td>`;
+          ? `<td class="${sumCls}"><span class="sc-val">${sumResult.display}</span></td>`
+          : `<td class="${sumCls}"><span class="sc-empty">—</span></td>`;
         return `<tr><td class="sc-metric-name">${m.name}</td>${goalTd}${tds}${sumTd}</tr>`;
       }).join('');
 
