@@ -368,7 +368,7 @@
       <div class="hero-grid">
         <div class="hero-card"><p class="hero-label">Cash / Booked Call</p><p class="hero-value green">${$(cashPerBooked)}</p></div>
         <div class="hero-card"><p class="hero-label">Cash Collected</p><p class="hero-value green">${$(cash)}</p></div>
-        <div class="hero-card"><p class="hero-label">ROAS</p><p class="hero-value ${adSpend ? 'green' : ''}">${roas}</p></div>
+        <div class="hero-card"><p class="hero-label">ROAS</p><p class="hero-value">${roas}</p></div>
         <div class="hero-card"><p class="hero-label">Ad Spend</p><p class="hero-value">${adSpendDisplay}</p></div>
       </div>
 
@@ -386,9 +386,9 @@
         ${card('Show Rate (Kept)', pct(showed, kept), kpiClass(showRateKeptRaw, showRateGoal))}
         ${card('Cancellation Rate', pct(cancelled, booked), 'yellow')}
         ${card('DQ Rate', pct(disq, showed), dqRateGoal !== null ? kpiClass(dqRateRaw, dqRateGoal) : 'yellow')}
-        ${card('Revenue Generated', $(rev), 'green')}
-        ${card('Deposits Collected', $(depCash), 'green')}
-        ${card('AOV', closed ? $(Math.round(cash / closed)) : '$0', 'green')}
+        ${card('Revenue Generated', $(rev))}
+        ${card('Deposits Collected', $(depCash))}
+        ${card('AOV', closed ? $(Math.round(cash / closed)) : '$0')}
       </div>`;
 
     document.getElementById('tab-sales').innerHTML = html;
