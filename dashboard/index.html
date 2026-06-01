@@ -363,6 +363,7 @@
 
     const closeRateBookedRaw = booked ? closed / booked : 0;
     const closeRateKeptRaw   = kept   ? closed / kept   : 0;
+    const closeRateLiveRaw   = showed ? closed / showed : 0;
     const showRateRaw        = booked ? showed / booked : 0;
     const showRateKeptRaw    = kept   ? showed / kept   : 0;
     const dqRateRaw          = showed ? disq   / showed : 0;
@@ -406,6 +407,7 @@
         ${card('Cancellations', cancelled)}
         ${card('Close Rate (Booked)', pct(closed, booked), kpiClass(closeRateBookedRaw, closeRateGoal))}
         ${card('Close Rate (Kept)', pct(closed, kept), kpiClass(closeRateKeptRaw, closeRateGoal))}
+        ${card('Close Rate (Live)', pct(closed, showed), kpiClass(closeRateLiveRaw, closeRateGoal))}
         ${card('Show Rate', pct(showed, booked), kpiClass(showRateRaw, showRateGoal))}
         ${card('Show Rate (Kept)', pct(showed, kept), kpiClass(showRateKeptRaw, showRateGoal))}
         ${card('Cancellation Rate', pct(cancelled, booked))}
