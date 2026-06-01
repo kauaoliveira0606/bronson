@@ -368,21 +368,11 @@
     const showRateKeptRaw    = kept   ? showed / kept   : 0;
     const dqRateRaw          = showed ? disq   / showed : 0;
 
-    // Pull ad spend from scorecard matching the active date filter
+    // Pull total ad spend from scorecard row (all days)
     let adSpend = 0;
     if (scorecardData) {
       const adRow = scorecardData.find(r => r[0] && r[0].trim().toLowerCase() === 'ad spend meta');
-      const dateRow = scorecardData[1];
-      if (adRow && dateRow) {
-        [1,2,3,4,5,6,7].forEach(i => {
-          const raw = dateRow[i];
-          if (!raw) return;
-          const d = new Date(raw).toISOString().substring(0, 10);
-          if (filterFrom && d < filterFrom) return;
-          if (filterTo && d > filterTo) return;
-          adSpend += parseFloat(adRow[i]) || 0;
-        });
-      }
+      if (adRow) adSpend = [1,2,3,4,5,6,7].reduce((s,i) => s + (parseFloat(adRow[i]) || 0), 0);
     }
     const roasRaw = adSpend ? cash / adSpend : 0;
     const roas = adSpend ? roasRaw.toFixed(2) + 'x' : '—';
