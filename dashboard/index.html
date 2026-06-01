@@ -368,12 +368,12 @@
     const showRateKeptRaw    = kept   ? showed / kept   : 0;
     const dqRateRaw          = showed ? disq   / showed : 0;
 
-    // Pull total ad spend from scorecard row (all days)
-    let adSpend = 0;
-    if (scorecardData) {
-      const adRow = scorecardData.find(r => r[0] && r[0].trim().toLowerCase() === 'ad spend meta');
-      if (adRow) adSpend = [1,2,3,4,5,6,7].reduce((s,i) => s + (parseFloat(adRow[i]) || 0), 0);
-    }
+    // Sum ad spend from all sheets, filtered by active date range
+    let adSpend = Object.entries(adSpendByDate).reduce((s, [d, v]) => {
+      if (filterFrom && d < filterFrom) return s;
+      if (filterTo   && d > filterTo)   return s;
+      return s + v;
+    }, 0);
     const roasRaw = adSpend ? cash / adSpend : 0;
     const roas = adSpend ? roasRaw.toFixed(2) + 'x' : '—';
     const roasColor = adSpend ? kpiClass(roasRaw, 3) : '';
@@ -600,16 +600,39 @@
 
   let scorecardSheets = [];
   let scorecardCurrent = '';
+  let adSpendByDate = {}; // date string -> spend value, built from ALL sheets
+
+  async function fetchSheetData(sheetName) {
+    const url = sheetName ? SCORECARD_URL + '?sheet=' + encodeURIComponent(sheetName) : SCORECARD_URL;
+    const res = await fetch(url);
+    return res.json();
+  }
 
   async function loadScorecard(sheetName) {
     document.getElementById('tab-scorecard').innerHTML = '<div class="loading">Loading scorecard...</div>';
     try {
-      const url = sheetName ? SCORECARD_URL + '?sheet=' + encodeURIComponent(sheetName) : SCORECARD_URL;
-      const res = await fetch(url);
-      const json = await res.json();
+      const json = await fetchSheetData(sheetName);
       scorecardSheets = json.sheets || [];
       scorecardCurrent = json.current || '';
       scorecardData = json.data || json;
+
+      // Build adSpendByDate from ALL sheets
+      adSpendByDate = {};
+      await Promise.all(scorecardSheets.map(async name => {
+        const j = await fetchSheetData(name);
+        const data = j.data || j;
+        const dateRow = data[1];
+        const adRow = data.find(r => r[0] && r[0].trim().toLowerCase() === 'ad spend meta');
+        if (!adRow || !dateRow) return;
+        [1,2,3,4,5,6,7].forEach(i => {
+          const raw = dateRow[i];
+          const val = parseFloat(adRow[i]);
+          if (!raw || isNaN(val) || val === 0) return;
+          const d = new Date(raw).toISOString().substring(0, 10);
+          adSpendByDate[d] = (adSpendByDate[d] || 0) + val;
+        });
+      }));
+
       renderScorecard();
       renderSales();
     } catch(e) {
