@@ -101,6 +101,10 @@
     .no-records { color: #fff; font-size: 0.82rem; padding: 20px 0; }
 
     /* Scorecard */
+    .sc-sheet-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .sc-tab-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 700; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: all 0.15s; }
+    .sc-tab-btn:hover { background: rgba(255,255,255,0.1); }
+    .sc-tab-btn.active { background: #1a47ff; border-color: #1a47ff; }
     .sc-week-banner { background: linear-gradient(135deg, #07121f, #0d2240); border: 1px solid rgba(74,158,255,0.2); border-radius: 10px; padding: 16px 22px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
     .sc-week-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #7dd8f8; }
     .sc-week-dates { font-size: 0.9rem; font-weight: 900; color: #fff; }
@@ -423,7 +427,7 @@
   }
 
   // Scorecard
-  const SCORECARD_URL = 'https://script.google.com/macros/s/AKfycbzITjxX8GTMAqQKlzwvTKw1Jj5xGjiSBtHqWNjxlNwsu4s9ADNTnnRfuhVOFp9WzUEb0g/exec';
+  const SCORECARD_URL = 'https://script.google.com/macros/s/AKfycbz9FvS46S_-kdwM1LPc2eoBh7p8BMKPFbK2QlQfRD8pK_UQa3EU7a00B6PpgFrZUAg0QA/exec';
 
   const SC_GROUPS = [
     { label: 'Paid Traffic', color: '#1a47ff', metrics: [
@@ -544,7 +548,13 @@
     const metricMap = {};
     data.forEach(row => { if (row[0]) metricMap[row[0].trim().toLowerCase()] = row; });
 
-    let html = `<div class="sc-week-banner"><span class="sc-week-title">Current Week</span><span class="sc-week-dates">${weekRange}</span></div>`;
+    const tabBtns = scorecardSheets.map(name =>
+      `<button class="sc-tab-btn${name === scorecardCurrent ? ' active' : ''}" onclick="loadScorecard('${name}')">${name}</button>`
+    ).join('');
+
+    let html = `
+      <div class="sc-sheet-tabs">${tabBtns}</div>
+      <div class="sc-week-banner"><span class="sc-week-title">Current Week</span><span class="sc-week-dates">${weekRange}</span></div>`;
 
     SC_GROUPS.forEach(group => {
       const ths = dayLabels.map((label, i) => {
@@ -586,14 +596,22 @@
     document.getElementById('tab-scorecard').innerHTML = html;
   }
 
-  async function loadScorecard() {
+  let scorecardSheets = [];
+  let scorecardCurrent = '';
+
+  async function loadScorecard(sheetName) {
+    document.getElementById('tab-scorecard').innerHTML = '<div class="loading">Loading scorecard...</div>';
     try {
-      const res = await fetch(SCORECARD_URL);
-      scorecardData = await res.json();
+      const url = sheetName ? SCORECARD_URL + '?sheet=' + encodeURIComponent(sheetName) : SCORECARD_URL;
+      const res = await fetch(url);
+      const json = await res.json();
+      scorecardSheets = json.sheets || [];
+      scorecardCurrent = json.current || '';
+      scorecardData = json.data || json;
       renderScorecard();
-      renderSales(); // refresh sales so Ad Spend + ROAS populate
+      renderSales();
     } catch(e) {
-      document.getElementById('tab-scorecard').innerHTML = '<div class="loading">Failed to load scorecard. Check the Apps Script URL.</div>';
+      document.getElementById('tab-scorecard').innerHTML = '<div class="loading">Failed to load scorecard.</div>';
     }
   }
 </script>
