@@ -463,11 +463,13 @@
       const cancelledEvents = (cancelledData.collection || []).map(e => ({ ...e, _status: 'cancelled' }));
       const events = [...activeEvents, ...cancelledEvents].sort((a,b) => new Date(a.start_time) - new Date(b.start_time));
 
-      // Fetch invitee names in parallel
-      const inviteeResults = await Promise.all(events.map(e => {
+      // Fetch invitee names in parallel, keyed by event URI
+      const inviteeResultsArr = await Promise.all(events.map(e => {
         const uuid = e.uri.split('/').pop();
         return fetch(`https://api.calendly.com/scheduled_events/${uuid}/invitees`, { headers: { Authorization: `Bearer ${CAL_TOKEN}` } }).then(r => r.json());
       }));
+      const inviteeMap = {};
+      events.forEach((e, i) => { inviteeMap[e.uri] = inviteeResultsArr[i]; });
 
       const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: tz });
       const nowMs = Date.now();
@@ -475,7 +477,7 @@
       const salesEvents = events.filter(e => !e.name?.toLowerCase().includes('onboarding'));
       const onboardingEvents = events.filter(e => e.name?.toLowerCase().includes('onboarding'));
 
-      function renderCallCard(e, i, inviteeResults) {
+      function renderCallCard(e, _i, invMap) {
         const start = new Date(e.start_time);
         const isCancelled = e._status === 'cancelled';
         const isPast = !isCancelled && start.getTime() < nowMs;
@@ -483,7 +485,7 @@
         const [timePart, ampm] = timeStr.split(' ');
         const closer = e.event_memberships?.[0]?.user_name || 'Unknown';
         const eventName = e.name || 'Call';
-        const invitees = inviteeResults[i]?.collection || [];
+        const invitees = invMap[e.uri]?.collection || [];
         const leadName = invitees.length ? invitees[0].name : 'Unknown';
         const cardCls = isCancelled ? 'cancelled' : isPast ? 'past' : '';
         const pillCls = isCancelled ? 'cancelled' : isPast ? 'past' : 'upcoming';
@@ -505,12 +507,12 @@
         html += `<div class="no-calls">No calls scheduled for today.</div>`;
       } else {
         html += `<div class="calls-list">`;
-        salesEvents.forEach((e, i) => { html += renderCallCard(e, i, inviteeResults); });
+        salesEvents.forEach((e, i) => { html += renderCallCard(e, i, inviteeMap); });
         html += `</div>`;
         if (onboardingEvents.length) {
           html += `<div class="section-divider" style="margin-top:32px;margin-bottom:16px;">Onboarding Calls</div>`;
           html += `<div class="calls-list">`;
-          onboardingEvents.forEach((e, i) => { html += renderCallCard(e, salesEvents.length + i, inviteeResults); });
+          onboardingEvents.forEach((e, i) => { html += renderCallCard(e, i, inviteeMap); });
           html += `</div>`;
         }
       }
