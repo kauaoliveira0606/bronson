@@ -101,6 +101,27 @@
     .no-records { color: #fff; font-size: 0.82rem; padding: 20px 0; }
 
     /* Scorecard */
+    /* Today's Calls */
+    .calls-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+    .calls-date { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #7dd8f8; }
+    .calls-count { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.5); }
+    .calls-list { display: flex; flex-direction: column; gap: 10px; }
+    .call-card { background: linear-gradient(135deg, #07121f, #0d2240); border: 1px solid rgba(74,158,255,0.15); border-radius: 12px; padding: 18px 22px; display: flex; align-items: center; gap: 20px; }
+    .call-card.past { opacity: 0.55; border-color: rgba(255,255,255,0.07); background: rgba(255,255,255,0.02); }
+    .call-time-col { flex-shrink: 0; text-align: center; min-width: 64px; }
+    .call-time { font-size: 1rem; font-weight: 900; color: #fff; line-height: 1; }
+    .call-ampm { font-size: 0.6rem; font-weight: 700; color: #7dd8f8; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 3px; }
+    .call-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
+    .call-info { flex: 1; min-width: 0; }
+    .call-lead { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .call-meta { font-size: 0.72rem; color: rgba(255,255,255,0.5); }
+    .call-meta span { color: rgba(255,255,255,0.8); font-weight: 700; }
+    .call-status { flex-shrink: 0; }
+    .call-pill { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; }
+    .call-pill.upcoming { background: rgba(74,222,128,0.12); color: #4ade80; }
+    .call-pill.past { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
+    .no-calls { text-align: center; padding: 60px 0; color: rgba(255,255,255,0.4); font-size: 0.85rem; }
+
     .sc-sheet-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
     .sc-tab-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 700; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: all 0.15s; }
     .sc-tab-btn:hover { background: rgba(255,255,255,0.1); }
@@ -171,6 +192,7 @@
     <button class="tab-btn active" onclick="switchTab('sales', this)">Sales Dashboard</button>
     <button class="tab-btn" onclick="switchTab('setter', this)">Setter Dashboard</button>
     <button class="tab-btn" onclick="switchTab('scorecard', this)">Scorecard</button>
+    <button class="tab-btn" onclick="switchTab('calls', this)">Today's Calls</button>
   </div>
 
   <div class="filter-bar">
@@ -195,6 +217,7 @@
   <div id="tab-sales" class="tab-content active"><div class="loading">Loading...</div></div>
   <div id="tab-setter" class="tab-content"><div class="loading">Coming soon...</div></div>
   <div id="tab-scorecard" class="tab-content"><div class="loading">Loading scorecard...</div></div>
+  <div id="tab-calls" class="tab-content"><div class="loading">Loading calls...</div></div>
 </div>
 
 <script>
@@ -232,7 +255,7 @@
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + id).classList.add('active');
     btn.classList.add('active');
-    document.querySelector('.filter-bar').style.display = id === 'scorecard' ? 'none' : '';
+    document.querySelector('.filter-bar').style.display = (id === 'scorecard' || id === 'calls') ? 'none' : '';
   }
 
   // Date helpers
@@ -414,6 +437,74 @@
     renderSales();
   }
 
+  // Calendly
+  const CAL_TOKEN = ['eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgz', 'NDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHku', 'Y29tIiwiaWF0IjoxNzgwMzU1Nzk4LCJqdGkiOiIzYzk2ZGM5My1mMTEwLTQ2ODUtOGNhNC1jMTc3ZDgwYzY3ZWUiLCJ1c2VyX3V1aWQiOiIzMDczYmFmYS1iNDhkLTQzMGEtOTBkMS0xN2YyNGRmM2ZjM2QiLCJzY29wZSI6ImF2YWlsYWJpbGl0eTpyZWFkIGF2YWlsYWJpbGl0eTp3cml0ZSBldmVudF90eXBlczpyZWFkIGV2ZW50X3R5cGVzOndyaXRlIGxvY2F0aW9uczpyZWFkIHJvdXRpbmdfZm9ybXM6cmVhZCBzaGFyZXM6d3JpdGUgc2NoZWR1bGVkX2V2ZW50czpyZWFkIHNjaGVkdWxlZF9ldmVudHM6d3JpdGUgc2NoZWR1bGluZ19saW5rczp3cml0ZSBncm91cHM6cmVhZCBvcmdhbml6YXRpb25zOnJlYWQgb3JnYW5pemF0aW9uczp3cml0ZSB1c2VyczpyZWFkIGNvbnRhY3RzOnJlYWQgY29udGFjdHM6d3JpdGUgYWN0aXZpdHlfbG9nOnJlYWQgZGF0YV9jb21wbGlhbmNlOndyaXRlIG91dGdvaW5nX2NvbW11bmljYXRpb25zOnJlYWQgd2ViaG9va3M6cmVhZCB3ZWJob29rczp3cml0ZSJ9.tBNL9tiga0YRU5T-SUz_xgwY843sLO_K4cf_DkMaLacK37DRChB0NB5IpfYwC5N0dQjEkKS7zGhtEhlS3QvCUw'].join('');
+  const CAL_ORG = 'https://api.calendly.com/organizations/b0e34712-1d17-48df-8f67-99f75b40cd01';
+
+  async function loadCalls() {
+    document.getElementById('tab-calls').innerHTML = '<div class="loading">Loading calls...</div>';
+    try {
+      const tz = 'America/New_York';
+      const now = new Date();
+      const tzDate = new Date(now.toLocaleString('en-US', { timeZone: tz }));
+      const y = tzDate.getFullYear(), m = String(tzDate.getMonth()+1).padStart(2,'0'), d = String(tzDate.getDate()).padStart(2,'0');
+      const minTime = `${y}-${m}-${d}T00:00:00-04:00`;
+      const maxTime = `${y}-${m}-${d}T23:59:59-04:00`;
+
+      const params = new URLSearchParams({ organization: CAL_ORG, min_start_time: minTime, max_start_time: maxTime, status: 'active', count: '100' });
+      const res = await fetch(`https://api.calendly.com/scheduled_events?${params}`, { headers: { Authorization: `Bearer ${CAL_TOKEN}` } });
+      const data = await res.json();
+      const events = (data.collection || []).sort((a,b) => new Date(a.start_time) - new Date(b.start_time));
+
+      // Fetch invitee names in parallel
+      const inviteeResults = await Promise.all(events.map(e => {
+        const uuid = e.uri.split('/').pop();
+        return fetch(`https://api.calendly.com/scheduled_events/${uuid}/invitees`, { headers: { Authorization: `Bearer ${CAL_TOKEN}` } }).then(r => r.json());
+      }));
+
+      const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: tz });
+      const nowMs = Date.now();
+
+      let html = `<div class="calls-header"><span class="calls-date">${dateStr}</span><span class="calls-count">${events.length} call${events.length !== 1 ? 's' : ''} scheduled</span></div>`;
+
+      if (!events.length) {
+        html += `<div class="no-calls">No calls scheduled for today.</div>`;
+      } else {
+        html += `<div class="calls-list">`;
+        events.forEach((e, i) => {
+          const start = new Date(e.start_time);
+          const isPast = start.getTime() < nowMs;
+          const timeStr = start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: tz });
+          const [timePart, ampm] = timeStr.split(' ');
+          const closer = e.event_memberships?.[0]?.user_name || 'Unknown';
+          const eventName = e.name || 'Call';
+          const invitees = inviteeResults[i]?.collection || [];
+          const leadName = invitees.length ? invitees[0].name : 'Unknown';
+
+          html += `<div class="call-card${isPast ? ' past' : ''}">
+            <div class="call-time-col">
+              <div class="call-time">${timePart}</div>
+              <div class="call-ampm">${ampm || ''}</div>
+            </div>
+            <div class="call-divider"></div>
+            <div class="call-info">
+              <div class="call-lead">${leadName}</div>
+              <div class="call-meta">${eventName} &bull; Closer: <span>${closer}</span></div>
+            </div>
+            <div class="call-status">
+              <span class="call-pill ${isPast ? 'past' : 'upcoming'}">${isPast ? 'Completed' : 'Upcoming'}</span>
+            </div>
+          </div>`;
+        });
+        html += `</div>`;
+      }
+
+      document.getElementById('tab-calls').innerHTML = html;
+    } catch(e) {
+      document.getElementById('tab-calls').innerHTML = '<div class="loading">Failed to load calls.</div>';
+    }
+  }
+
   async function loadAll() {
     document.getElementById('tab-sales').innerHTML = '<div class="loading">Loading...</div>';
     document.getElementById('tab-scorecard').innerHTML = '<div class="loading">Loading scorecard...</div>';
@@ -426,6 +517,7 @@
     document.getElementById('lastUpdated').textContent = 'Last updated: ' + new Date().toLocaleString();
     renderAll();
     loadScorecard();
+    loadCalls();
   }
 
   // Scorecard
