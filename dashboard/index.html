@@ -472,42 +472,47 @@
       const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: tz });
       const nowMs = Date.now();
 
-      let html = `<div class="calls-header"><span class="calls-date">${dateStr}</span><span class="calls-count">${events.length} call${events.length !== 1 ? 's' : ''} scheduled</span></div>`;
+      const salesEvents = events.filter(e => !e.name?.toLowerCase().includes('onboarding'));
+      const onboardingEvents = events.filter(e => e.name?.toLowerCase().includes('onboarding'));
+
+      function renderCallCard(e, i, inviteeResults) {
+        const start = new Date(e.start_time);
+        const isCancelled = e._status === 'cancelled';
+        const isPast = !isCancelled && start.getTime() < nowMs;
+        const timeStr = start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: tz });
+        const [timePart, ampm] = timeStr.split(' ');
+        const closer = e.event_memberships?.[0]?.user_name || 'Unknown';
+        const eventName = e.name || 'Call';
+        const invitees = inviteeResults[i]?.collection || [];
+        const leadName = invitees.length ? invitees[0].name : 'Unknown';
+        const cardCls = isCancelled ? 'cancelled' : isPast ? 'past' : '';
+        const pillCls = isCancelled ? 'cancelled' : isPast ? 'past' : 'upcoming';
+        const pillLabel = isCancelled ? 'Cancelled' : isPast ? 'Completed' : 'Upcoming';
+        return `<div class="call-card ${cardCls}">
+          <div class="call-time-col"><div class="call-time">${timePart}</div><div class="call-ampm">${ampm || ''}</div></div>
+          <div class="call-divider"></div>
+          <div class="call-info">
+            <div class="call-lead">${leadName}</div>
+            <div class="call-meta">${eventName} &bull; Closer: <span>${closer}</span></div>
+          </div>
+          <div class="call-status"><span class="call-pill ${pillCls}">${pillLabel}</span></div>
+        </div>`;
+      }
+
+      let html = `<div class="calls-header"><span class="calls-date">${dateStr}</span><span class="calls-count">${salesEvents.length} sales call${salesEvents.length !== 1 ? 's' : ''} scheduled</span></div>`;
 
       if (!events.length) {
         html += `<div class="no-calls">No calls scheduled for today.</div>`;
       } else {
         html += `<div class="calls-list">`;
-        events.forEach((e, i) => {
-          const start = new Date(e.start_time);
-          const isCancelled = e._status === 'cancelled';
-          const isPast = !isCancelled && start.getTime() < nowMs;
-          const timeStr = start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: tz });
-          const [timePart, ampm] = timeStr.split(' ');
-          const closer = e.event_memberships?.[0]?.user_name || 'Unknown';
-          const eventName = e.name || 'Call';
-          const invitees = inviteeResults[i]?.collection || [];
-          const leadName = invitees.length ? invitees[0].name : 'Unknown';
-          const cardCls = isCancelled ? 'cancelled' : isPast ? 'past' : '';
-          const pillCls = isCancelled ? 'cancelled' : isPast ? 'past' : 'upcoming';
-          const pillLabel = isCancelled ? 'Cancelled' : isPast ? 'Completed' : 'Upcoming';
-
-          html += `<div class="call-card ${cardCls}">
-            <div class="call-time-col">
-              <div class="call-time">${timePart}</div>
-              <div class="call-ampm">${ampm || ''}</div>
-            </div>
-            <div class="call-divider"></div>
-            <div class="call-info">
-              <div class="call-lead">${leadName}</div>
-              <div class="call-meta">${eventName} &bull; Closer: <span>${closer}</span></div>
-            </div>
-            <div class="call-status">
-              <span class="call-pill ${pillCls}">${pillLabel}</span>
-            </div>
-          </div>`;
-        });
+        salesEvents.forEach((e, i) => { html += renderCallCard(e, i, inviteeResults); });
         html += `</div>`;
+        if (onboardingEvents.length) {
+          html += `<div class="section-divider" style="margin-top:32px;margin-bottom:16px;">Onboarding Calls</div>`;
+          html += `<div class="calls-list">`;
+          onboardingEvents.forEach((e, i) => { html += renderCallCard(e, salesEvents.length + i, inviteeResults); });
+          html += `</div>`;
+        }
       }
 
       document.getElementById('tab-calls').innerHTML = html;
