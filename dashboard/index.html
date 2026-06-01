@@ -120,6 +120,8 @@
     .call-pill { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; }
     .call-pill.upcoming { background: rgba(74,222,128,0.12); color: #4ade80; }
     .call-pill.past { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
+    .call-pill.cancelled { background: rgba(248,113,113,0.12); color: #f87171; }
+    .call-card.cancelled { opacity: 0.6; border-color: rgba(248,113,113,0.15); }
     .no-calls { text-align: center; padding: 60px 0; color: rgba(255,255,255,0.4); font-size: 0.85rem; }
 
     .sc-sheet-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
@@ -451,10 +453,15 @@
       const minTime = `${y}-${m}-${d}T00:00:00-04:00`;
       const maxTime = `${y}-${m}-${d}T23:59:59-04:00`;
 
-      const params = new URLSearchParams({ organization: CAL_ORG, min_start_time: minTime, max_start_time: maxTime, status: 'active', count: '100' });
-      const res = await fetch(`https://api.calendly.com/scheduled_events?${params}`, { headers: { Authorization: `Bearer ${CAL_TOKEN}` } });
-      const data = await res.json();
-      const events = (data.collection || []).sort((a,b) => new Date(a.start_time) - new Date(b.start_time));
+      const baseParams = { organization: CAL_ORG, min_start_time: minTime, max_start_time: maxTime, count: '100' };
+      const [activeRes, cancelledRes] = await Promise.all([
+        fetch(`https://api.calendly.com/scheduled_events?${new URLSearchParams({...baseParams, status: 'active'})}`, { headers: { Authorization: `Bearer ${CAL_TOKEN}` } }),
+        fetch(`https://api.calendly.com/scheduled_events?${new URLSearchParams({...baseParams, status: 'canceled'})}`, { headers: { Authorization: `Bearer ${CAL_TOKEN}` } })
+      ]);
+      const [activeData, cancelledData] = await Promise.all([activeRes.json(), cancelledRes.json()]);
+      const activeEvents = (activeData.collection || []).map(e => ({ ...e, _status: 'active' }));
+      const cancelledEvents = (cancelledData.collection || []).map(e => ({ ...e, _status: 'cancelled' }));
+      const events = [...activeEvents, ...cancelledEvents].sort((a,b) => new Date(a.start_time) - new Date(b.start_time));
 
       // Fetch invitee names in parallel
       const inviteeResults = await Promise.all(events.map(e => {
@@ -473,15 +480,19 @@
         html += `<div class="calls-list">`;
         events.forEach((e, i) => {
           const start = new Date(e.start_time);
-          const isPast = start.getTime() < nowMs;
+          const isCancelled = e._status === 'cancelled';
+          const isPast = !isCancelled && start.getTime() < nowMs;
           const timeStr = start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: tz });
           const [timePart, ampm] = timeStr.split(' ');
           const closer = e.event_memberships?.[0]?.user_name || 'Unknown';
           const eventName = e.name || 'Call';
           const invitees = inviteeResults[i]?.collection || [];
           const leadName = invitees.length ? invitees[0].name : 'Unknown';
+          const cardCls = isCancelled ? 'cancelled' : isPast ? 'past' : '';
+          const pillCls = isCancelled ? 'cancelled' : isPast ? 'past' : 'upcoming';
+          const pillLabel = isCancelled ? 'Cancelled' : isPast ? 'Completed' : 'Upcoming';
 
-          html += `<div class="call-card${isPast ? ' past' : ''}">
+          html += `<div class="call-card ${cardCls}">
             <div class="call-time-col">
               <div class="call-time">${timePart}</div>
               <div class="call-ampm">${ampm || ''}</div>
@@ -492,7 +503,7 @@
               <div class="call-meta">${eventName} &bull; Closer: <span>${closer}</span></div>
             </div>
             <div class="call-status">
-              <span class="call-pill ${isPast ? 'past' : 'upcoming'}">${isPast ? 'Completed' : 'Upcoming'}</span>
+              <span class="call-pill ${pillCls}">${pillLabel}</span>
             </div>
           </div>`;
         });
@@ -504,6 +515,9 @@
       document.getElementById('tab-calls').innerHTML = '<div class="loading">Failed to load calls.</div>';
     }
   }
+
+  // Auto-refresh calls every 2 minutes
+  setInterval(loadCalls, 2 * 60 * 1000);
 
   async function loadAll() {
     document.getElementById('tab-sales').innerHTML = '<div class="loading">Loading...</div>';
