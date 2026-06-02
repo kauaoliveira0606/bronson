@@ -559,4 +559,20 @@ document.addEventListener("DOMContentLoaded", function(){
   document.querySelectorAll(".desktop-only").forEach(function(el){ el.classList.remove("desktop-only"); });
 });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function bindApplyButtons() {
+    document.querySelectorAll('button[aria-label="APPLY NOW "]').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var tf = document.querySelector('[data-tf-live]');
+        if (tf) tf.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    });
+  }
+  bindApplyButtons();
+  setTimeout(bindApplyButtons, 2000);
+});
+</script>
 </body></html>
