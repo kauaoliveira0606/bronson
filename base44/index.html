@@ -561,23 +561,28 @@
   document.getElementById('u-avatar').textContent    = USER_NAME.charAt(0).toUpperCase();
 
   // ── Activity helpers ──
+  // Always use local date string (YYYY-MM-DD) to avoid UTC-offset mismatches
+  function localDate(d) {
+    const dt = d || new Date();
+    return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+  }
+  function localDateOffset(daysBack) {
+    const d = new Date(); d.setDate(d.getDate() - daysBack); return localDate(d);
+  }
   function getActivity() {
     try { return JSON.parse(localStorage.getItem('cp_activity') || '{}'); } catch { return {}; }
   }
   function calcActivityStats() {
     const act = getActivity();
-    const today = new Date(); today.setHours(0,0,0,0);
     // Active days in last 12 weeks (84 days)
     let activeDays = 0;
     for (let i = 0; i < 84; i++) {
-      const d = new Date(today); d.setDate(today.getDate() - i);
-      if (act[d.toISOString().slice(0,10)]) activeDays++;
+      if (act[localDateOffset(i)]) activeDays++;
     }
     // Streak: consecutive days going back from today
     let streak = 0;
     for (let i = 0; i < 365; i++) {
-      const d = new Date(today); d.setDate(today.getDate() - i);
-      if (act[d.toISOString().slice(0,10)]) streak++;
+      if (act[localDateOffset(i)]) streak++;
       else break;
     }
     return { activeDays, streak };
@@ -605,7 +610,8 @@
   function buildHeatmap() {
     const WEEKS = 12;
     const activity = getActivity();
-    const today = new Date(); today.setHours(0,0,0,0);
+    const today = new Date(); today.setHours(0,0,0,0,0);
+    const todayStr = localDate(today);
     const start = new Date(today);
     start.setDate(today.getDate() - WEEKS * 7);
     start.setDate(start.getDate() - start.getDay());
@@ -623,9 +629,10 @@
         if (d === 0 && date.getMonth() !== lastMonth) {
           monthLabel = date.toLocaleString('en-US', { month: 'short' }); lastMonth = date.getMonth();
         }
-        const key = date.toISOString().slice(0, 10);
+        const key = localDate(date);
         const count = activity[key] || 0;
-        const isFuture = date > today, isToday = date.getTime() === today.getTime();
+        const dateStr = localDate(date);
+        const isFuture = date > today, isToday = dateStr === todayStr;
         const cell = document.createElement('div'); cell.className = 'hm-cell';
         if (isFuture) cell.classList.add('future');
         else if (count >= 5) cell.classList.add('l5');
@@ -747,10 +754,10 @@
 
   function markComplete() {
     setLessonDone(currentPhase, currentLesson);
-    // Record activity
-    const today = new Date().toISOString().slice(0, 10);
-    const act = (() => { try { return JSON.parse(localStorage.getItem('cp_activity') || '{}'); } catch { return {}; } })();
-    act[today] = (act[today] || 0) + 1;
+    // Record activity using local date
+    const todayKey = localDate();
+    const act = getActivity();
+    act[todayKey] = (act[todayKey] || 0) + 1;
     localStorage.setItem('cp_activity', JSON.stringify(act));
     renderLessonView();
     renderPhasesGrid();
