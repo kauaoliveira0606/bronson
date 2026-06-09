@@ -649,8 +649,9 @@
     if (e.key === 'Enter') submitGate();
   });
 
-  // Auto-enter if email already saved (initPortal called after PHASES are defined)
+  // Auto-enter if email already saved
   const _autoLogin = !!getStoredEmail();
+  if (_autoLogin) document.getElementById('email-gate').style.display = 'none';
 
   const USER_EMAIL = getStoredEmail();
   const USER_NAME  = getUserName(USER_EMAIL);
