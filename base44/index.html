@@ -324,6 +324,10 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
       <span class="nav-label">Modules</span>
     </div>
+    <div class="nav-item" onclick="showView('wins',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span class="nav-label">Wins</span>
+    </div>
   </nav>
   <div class="sidebar-user">
     <div class="user-avatar" id="u-avatar">S</div>
@@ -443,6 +447,90 @@
           <button class="mark-complete-btn" id="mark-btn" onclick="markComplete()">Mark Complete</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ── Wins ── -->
+  <div class="view padded" id="view-wins">
+    <h1 class="page-title" style="margin-bottom:5px;">Wins</h1>
+    <p class="page-sub" style="margin-bottom:24px;">Real results from members inside the program.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">PERSONAL RECORD</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">Ryan hit a personal record — $20k in a single month.</p></div>
+        <img src="/13.png" alt="PERSONAL RECORD" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">BEST DAY</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">Jaden pulled an $8k day.</p></div>
+        <img src="/14.jpeg" alt="BEST DAY" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">SCALING FAST</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">Tyler hit $100k in just two weeks.</p></div>
+        <img src="/15.jpeg" alt="SCALING FAST" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">CONSISTENT GROWTH</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">"The month over month growth has been nuts!" — Kaleb</p></div>
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/68e955a65db7d666d86e6e1e.png" alt="CONSISTENT GROWTH" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#60a5fa;background:rgba(96,165,250,0.12);">MEMBER WIN</span></div>
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/68e955c5476e1f4ade1cfad2.png" alt="MEMBER WIN" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#60a5fa;background:rgba(96,165,250,0.12);">MEMBER WIN</span></div>
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee88eee416f18af1a4021a.png" alt="MEMBER WIN" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#fbbf24;background:rgba(251,191,36,0.12);">FROM ZERO</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">"1 month in and look at that spike. Zero sales before. The guarantee makes this a no brainer." — Daniel</p></div>
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee8a07f504aeaca49f2f7f.jpeg" alt="FROM ZERO" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#60a5fa;background:rgba(96,165,250,0.12);">ADS SUCCESS</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">"The 1-on-1 help with running the ads has been so awesome and my store is finally starting to take off!" — Micah</p></div>
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee8b33585902432f7f8a20.jpeg" alt="ADS SUCCESS" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">$30K IN 23 DAYS</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">A member did $30k in the last 23 days.</p></div>
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee920b8f6c2c4ed1a2d580.png" alt="$30K IN 23 DAYS" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">8.79x ROAS</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">TikTok Ads crushing it for a Skin Care niche member.</p></div>
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee9318918308897e0d8c9b.png" alt="8.79x ROAS" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">3.59x ROAS</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">Another new student, less than 1 month in. Already scaling.</p></div>
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee939558590276507f9c6c.png" alt="3.59x ROAS" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#fbbf24;background:rgba(251,191,36,0.12);">LIVE RESULTS</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">These are current results. No old screenshots here.</p></div>
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee946b918308652f0d8de4.png" alt="LIVE RESULTS" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#60a5fa;background:rgba(96,165,250,0.12);">CLOTHING NICHE</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">Clothing brand owner — first drop sold out. Look at that ROAS.</p></div>
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95224930c4210b003576.png" alt="CLOTHING NICHE" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">3.61x ROAS</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">Organic hair and skin care brand ripping sales with Meta ads.</p></div>
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95b6e416f131f1a415da.png" alt="3.61x ROAS" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
+      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#60a5fa;background:rgba(96,165,250,0.12);">SUPPLEMENT NICHE</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">Supplement brand owner getting into the BIG numbers. $100k+ months incoming.</p></div>
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee96518f6c2cb9f8a2da5b.png" alt="SUPPLEMENT NICHE" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+      </div>
+
     </div>
   </div>
 
