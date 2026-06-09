@@ -27,6 +27,52 @@
     html, body { height: 100%; }
     body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; display: flex; min-height: 100vh; }
 
+    /* ═══ Email gate ═══ */
+    #email-gate {
+      position: fixed; inset: 0; background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 999; padding: 20px;
+    }
+    .gate-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 36px 32px;
+      width: 100%; max-width: 400px;
+    }
+    .gate-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+    .gate-logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, #1a47ff, #6ea8fe);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .78rem; color: #fff;
+    }
+    .gate-logo-name { font-size: .9rem; font-weight: 700; }
+    .gate-heading { font-size: 1.3rem; font-weight: 800; margin-bottom: 6px; }
+    .gate-sub { font-size: .8rem; color: var(--text2); margin-bottom: 20px; line-height: 1.5; }
+    .gate-warning {
+      display: flex; align-items: flex-start; gap: 8px;
+      background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2);
+      border-radius: 8px; padding: 10px 12px; margin-bottom: 20px;
+    }
+    .gate-warning svg { flex-shrink: 0; margin-top: 1px; }
+    .gate-warning-text { font-size: .73rem; color: #fbbf24; line-height: 1.45; }
+    .gate-label { font-size: .72rem; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+    .gate-input {
+      width: 100%; background: rgba(255,255,255,.05);
+      border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); font-family: 'Inter', sans-serif;
+      font-size: .88rem; padding: 11px 14px; outline: none;
+      transition: border-color .15s; margin-bottom: 12px;
+    }
+    .gate-input:focus { border-color: rgba(74,158,255,.5); }
+    .gate-btn {
+      width: 100%; background: #1a47ff; border: none; border-radius: 8px;
+      color: #fff; font-family: 'Inter', sans-serif;
+      font-size: .88rem; font-weight: 700; padding: 12px;
+      cursor: pointer; transition: background .15s;
+    }
+    .gate-btn:hover { background: #1338d4; }
+    .gate-error { font-size: .72rem; color: var(--red); margin-top: 8px; display: none; }
+
     /* ═══ Sidebar ═══ */
     .sidebar {
       width: var(--sw); background: var(--sidebar);
@@ -306,6 +352,26 @@
 </head>
 <body>
 
+<!-- ═══ Email gate ═══ -->
+<div id="email-gate">
+  <div class="gate-box">
+    <div class="gate-logo">
+      <img src="/logo.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="Logo" onerror="this.outerHTML='<div class=\'gate-logo-icon\'>AI</div>'">
+      <span class="gate-logo-name">Course Portal</span>
+    </div>
+    <h1 class="gate-heading">Welcome</h1>
+    <p class="gate-sub">Enter your email to access your course and track your progress.</p>
+    <div class="gate-warning">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span class="gate-warning-text">You must use the same email you signed up with. Using a different email will create a separate account and your progress won't be linked.</span>
+    </div>
+    <p class="gate-label">Email address</p>
+    <input type="email" id="gate-email" class="gate-input" placeholder="you@example.com" />
+    <button class="gate-btn" onclick="submitGate()">Enter Portal</button>
+    <p class="gate-error" id="gate-error">Please enter a valid email address.</p>
+  </div>
+</div>
+
 <!-- ═══ Sidebar ═══ -->
 <aside class="sidebar">
   <div class="sidebar-logo">
@@ -554,8 +620,40 @@
   // ═══════════════════════════════════════════════
   //  COURSE DATA — edit this section
   // ═══════════════════════════════════════════════
-  const USER_NAME  = 'Student';
-  const USER_EMAIL = '';
+
+  // ── Email gate ──
+  function getStoredEmail() { return localStorage.getItem('cp_email') || ''; }
+  function getUserName(email) {
+    if (!email) return 'Student';
+    return email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  }
+  function storageKey(key) {
+    const email = getStoredEmail();
+    return email ? `${key}_${email}` : key;
+  }
+
+  function submitGate() {
+    const input = document.getElementById('gate-email');
+    const email = input.value.trim().toLowerCase();
+    const err   = document.getElementById('gate-error');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      err.style.display = 'block'; return;
+    }
+    err.style.display = 'none';
+    localStorage.setItem('cp_email', email);
+    document.getElementById('email-gate').style.display = 'none';
+    initPortal();
+  }
+
+  document.getElementById('gate-email').addEventListener('keydown', e => {
+    if (e.key === 'Enter') submitGate();
+  });
+
+  // Auto-enter if email already saved (initPortal called after PHASES are defined)
+  const _autoLogin = !!getStoredEmail();
+
+  const USER_EMAIL = getStoredEmail();
+  const USER_NAME  = getUserName(USER_EMAIL);
 
   const PHASES = [
     {
@@ -609,8 +707,8 @@
   // ═══════════════════════════════════════════════
 
   // ── Progress helpers ──
-  function loadProg() { try { return JSON.parse(localStorage.getItem('cp_prog2') || '{}'); } catch { return {}; } }
-  function saveProg(p) { localStorage.setItem('cp_prog2', JSON.stringify(p)); }
+  function loadProg() { try { return JSON.parse(localStorage.getItem(storageKey('cp_prog')) || '{}'); } catch { return {}; } }
+  function saveProg(p) { localStorage.setItem(storageKey('cp_prog'), JSON.stringify(p)); }
   let prog = loadProg();
 
   function isLessonDone(phaseIdx, lessonIdx) { return !!(prog[`${phaseIdx}_${lessonIdx}`]); }
@@ -628,6 +726,26 @@
   const totalLessons     = PHASES.reduce((s, p) => s + (p.lessons || []).length, 0);
   function completedLessons() { return PHASES.reduce((s, _, i) => s + phaseDoneCount(i), 0); }
 
+  function initPortal() {
+    // Re-read after gate sets email
+    const email = getStoredEmail();
+    const name  = getUserName(email);
+
+    // ── Sidebar user ──
+    document.getElementById('greeting').textContent    = name;
+    document.getElementById('u-name').textContent      = name;
+    document.getElementById('u-email').textContent     = email || '—';
+    document.getElementById('u-avatar').textContent    = name.charAt(0).toUpperCase();
+  }
+
+  // Logout
+  document.querySelector('.logout-btn').addEventListener('click', () => {
+    if (confirm('Sign out?')) {
+      localStorage.removeItem('cp_email');
+      location.reload();
+    }
+  });
+
   // ── Sidebar user ──
   document.getElementById('greeting').textContent    = USER_NAME;
   document.getElementById('u-name').textContent      = USER_NAME;
@@ -644,7 +762,7 @@
     const d = new Date(); d.setDate(d.getDate() - daysBack); return localDate(d);
   }
   function getActivity() {
-    try { return JSON.parse(localStorage.getItem('cp_activity') || '{}'); } catch { return {}; }
+    try { return JSON.parse(localStorage.getItem(storageKey('cp_activity')) || '{}'); } catch { return {}; }
   }
   function calcActivityStats() {
     const act = getActivity();
@@ -832,7 +950,7 @@
     const todayKey = localDate();
     const act = getActivity();
     act[todayKey] = (act[todayKey] || 0) + 1;
-    localStorage.setItem('cp_activity', JSON.stringify(act));
+    localStorage.setItem(storageKey('cp_activity'), JSON.stringify(act));
     renderLessonView();
     renderPhasesGrid();
     updateStats();
@@ -853,6 +971,9 @@
     document.getElementById('view-' + id).classList.add('active');
     if (el) el.classList.add('active');
   }
+
+  // Run portal init on load if already logged in
+  if (_autoLogin) initPortal();
 </script>
 </body>
 </html>
