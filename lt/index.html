@@ -1142,9 +1142,22 @@
     e.preventDefault();
     const name = document.getElementById('m-name').value.trim();
     const email = document.getElementById('m-email').value.trim();
+    const country = document.getElementById('m-country').value;
+    const phone = document.getElementById('m-phone').value.trim();
     if (!name || !email) return;
-    document.getElementById('modal-form').style.display = 'none';
-    document.getElementById('modal-success').style.display = 'block';
+
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    fetch('https://hooks.zapier.com/hooks/catch/22609617/432dfrr/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ name, email, phone: country + phone })
+    }).finally(() => {
+      document.getElementById('modal-form').style.display = 'none';
+      document.getElementById('modal-success').style.display = 'block';
+    });
   }
 </script>
 
