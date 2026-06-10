@@ -1040,6 +1040,14 @@
     <!-- Close -->
     <button onclick="closeModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#888;line-height:1;">&times;</button>
 
+    <!-- Slots badge -->
+    <div style="text-align:center;margin-bottom:16px;">
+      <span id="slots-badge" style="display:inline-flex;align-items:center;gap:8px;background:#fff0f0;border:1px solid #fecaca;color:#dc2626;font-size:0.85rem;font-weight:700;padding:7px 18px;border-radius:100px;">
+        <span style="width:8px;height:8px;border-radius:50%;background:#dc2626;display:inline-block;flex-shrink:0;"></span>
+        <span id="slots-text">7 free slots remaining</span>
+      </span>
+    </div>
+
     <!-- Eyebrow -->
     <p style="text-align:center;font-size:0.78rem;font-weight:700;letter-spacing:1.5px;color:#888;text-transform:uppercase;margin-bottom:8px;">Free Access &nbsp;·&nbsp; $1,497 Value</p>
 
@@ -1118,10 +1126,33 @@
     if (!isOpen) item.classList.add('open');
   }
 
+  // Slots remaining
+  function getSlots() {
+    let s = parseInt(localStorage.getItem('lt_slots'));
+    if (!s || s < 1) {
+      s = Math.floor(Math.random() * 4) + 5; // random 5-8
+      localStorage.setItem('lt_slots', s);
+    }
+    return s;
+  }
+
+  function updateSlotsDisplay() {
+    const s = getSlots();
+    const el = document.getElementById('slots-text');
+    if (el) el.textContent = s + ' free slot' + (s === 1 ? '' : 's') + ' remaining';
+  }
+
+  function decrementSlot() {
+    let s = getSlots();
+    if (s > 1) { s--; localStorage.setItem('lt_slots', s); }
+    updateSlotsDisplay();
+  }
+
   function openModal() {
     const m = document.getElementById('apply-modal');
     m.style.display = 'flex';
     document.body.style.overflow = 'hidden';
+    updateSlotsDisplay();
   }
 
   function closeModal() {
@@ -1150,6 +1181,7 @@
     btn.textContent = 'Sending...';
     btn.disabled = true;
 
+    decrementSlot();
     fetch('https://hooks.zapier.com/hooks/catch/22609617/432dfrr/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
