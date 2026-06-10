@@ -11,11 +11,11 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0a0a0a;
-      --card: #111111;
-      --border: rgba(255,255,255,0.08);
-      --text: #f5f5f5;
-      --text2: #a0a0a0;
+      --bg: #f8f7f5;
+      --card: #ffffff;
+      --border: rgba(0,0,0,0.09);
+      --text: #111111;
+      --text2: #6b7280;
       --green: #22c55e;
       --gold: #f59e0b;
     }
@@ -206,7 +206,7 @@
     .star { color: var(--gold); font-size: 0.9rem; }
     .testi-text { font-size: 0.875rem; color: var(--text2); line-height: 1.65; margin-bottom: 14px; }
     .testi-author { display: flex; align-items: center; gap: 10px; }
-    .testi-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#1e293b,#334155); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: #94a3b8; flex-shrink: 0; }
+    .testi-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#cbd5e1,#e2e8f0); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: #475569; flex-shrink: 0; }
     .testi-name { font-size: 0.85rem; font-weight: 600; }
     .testi-role { font-size: 0.75rem; color: var(--text2); }
 
@@ -214,7 +214,7 @@
     .faq-list { display: flex; flex-direction: column; gap: 2px; }
     .faq-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
     .faq-q { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; background: none; border: none; color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; text-align: left; gap: 16px; font-family: 'Inter', sans-serif; }
-    .faq-icon { width: 22px; height: 22px; flex-shrink: 0; background: rgba(255,255,255,0.07); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: transform .2s; }
+    .faq-icon { width: 22px; height: 22px; flex-shrink: 0; background: rgba(0,0,0,0.07); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: transform .2s; }
     .faq-item.open .faq-icon { transform: rotate(45deg); }
     .faq-a { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
     .faq-item.open .faq-a { max-height: 300px; }
@@ -245,16 +245,16 @@
 
   <h1>Keep Your Phone Close.<br>We're Calling In The Next <span>1-10 Minutes.</span></h1>
 
-  <p class="hero-sub" style="color:#d1d5db;">Your application was received. A coach is being assigned to you right now. Answer when we call - that's where you get access.</p>
+  <p class="hero-sub" style="color:#374151;">Your application was received. A coach is being assigned to you right now. Answer when we call - that's where you get access.</p>
 
   <!-- VIDEO PLACEHOLDER -->
   <div style="max-width:680px;margin:36px auto 0;">
-    <div style="position:relative;width:100%;padding-bottom:56.25%;background:#111;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);">
-      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:linear-gradient(135deg,#0f172a,#1e293b);">
+    <div style="position:relative;width:100%;padding-bottom:56.25%;background:#e5e5e5;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,0.09);">
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:linear-gradient(135deg,#e8e8e6,#d8d8d6);">
         <div style="width:64px;height:64px;background:#22c55e;border-radius:50%;display:flex;align-items:center;justify-content:center;">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="#000" style="margin-left:4px;"><path d="M8 5v14l11-7z"/></svg>
         </div>
-        <span style="font-size:0.9rem;color:#a0a0a0;">Video coming soon</span>
+        <span style="font-size:0.9rem;color:#6b7280;">Video coming soon</span>
       </div>
     </div>
   </div>
@@ -320,9 +320,9 @@
   <p class="section-label">No Catch</p>
   <h2 class="section-title">Wait, How Is This Free?</h2>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 32px;max-width:640px;">
-    <p style="font-size:1rem;color:#d1d5db;line-height:1.75;margin-bottom:16px;">I've had over 500 people pay me to learn this model. So you might be asking - <strong style="color:#fff;">"how are you giving this away for free?"</strong></p>
-    <p style="font-size:1rem;color:#d1d5db;line-height:1.75;margin-bottom:16px;">There is no catch. I partnered up with a platform that powers the AI tools I use in my business every day - and they pay me for giving you access. Think of it as a scholarship. All you need is the single tool I use to build stores, research products, and run ads.</p>
-    <p style="font-size:1rem;color:#d1d5db;line-height:1.75;">It's a win-win for everyone.</p>
+    <p style="font-size:1rem;color:#374151;line-height:1.75;margin-bottom:16px;">I've had over 500 people pay me to learn this model. So you might be asking - <strong style="color:#111111;">"how are you giving this away for free?"</strong></p>
+    <p style="font-size:1rem;color:#374151;line-height:1.75;margin-bottom:16px;">There is no catch. I partnered up with a platform that powers the AI tools I use in my business every day - and they pay me for giving you access. Think of it as a scholarship. All you need is the single tool I use to build stores, research products, and run ads.</p>
+    <p style="font-size:1rem;color:#374151;line-height:1.75;">It's a win-win for everyone.</p>
   </div>
 </div>
 
