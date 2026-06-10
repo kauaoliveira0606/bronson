@@ -1184,8 +1184,9 @@
     decrementSlot();
     fetch('https://hooks.zapier.com/hooks/catch/22609617/432dfrr/', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ name, email, phone: country + phone })
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, phone: country + phone })
     }).finally(() => {
       window.location.href = '/receiveaccess';
     });
