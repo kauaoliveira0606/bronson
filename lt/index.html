@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free AI Business — Base44</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --card: #111111;
+      --border: rgba(255,255,255,0.08);
+      --text: #f5f5f5;
+      --text2: #a0a0a0;
+      --green: #22c55e;
+      --gold: #f59e0b;
+      --blue: #3b82f6;
+      --accent: #22c55e;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    .nav-logo span { color: var(--green); }
+
+    .nav-cta {
+      background: var(--green);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 9px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      transition: opacity .15s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 72px 24px 48px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: var(--green);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 .highlight {
+      color: var(--green);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--text2);
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+
+    .trust-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .trust-avatars {
+      display: flex;
+    }
+
+    .trust-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      background: linear-gradient(135deg, #334155, #1e293b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-left: -8px;
+    }
+    .trust-avatars .trust-avatar:first-child { margin-left: 0; }
+
+    .trust-stars {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stars {
+      display: flex;
+      gap: 2px;
+    }
+
+    .star { color: var(--gold); font-size: 1rem; }
+
+    .trust-label {
+      font-size: 0.85rem;
+      color: var(--text2);
+    }
+
+    .trust-label strong { color: var(--text); }
+
+    /* Video area */
+    .video-container {
+      max-width: 720px;
+      margin: 0 auto 56px;
+      padding: 0 24px;
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      background: #111;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .video-wrapper iframe,
+    .video-wrapper .vid-placeholder {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .vid-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      gap: 12px;
+    }
+
+    .vid-play {
+      width: 64px;
+      height: 64px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .vid-play svg { width: 28px; height: 28px; fill: #000; margin-left: 4px; }
+
+    .vid-label {
+      font-size: 0.9rem;
+      color: var(--text2);
+    }
+
+    /* ── SECTION WRAPPER ── */
+    .section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 56px 24px;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      color: var(--text2);
+      font-size: 1rem;
+      max-width: 560px;
+      margin-bottom: 40px;
+    }
+
+    /* ── VALUE STACK ── */
+    .value-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 16px;
+    }
+
+    .value-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .value-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .value-price {
+      font-size: 0.9rem;
+      color: var(--text2);
+      white-space: nowrap;
+      text-decoration: line-through;
+    }
+
+    .value-card-desc {
+      font-size: 0.9rem;
+      color: var(--text2);
+    }
+
+    .value-total {
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.25);
+      border-radius: 16px;
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .value-total-label {
+      font-size: 1rem;
+      color: var(--text2);
+    }
+
+    .value-total-label strong {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--text);
+      margin-bottom: 2px;
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    .value-total-free {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--green);
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+    }
+
+    .step-num {
+      width: 38px;
+      height: 38px;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+
+    .step-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 0.875rem;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    /* ── MODULE CARDS ── */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .module-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .module-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .module-info {}
+    .module-title { font-size: 0.975rem; font-weight: 700; margin-bottom: 4px; }
+    .module-desc { font-size: 0.85rem; color: var(--text2); line-height: 1.55; }
+    .module-value { font-size: 0.8rem; color: var(--text2); margin-top: 8px; }
+    .module-value span { color: var(--green); font-weight: 600; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .testi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .testi-stars {
+      display: flex;
+      gap: 2px;
+      margin-bottom: 12px;
+    }
+
+    .testi-text {
+      font-size: 0.9rem;
+      color: var(--text2);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .testi-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1e293b, #334155);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #94a3b8;
+      flex-shrink: 0;
+    }
+
+    .testi-name { font-size: 0.875rem; font-weight: 600; }
+    .testi-role { font-size: 0.78rem; color: var(--text2); }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 2px; }
+
+    .faq-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .faq-q {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 0.975rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      gap: 16px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .faq-icon {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.07);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      transition: transform .2s;
+    }
+
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease;
+    }
+
+    .faq-item.open .faq-a { max-height: 400px; }
+
+    .faq-a-inner {
+      padding: 0 24px 20px;
+      font-size: 0.9rem;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+
+    /* ── FINAL CTA ── */
+    .cta-box {
+      background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(34,197,94,0.02));
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 24px;
+      padding: 56px 40px;
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .cta-box h2 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+
+    .cta-box p {
+      color: var(--text2);
+      font-size: 1rem;
+      margin-bottom: 32px;
+    }
+
+    .cta-includes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 36px;
+      text-align: left;
+      max-width: 360px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-include-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text2);
+    }
+
+    .cta-check {
+      width: 20px;
+      height: 20px;
+      background: rgba(34,197,94,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green);
+      font-size: 0.7rem;
+      flex-shrink: 0;
+    }
+
+    .cta-btn {
+      background: var(--green);
+      color: #000;
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: 16px 40px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      display: inline-block;
+      transition: opacity .15s, transform .15s;
+      margin-bottom: 16px;
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .cta-note {
+      font-size: 0.8rem;
+      color: var(--text2);
+    }
+
+    .urgency {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.25);
+      color: #f87171;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: #f87171; animation: pulse 1.4s infinite; }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      color: var(--text2);
+      font-size: 0.8rem;
+    }
+
+    footer a { color: var(--text2); margin: 0 8px; }
+    footer a:hover { color: var(--text); }
+
+    .footer-disclaimer {
+      max-width: 700px;
+      margin: 16px auto 0;
+      font-size: 0.72rem;
+      color: #4b5563;
+      line-height: 1.6;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ── SCROLL CTA ── */
+    @media (max-width: 600px) {
+      .hero { padding: 48px 16px 32px; }
+      .section { padding: 40px 16px; }
+      .cta-box { padding: 40px 20px; }
+      .value-card { padding: 20px; }
+      .module-card { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Base<span>44</span></div>
+  <button class="nav-cta" onclick="document.getElementById('apply').scrollIntoView({behavior:'smooth'})">Claim Free Access</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">
+    <span>🎓</span> Limited Free Access
+  </div>
+  <h1>I Used To Sell This AI Advertising<br>Course For <span class="highlight">$2,000</span>.<br>Now You Can Have It <span class="highlight">For Free.</span></h1>
+  <p class="hero-sub">No tech skills needed &nbsp;·&nbsp; No experience required &nbsp;·&nbsp; No credit card</p>
+
+  <div class="trust-row">
+    <div class="trust-avatars">
+      <div class="trust-avatar">JR</div>
+      <div class="trust-avatar">AM</div>
+      <div class="trust-avatar">KL</div>
+      <div class="trust-avatar">SP</div>
+      <div class="trust-avatar">TW</div>
+    </div>
+    <div class="trust-stars">
+      <div class="stars">
+        <span class="star">★</span>
+        <span class="star">★</span>
+        <span class="star">★</span>
+        <span class="star">★</span>
+        <span class="star">★</span>
+      </div>
+      <span class="trust-label">Rated <strong>4.5/5</strong> by <strong>2,000+</strong> students</span>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO -->
+<div class="video-container">
+  <div class="video-wrapper">
+    <div class="vid-placeholder">
+      <div class="vid-play">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <span class="vid-label">Watch the overview — 3 min</span>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- HOW IT WORKS -->
+<div class="section">
+  <p class="section-label">How it works</p>
+  <h2 class="section-title">Run a real AI business<br>in 3 simple steps</h2>
+  <p class="section-desc">No product to build. No tech background. Just a proven system — run from anywhere.</p>
+
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-title">Find struggling businesses</div>
+      <p class="step-desc">Use AI-powered scanning tools to identify local businesses that need better marketing — in under 10 minutes.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-title">Improve their marketing with AI</div>
+      <p class="step-desc">Deliver high-quality ads, websites, and funnels using AI tools we give you — no experience required.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-title">Land clients &amp; get paid</div>
+      <p class="step-desc">Use our proven outreach scripts and close clients on retainer. No cold calling. No guessing.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- WHAT YOU GET -->
+<div class="section">
+  <p class="section-label">What's included</p>
+  <h2 class="section-title">Everything you need to start<br>earning with AI advertising</h2>
+  <p class="section-desc">A $2,000 program — yours free. Here's everything inside.</p>
+
+  <div class="value-card">
+    <div class="value-card-header">
+      <span class="value-card-title">Complete AI Advertising System</span>
+      <span class="value-price">$500 value</span>
+    </div>
+    <p class="value-card-desc">The full framework for running AI-powered advertising campaigns for local businesses — step by step.</p>
+  </div>
+
+  <div class="value-card">
+    <div class="value-card-header">
+      <span class="value-card-title">3-Day Live Workshop</span>
+      <span class="value-price">$300 value</span>
+    </div>
+    <p class="value-card-desc">Hands-on training over three days with real walkthroughs, Q&amp;A, and implementation support.</p>
+  </div>
+
+  <div class="value-card">
+    <div class="value-card-header">
+      <span class="value-card-title">AI Advertising Mastery Module</span>
+      <span class="value-price">$200 value</span>
+    </div>
+    <p class="value-card-desc">Deep-dive lessons on Meta, Google, and TikTok ads using AI to build and optimize campaigns faster.</p>
+  </div>
+
+  <div class="value-card">
+    <div class="value-card-header">
+      <span class="value-card-title">Mindset &amp; Business Foundation</span>
+      <span class="value-price">$100 value</span>
+    </div>
+    <p class="value-card-desc">Build the mental framework of a successful entrepreneur before touching a single ad account.</p>
+  </div>
+
+  <div class="value-card">
+    <div class="value-card-header">
+      <span class="value-card-title">Client Acquisition Playbook</span>
+      <span class="value-price">$200 value</span>
+    </div>
+    <p class="value-card-desc">Word-for-word outreach scripts, follow-up sequences, and closing frameworks that actually work.</p>
+  </div>
+
+  <div class="value-card">
+    <div class="value-card-header">
+      <span class="value-card-title">AI Superagents Suite</span>
+      <span class="value-price">$200 value</span>
+    </div>
+    <p class="value-card-desc">Pre-built AI agents that handle research, content, copywriting, and reporting — all automated.</p>
+  </div>
+
+  <div class="value-card">
+    <div class="value-card-header">
+      <span class="value-card-title">AI Website Builder Access</span>
+      <span class="value-price">$200 value</span>
+    </div>
+    <p class="value-card-desc">Build professional client websites in minutes using our AI-powered Wix workflow.</p>
+  </div>
+
+  <div class="value-card">
+    <div class="value-card-header">
+      <span class="value-card-title">1-on-1 Onboarding Call</span>
+      <span class="value-price">$100 value</span>
+    </div>
+    <p class="value-card-desc">A private session with a coach to map your first 30 days and answer any questions you have.</p>
+  </div>
+
+  <div class="value-total">
+    <div class="value-total-label">
+      <strong>$2,000 total value</strong>
+      Your price today
+    </div>
+    <div class="value-total-free">FREE</div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- MODULES -->
+<div class="section">
+  <p class="section-label">Course modules</p>
+  <h2 class="section-title">6 phases. One complete system.</h2>
+  <p class="section-desc">Everything structured so you can go from zero to your first client — without overwhelm.</p>
+
+  <div class="modules-grid">
+    <div class="module-card">
+      <div class="module-icon">🧭</div>
+      <div class="module-info">
+        <div class="module-title">Phase 1 — Introduction</div>
+        <p class="module-desc">Get oriented. Understand the business model, the tools you'll use, and exactly what to expect.</p>
+        <p class="module-value">Value: <span>$100</span></p>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">🧠</div>
+      <div class="module-info">
+        <div class="module-title">Phase 2 — Mindset</div>
+        <p class="module-desc">The inner game of business. Build the habits, beliefs, and routines that separate winners from quitters.</p>
+        <p class="module-value">Value: <span>$100</span></p>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">🌐</div>
+      <div class="module-info">
+        <div class="module-title">Phase 3 — Wix Walkthrough</div>
+        <p class="module-desc">Build beautiful client websites fast. A full Wix workflow built for non-technical people.</p>
+        <p class="module-value">Value: <span>$200</span></p>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">🔍</div>
+      <div class="module-info">
+        <div class="module-title">Phase 4 — Finding a Product</div>
+        <p class="module-desc">How to identify winning offers, ideal clients, and underserved niches using AI research tools.</p>
+        <p class="module-value">Value: <span>$200</span></p>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">🤖</div>
+      <div class="module-info">
+        <div class="module-title">Phase 5 — Building a Store with AI</div>
+        <p class="module-desc">Launch a full e-commerce or service store using AI — from design to checkout in hours, not weeks.</p>
+        <p class="module-value">Value: <span>$300</span></p>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">📣</div>
+      <div class="module-info">
+        <div class="module-title">Phase 6 — Running Ads</div>
+        <p class="module-desc">Meta, Google, and TikTok ads made simple. AI-assisted targeting, creative, and scaling strategies.</p>
+        <p class="module-value">Value: <span>$300</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- TESTIMONIALS -->
+<div class="section">
+  <p class="section-label">Student wins</p>
+  <h2 class="section-title">Real results from real people</h2>
+  <p class="section-desc">No hype. Just outcomes from students who went through the same system you're about to access.</p>
+
+  <div class="testimonials-grid">
+    <div class="testi-card">
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">"I landed my first client within 2 weeks of starting. Made $1,500 on a retainer deal. I had zero experience before this."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">JR</div>
+        <div>
+          <div class="testi-name">Jake R.</div>
+          <div class="testi-role">Student · Texas</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">"The AI tools alone are worth it. I'm building websites for clients in like 45 minutes that I used to charge $2k for and spend weeks on."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AM</div>
+        <div>
+          <div class="testi-name">Alexis M.</div>
+          <div class="testi-role">Student · Florida</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">"Went from $0 to $3,200/month in 45 days. The outreach scripts are insane — I was scared to send them but they work every time."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">DK</div>
+        <div>
+          <div class="testi-name">Daniel K.</div>
+          <div class="testi-role">Student · California</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">"I was skeptical honestly. But the onboarding call alone gave me a clear 30-day plan. Now I have 3 clients."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">SP</div>
+        <div>
+          <div class="testi-name">Sofia P.</div>
+          <div class="testi-role">Student · New York</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">"The mindset module hit different. I've taken other courses and this is the first one where I actually finished and applied everything."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">TW</div>
+        <div>
+          <div class="testi-name">Tyler W.</div>
+          <div class="testi-role">Student · Ohio</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">"My mom thought I was scammed when I said it was free. Now she's asking me to teach her. First month I made $2,100."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">KL</div>
+        <div>
+          <div class="testi-name">Kira L.</div>
+          <div class="testi-role">Student · Georgia</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- FAQ -->
+<div class="section">
+  <p class="section-label">Common questions</p>
+  <h2 class="section-title">Got questions? We've got answers.</h2>
+  <p class="section-desc" style="margin-bottom:32px;">Everything people ask before they claim access.</p>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What's the catch? How is this actually free?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">There's no catch. We make money when you succeed — through optional advanced coaching and done-for-you services. The core program is completely free because we'd rather prove the value first.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Do I need any tech skills or experience?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">None. The entire system is built for people who have never run an ad or built a website. We walk you through everything step by step with AI tools that do most of the heavy lifting.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How long does it take to get a client?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">Most students land their first client within 2–4 weeks of starting the program. It depends on how consistently you apply the outreach system. Some land one in their first week.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Do I need money to start?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">No upfront investment required. We teach you how to get clients before you spend anything on ad budgets, so you can fund your business from client payments from day one.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Can I do this while working a full-time job?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">Yes. Most of our students started part-time. The system is designed to work with 1–2 hours a day until you're ready to scale or transition full-time.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What if I have more questions before I apply?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">You'll speak with a real coach on your onboarding call — that's your chance to get every question answered before you dive in. Apply first, ask everything after.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- FINAL CTA -->
+<div class="section" id="apply">
+  <div class="cta-box">
+    <div class="urgency">
+      <span class="dot"></span>
+      This won't be free forever
+    </div>
+    <h2>Claim Your Free<br>AI Business Today</h2>
+    <p>Everything you need to land your first client — no card required.</p>
+
+    <div class="cta-includes">
+      <div class="cta-include-item">
+        <span class="cta-check">✓</span>
+        Complete AI Advertising System ($500 value)
+      </div>
+      <div class="cta-include-item">
+        <span class="cta-check">✓</span>
+        All 6 Course Phases ($1,200 value)
+      </div>
+      <div class="cta-include-item">
+        <span class="cta-check">✓</span>
+        AI Superagents Suite ($200 value)
+      </div>
+      <div class="cta-include-item">
+        <span class="cta-check">✓</span>
+        1-on-1 Onboarding Call ($100 value)
+      </div>
+      <div class="cta-include-item">
+        <span class="cta-check">✓</span>
+        3-Day Live Workshop ($300 value)
+      </div>
+    </div>
+
+    <button class="cta-btn" onclick="document.getElementById('apply-form').scrollIntoView({behavior:'smooth'})">
+      Claim Your Free AI Business →
+    </button>
+    <p class="cta-note">No credit card required &nbsp;·&nbsp; Instant access</p>
+  </div>
+</div>
+
+<!-- APPLY FORM -->
+<div class="section" id="apply-form" style="padding-top:0;">
+  <div style="max-width:480px;margin:0 auto;text-align:center;">
+    <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:8px;">Apply Now</h3>
+    <p style="color:var(--text2);font-size:0.9rem;margin-bottom:28px;">Fill in your details and a coach will reach out within 24 hours.</p>
+    <form onsubmit="handleApply(event)" style="display:flex;flex-direction:column;gap:12px;">
+      <input id="apply-name" type="text" placeholder="Full name" required style="background:#111;border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-size:0.95rem;font-family:inherit;outline:none;transition:border .15s;" onfocus="this.style.borderColor='rgba(34,197,94,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'" />
+      <input id="apply-email" type="email" placeholder="Email address" required style="background:#111;border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-size:0.95rem;font-family:inherit;outline:none;transition:border .15s;" onfocus="this.style.borderColor='rgba(34,197,94,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'" />
+      <input id="apply-phone" type="tel" placeholder="Phone number (optional)" style="background:#111;border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-size:0.95rem;font-family:inherit;outline:none;transition:border .15s;" onfocus="this.style.borderColor='rgba(34,197,94,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'" />
+      <button type="submit" class="cta-btn" style="margin-top:4px;">Get Free Access →</button>
+      <p style="font-size:0.78rem;color:var(--text2);">No spam. No credit card. We'll contact you within 24 hours.</p>
+    </form>
+    <div id="apply-success" style="display:none;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);border-radius:12px;padding:24px;margin-top:16px;">
+      <p style="font-size:1rem;font-weight:700;color:var(--green);margin-bottom:6px;">You're in!</p>
+      <p style="font-size:0.875rem;color:var(--text2);">We'll reach out within 24 hours to set up your onboarding call. Check your inbox.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/terms">Terms of Service</a>
+  </div>
+  <p class="footer-disclaimer">
+    INCOME DISCLAIMER: Results mentioned are not typical. Individual results will vary based on effort, experience, background, and market conditions. This is an educational program. We make no guarantees of income or business outcomes.
+  </p>
+  <p style="margin-top:12px;">&copy; 2025 Base44. All rights reserved.</p>
+</footer>
+
+<script>
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  function handleApply(e) {
+    e.preventDefault();
+    const name = document.getElementById('apply-name').value.trim();
+    const email = document.getElementById('apply-email').value.trim();
+    if (!name || !email) return;
+    document.querySelector('#apply-form form').style.display = 'none';
+    document.getElementById('apply-success').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
