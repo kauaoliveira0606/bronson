@@ -10,173 +10,447 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg: #0a0a0a;
+      --card: #111111;
+      --border: rgba(255,255,255,0.08);
+      --text: #f5f5f5;
+      --text2: #a0a0a0;
+      --green: #22c55e;
+      --gold: #f59e0b;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
-      background: #0a0a0a;
-      color: #f5f5f5;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 32px 24px;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .section {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 56px 24px;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 64px 24px 48px;
       text-align: center;
     }
 
-    .check-circle {
-      width: 80px;
-      height: 80px;
-      background: rgba(34,197,94,0.12);
-      border: 2px solid rgba(34,197,94,0.4);
-      border-radius: 50%;
-      display: flex;
+    .confirmed-badge {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      margin: 0 auto 28px;
-      animation: pop .4s cubic-bezier(.175,.885,.32,1.275) both;
-    }
-
-    @keyframes pop {
-      from { transform: scale(0); opacity: 0; }
-      to   { transform: scale(1); opacity: 1; }
-    }
-
-    .check-circle svg {
-      width: 38px;
-      height: 38px;
-    }
-
-    .eyebrow {
-      font-size: 0.75rem;
+      gap: 8px;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: var(--green);
+      font-size: 0.78rem;
       font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: #22c55e;
-      margin-bottom: 14px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
     }
 
-    h1 {
-      font-size: clamp(2rem, 5vw, 3rem);
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 1.4s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
       font-weight: 900;
       letter-spacing: -1px;
       line-height: 1.15;
       margin-bottom: 18px;
     }
 
-    h1 span { color: #22c55e; }
+    .hero h1 span { color: var(--green); }
 
-    p.sub {
+    .hero-sub {
       font-size: 1.05rem;
-      color: #a0a0a0;
-      max-width: 480px;
+      color: var(--text2);
+      max-width: 500px;
+      margin: 0 auto;
       line-height: 1.65;
-      margin-bottom: 40px;
     }
 
-    .steps {
+    /* ── WHAT HAPPENS NEXT ── */
+    .steps-list {
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      max-width: 420px;
-      width: 100%;
-      margin-bottom: 44px;
+      gap: 16px;
     }
 
-    .step {
-      background: #111;
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 14px;
-      padding: 18px 20px;
+    .step-row {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
       display: flex;
       align-items: flex-start;
-      gap: 14px;
-      text-align: left;
+      gap: 18px;
     }
 
-    .step-num {
-      width: 30px;
-      height: 30px;
-      background: rgba(34,197,94,0.12);
-      border: 1px solid rgba(34,197,94,0.3);
-      border-radius: 8px;
+    .step-icon {
+      width: 46px;
+      height: 46px;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.25);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: #22c55e;
+      font-size: 1.3rem;
       flex-shrink: 0;
     }
 
-    .step-text strong {
+    .step-body strong {
       display: block;
-      font-size: 0.9rem;
+      font-size: 1rem;
       font-weight: 700;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
     }
 
-    .step-text span {
-      font-size: 0.82rem;
-      color: #a0a0a0;
-      line-height: 1.5;
+    .step-body p {
+      font-size: 0.875rem;
+      color: var(--text2);
+      line-height: 1.6;
     }
 
-    footer {
-      margin-top: auto;
-      padding-top: 48px;
-      font-size: 0.75rem;
-      color: #4b5563;
+    /* ── VALUE STACK ── */
+    .value-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 16px;
     }
 
-    footer a { color: #4b5563; margin: 0 6px; }
-    footer a:hover { color: #a0a0a0; }
+    .value-item:last-of-type { border-bottom: none; }
+
+    .value-item-name { font-size: 0.9rem; font-weight: 600; }
+    .value-item-price { font-size: 0.875rem; color: var(--text2); text-decoration: line-through; white-space: nowrap; }
+
+    .value-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      padding: 20px 24px;
+      background: rgba(34,197,94,0.07);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 14px;
+    }
+
+    .value-total-row .label { font-size: 1rem; color: var(--text2); }
+    .value-total-row .label strong { display: block; font-size: 1.3rem; font-weight: 900; color: var(--text); text-decoration: line-through; opacity: .45; }
+    .value-total-row .free { font-size: 2rem; font-weight: 900; color: var(--green); }
+
+    /* ── MODULE CARDS ── */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+
+    .mod-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .mod-icon { font-size: 1.4rem; margin-bottom: 10px; }
+    .mod-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+    .mod-value { font-size: 0.78rem; color: var(--text2); }
+    .mod-value span { color: var(--green); font-weight: 600; }
+
+    /* ── TESTIMONIALS ── */
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .testi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .testi-stars { display: flex; gap: 2px; margin-bottom: 10px; }
+    .star { color: var(--gold); font-size: 0.9rem; }
+    .testi-text { font-size: 0.875rem; color: var(--text2); line-height: 1.65; margin-bottom: 14px; }
+    .testi-author { display: flex; align-items: center; gap: 10px; }
+    .testi-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#1e293b,#334155); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: #94a3b8; flex-shrink: 0; }
+    .testi-name { font-size: 0.85rem; font-weight: 600; }
+    .testi-role { font-size: 0.75rem; color: var(--text2); }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 2px; }
+    .faq-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .faq-q { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; background: none; border: none; color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; text-align: left; gap: 16px; font-family: 'Inter', sans-serif; }
+    .faq-icon { width: 22px; height: 22px; flex-shrink: 0; background: rgba(255,255,255,0.07); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: transform .2s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+    .faq-item.open .faq-a { max-height: 300px; }
+    .faq-a-inner { padding: 0 22px 18px; font-size: 0.875rem; color: var(--text2); line-height: 1.7; }
+
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; color: var(--text2); font-size: 0.78rem; }
+    footer a { color: var(--text2); margin: 0 6px; }
+    footer a:hover { color: var(--text); }
+    .footer-disclaimer { max-width: 660px; margin: 14px auto 0; font-size: 0.7rem; color: #4b5563; line-height: 1.6; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 48px 16px 32px; }
+      .section { padding: 40px 16px; }
+      .step-row { flex-direction: column; }
+      .value-total-row { flex-direction: column; gap: 8px; text-align: center; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="check-circle">
-    <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20 6L9 17l-5-5"/>
-    </svg>
+<!-- HERO -->
+<div class="hero">
+  <div class="confirmed-badge">
+    <span class="dot"></span>
+    You're In &nbsp;·&nbsp; Spot Confirmed
   </div>
 
-  <p class="eyebrow">Application received</p>
+  <h1>Keep Your Phone Close.<br>We're Calling In The Next <span>5-10 Minutes.</span></h1>
 
-  <h1>You're In.<br>Check Your <span>Inbox.</span></h1>
+  <p class="hero-sub">Your application was received. A coach is being assigned to you right now. Answer when we call — that's where you get access.</p>
+</div>
 
-  <p class="sub">Your application was received. A coach will reach out within 24 hours to get your store set up and walk you through the course.</p>
+<hr class="divider" />
 
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-text">
-        <strong>Check your email</strong>
-        <span>You'll receive a confirmation and next steps shortly. Check your spam just in case.</span>
+<!-- WHAT HAPPENS NEXT -->
+<div class="section">
+  <p class="section-label">What happens next</p>
+  <h2 class="section-title">3 steps to get you started</h2>
+
+  <div class="steps-list">
+    <div class="step-row">
+      <div class="step-icon">📞</div>
+      <div class="step-body">
+        <strong>Answer the call from your coach (5-10 min)</strong>
+        <p>A real coach will call you shortly to confirm your spot and answer any questions you have before you dive in.</p>
       </div>
     </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-text">
-        <strong>Coach reaches out within 24 hrs</strong>
-        <span>A real coach will contact you to schedule your onboarding call and get you access.</span>
+    <div class="step-row">
+      <div class="step-icon">🔑</div>
+      <div class="step-body">
+        <strong>Get your course &amp; store access</strong>
+        <p>During the call, your coach will walk you through getting access to the full course portal and your AI store tools.</p>
       </div>
     </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-text">
+    <div class="step-row">
+      <div class="step-icon">🚀</div>
+      <div class="step-body">
         <strong>Start building your brand</strong>
-        <span>Get into the course, build your store, and start running ads with the full system.</span>
+        <p>Jump into the modules, build your branded store on Wix with AI, and launch your first Meta or TikTok ad campaign.</p>
       </div>
     </div>
   </div>
+</div>
 
-  <footer>
-    <div>
-      <a href="/privacy" target="_blank">Privacy Policy</a>
-      <a href="/terms" target="_blank">Terms of Service</a>
+<hr class="divider" />
+
+<!-- VALUE STACK -->
+<div class="section">
+  <p class="section-label">What you're getting</p>
+  <h2 class="section-title">$1,497 in value. Yours free.</h2>
+
+  <div class="value-item"><span class="value-item-name">Complete AI Branded E-com System</span><span class="value-item-price">$500</span></div>
+  <div class="value-item"><span class="value-item-name">Meta &amp; TikTok Ads Mastery</span><span class="value-item-price">$200</span></div>
+  <div class="value-item"><span class="value-item-name">AI Product Research Playbook</span><span class="value-item-price">$200</span></div>
+  <div class="value-item"><span class="value-item-name">AI Store Builder (Wix)</span><span class="value-item-price">$200</span></div>
+  <div class="value-item"><span class="value-item-name">Brand-to-Exit Roadmap</span><span class="value-item-price">$200</span></div>
+  <div class="value-item"><span class="value-item-name">Mindset &amp; Business Foundation</span><span class="value-item-price">$100</span></div>
+  <div class="value-item"><span class="value-item-name">1-on-1 Onboarding Call</span><span class="value-item-price">$100</span></div>
+
+  <div class="value-total-row">
+    <div class="label"><strong>$1,497 total value</strong>Your price today</div>
+    <div class="free">$0</div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- MODULES -->
+<div class="section">
+  <p class="section-label">The full program</p>
+  <h2 class="section-title">6 phases. One complete system.</h2>
+
+  <div class="modules-grid">
+    <div class="mod-card">
+      <div class="mod-icon">🧭</div>
+      <div class="mod-title">Phase 1 — Introduction</div>
+      <p class="mod-value">Value: <span>$100</span></p>
     </div>
-    <p style="margin-top:10px;">&copy; 2025 Base44. All rights reserved.</p>
-  </footer>
+    <div class="mod-card">
+      <div class="mod-icon">🧠</div>
+      <div class="mod-title">Phase 2 — Mindset</div>
+      <p class="mod-value">Value: <span>$100</span></p>
+    </div>
+    <div class="mod-card">
+      <div class="mod-icon">🌐</div>
+      <div class="mod-title">Phase 3 — Wix Walkthrough</div>
+      <p class="mod-value">Value: <span>$200</span></p>
+    </div>
+    <div class="mod-card">
+      <div class="mod-icon">🔍</div>
+      <div class="mod-title">Phase 4 — Finding a Product</div>
+      <p class="mod-value">Value: <span>$200</span></p>
+    </div>
+    <div class="mod-card">
+      <div class="mod-icon">🤖</div>
+      <div class="mod-title">Phase 5 — Building a Store with AI</div>
+      <p class="mod-value">Value: <span>$300</span></p>
+    </div>
+    <div class="mod-card">
+      <div class="mod-icon">📣</div>
+      <div class="mod-title">Phase 6 — Running Ads</div>
+      <p class="mod-value">Value: <span>$300</span></p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- TESTIMONIALS -->
+<div class="section">
+  <p class="section-label">Student wins</p>
+  <h2 class="section-title">People just like you who followed the system</h2>
+
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <p class="testi-text">"1 month in and look at that spike. Zero sales before. The guarantee makes this a no brainer." — Daniel</p>
+      <div class="testi-author"><div class="testi-avatar">DL</div><div><div class="testi-name">Daniel</div><div class="testi-role">Member · E-com Brand Owner</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <p class="testi-text">"I'm already doing $500/day in sales." — Zach</p>
+      <div class="testi-author"><div class="testi-avatar">ZC</div><div><div class="testi-name">Zach</div><div class="testi-role">Member · E-com Brand Owner</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <p class="testi-text">"Ryan hit a personal record — $20k in a single month. Scaled to $20k/month in 3 months from zero."</p>
+      <div class="testi-author"><div class="testi-avatar">RY</div><div><div class="testi-name">Ryan</div><div class="testi-role">Member · Scaled to $20k/mo</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <p class="testi-text">"I've learned a ton from this program and the fact that I'm building a business I can sell one day is the best part." — Landon</p>
+      <div class="testi-author"><div class="testi-avatar">LD</div><div><div class="testi-name">Landon</div><div class="testi-role">Member · E-com Brand Owner</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <p class="testi-text">"The 1-on-1 help with running the ads has been so awesome and my store is finally starting to take off!" — Micah</p>
+      <div class="testi-author"><div class="testi-avatar">MC</div><div><div class="testi-name">Micah</div><div class="testi-role">Member · Ads Success</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <p class="testi-text">"I've made over $16,000 since I've started, not that long ago." — Dan</p>
+      <div class="testi-author"><div class="testi-avatar">DN</div><div><div class="testi-name">Dan</div><div class="testi-role">Member · $16k+ Revenue</div></div></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- FAQ -->
+<div class="section">
+  <p class="section-label">Common questions</p>
+  <h2 class="section-title">Got questions?</h2>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Will I really get a call in 5-10 minutes?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">Yes. A coach is assigned to you as soon as your application comes in. Keep your phone close and answer — that call is where everything gets set up for you.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Is this really free?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">Yes. The core program is completely free. No credit card, no hidden charges. We grow when you succeed — that's the model.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What if I've never done e-commerce before?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">That's exactly who this was built for. AI handles most of the technical work. You follow the system phase by phase and your coach walks you through everything on your onboarding call.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What makes this different from regular dropshipping?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">This is NOT the typical dropshipping you see with pump and dump stores. You're building a real branded e-commerce business with long-term equity - something you can eventually sell.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<footer>
+  <div>
+    <a href="/privacy" target="_blank">Privacy Policy</a>
+    <a href="/terms" target="_blank">Terms of Service</a>
+  </div>
+  <p class="footer-disclaimer">
+    INCOME DISCLAIMER: Results mentioned are not typical. Individual results will vary based on effort, experience, background, and market conditions. This is an educational program. We make no guarantees of income or business outcomes.
+  </p>
+  <p style="margin-top:12px;">&copy; 2025 Base44. All rights reserved.</p>
+</footer>
+
+<script>
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
 
 </body>
 </html>
