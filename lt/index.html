@@ -608,6 +608,54 @@
       line-height: 1.6;
     }
 
+    /* ── WHY SECTION ── */
+    .why-list {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .why-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 28px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .why-item:last-child { border-bottom: none; }
+
+    .why-icon {
+      width: 48px;
+      height: 48px;
+      background: #fdf8ef;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #c8a84b;
+    }
+
+    .why-body strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .why-body p {
+      font-size: 0.9rem;
+      color: var(--text2);
+      line-height: 1.65;
+    }
+
+    @media (max-width: 600px) {
+      .why-item { padding: 22px 20px; gap: 14px; }
+    }
+
     /* ── DIVIDER ── */
     .divider {
       border: none;
@@ -788,6 +836,71 @@
       <div class="step-num">3</div>
       <div class="step-title">Run ads &amp; scale to 6 figures</div>
       <p class="step-desc">Launch Meta and TikTok ad campaigns using Bronson's proven strategy. Members are hitting 8x+ ROAS and $20k–$100k months.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- WHY THIS MODEL -->
+<div class="section">
+  <p class="section-label">Why This Model</p>
+  <h2 class="section-title">Why Thousands of People Are Choosing This Online Business</h2>
+
+  <div class="why-list">
+    <div class="why-item">
+      <div class="why-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <div class="why-body">
+        <strong>No Products to Buy Upfront</strong>
+        <p>You only pay for a product after a customer buys it from your store. No buying inventory. No risk of unsold stock sitting in your garage.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </div>
+      <div class="why-body">
+        <strong>No Shipping or Handling</strong>
+        <p>Your supplier packs and ships everything directly to your customer. You never touch a product.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div class="why-body">
+        <strong>Work From Anywhere</strong>
+        <p>All you need is a laptop and internet connection. Run your store from your bedroom, a coffee shop, or a beach in Bali.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="why-body">
+        <strong>Your Store Runs 24/7</strong>
+        <p>Your online store takes orders even while you're sleeping. It never closes.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="3" style="display:none"/></svg>
+      </div>
+      <div class="why-body">
+        <strong>Low Startup Cost</strong>
+        <p>Most businesses require thousands to start. With branded e-commerce, you can get up and running for less than the cost of a dinner out.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <div class="why-body">
+        <strong>Available Worldwide</strong>
+        <p>It doesn't matter where you live. This model works globally.</p>
+      </div>
     </div>
   </div>
 </div>
