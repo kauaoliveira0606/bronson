@@ -663,7 +663,7 @@
 </div>
 
 <div style="text-align:center;padding:0 24px 56px;">
-  <button class="cta-btn" style="max-width:380px;width:100%;font-size:1.05rem;" onclick="document.getElementById('apply').scrollIntoView({behavior:'smooth'})">Get Your Free Course &amp; Store →</button>
+  <button class="cta-btn" style="max-width:380px;width:100%;font-size:1.05rem;" onclick="openModal()">Get Your Free Course &amp; Store →</button>
   <p style="font-size:0.8rem;color:var(--text2);margin-top:10px;">No credit card required &nbsp;·&nbsp; Instant access</p>
 </div>
 
@@ -765,6 +765,10 @@
     </div>
     <div class="value-total-free">FREE</div>
   </div>
+  <div style="text-align:center;margin-top:32px;">
+    <button class="cta-btn" style="max-width:380px;width:100%;" onclick="openModal()">Get Your Free Course &amp; Store →</button>
+    <p style="font-size:0.8rem;color:var(--text2);margin-top:10px;">No credit card required &nbsp;·&nbsp; Instant access</p>
+  </div>
 </div>
 
 <hr class="divider" />
@@ -824,6 +828,10 @@
         <p class="module-value">Value: <span>$300</span></p>
       </div>
     </div>
+  </div>
+  <div style="text-align:center;margin-top:32px;">
+    <button class="cta-btn" style="max-width:380px;width:100%;" onclick="openModal()">Get Your Free Course &amp; Store →</button>
+    <p style="font-size:0.8rem;color:var(--text2);margin-top:10px;">No credit card required &nbsp;·&nbsp; Instant access</p>
   </div>
 </div>
 
@@ -1018,29 +1026,56 @@
       </div>
     </div>
 
-    <button class="cta-btn" onclick="document.getElementById('apply-form').scrollIntoView({behavior:'smooth'})">
+    <button class="cta-btn" onclick="openModal()">
       Get Your Free Course &amp; Store →
     </button>
     <p class="cta-note">No credit card required &nbsp;·&nbsp; Instant access</p>
   </div>
 </div>
 
-<!-- APPLY FORM -->
-<div class="section" id="apply-form" style="padding-top:0;">
-  <div style="max-width:480px;margin:0 auto;text-align:center;">
-    <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:8px;">Apply Now</h3>
-    <p style="color:var(--text2);font-size:0.9rem;margin-bottom:28px;">Fill in your details and a coach will reach out within 24 hours.</p>
-    <form onsubmit="handleApply(event)" style="display:flex;flex-direction:column;gap:12px;">
-      <input id="apply-name" type="text" placeholder="Full name" required style="background:#111;border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-size:0.95rem;font-family:inherit;outline:none;transition:border .15s;" onfocus="this.style.borderColor='rgba(34,197,94,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'" />
-      <input id="apply-email" type="email" placeholder="Email address" required style="background:#111;border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-size:0.95rem;font-family:inherit;outline:none;transition:border .15s;" onfocus="this.style.borderColor='rgba(34,197,94,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'" />
-      <input id="apply-phone" type="tel" placeholder="Phone number (optional)" style="background:#111;border:1px solid var(--border);border-radius:10px;padding:14px 16px;color:var(--text);font-size:0.95rem;font-family:inherit;outline:none;transition:border .15s;" onfocus="this.style.borderColor='rgba(34,197,94,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'" />
-      <button type="submit" class="cta-btn" style="margin-top:4px;max-width:100%;width:100%;">Get Free Access →</button>
-      <p style="font-size:0.78rem;color:var(--text2);">No spam. No credit card. We'll contact you within 24 hours.</p>
-    </form>
-    <div id="apply-success" style="display:none;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);border-radius:12px;padding:24px;margin-top:16px;">
-      <p style="font-size:1rem;font-weight:700;color:var(--green);margin-bottom:6px;">You're in!</p>
-      <p style="font-size:0.875rem;color:var(--text2);">We'll reach out within 24 hours to set up your onboarding call. Check your inbox.</p>
+<!-- MODAL -->
+<div id="apply-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#fff;border-radius:24px;max-width:480px;width:100%;padding:36px 32px 28px;position:relative;max-height:90vh;overflow-y:auto;">
+
+    <!-- Close -->
+    <button onclick="closeModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#888;line-height:1;">&times;</button>
+
+    <!-- Logo -->
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="display:inline-block;background:#0a0a0a;border-radius:12px;padding:12px 24px;">
+        <span style="color:#fff;font-family:'Inter',sans-serif;font-weight:900;font-size:1.1rem;letter-spacing:-0.5px;">Base<span style="color:#22c55e;">44</span></span>
+      </div>
     </div>
+
+    <!-- Eyebrow -->
+    <p style="text-align:center;font-size:0.78rem;font-weight:700;letter-spacing:1.5px;color:#888;text-transform:uppercase;margin-bottom:8px;">Free Access &nbsp;·&nbsp; $1,497 Value</p>
+
+    <!-- Heading -->
+    <h2 style="text-align:center;font-size:1.7rem;font-weight:900;color:#0a0a0a;letter-spacing:-0.5px;margin-bottom:10px;">Get Your Free Course &amp; Store</h2>
+
+    <!-- Sub -->
+    <p style="text-align:center;color:#666;font-size:0.95rem;line-height:1.55;margin-bottom:28px;">Drop your details and a coach reaches out to get you set up.</p>
+
+    <!-- Form -->
+    <form id="modal-form" onsubmit="handleModal(event)" style="display:flex;flex-direction:column;gap:12px;">
+      <input id="m-name" type="text" placeholder="First name" required style="background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 20px;font-size:0.95rem;font-family:'Inter',sans-serif;outline:none;transition:border .15s;color:#111;" onfocus="this.style.borderColor='#22c55e'" onblur="this.style.borderColor='#e5e7eb'" />
+      <input id="m-email" type="email" placeholder="Email" required style="background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 20px;font-size:0.95rem;font-family:'Inter',sans-serif;outline:none;transition:border .15s;color:#111;" onfocus="this.style.borderColor='#22c55e'" onblur="this.style.borderColor='#e5e7eb'" />
+      <div style="display:flex;gap:10px;">
+        <div style="background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 16px;display:flex;align-items:center;gap:6px;white-space:nowrap;color:#333;font-size:0.9rem;font-family:'Inter',sans-serif;min-width:100px;">
+          🇺🇸 +1
+        </div>
+        <input id="m-phone" type="tel" placeholder="Phone number" style="flex:1;background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 20px;font-size:0.95rem;font-family:'Inter',sans-serif;outline:none;transition:border .15s;color:#111;" onfocus="this.style.borderColor='#22c55e'" onblur="this.style.borderColor='#e5e7eb'" />
+      </div>
+      <button type="submit" style="background:var(--green);color:#000;font-weight:800;font-size:1.05rem;padding:17px;border-radius:50px;border:none;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px;transition:opacity .15s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">Get Your Free Course &amp; Store</button>
+    </form>
+
+    <div id="modal-success" style="display:none;text-align:center;padding:16px 0;">
+      <p style="font-size:1.1rem;font-weight:800;color:#22c55e;margin-bottom:6px;">You're in!</p>
+      <p style="font-size:0.9rem;color:#666;">We'll reach out within 24 hours to get you set up. Check your inbox.</p>
+    </div>
+
+    <!-- Disclaimer -->
+    <p style="text-align:center;font-size:0.72rem;color:#aaa;margin-top:16px;line-height:1.6;">By applying you agree to receive emails and SMS from Base44. Msg &amp; data rates may apply. Reply STOP to opt out. See our <a href="/privacy" target="_blank" style="color:#555;text-decoration:underline;">Privacy Policy</a> and <a href="/terms" target="_blank" style="color:#555;text-decoration:underline;">Terms</a>.</p>
   </div>
 </div>
 
@@ -1064,13 +1099,33 @@
     if (!isOpen) item.classList.add('open');
   }
 
-  function handleApply(e) {
+  function openModal() {
+    const m = document.getElementById('apply-modal');
+    m.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    const m = document.getElementById('apply-modal');
+    m.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('apply-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  function handleModal(e) {
     e.preventDefault();
-    const name = document.getElementById('apply-name').value.trim();
-    const email = document.getElementById('apply-email').value.trim();
+    const name = document.getElementById('m-name').value.trim();
+    const email = document.getElementById('m-email').value.trim();
     if (!name || !email) return;
-    document.querySelector('#apply-form form').style.display = 'none';
-    document.getElementById('apply-success').style.display = 'block';
+    document.getElementById('modal-form').style.display = 'none';
+    document.getElementById('modal-success').style.display = 'block';
   }
 </script>
 
