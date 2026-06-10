@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>You're In — Base44</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0a;
+      color: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    .check-circle {
+      width: 80px;
+      height: 80px;
+      background: rgba(34,197,94,0.12);
+      border: 2px solid rgba(34,197,94,0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+      animation: pop .4s cubic-bezier(.175,.885,.32,1.275) both;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    .check-circle svg {
+      width: 38px;
+      height: 38px;
+    }
+
+    .eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #22c55e;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 18px;
+    }
+
+    h1 span { color: #22c55e; }
+
+    p.sub {
+      font-size: 1.05rem;
+      color: #a0a0a0;
+      max-width: 480px;
+      line-height: 1.65;
+      margin-bottom: 40px;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 420px;
+      width: 100%;
+      margin-bottom: 44px;
+    }
+
+    .step {
+      background: #111;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      text-align: left;
+    }
+
+    .step-num {
+      width: 30px;
+      height: 30px;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #22c55e;
+      flex-shrink: 0;
+    }
+
+    .step-text strong {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .step-text span {
+      font-size: 0.82rem;
+      color: #a0a0a0;
+      line-height: 1.5;
+    }
+
+    footer {
+      margin-top: auto;
+      padding-top: 48px;
+      font-size: 0.75rem;
+      color: #4b5563;
+    }
+
+    footer a { color: #4b5563; margin: 0 6px; }
+    footer a:hover { color: #a0a0a0; }
+  </style>
+</head>
+<body>
+
+  <div class="check-circle">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 6L9 17l-5-5"/>
+    </svg>
+  </div>
+
+  <p class="eyebrow">Application received</p>
+
+  <h1>You're In.<br>Check Your <span>Inbox.</span></h1>
+
+  <p class="sub">Your application was received. A coach will reach out within 24 hours to get your store set up and walk you through the course.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <strong>Check your email</strong>
+        <span>You'll receive a confirmation and next steps shortly. Check your spam just in case.</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <strong>Coach reaches out within 24 hrs</strong>
+        <span>A real coach will contact you to schedule your onboarding call and get you access.</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <strong>Start building your brand</strong>
+        <span>Get into the course, build your store, and start running ads with the full system.</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div>
+      <a href="/privacy" target="_blank">Privacy Policy</a>
+      <a href="/terms" target="_blank">Terms of Service</a>
+    </div>
+    <p style="margin-top:10px;">&copy; 2025 Base44. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
