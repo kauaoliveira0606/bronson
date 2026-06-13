@@ -452,6 +452,48 @@
 
   .rw-toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%); background:#1e1e1e; color:#fff; font-size:.8rem; font-weight:600; padding:12px 22px; border-radius:40px; box-shadow:0 4px 20px rgba(0,0,0,.4); z-index:9999; opacity:0; transition:opacity .25s; pointer-events:none; }
   .rw-toast.show { opacity:1; }
+
+  /* ── Elite Status — gold/cream theme ── */
+  #view-elite { background:#fdf9f0; }
+  #view-elite .page-title, #view-elite .page-sub { color:#111; }
+  #view-elite .page-sub { color:#6b7280; }
+
+  .es-access-card { background:#fff; border:1.5px solid rgba(180,83,9,.3); border-radius:16px; padding:24px 22px; margin-bottom:18px; color:#111; }
+  .es-access-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .es-access-title { font-size:1rem; font-weight:800; color:#111; }
+  .es-badge { font-size:.62rem; font-weight:800; padding:4px 12px; border-radius:20px; }
+  .es-badge.locked { background:#fee2e2; color:#991b1b; }
+  .es-badge.pending { background:#fef3c7; color:#92400e; }
+  .es-badge.active { background:#d1fae5; color:#065f46; }
+  .es-access-desc { font-size:.8rem; color:#6b7280; line-height:1.55; margin-bottom:16px; }
+
+  .es-section-title { font-size:.88rem; font-weight:700; margin:22px 0 12px; color:#111; display:flex; align-items:center; gap:7px; }
+  .es-perks-grid { display:flex; flex-direction:column; gap:12px; margin-bottom:18px; }
+  .es-perk-card { background:#fff; border:1px solid rgba(0,0,0,.09); border-radius:14px; padding:20px; color:#111; transition:opacity .25s; }
+  .es-perk-card.es-locked { opacity:.65; }
+  .es-perk-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .es-perk-icon { font-size:1.4rem; }
+  .es-perk-lock { font-size:.6rem; font-weight:700; background:#f3f4f6; color:#6b7280; padding:3px 9px; border-radius:20px; }
+  .es-perk-name { font-size:.95rem; font-weight:800; margin-bottom:3px; }
+  .es-perk-freq { font-size:.72rem; color:#b45309; font-weight:600; margin-bottom:10px; }
+  .es-perk-list { list-style:none; display:flex; flex-direction:column; gap:5px; }
+  .es-perk-list li { font-size:.77rem; color:#4b5563; display:flex; align-items:flex-start; gap:7px; }
+  .es-perk-list li::before { content:'✓'; color:#d1d5db; font-weight:700; font-size:.75rem; flex-shrink:0; margin-top:1px; }
+  .es-perk-card.es-perk-unlocked .es-perk-list li::before { color:#16a34a; }
+
+  .es-unlock-card { background:#fff8ed; border:1.5px solid rgba(180,83,9,.2); border-radius:16px; padding:26px 22px; margin-bottom:18px; color:#111; text-align:center; }
+  .es-unlock-icon { font-size:2rem; margin-bottom:10px; }
+  .es-unlock-title { font-size:1rem; font-weight:800; margin-bottom:8px; color:#111; }
+  .es-unlock-desc { font-size:.8rem; color:#6b7280; line-height:1.6; margin-bottom:18px; }
+  .es-unlock-steps { text-align:left; background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:10px; padding:14px 16px; margin-bottom:18px; display:flex; flex-direction:column; gap:10px; }
+  .es-unlock-step { font-size:.8rem; color:#374151; display:flex; align-items:center; gap:10px; }
+  .es-unlock-step-num { width:22px; height:22px; border-radius:50%; background:#b45309; color:#fff; font-size:.65rem; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .es-btn-pair { display:flex; gap:10px; margin-bottom:8px; }
+  .es-btn { border:none; border-radius:10px; padding:14px 18px; font-size:.82rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px; transition:opacity .15s; flex:1; }
+  .es-btn:hover:not(:disabled) { opacity:.85; }
+  .es-btn:disabled { opacity:.6; cursor:default; }
+  .es-btn.gold { background:#b45309; color:#fff; }
+  .es-btn.outline { background:transparent; border:1.5px solid rgba(180,83,9,.3); color:#b45309; text-decoration:none; }
   </style>
 </head>
 <body>
@@ -505,6 +547,10 @@
     <div class="nav-item" onclick="showView('rewards',this); updateRewardsUI();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>
       <span class="nav-label">Rewards</span>
+    </div>
+    <div class="nav-item" onclick="showView('elite',this); updateEliteUI();">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12-6 4-4-8-4 8-6-4z"/></svg>
+      <span class="nav-label">Elite</span>
     </div>
   </nav>
   <div class="sidebar-user">
@@ -885,6 +931,95 @@
 
   <div class="rw-toast" id="rw-toast"></div>
   <input type="file" id="rw-file-input" accept="image/*" style="display:none" onchange="rwOnFileSelected(this)">
+  <input type="file" id="es-file-input" accept="image/*" style="display:none" onchange="esOnFileSelected(this)">
+
+  <!-- ── Elite Status ── -->
+  <div class="view padded" id="view-elite">
+    <h1 class="page-title" style="margin-bottom:5px;">⭐ Elite Status ⭐</h1>
+    <p class="page-sub" style="margin-bottom:22px;">Exclusive perks for members with a Wix Yearly + Base44 Yearly Subscription</p>
+
+    <!-- Unlock Access Card -->
+    <div class="es-access-card">
+      <div class="es-access-head">
+        <div class="es-access-title">Unlock Elite Access</div>
+        <span class="es-badge locked" id="es-status-badge">Locked</span>
+      </div>
+      <div class="es-access-desc">Upgrade to Wix Yearly + Base44 Yearly subscriptions and upload proof to unlock all Elite perks below.</div>
+      <button class="rw-btn gold" id="es-upload-btn" onclick="esUpload()">⬆ Upload Proof</button>
+    </div>
+
+    <!-- What You Get -->
+    <div class="es-section-title">✦ What You Get</div>
+    <div class="es-perks-grid">
+
+      <div class="es-perk-card es-locked" id="es-perk-1">
+        <div class="es-perk-header">
+          <span class="es-perk-icon">👑</span>
+          <span class="es-perk-lock" id="es-perk-lock-1">🔒 Locked</span>
+        </div>
+        <div class="es-perk-name">Monthly Founder Call</div>
+        <div class="es-perk-freq">1x per month</div>
+        <ul class="es-perk-list">
+          <li>Live Q&amp;A with Bronson every month</li>
+          <li>Get your store reviewed by the founder</li>
+          <li>Ask anything about your E-Com business</li>
+          <li>Recorded replays available after each call</li>
+        </ul>
+      </div>
+
+      <div class="es-perk-card es-locked" id="es-perk-2">
+        <div class="es-perk-header">
+          <span class="es-perk-icon">🎯</span>
+          <span class="es-perk-lock" id="es-perk-lock-2">🔒 Locked</span>
+        </div>
+        <div class="es-perk-name">8-Figure Coach Call</div>
+        <div class="es-perk-freq">1x per month</div>
+        <ul class="es-perk-list">
+          <li>Direct access to an 8-figure E-Com coach</li>
+          <li>Advanced strategy sessions for scaling</li>
+          <li>Personalized feedback on your ads and store</li>
+          <li>Exclusively available to Elite members</li>
+        </ul>
+      </div>
+
+      <div class="es-perk-card es-locked" id="es-perk-3">
+        <div class="es-perk-header">
+          <span class="es-perk-icon">💬</span>
+          <span class="es-perk-lock" id="es-perk-lock-3">🔒 Locked</span>
+        </div>
+        <div class="es-perk-name">Elite Private Community</div>
+        <div class="es-perk-freq">24/7 Access</div>
+        <ul class="es-perk-list">
+          <li>Private channel for Elite members only</li>
+          <li>Share wins, strategies, and product finds</li>
+          <li>Direct messaging with coaches</li>
+          <li>Early access to new features and tools</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- How to Unlock -->
+    <div class="es-unlock-card">
+      <div class="es-unlock-icon">👑</div>
+      <div class="es-unlock-title">How to Unlock Elite Status</div>
+      <div class="es-unlock-desc">Upgrade both your Wix and Base44 subscriptions to yearly plans, then upload a screenshot as proof. Elite Status activates within 2 hours.</div>
+      <div class="es-unlock-steps">
+        <div class="es-unlock-step"><div class="es-unlock-step-num">1</div> Upgrade to <strong>Wix Yearly</strong> subscription</div>
+        <div class="es-unlock-step"><div class="es-unlock-step-num">2</div> Upgrade to <strong>Base44 Builder Yearly</strong> plan</div>
+        <div class="es-unlock-step"><div class="es-unlock-step-num">3</div> Screenshot both active subscription dashboards</div>
+        <div class="es-unlock-step"><div class="es-unlock-step-num">4</div> Upload proof — Elite perks activate within ~2 hours</div>
+      </div>
+      <div class="es-btn-pair">
+        <button class="es-btn gold" id="es-verify-btn" onclick="esUpload()">⬆ Upload Verification</button>
+        <a href="https://re.aistorebuilder.com/direct-checkout?subid=ad-ventur" target="_blank" class="es-btn outline">Get Wix Yearly</a>
+      </div>
+      <div class="es-btn-pair">
+        <a href="https://re.aistorebuilder.com/base44-pricing?subid=ad-ventur" target="_blank" class="es-btn outline" style="flex:1;">Get Base44 Builder</a>
+      </div>
+      <div class="rw-proof-note" style="margin-top:12px;">📸 Screenshot both dashboards showing your yearly plan — Wix &amp; Base44</div>
+    </div>
+  </div>
 
 </main>
 
@@ -1402,6 +1537,75 @@
     if (!t) return;
     t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // ── Elite Status ──────────────────────────────────────
+  const ES_PENDING_KEY  = storageKey('es_pending');
+  const ES_UNLOCKED_KEY = storageKey('es_unlocked');
+  const ES_AUTO_MS = 2 * 60 * 60 * 1000;
+
+  function esIsUnlocked() { return !!localStorage.getItem(ES_UNLOCKED_KEY); }
+  function esIsPending()  { return !!localStorage.getItem(ES_PENDING_KEY); }
+
+  function esUpload() {
+    if (esIsUnlocked() || esIsPending()) return;
+    document.getElementById('es-file-input').click();
+  }
+
+  function esOnFileSelected(input) {
+    if (!input.files || !input.files.length) return;
+    if (esIsUnlocked() || esIsPending()) { input.value = ''; return; }
+    localStorage.setItem(ES_PENDING_KEY, Date.now());
+    input.value = '';
+    rwShowToast('📸 Proof submitted! Elite Status will activate within 2 hours.');
+    updateEliteUI();
+  }
+
+  function esCheckPending() {
+    const ts = localStorage.getItem(ES_PENDING_KEY);
+    if (ts && !esIsUnlocked() && Date.now() - parseInt(ts) >= ES_AUTO_MS) {
+      localStorage.setItem(ES_UNLOCKED_KEY, '1');
+      localStorage.removeItem(ES_PENDING_KEY);
+      rwShowToast('🌟 Elite Status activated! All perks are now unlocked.');
+      updateEliteUI();
+    }
+  }
+
+  function updateEliteUI() {
+    esCheckPending();
+    const unlocked = esIsUnlocked();
+    const pending  = esIsPending();
+
+    const badge = document.getElementById('es-status-badge');
+    if (badge) {
+      if (unlocked)     { badge.textContent = '✓ Active';           badge.className = 'es-badge active'; }
+      else if (pending) { badge.textContent = '⏳ Awaiting Approval'; badge.className = 'es-badge pending'; }
+      else              { badge.textContent = 'Locked';              badge.className = 'es-badge locked'; }
+    }
+
+    const uploadBtn = document.getElementById('es-upload-btn');
+    if (uploadBtn) {
+      if (unlocked)     { uploadBtn.textContent = '✓ Elite Active';       uploadBtn.disabled = true; }
+      else if (pending) { uploadBtn.textContent = '⏳ Awaiting Approval'; uploadBtn.disabled = true; }
+      else              { uploadBtn.textContent = '⬆ Upload Proof';       uploadBtn.disabled = false; }
+    }
+
+    const verifyBtn = document.getElementById('es-verify-btn');
+    if (verifyBtn) {
+      if (unlocked)     { verifyBtn.textContent = '✓ Elite Active';       verifyBtn.disabled = true; }
+      else if (pending) { verifyBtn.textContent = '⏳ Awaiting Approval'; verifyBtn.disabled = true; }
+      else              { verifyBtn.textContent = '⬆ Upload Verification'; verifyBtn.disabled = false; }
+    }
+
+    [1, 2, 3].forEach(i => {
+      const card = document.getElementById('es-perk-' + i);
+      const lock = document.getElementById('es-perk-lock-' + i);
+      if (card) {
+        card.classList.toggle('es-locked', !unlocked);
+        card.classList.toggle('es-perk-unlocked', unlocked);
+      }
+      if (lock) lock.style.display = unlocked ? 'none' : '';
+    });
   }
 </script>
 </body>
