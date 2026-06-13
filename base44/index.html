@@ -1605,6 +1605,10 @@ A default Wix store looks like every other dropshipper's store. Base44 lets you 
       unlocked: true,
       color: '#ef4444',
       icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
+      days: [
+        { label: 'PAID ADS', count: 4 },
+        { label: 'ORGANIC', count: 2 },
+      ],
       lessons: [
         {
           title: 'Meta Ads Manager',
@@ -1629,6 +1633,18 @@ A default Wix store looks like every other dropshipper's store. Base44 lets you 
           desc: '',
           videoUrl: '',
           videoEmbed: `<vturb-smartplayer id="vid-6a2cd824e3ec81421df45288" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a2cd824e3ec81421df45288/v4/player.js";s.async=!0;document.head.appendChild(s);<\/script>`,
+        },
+        {
+          title: 'TikTok Organic',
+          desc: '',
+          videoUrl: '',
+          videoEmbed: `<vturb-smartplayer id="vid-6a2cd83acb24c10a1f6dfcbc" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a2cd83acb24c10a1f6dfcbc/v4/player.js";s.async=!0;document.head.appendChild(s);<\/script>`,
+        },
+        {
+          title: 'Instagram Reels Organic',
+          desc: '',
+          videoUrl: '',
+          videoEmbed: `<vturb-smartplayer id="vid-6a2cd8420c2d7df2b9599e34" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a2cd8420c2d7df2b9599e34/v4/player.js";s.async=!0;document.head.appendChild(s);<\/script>`,
         },
       ],
     },
@@ -1880,10 +1896,18 @@ A default Wix store looks like every other dropshipper's store. Base44 lets you 
     // Sidebar lessons
     const sidebarEl = document.getElementById('lesson-sidebar-list');
     if (p.days) {
+      // Build start indices respecting optional day.count; fall back to even split
       const perDay = Math.ceil(lessons.length / p.days.length);
+      let cursor = 0;
+      const dayRanges = p.days.map(day => {
+        const count = day.count !== undefined ? day.count : perDay;
+        const start = cursor;
+        cursor += count;
+        return { start, count };
+      });
       sidebarEl.innerHTML = p.days.map((day, di) => {
-        const startIdx = di * perDay;
-        const dayLessons = lessons.slice(startIdx, startIdx + perDay);
+        const { start: startIdx, count } = dayRanges[di];
+        const dayLessons = lessons.slice(startIdx, startIdx + count);
         const sopLink = day.sopUrl
           ? `<a href="${day.sopUrl}" target="_blank" class="sop-link">Open SOP →</a>`
           : `<span class="sop-link disabled">Open SOP →</span>`;
