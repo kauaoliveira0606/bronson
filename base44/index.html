@@ -521,7 +521,7 @@
   .sc-row-pts { font-size:.77rem; font-weight:700; color:#111; width:32px; text-align:right; flex-shrink:0; }
 
   /* ── Leaderboard ── */
-  #view-leaderboard { background:#fff; }
+  #view-leaderboard { background:#fff; min-height:100vh; }
   .lb-header { text-align:center; padding:32px 0 24px; }
   .lb-header-icon { font-size:2rem; margin-bottom:8px; }
   .lb-header-title { font-size:1.5rem; font-weight:800; color:#111; margin-bottom:6px; }
@@ -1043,7 +1043,8 @@
   </div>
 
   <!-- ── Leaderboard ── -->
-  <div class="view padded" id="view-leaderboard" style="max-width:640px;margin:0 auto;">
+  <div class="view padded" id="view-leaderboard">
+  <div style="max-width:640px;margin:0 auto;">
 
     <!-- Header -->
     <div class="lb-header">
@@ -1079,6 +1080,7 @@
     <div style="text-align:center;margin-top:16px;">
       <button class="lb-refresh-btn" onclick="fetchLeaderboard()">↻ Refresh</button>
     </div>
+  </div>
   </div>
 
   <!-- ── Tools ── -->
