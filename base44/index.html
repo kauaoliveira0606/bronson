@@ -1605,7 +1605,20 @@ A default Wix store looks like every other dropshipper's store. Base44 lets you 
       unlocked: true,
       color: '#ef4444',
       icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
-      lessons: [],
+      lessons: [
+        {
+          title: 'Meta Ads Manager',
+          desc: '',
+          videoUrl: '',
+          videoEmbed: `<vturb-smartplayer id="vid-6a2cd853cb24c10a1f6dfccf" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a2cd853cb24c10a1f6dfccf/v4/player.js";s.async=!0;document.head.appendChild(s);<\/script>`,
+        },
+        {
+          title: 'Retargeting',
+          desc: '',
+          videoUrl: '',
+          videoEmbed: `<vturb-smartplayer id="vid-6a2cd8485b719ab8be0d690c" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a2cd8485b719ab8be0d690c/v4/player.js";s.async=!0;document.head.appendChild(s);<\/script>`,
+        },
+      ],
     },
   ];
   // ═══════════════════════════════════════════════
@@ -1832,7 +1845,16 @@ A default Wix store looks like every other dropshipper's store. Base44 lets you 
 
     // Video
     const va = document.getElementById('video-area');
-    if (l.videoUrl) {
+    if (l.videoEmbed) {
+      va.innerHTML = l.videoEmbed;
+      va.querySelectorAll('script').forEach(old => {
+        const s = document.createElement('script');
+        if (old.src) { s.src = old.src; s.async = true; }
+        else { s.textContent = old.textContent; }
+        document.head.appendChild(s);
+        old.remove();
+      });
+    } else if (l.videoUrl) {
       va.innerHTML = `<iframe src="${l.videoUrl}" allowfullscreen allow="autoplay; fullscreen"></iframe>`;
     } else {
       va.innerHTML = `<div class="video-play-icon"><svg viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><span class="video-coming-soon">Video content coming soon</span>`;
