@@ -358,6 +358,94 @@
       .lesson-sidebar { display: none; }
       .lesson-content { padding: 20px 16px; }
     }
+  /* ── Deals ── */
+  .deals-banner { background:var(--card); border:1px solid rgba(180,83,9,.2); border-radius:14px; padding:16px 20px; margin-bottom:22px; display:flex; align-items:flex-start; gap:14px; }
+  .deals-banner-icon { font-size:1.4rem; flex-shrink:0; margin-top:2px; }
+  .deals-banner-title { font-size:.88rem; font-weight:700; margin-bottom:3px; }
+  .deals-banner-desc { font-size:.76rem; color:var(--text2); line-height:1.5; }
+  .deal-row { display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 18px; margin-bottom:10px; text-decoration:none; color:inherit; transition:border-color .15s; }
+  .deal-row:hover { border-color:rgba(255,255,255,.18); }
+  .deal-logo { width:50px; height:50px; border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1.4rem; }
+  .deal-info { flex:1; }
+  .deal-name-row { display:flex; align-items:center; gap:8px; margin-bottom:3px; }
+  .deal-name-txt { font-size:.9rem; font-weight:700; }
+  .deal-tag { font-size:.58rem; font-weight:700; background:rgba(180,83,9,.12); color:#b45309; padding:2px 8px; border-radius:20px; }
+  .deal-desc-txt { font-size:.74rem; color:var(--text2); }
+
+  /* ── Rewards ── */
+  .rw-prize-card { background:#fef9ee; border:1px solid rgba(180,83,9,.2); border-radius:16px; padding:26px 22px 22px; margin-bottom:18px; text-align:center; }
+  .rw-prize-title { font-size:1.45rem; font-weight:800; margin-bottom:5px; }
+  .rw-prize-sub { font-size:.8rem; color:var(--text2); margin-bottom:20px; }
+  .rw-prize-stats { display:flex; justify-content:center; gap:36px; }
+  .rw-stat { text-align:center; }
+  .rw-stat-val { font-size:1.4rem; font-weight:800; }
+  .rw-stat-val.amber { color:#b45309; }
+  .rw-stat-lbl { font-size:.62rem; color:var(--text2); margin-top:1px; }
+
+  .rw-entries-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px 22px; margin-bottom:18px; }
+  .rw-entries-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .rw-entries-title { font-size:.85rem; font-weight:700; display:flex; align-items:center; gap:8px; }
+  .rw-entries-badge { font-size:.6rem; font-weight:700; background:rgba(255,255,255,.06); color:var(--text3); padding:3px 10px; border-radius:20px; }
+  .rw-entries-num { font-size:2.4rem; font-weight:800; line-height:1; margin-bottom:4px; }
+  .rw-entries-target { font-size:.75rem; color:var(--text2); text-align:right; margin-bottom:6px; }
+  .rw-entries-track { height:5px; background:rgba(255,255,255,.07); border-radius:3px; overflow:hidden; margin-bottom:12px; }
+  .rw-entries-fill { height:100%; background:#b45309; border-radius:3px; transition:width .4s; }
+  .rw-qualify-note { background:#fef9ee; border-radius:8px; padding:10px 14px; font-size:.76rem; color:#b45309; text-align:center; }
+
+  .rw-action-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:22px; margin-bottom:14px; position:relative; overflow:hidden; }
+  .rw-action-card.highlight { background:#fef9ee; border-color:rgba(180,83,9,.2); }
+  .rw-corner-tag { position:absolute; top:0; right:0; background:#b45309; color:#fff; font-size:.55rem; font-weight:800; letter-spacing:.06em; padding:5px 12px; border-radius:0 14px 0 10px; }
+  .rw-corner-tag.orange { background:#f97316; }
+  .rw-action-head { display:flex; align-items:center; gap:14px; margin-bottom:10px; }
+  .rw-action-icon { width:42px; height:42px; border-radius:50%; background:rgba(180,83,9,.12); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1.1rem; }
+  .rw-action-name { font-size:.92rem; font-weight:700; }
+  .rw-action-name .amber { color:#b45309; }
+  .rw-action-desc { font-size:.76rem; color:var(--text2); line-height:1.55; margin-bottom:14px; }
+  .rw-action-stats { display:flex; gap:28px; margin-bottom:16px; }
+  .rw-as { text-align:center; }
+  .rw-as-val { font-size:1.1rem; font-weight:800; color:#b45309; }
+  .rw-as-val.black { color:var(--text); }
+  .rw-as-val.grn { color:var(--green); }
+  .rw-as-lbl { font-size:.62rem; color:var(--text2); }
+  .rw-btn { border:none; border-radius:10px; padding:13px 18px; font-size:.82rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px; transition:opacity .15s; }
+  .rw-btn:hover:not(:disabled) { opacity:.85; }
+  .rw-btn.gold { background:#b45309; color:#fff; width:100%; }
+  .rw-btn.outline { background:transparent; border:1.5px solid var(--border); color:var(--text); flex:1; }
+  .rw-btn-pair { display:flex; gap:10px; }
+  .rw-proof-note { font-size:.68rem; color:var(--text3); text-align:center; margin-top:8px; }
+
+  .rw-section-title { font-size:.88rem; font-weight:700; margin:22px 0 8px; display:flex; align-items:center; gap:7px; }
+  .rw-section-sub { font-size:.73rem; color:var(--text2); margin:-4px 0 12px; }
+  .rw-earn-item { background:var(--card); border:1px solid var(--border); border-radius:11px; padding:13px 16px; display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+  .rw-earn-icon { width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.05); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:.9rem; }
+  .rw-earn-info { flex:1; }
+  .rw-earn-name { font-size:.82rem; font-weight:600; }
+  .rw-earn-pts { font-size:.68rem; color:#b45309; font-weight:600; }
+  .rw-verify-btn { background:#b45309; color:#fff; border:none; border-radius:8px; padding:7px 14px; font-size:.72rem; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:5px; white-space:nowrap; }
+  .rw-verify-btn:hover { opacity:.85; }
+  .rw-verify-btn.submitted { background:rgba(255,255,255,.08); color:var(--text3); cursor:default; pointer-events:none; }
+
+  .rw-daily-card { background:#eef2ff; border:1px solid rgba(99,102,241,.25); border-radius:14px; padding:20px 22px; margin-bottom:14px; }
+  .rw-daily-title { font-size:.88rem; font-weight:700; color:#4338ca; margin-bottom:3px; display:flex; align-items:center; gap:7px; }
+  .rw-daily-sub { font-size:.74rem; color:#6366f1; margin-bottom:14px; }
+  .rw-daily-item { background:#fff; border-radius:10px; padding:12px 16px; display:flex; align-items:center; gap:12px; }
+  .rw-daily-info { flex:1; }
+  .rw-daily-name { font-size:.82rem; font-weight:600; color:#1e1b4b; }
+  .rw-daily-pts { font-size:.7rem; color:#6366f1; }
+  .rw-daily-count { font-size:.95rem; font-weight:800; color:#4338ca; white-space:nowrap; }
+  .rw-daily-note { font-size:.7rem; color:#6366f1; text-align:center; margin-top:10px; }
+
+  .rw-perf-card { background:#f0fdf4; border:1px solid rgba(34,197,94,.2); border-radius:14px; padding:20px 22px; margin-bottom:14px; }
+  .rw-perf-title { font-size:.88rem; font-weight:700; color:#166534; margin-bottom:3px; display:flex; align-items:center; gap:7px; }
+  .rw-perf-sub { font-size:.74rem; color:#16a34a; margin-bottom:14px; }
+
+  .rw-cycle-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px 22px; margin-bottom:14px; }
+  .rw-cycle-title { font-size:.88rem; font-weight:700; margin-bottom:3px; display:flex; align-items:center; gap:7px; }
+  .rw-cycle-sub { font-size:.74rem; color:var(--text2); margin-bottom:14px; }
+  .rw-keep-note { background:#fef9ee; border-radius:8px; padding:10px 14px; font-size:.76rem; color:#b45309; text-align:center; margin-top:10px; }
+
+  .rw-toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%); background:#1e1e1e; color:#fff; font-size:.8rem; font-weight:600; padding:12px 22px; border-radius:40px; box-shadow:0 4px 20px rgba(0,0,0,.4); z-index:9999; opacity:0; transition:opacity .25s; pointer-events:none; }
+  .rw-toast.show { opacity:1; }
   </style>
 </head>
 <body>
@@ -403,6 +491,14 @@
     <div class="nav-item" onclick="showView('wins',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       <span class="nav-label">Wins</span>
+    </div>
+    <div class="nav-item" onclick="showView('deals',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span class="nav-label">Deals</span>
+    </div>
+    <div class="nav-item" onclick="showView('rewards',this); updateRewardsUI();">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>
+      <span class="nav-label">Rewards</span>
     </div>
   </nav>
   <div class="sidebar-user">
@@ -624,6 +720,195 @@
     <p class="page-sub" style="margin-bottom:24px;">Share your progress and celebrate milestones.</p>
     <div class="card"><p class="empty-state">No wins posted yet.</p></div>
   </div>
+
+  <!-- ── Deals ── -->
+  <div class="view padded" id="view-deals">
+    <h1 class="page-title" style="margin-bottom:5px;">Exclusive Deals</h1>
+    <p class="page-sub" style="margin-bottom:22px;">Special partner offers just for our community.</p>
+
+    <div class="deals-banner">
+      <div class="deals-banner-icon">✦</div>
+      <div>
+        <div class="deals-banner-title">Unlock exclusive savings</div>
+        <div class="deals-banner-desc">These deals are negotiated exclusively for AI Branded Dropshipping members. Use the links below to get set up — it's important you sign up through these links.</div>
+      </div>
+    </div>
+
+    <a class="deal-row" href="https://re.aistorebuilder.com/base44-pricing?subid=ad-ventur" target="_blank">
+      <div class="deal-logo" style="background:#dbeafe;">🤖</div>
+      <div class="deal-info">
+        <div class="deal-name-row"><span class="deal-name-txt">Base44</span><span class="deal-tag">Builder Plan</span></div>
+        <div class="deal-desc-txt">AI app builder — build your branded store, checkout, and tools all in one platform.</div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+
+    <a class="deal-row" href="https://re.aistorebuilder.com/direct-checkout?subid=ad-ventur" target="_blank">
+      <div class="deal-logo" style="background:#d1fae5;">🛍️</div>
+      <div class="deal-info">
+        <div class="deal-name-row"><span class="deal-name-txt">Wix</span><span class="deal-tag">Join</span></div>
+        <div class="deal-desc-txt">Build your branded e-commerce store — powered by AI, built for sales.</div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+
+    <a class="deal-row" href="https://www.capcut.com/pro" target="_blank">
+      <div class="deal-logo" style="background:#ede9fe;">🎬</div>
+      <div class="deal-info">
+        <div class="deal-name-row"><span class="deal-name-txt">CapCut Pro</span><span class="deal-tag">7 Days Free</span></div>
+        <div class="deal-desc-txt">Professional video editing with AI-powered features. Perfect for creating viral ad content.</div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+
+    <a class="deal-row" href="https://www.omnisend.com" target="_blank">
+      <div class="deal-logo" style="background:#d1fae5;">📧</div>
+      <div class="deal-info">
+        <div class="deal-name-row"><span class="deal-name-txt">Omnisend</span><span class="deal-tag">30% Off</span></div>
+        <div class="deal-desc-txt">Powerful SMS & email marketing automation to boost your store's conversions.</div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  </div>
+
+  <!-- ── Rewards ── -->
+  <div class="view padded" id="view-rewards">
+    <h1 class="page-title" style="margin-bottom:5px;">🏆 Win a MacBook!</h1>
+    <p class="page-sub" style="margin-bottom:22px;">Complete actions below to earn entries. More entries = better chance to win!</p>
+
+    <!-- Prize Pool -->
+    <div class="rw-prize-card">
+      <div class="rw-prize-title">5 Apple MacBooks 💻</div>
+      <div class="rw-prize-sub">or pick the cash 💰</div>
+      <div class="rw-prize-stats">
+        <div class="rw-stat"><div class="rw-stat-val amber" id="rw-days-left">—</div><div class="rw-stat-lbl">Days Left</div></div>
+        <div class="rw-stat"><div class="rw-stat-val black">5</div><div class="rw-stat-lbl">Winners</div></div>
+      </div>
+    </div>
+
+    <!-- Your Entries -->
+    <div class="rw-entries-card">
+      <div class="rw-entries-head">
+        <div class="rw-entries-title">🎟️ Your Entries<span class="rw-entries-badge" id="rw-qualify-badge">50 more to qualify</span></div>
+      </div>
+      <div class="rw-entries-num" id="rw-entries-count">0</div>
+      <div class="rw-entries-target">/ 50 to qualify</div>
+      <div class="rw-entries-track"><div class="rw-entries-fill" id="rw-entries-bar" style="width:0%"></div></div>
+      <div class="rw-qualify-note">🔥 You're only <strong id="rw-entries-needed">50 entries</strong> away from qualifying!</div>
+    </div>
+
+    <!-- Keep Wix Active -->
+    <div class="rw-action-card highlight">
+      <div class="rw-corner-tag">FASTEST WAY IN</div>
+      <div class="rw-action-head">
+        <div class="rw-action-icon">🏆</div>
+        <div class="rw-action-name">Keep Wix Active for 30 Days = <span class="amber">50 Entries</span></div>
+      </div>
+      <div class="rw-action-desc">That's enough to qualify for the MacBook prize pool instantly. Just keep your Wix subscription active and prove it after 30 days.</div>
+      <div class="rw-action-stats">
+        <div class="rw-as"><div class="rw-as-val">50</div><div class="rw-as-lbl">Entries</div></div>
+        <div class="rw-as"><div class="rw-as-val black">30</div><div class="rw-as-lbl">Days</div></div>
+        <div class="rw-as"><div class="rw-as-val grn">✓</div><div class="rw-as-lbl">Auto-Qualify</div></div>
+      </div>
+      <button class="rw-btn gold" onclick="rwSubmitProof('wix-30-days','Keep Wix Active (30 Days)')">📷 Upload Proof (After 30 Days)</button>
+      <div class="rw-proof-note">📸 Screenshot your Wix dashboard showing your active subscription with 30+ days</div>
+    </div>
+
+    <!-- Trustpilot Review -->
+    <div class="rw-action-card">
+      <div class="rw-corner-tag orange">EASY 20 ENTRIES</div>
+      <div class="rw-action-head">
+        <div class="rw-action-icon">⭐</div>
+        <div class="rw-action-name">Leave a Trustpilot Review = <span class="amber">20 Entries</span></div>
+      </div>
+      <div class="rw-action-desc">Takes 2 minutes! Share your experience and earn 20 entries instantly.</div>
+      <div class="rw-btn-pair">
+        <a class="rw-btn outline" href="https://www.trustpilot.com" target="_blank" style="text-decoration:none;">↗ Leave Review</a>
+        <button class="rw-btn outline" style="flex:1" onclick="rwSubmitProof('trustpilot','Trustpilot Review')">📷 Upload Proof</button>
+      </div>
+      <div class="rw-proof-note">📸 After leaving your review, screenshot it and upload as proof</div>
+    </div>
+
+    <!-- Earn Entries (one-time) -->
+    <div class="rw-section-title">🎁 Earn Entries <span style="font-weight:400;color:var(--text3);font-size:.75rem;">· Complete these once</span></div>
+
+    <div class="rw-earn-item">
+      <div class="rw-earn-icon">🎁</div>
+      <div class="rw-earn-info"><div class="rw-earn-name">First Sale</div><div class="rw-earn-pts">+50 entries</div></div>
+      <button class="rw-verify-btn" id="rwv-first-sale" onclick="rwVerify('first-sale',this)">📷 Verify</button>
+    </div>
+    <div class="rw-earn-item">
+      <div class="rw-earn-icon">🎁</div>
+      <div class="rw-earn-info"><div class="rw-earn-name">Buy Wix Domain</div><div class="rw-earn-pts">+10 entries</div></div>
+      <button class="rw-verify-btn" id="rwv-wix-domain" onclick="rwVerify('wix-domain',this)">📷 Verify</button>
+    </div>
+    <div class="rw-earn-item">
+      <div class="rw-earn-icon">🎁</div>
+      <div class="rw-earn-info"><div class="rw-earn-name">Buy Wix Business Email</div><div class="rw-earn-pts">+10 entries</div></div>
+      <button class="rw-verify-btn" id="rwv-wix-email" onclick="rwVerify('wix-email',this)">📷 Verify</button>
+    </div>
+    <div class="rw-earn-item">
+      <div class="rw-earn-icon">🎁</div>
+      <div class="rw-earn-info"><div class="rw-earn-name">Set Up Payments</div><div class="rw-earn-pts">+10 entries</div></div>
+      <button class="rw-verify-btn" id="rwv-payments" onclick="rwVerify('payments',this)">📷 Verify</button>
+    </div>
+    <div class="rw-earn-item">
+      <div class="rw-earn-icon">🎁</div>
+      <div class="rw-earn-info"><div class="rw-earn-name">Create Facebook Ads Account</div><div class="rw-earn-pts">+10 entries</div></div>
+      <button class="rw-verify-btn" id="rwv-fb-ads" onclick="rwVerify('fb-ads',this)">📷 Verify</button>
+    </div>
+
+    <!-- Daily Learning Bonus -->
+    <div class="rw-daily-card">
+      <div class="rw-daily-title">▷ Daily Learning Bonus</div>
+      <div class="rw-daily-sub">Watch course videos to earn entries automatically (no screenshot needed!)</div>
+      <div class="rw-daily-item">
+        <div style="width:32px;height:32px;border-radius:50%;background:#c7d2fe;display:flex;align-items:center;justify-content:center;">▷</div>
+        <div class="rw-daily-info">
+          <div class="rw-daily-name">Complete Course Videos</div>
+          <div class="rw-daily-pts">+1 entry per video · Up to 5 per day</div>
+        </div>
+        <div class="rw-daily-count"><span id="rw-daily-count">0</span>/5 <div style="font-size:.6rem;color:#6366f1;font-weight:500;">today</div></div>
+      </div>
+      <div class="rw-daily-note">📚 Just watch the course — entries are added when you mark a lesson complete!</div>
+    </div>
+
+    <!-- Performance Bonuses -->
+    <div class="rw-perf-card">
+      <div class="rw-perf-title">↗ Performance Bonuses</div>
+      <div class="rw-perf-sub">Hit these Facebook ad spend milestones to earn bonus entries</div>
+      <div class="rw-earn-item" style="background:#fff;">
+        <div class="rw-earn-icon">🎁</div>
+        <div class="rw-earn-info"><div class="rw-earn-name">Spend $100+ on Facebook Ads (14 days)</div><div class="rw-earn-pts">+10 entries</div></div>
+        <button class="rw-verify-btn" id="rwv-spend-100" onclick="rwVerify('spend-100',this)">📷 Verify</button>
+      </div>
+      <div class="rw-earn-item" style="background:#fff;">
+        <div class="rw-earn-icon">🎁</div>
+        <div class="rw-earn-info"><div class="rw-earn-name">Spend $500+ on Facebook Ads (this cycle)</div><div class="rw-earn-pts">+20 entries</div></div>
+        <button class="rw-verify-btn" id="rwv-spend-500" onclick="rwVerify('spend-500',this)">📷 Verify</button>
+      </div>
+      <div class="rw-earn-item" style="background:#fff;">
+        <div class="rw-earn-icon">🎁</div>
+        <div class="rw-earn-info"><div class="rw-earn-name">Spend $1,000+ on Facebook Ads (this cycle)</div><div class="rw-earn-pts">+30 entries</div></div>
+        <button class="rw-verify-btn" id="rwv-spend-1000" onclick="rwVerify('spend-1000',this)">📷 Verify</button>
+      </div>
+      <div class="rw-proof-note" style="margin-top:8px;">📊 Upload a screenshot of your Facebook Ads Manager showing your spend</div>
+    </div>
+
+    <!-- Bonus Entries Every 60 Days -->
+    <div class="rw-cycle-card">
+      <div class="rw-cycle-title">✦ Bonus Entries (Every 60 Days)</div>
+      <div class="rw-cycle-sub">Keep these subscriptions active to earn entries every prize cycle</div>
+      <div class="rw-earn-item">
+        <div class="rw-earn-icon">🎁</div>
+        <div class="rw-earn-info"><div class="rw-earn-name">Keep Wix Subscription Active</div><div class="rw-earn-pts">+20 entries</div></div>
+        <button class="rw-verify-btn" id="rwv-wix-sub" onclick="rwVerify('wix-sub',this)">📷 Verify</button>
+      </div>
+      <div class="rw-keep-note">💡 Keep your Wix active to stay qualified for the prize pool!</div>
+    </div>
+  </div>
+
+  <div class="rw-toast" id="rw-toast"></div>
 
 </main>
 
@@ -1008,6 +1293,7 @@
     const act = getActivity();
     act[todayKey] = (act[todayKey] || 0) + 1;
     localStorage.setItem(storageKey('cp_activity'), JSON.stringify(act));
+    rwAddDaily();
     renderLessonView();
     renderPhasesGrid();
     updateStats();
@@ -1031,6 +1317,66 @@
 
   // Run portal init on load if already logged in
   if (_autoLogin) initPortal();
+
+  // ── Rewards ──
+  const PRIZE_END = new Date('2026-07-27');
+  const RW_ENTRIES_KEY  = storageKey('rw_entries');
+  const RW_ACTIONS_KEY  = storageKey('rw_actions');
+  const RW_DAILY_KEY    = storageKey('rw_daily');
+  const RW_QUALIFY      = 50;
+
+  function rwGetEntries() { return parseInt(localStorage.getItem(RW_ENTRIES_KEY) || '0'); }
+  function rwAddEntries(n) { localStorage.setItem(RW_ENTRIES_KEY, rwGetEntries() + n); updateRewardsUI(); }
+  function rwGetActions() { try { return JSON.parse(localStorage.getItem(RW_ACTIONS_KEY) || '{}'); } catch { return {}; } }
+  function rwSetAction(k) { const a = rwGetActions(); a[k] = 1; localStorage.setItem(RW_ACTIONS_KEY, JSON.stringify(a)); }
+  function rwDailyCount() { try { return (JSON.parse(localStorage.getItem(RW_DAILY_KEY) || '{}'))[localDate()] || 0; } catch { return 0; } }
+  function rwAddDaily() {
+    const d = localDate();
+    let rec; try { rec = JSON.parse(localStorage.getItem(RW_DAILY_KEY) || '{}'); } catch { rec = {}; }
+    if ((rec[d] || 0) < 5) { rec[d] = (rec[d] || 0) + 1; localStorage.setItem(RW_DAILY_KEY, JSON.stringify(rec)); rwAddEntries(1); }
+    updateRewardsUI();
+  }
+
+  function updateRewardsUI() {
+    const entries = rwGetEntries();
+    const needed  = Math.max(0, RW_QUALIFY - entries);
+    const pct     = Math.min(100, Math.round(entries / RW_QUALIFY * 100));
+    const daysLeft = Math.max(0, Math.ceil((PRIZE_END - new Date()) / 86400000));
+
+    const el = (id) => document.getElementById(id);
+    if (el('rw-entries-count'))  el('rw-entries-count').textContent  = entries;
+    if (el('rw-entries-bar'))    el('rw-entries-bar').style.width    = pct + '%';
+    if (el('rw-entries-needed')) el('rw-entries-needed').textContent = needed + (needed === 1 ? ' entry' : ' entries');
+    if (el('rw-qualify-badge'))  el('rw-qualify-badge').textContent  = needed > 0 ? needed + ' more to qualify' : '✓ Qualified!';
+    if (el('rw-days-left'))      el('rw-days-left').textContent      = daysLeft;
+    if (el('rw-daily-count'))    el('rw-daily-count').textContent    = rwDailyCount();
+
+    const actions = rwGetActions();
+    document.querySelectorAll('.rw-verify-btn').forEach(btn => {
+      const id = btn.id.replace('rwv-', '');
+      if (actions[id]) { btn.textContent = '✓ Submitted'; btn.classList.add('submitted'); }
+    });
+  }
+
+  function rwVerify(actionKey, btn) {
+    if (btn.classList.contains('submitted')) return;
+    rwSetAction(actionKey);
+    rwShowToast('Proof submitted! We\'ll review within 24 hours.');
+    updateRewardsUI();
+  }
+
+  function rwSubmitProof(actionKey, label) {
+    rwSetAction(actionKey);
+    rwShowToast('Proof submitted! We\'ll review within 24 hours.');
+    updateRewardsUI();
+  }
+
+  function rwShowToast(msg) {
+    const t = document.getElementById('rw-toast');
+    if (!t) return;
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
 </script>
 </body>
 </html>
