@@ -453,6 +453,73 @@
   .rw-toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%); background:#1e1e1e; color:#fff; font-size:.8rem; font-weight:600; padding:12px 22px; border-radius:40px; box-shadow:0 4px 20px rgba(0,0,0,.4); z-index:9999; opacity:0; transition:opacity .25s; pointer-events:none; }
   .rw-toast.show { opacity:1; }
 
+  /* ── Tools ── */
+  #view-tools { background:#f9f8f6; }
+  #view-tools .page-title, #view-tools .page-sub { color:#111; }
+  #view-tools .page-sub { color:#6b7280; }
+  .tool-card { background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:18px; padding:28px 26px; margin-bottom:22px; }
+  .tool-header { display:flex; align-items:center; gap:14px; margin-bottom:22px; }
+  .tool-icon-wrap { width:48px; height:48px; border-radius:14px; background:#f5f0e5; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0; }
+  .tool-title { font-size:1.05rem; font-weight:800; color:#111; margin-bottom:2px; }
+  .tool-subtitle { font-size:.78rem; color:#6b7280; }
+  .tool-body { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  @media (max-width:680px) { .tool-body { grid-template-columns:1fr; } }
+  .tool-col-head { font-size:.78rem; font-weight:700; color:#b45309; display:flex; align-items:center; gap:6px; margin-bottom:16px; }
+  .tool-field { margin-bottom:16px; }
+  .tool-label { font-size:.82rem; font-weight:600; color:#111; margin-bottom:7px; display:flex; align-items:center; gap:5px; flex-wrap:wrap; }
+  .tool-info { width:15px; height:15px; border:1.5px solid #9ca3af; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:.55rem; color:#9ca3af; flex-shrink:0; line-height:1; }
+  .tool-inp-wrap { display:flex; align-items:center; gap:8px; border:1.5px solid #e5e7eb; border-radius:10px; padding:11px 14px; background:#fff; transition:border-color .15s; }
+  .tool-inp-wrap:focus-within { border-color:#b45309; }
+  .tool-inp-wrap .cur { color:#9ca3af; font-size:.85rem; }
+  .tool-inp-wrap input { border:none; outline:none; width:100%; font-size:.9rem; color:#111; font-family:inherit; background:transparent; }
+  .tool-slider-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .tool-slider-lbl { font-size:.82rem; font-weight:600; color:#111; display:flex; align-items:center; gap:5px; }
+  .tool-slider-val { font-size:.82rem; font-weight:700; color:#b45309; }
+  .tool-slider { -webkit-appearance:none; width:100%; height:5px; border-radius:3px; outline:none; cursor:pointer; background:#e5e7eb; }
+  .tool-slider::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:#b45309; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.2); }
+  .tool-slider::-moz-range-thumb { width:20px; height:20px; border-radius:50%; background:#b45309; cursor:pointer; border:none; }
+  .tool-slider-marks { display:flex; justify-content:space-between; font-size:.6rem; color:#9ca3af; margin-top:4px; }
+  .tool-computed { background:#f9f8f6; border-radius:10px; padding:12px 14px; margin-top:4px; }
+  .tool-computed-lbl { font-size:.7rem; color:#6b7280; margin-bottom:2px; }
+  .tool-computed-val { font-size:1.1rem; font-weight:800; color:#16a34a; }
+  /* Result pieces */
+  .res-card { background:#f9f8f6; border:1px solid rgba(0,0,0,.07); border-radius:13px; padding:18px 20px; margin-bottom:12px; }
+  .res-lbl { font-size:.72rem; color:#6b7280; margin-bottom:6px; }
+  .res-big { font-size:2.2rem; font-weight:800; line-height:1; margin-bottom:4px; }
+  .res-big.green { color:#16a34a; } .res-big.amber { color:#b45309; }
+  .res-badge { display:inline-block; font-size:.65rem; font-weight:700; background:#dcfce7; color:#166534; padding:3px 10px; border-radius:20px; margin-top:6px; }
+  .res-badge.warn { background:#fefce8; color:#b45309; } .res-badge.bad { background:#fee2e2; color:#991b1b; }
+  .res-sub { font-size:.75rem; color:#6b7280; margin-top:4px; }
+  .res-rows { display:flex; flex-direction:column; gap:7px; margin-top:6px; }
+  .res-row { display:flex; justify-content:space-between; align-items:center; font-size:.8rem; }
+  .res-row .rl { color:#6b7280; } .res-row .rv { font-weight:700; color:#111; }
+  .res-row .rv.red { color:#dc2626; } .res-row .rv.green { color:#16a34a; }
+  .res-row.tot { border-top:1px solid #e5e7eb; padding-top:7px; margin-top:3px; }
+  .res-row.tot .rl { font-weight:700; color:#111; }
+  .res-accent { background:#fdf9ef; border:1.5px solid rgba(180,83,9,.2); border-radius:13px; padding:18px 20px; margin-bottom:12px; }
+  .res-accent-lbl { font-size:.72rem; color:#b45309; font-weight:700; margin-bottom:6px; }
+  .res-accent-big { font-size:1.6rem; font-weight:800; color:#111; margin-bottom:3px; }
+  .res-accent-sub { font-size:.73rem; color:#6b7280; }
+  .res-green { background:#f0fdf4; border:1px solid rgba(34,197,94,.2); border-radius:13px; padding:18px 20px; margin-bottom:12px; }
+  .res-green-lbl { font-size:.72rem; color:#16a34a; font-weight:700; margin-bottom:10px; }
+  .res-green-row { display:flex; gap:24px; }
+  .res-green-item label { font-size:.65rem; color:#6b7280; display:block; margin-bottom:2px; }
+  .res-green-item .gv { font-size:1rem; font-weight:800; color:#111; }
+  .res-green-item .gv.green { color:#16a34a; }
+  .res-green-eff { font-size:.72rem; color:#6b7280; margin-top:8px; }
+  .res-green-eff span { color:#16a34a; font-weight:600; }
+  .res-2g { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .res-2g-item label { font-size:.62rem; color:#6b7280; display:block; margin-bottom:2px; }
+  .res-2g-item .bv { font-size:1.1rem; font-weight:800; color:#111; }
+  .res-2g-item .bv.red { color:#dc2626; } .res-2g-item .bv.green { color:#16a34a; } .res-2g-item .bv.amber { color:#b45309; }
+  .pro-tip { font-size:.74rem; color:#6b7280; line-height:1.55; margin-top:6px; }
+  .pro-tip strong { color:#b45309; }
+  .sc-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .sc-row-lbl { font-size:.77rem; color:#6b7280; width:130px; flex-shrink:0; }
+  .sc-bar-track { flex:1; height:5px; background:#e5e7eb; border-radius:3px; overflow:hidden; }
+  .sc-bar-fill { height:100%; background:#b45309; border-radius:3px; transition:width .25s; }
+  .sc-row-pts { font-size:.77rem; font-weight:700; color:#111; width:32px; text-align:right; flex-shrink:0; }
+
   /* ── Elite Status — gold/cream theme ── */
   #view-elite { background:#fdf9f0; }
   #view-elite .page-title, #view-elite .page-sub { color:#111; }
@@ -551,6 +618,10 @@
     <div class="nav-item" onclick="showView('elite',this); updateEliteUI();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12-6 4-4-8-4 8-6-4z"/></svg>
       <span class="nav-label">Elite</span>
+    </div>
+    <div class="nav-item" onclick="showView('tools',this); initTools();">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+      <span class="nav-label">Tools</span>
     </div>
   </nav>
   <div class="sidebar-user">
@@ -927,6 +998,262 @@
       </div>
       <div class="rw-keep-note">💡 Keep your Wix active to stay qualified for the prize pool!</div>
     </div>
+  </div>
+
+  <!-- ── Tools ── -->
+  <div class="view padded" id="view-tools">
+    <h1 class="page-title" style="margin-bottom:4px;">Tools</h1>
+    <p class="page-sub" style="margin-bottom:24px;">Helpful calculators and tools to grow your store</p>
+
+    <!-- 1. Profit Margin Calculator -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-icon-wrap">🧮</div>
+        <div><div class="tool-title">Profit Margin Calculator</div><div class="tool-subtitle">Calculate your profit per product and see potential earnings</div></div>
+      </div>
+      <div class="tool-body">
+        <div>
+          <div class="tool-col-head">$ &nbsp;Enter Your Numbers</div>
+          <div class="tool-field"><div class="tool-label">Product Cost <span class="tool-info">i</span></div><div class="tool-inp-wrap"><span class="cur">$</span><input type="number" id="pm-cost" value="15" min="0" oninput="calcPM()"></div></div>
+          <div class="tool-field"><div class="tool-label">Selling Price <span class="tool-info">i</span></div><div class="tool-inp-wrap"><span class="cur">$</span><input type="number" id="pm-price" value="39.99" min="0" oninput="calcPM()"></div></div>
+          <div class="tool-field"><div class="tool-label">Shipping Cost <span class="tool-info">i</span></div><div class="tool-inp-wrap"><span class="cur">$</span><input type="number" id="pm-ship" value="3" min="0" oninput="calcPM()"></div></div>
+          <div class="tool-field"><div class="tool-label">Advertising Cost <span class="tool-info">i</span></div><div class="tool-inp-wrap"><span class="cur">$</span><input type="number" id="pm-ads" value="3" min="0" oninput="calcPM()"></div></div>
+          <div class="tool-field"><div class="tool-label">Other Expenses <span class="tool-info">i</span></div><div class="tool-inp-wrap"><span class="cur">$</span><input type="number" id="pm-other" value="2" min="0" oninput="calcPM()"></div></div>
+          <div class="tool-field">
+            <div class="tool-slider-row"><div class="tool-slider-lbl">Units Sold <span class="tool-info">i</span></div><span class="tool-slider-val" id="pm-units-lbl">100 units</span></div>
+            <input type="range" class="tool-slider" id="pm-units" min="1" max="1000" value="100" oninput="updateSlider(this);calcPM()">
+            <div class="tool-slider-marks"><span>1</span><span>500</span><span>1000</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="tool-col-head">↗ &nbsp;Your Profits</div>
+          <div class="res-card">
+            <div class="res-lbl">Profit Per Unit</div>
+            <div class="res-big green" id="pm-profit">$16.99</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+              <span style="font-size:.75rem;color:#6b7280;">% <span id="pm-margin" style="color:#16a34a;font-weight:700;">42.5% margin</span></span>
+              <span class="res-badge" id="pm-mbadge">Excellent</span>
+            </div>
+          </div>
+          <div class="res-card">
+            <div class="res-lbl" style="margin-bottom:10px;">Cost Breakdown Per Unit</div>
+            <div class="res-rows">
+              <div class="res-row"><span class="rl">Product Cost</span><span class="rv" id="pm-br-cost">$15.00</span></div>
+              <div class="res-row"><span class="rl">Shipping</span><span class="rv" id="pm-br-ship">$3.00</span></div>
+              <div class="res-row"><span class="rl">Advertising</span><span class="rv" id="pm-br-ads">$3.00</span></div>
+              <div class="res-row"><span class="rl">Other Expenses</span><span class="rv" id="pm-br-other">$2.00</span></div>
+              <div class="res-row tot"><span class="rl">Total Cost</span><span class="rv" id="pm-br-total">$23.00</span></div>
+            </div>
+          </div>
+          <div class="res-accent">
+            <div class="res-accent-lbl" id="pm-proj-title">Projected Earnings (100 units)</div>
+            <div class="res-2g" style="margin-bottom:12px;">
+              <div class="res-2g-item"><label>REVENUE</label><div class="bv" id="pm-rev">$3,999.00</div></div>
+              <div class="res-2g-item"><label>TOTAL COSTS</label><div class="bv red" id="pm-tc">$2,300.00</div></div>
+            </div>
+            <div class="res-2g">
+              <div class="res-2g-item"><label>NET PROFIT</label><div class="bv green" id="pm-net">$1,699.00</div></div>
+              <div class="res-2g-item"><label>ROI</label><div class="bv amber" id="pm-roi">74%</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. ROAS Calculator -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-icon-wrap">🎯</div>
+        <div><div class="tool-title">ROAS Calculator</div><div class="tool-subtitle">Calculate your Return on Ad Spend</div></div>
+      </div>
+      <div class="tool-body">
+        <div>
+          <div class="tool-col-head">$ &nbsp;Enter Your Numbers</div>
+          <div class="tool-field"><div class="tool-label">Ad Spend <span class="tool-info">i</span></div><div class="tool-inp-wrap"><span class="cur">$</span><input type="number" id="roas-spend" value="500" min="0" oninput="calcROAS()"></div></div>
+          <div class="tool-field"><div class="tool-label">Revenue Generated <span class="tool-info">i</span></div><div class="tool-inp-wrap"><span class="cur">$</span><input type="number" id="roas-rev" value="2000" min="0" oninput="calcROAS()"></div></div>
+          <div class="tool-field"><div class="tool-label">Product Costs (COGS) <span class="tool-info">i</span></div><div class="tool-inp-wrap"><span class="cur">$</span><input type="number" id="roas-cogs" value="600" min="0" oninput="calcROAS()"></div></div>
+        </div>
+        <div>
+          <div class="tool-col-head">↗ &nbsp;Your ROAS</div>
+          <div class="res-card">
+            <div class="res-lbl">Return on Ad Spend</div>
+            <div class="res-big green" id="roas-val" style="font-size:2.4rem;">4.00x</div>
+            <span class="res-badge" id="roas-badge">Excellent</span>
+          </div>
+          <div class="res-card">
+            <div class="res-lbl" style="margin-bottom:10px;">Breakdown</div>
+            <div class="res-rows">
+              <div class="res-row"><span class="rl">Revenue</span><span class="rv" id="roas-br-rev">$2,000</span></div>
+              <div class="res-row"><span class="rl">Ad Spend</span><span class="rv red" id="roas-br-spend">-$500</span></div>
+              <div class="res-row"><span class="rl">Product Costs</span><span class="rv red" id="roas-br-cogs">-$600</span></div>
+              <div class="res-row tot"><span class="rl">Net Profit</span><span class="rv green" id="roas-net">$900</span></div>
+            </div>
+          </div>
+          <div class="res-accent">
+            <div class="res-accent-lbl">Break-even ROAS</div>
+            <div class="res-accent-big" id="roas-be">2.20x</div>
+            <div class="res-accent-sub">You need at least this ROAS to break even</div>
+          </div>
+          <div class="pro-tip"><strong>💡 Pro Tip:</strong> Aim for 3x+ ROAS to have healthy margins after all costs.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Break-Even Calculator -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-icon-wrap">⚖️</div>
+        <div><div class="tool-title">Break-Even Calculator</div><div class="tool-subtitle">Find out how many sales you need to cover costs</div></div>
+      </div>
+      <div class="tool-body">
+        <div>
+          <div class="tool-col-head">$ &nbsp;Enter Your Numbers</div>
+          <div class="tool-field"><div class="tool-label">Fixed Costs (Monthly) <span class="tool-info">i</span></div><div class="tool-inp-wrap"><span class="cur">$</span><input type="number" id="be-fixed" value="500" min="0" oninput="calcBE()"></div></div>
+          <div class="tool-field"><div class="tool-label">Cost Per Product <span class="tool-info">i</span></div><div class="tool-inp-wrap"><span class="cur">$</span><input type="number" id="be-cost" value="15" min="0" oninput="calcBE()"></div></div>
+          <div class="tool-field"><div class="tool-label">Selling Price <span class="tool-info">i</span></div><div class="tool-inp-wrap"><span class="cur">$</span><input type="number" id="be-price" value="39.99" min="0" oninput="calcBE()"></div></div>
+          <div class="tool-computed"><div class="tool-computed-lbl">Profit Per Unit</div><div class="tool-computed-val" id="be-ppu">$24.99</div></div>
+        </div>
+        <div>
+          <div class="tool-col-head">↗ &nbsp;Break-Even Point</div>
+          <div class="res-card">
+            <div class="res-lbl">Units to Break Even</div>
+            <div class="res-big amber" id="be-units" style="font-size:2.6rem;">21</div>
+            <div class="res-sub" id="be-rev-note">= $839.79 in revenue</div>
+          </div>
+          <div class="res-card">
+            <div class="res-lbl" style="margin-bottom:10px;">Units Needed for Profit Targets</div>
+            <div class="res-rows">
+              <div class="res-row"><span class="rl">$500 profit</span><span class="rv" id="be-t500">41 units</span></div>
+              <div class="res-row"><span class="rl">$1,000 profit</span><span class="rv" id="be-t1000">61 units</span></div>
+              <div class="res-row"><span class="rl" style="color:#b45309;font-weight:600;">$5,000 profit</span><span class="rv" style="color:#b45309;" id="be-t5000">221 units</span></div>
+            </div>
+          </div>
+          <div class="res-accent">
+            <div class="res-accent-lbl">Daily Sales Target (30 days)</div>
+            <div class="res-accent-big" id="be-daily">1 sales/day</div>
+            <div class="res-accent-sub">To break even this month</div>
+          </div>
+          <div class="pro-tip"><strong>💡 Pro Tip:</strong> Keep fixed costs low when starting out to reach break-even faster.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Ad Budget Planner -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-icon-wrap">📢</div>
+        <div><div class="tool-title">Ad Budget Planner</div><div class="tool-subtitle">Plan your ad spend based on revenue goals</div></div>
+      </div>
+      <div class="tool-body">
+        <div>
+          <div class="tool-col-head">$ &nbsp;Set Your Goals</div>
+          <div class="tool-field"><div class="tool-label">Monthly Revenue Target <span class="tool-info">i</span></div><div class="tool-inp-wrap"><span class="cur">$</span><input type="number" id="ab-rev" value="5000" min="0" oninput="calcAB()"></div></div>
+          <div class="tool-field"><div class="tool-label">Average Order Value <span class="tool-info">i</span></div><div class="tool-inp-wrap"><span class="cur">$</span><input type="number" id="ab-aov" value="45" min="1" oninput="calcAB()"></div></div>
+          <div class="tool-field">
+            <div class="tool-slider-row"><div class="tool-slider-lbl">Target ROAS <span class="tool-info">i</span></div><span class="tool-slider-val" id="ab-roas-lbl">3x</span></div>
+            <input type="range" class="tool-slider" id="ab-roas" min="1" max="6" step="0.5" value="3" oninput="updateSlider(this);calcAB()">
+            <div class="tool-slider-marks"><span>1x</span><span>3x</span><span>6x</span></div>
+          </div>
+          <div class="tool-field">
+            <div class="tool-slider-row"><div class="tool-slider-lbl">Profit Margin <span class="tool-info">i</span></div><span class="tool-slider-val" id="ab-margin-lbl">40%</span></div>
+            <input type="range" class="tool-slider" id="ab-margin" min="10" max="70" step="5" value="40" oninput="updateSlider(this);calcAB()">
+            <div class="tool-slider-marks"><span>10%</span><span>40%</span><span>70%</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="tool-col-head">↗ &nbsp;Your Ad Budget</div>
+          <div class="res-card">
+            <div class="res-2g">
+              <div class="res-2g-item"><label>Monthly Budget</label><div class="bv amber" id="ab-monthly">$1,667</div></div>
+              <div class="res-2g-item"><label>📅 Daily Budget</label><div class="bv" id="ab-daily">$55.56</div></div>
+            </div>
+          </div>
+          <div class="res-card">
+            <div class="res-lbl" style="margin-bottom:10px;">Key Metrics</div>
+            <div class="res-rows">
+              <div class="res-row"><span class="rl">Orders Needed</span><span class="rv" id="ab-orders">112 orders</span></div>
+              <div class="res-row"><span class="rl">Orders Per Day</span><span class="rv" id="ab-opd">3.7/day</span></div>
+              <div class="res-row"><span class="rl">Target Cost/Purchase</span><span class="rv" id="ab-cpp">$14.88</span></div>
+            </div>
+          </div>
+          <div class="res-green">
+            <div class="res-green-lbl">Profit Projection</div>
+            <div class="res-green-row">
+              <div class="res-green-item"><label>Gross Profit</label><div class="gv" id="ab-gross">$2,000</div></div>
+              <div class="res-green-item"><label>Net Profit</label><div class="gv green" id="ab-net">$333</div></div>
+            </div>
+            <div class="res-green-eff">Effective margin after ads: <span id="ab-eff">6.7%</span></div>
+          </div>
+          <div class="pro-tip"><strong>💡 Pro Tip:</strong> Start with a test budget of $50–$100/day to validate your ROAS before scaling.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Product Scorecard -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-icon-wrap">📦</div>
+        <div><div class="tool-title">Product Scorecard</div><div class="tool-subtitle">Rate products before testing to find winners faster</div></div>
+      </div>
+      <div class="tool-body">
+        <div>
+          <div class="tool-col-head">☆ &nbsp;Rate Each Factor</div>
+          <div class="tool-field">
+            <div class="tool-slider-row"><div class="tool-slider-lbl">Profit Margin <span class="tool-info">i</span> <span style="font-size:.65rem;color:#9ca3af;">(25%)</span></div><span class="tool-slider-val" id="sc-pm-lbl">30-40%</span></div>
+            <input type="range" class="tool-slider" id="sc-pm" min="1" max="5" value="3" oninput="updateSlider(this);calcSC()">
+            <div class="tool-slider-marks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          </div>
+          <div class="tool-field">
+            <div class="tool-slider-row"><div class="tool-slider-lbl">Competition Level <span class="tool-info">i</span> <span style="font-size:.65rem;color:#9ca3af;">(20%)</span></div><span class="tool-slider-val" id="sc-comp-lbl">Medium</span></div>
+            <input type="range" class="tool-slider" id="sc-comp" min="1" max="5" value="3" oninput="updateSlider(this);calcSC()">
+            <div class="tool-slider-marks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          </div>
+          <div class="tool-field">
+            <div class="tool-slider-row"><div class="tool-slider-lbl">Trend Strength <span class="tool-info">i</span> <span style="font-size:.65rem;color:#9ca3af;">(20%)</span></div><span class="tool-slider-val" id="sc-trend-lbl">Stable</span></div>
+            <input type="range" class="tool-slider" id="sc-trend" min="1" max="5" value="3" oninput="updateSlider(this);calcSC()">
+            <div class="tool-slider-marks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          </div>
+          <div class="tool-field">
+            <div class="tool-slider-row"><div class="tool-slider-lbl">Problem-Solving <span class="tool-info">i</span> <span style="font-size:.65rem;color:#9ca3af;">(15%)</span></div><span class="tool-slider-val" id="sc-prob-lbl">Useful</span></div>
+            <input type="range" class="tool-slider" id="sc-prob" min="1" max="5" value="3" oninput="updateSlider(this);calcSC()">
+            <div class="tool-slider-marks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          </div>
+          <div class="tool-field">
+            <div class="tool-slider-row"><div class="tool-slider-lbl">Shipping Ease <span class="tool-info">i</span> <span style="font-size:.65rem;color:#9ca3af;">(10%)</span></div><span class="tool-slider-val" id="sc-ship-lbl">Moderate</span></div>
+            <input type="range" class="tool-slider" id="sc-ship" min="1" max="5" value="3" oninput="updateSlider(this);calcSC()">
+            <div class="tool-slider-marks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          </div>
+          <div class="tool-field">
+            <div class="tool-slider-row"><div class="tool-slider-lbl">Ad Potential <span class="tool-info">i</span> <span style="font-size:.65rem;color:#9ca3af;">(10%)</span></div><span class="tool-slider-val" id="sc-ads-lbl">Average</span></div>
+            <input type="range" class="tool-slider" id="sc-ads" min="1" max="5" value="3" oninput="updateSlider(this);calcSC()">
+            <div class="tool-slider-marks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="tool-col-head">↗ &nbsp;Product Score</div>
+          <div class="res-card" style="text-align:center;">
+            <div class="res-lbl">Overall Score</div>
+            <div class="res-big amber" id="sc-score" style="font-size:3rem;line-height:1;">60</div>
+            <div style="font-size:.75rem;color:#6b7280;margin-bottom:8px;">out of 100</div>
+            <span class="res-badge warn" id="sc-verdict">Worth Testing</span>
+          </div>
+          <div class="res-card">
+            <div class="res-lbl" style="margin-bottom:12px;">Score Breakdown</div>
+            <div class="sc-row"><span class="sc-row-lbl">Profit Margin</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sc-bar-pm" style="width:60%"></div></div><span class="sc-row-pts" id="sc-pts-pm">+15</span></div>
+            <div class="sc-row"><span class="sc-row-lbl">Competition Level</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sc-bar-comp" style="width:60%"></div></div><span class="sc-row-pts" id="sc-pts-comp">+12</span></div>
+            <div class="sc-row"><span class="sc-row-lbl">Trend Strength</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sc-bar-trend" style="width:60%"></div></div><span class="sc-row-pts" id="sc-pts-trend">+12</span></div>
+            <div class="sc-row"><span class="sc-row-lbl">Problem-Solving</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sc-bar-prob" style="width:60%"></div></div><span class="sc-row-pts" id="sc-pts-prob">+9</span></div>
+            <div class="sc-row"><span class="sc-row-lbl">Shipping Ease</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sc-bar-ship" style="width:60%"></div></div><span class="sc-row-pts" id="sc-pts-ship">+6</span></div>
+            <div class="sc-row"><span class="sc-row-lbl">Ad Potential</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sc-bar-ads" style="width:60%"></div></div><span class="sc-row-pts" id="sc-pts-ads">+6</span></div>
+          </div>
+          <div class="res-green">
+            <div class="res-green-lbl">Recommendation</div>
+            <div style="font-size:.82rem;color:#374151;line-height:1.55;" id="sc-rec">Worth testing, but watch your metrics closely. Be ready to pivot.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <div class="rw-toast" id="rw-toast"></div>
@@ -1509,6 +1836,117 @@
     setTimeout(() => t.classList.remove('show'), 3500);
   }
 
+  // ── Tools ─────────────────────────────────────────────
+  function updateSlider(el) {
+    const min = parseFloat(el.min)||0, max = parseFloat(el.max)||100;
+    const pct = ((parseFloat(el.value)-min)/(max-min))*100;
+    el.style.background = `linear-gradient(to right,#b45309 ${pct}%,#e5e7eb ${pct}%)`;
+  }
+  function fmtD(n,d=2) { return '$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+  function fmtD0(n)     { return '$'+Math.round(Math.abs(n)).toLocaleString('en-US'); }
+  function v(id)        { return parseFloat(document.getElementById(id).value)||0; }
+  function set(id,val)  { const el=document.getElementById(id); if(el) el.textContent=val; }
+  function setC(id,col) { const el=document.getElementById(id); if(el) el.style.color=col; }
+
+  function calcPM() {
+    const cost=v('pm-cost'), price=v('pm-price'), ship=v('pm-ship'), ads=v('pm-ads'), other=v('pm-other');
+    const units=parseInt(document.getElementById('pm-units').value)||1;
+    set('pm-units-lbl', units+' units');
+    const tc=cost+ship+ads+other, profit=price-tc;
+    const margin=price>0?(profit/price)*100:0;
+    const [mb,mc]=margin>=40?['Excellent','']:margin>=25?['Good','']:margin>=15?['Fair','warn']:['Poor','bad'];
+    set('pm-profit',fmtD(profit)); setC('pm-profit',profit>=0?'#16a34a':'#dc2626');
+    set('pm-margin',margin.toFixed(1)+'% margin');
+    const bd=document.getElementById('pm-mbadge'); if(bd){bd.textContent=mb;bd.className='res-badge '+mc;}
+    set('pm-br-cost',fmtD(cost)); set('pm-br-ship',fmtD(ship)); set('pm-br-ads',fmtD(ads));
+    set('pm-br-other',fmtD(other)); set('pm-br-total',fmtD(tc));
+    set('pm-proj-title','Projected Earnings ('+units+' units)');
+    const rev=price*units, totC=tc*units, net=profit*units;
+    const roi=totC>0?(net/totC)*100:0;
+    set('pm-rev',fmtD(rev)); set('pm-tc',fmtD(totC));
+    set('pm-net',fmtD(net)); setC('pm-net',net>=0?'#16a34a':'#dc2626');
+    set('pm-roi',Math.round(roi)+'%');
+  }
+
+  function calcROAS() {
+    const spend=v('roas-spend'), rev=v('roas-rev'), cogs=v('roas-cogs');
+    const roas=spend>0?rev/spend:0, net=rev-spend-cogs, beRoas=spend>0?(cogs+spend)/spend:0;
+    const [rb,rc]=roas>=4?['Excellent','']:roas>=3?['Good','']:roas>=2?['Average','warn']:['Below Average','bad'];
+    const roasEl=document.getElementById('roas-val'); if(roasEl){roasEl.textContent=roas.toFixed(2)+'x';roasEl.style.color=roas>=3?'#16a34a':roas>=2?'#b45309':'#dc2626';}
+    const bd=document.getElementById('roas-badge'); if(bd){bd.textContent=rb;bd.className='res-badge '+rc;}
+    set('roas-br-rev',fmtD0(rev)); set('roas-br-spend','-'+fmtD0(spend)); set('roas-br-cogs','-'+fmtD0(cogs));
+    const ne=document.getElementById('roas-net'); if(ne){ne.textContent=fmtD0(net);ne.style.color=net>=0?'#16a34a':'#dc2626';}
+    set('roas-be',beRoas.toFixed(2)+'x');
+  }
+
+  function calcBE() {
+    const fixed=v('be-fixed'), cost=v('be-cost'), price=v('be-price');
+    const ppu=price-cost;
+    const ppuEl=document.getElementById('be-ppu'); if(ppuEl){ppuEl.textContent=fmtD(ppu);ppuEl.style.color=ppu>0?'#16a34a':'#dc2626';}
+    if(ppu<=0){['be-units','be-rev-note','be-t500','be-t1000','be-t5000','be-daily'].forEach(id=>set(id,'—'));return;}
+    const units=Math.ceil(fixed/ppu);
+    set('be-units',units); set('be-rev-note','= '+fmtD(units*price)+' in revenue');
+    set('be-t500',Math.ceil((fixed+500)/ppu)+' units');
+    set('be-t1000',Math.ceil((fixed+1000)/ppu)+' units');
+    set('be-t5000',Math.ceil((fixed+5000)/ppu)+' units');
+    set('be-daily',Math.ceil(units/30)+' sales/day');
+  }
+
+  function calcAB() {
+    const rev=v('ab-rev'), aov=Math.max(v('ab-aov'),1);
+    const roas=parseFloat(document.getElementById('ab-roas').value)||1;
+    const margin=parseFloat(document.getElementById('ab-margin').value)||0;
+    set('ab-roas-lbl',roas+'x'); set('ab-margin-lbl',margin+'%');
+    const monthly=rev/roas, daily=monthly/30;
+    const orders=rev/aov, opd=orders/30, cpp=orders>0?monthly/orders:0;
+    const gross=rev*(margin/100), net=gross-monthly, eff=rev>0?(net/rev)*100:0;
+    set('ab-monthly',fmtD0(monthly)); set('ab-daily',fmtD(daily));
+    set('ab-orders',Math.round(orders)+' orders'); set('ab-opd',opd.toFixed(1)+'/day'); set('ab-cpp',fmtD(cpp));
+    set('ab-gross',fmtD0(gross));
+    const ne=document.getElementById('ab-net'); if(ne){ne.textContent=fmtD0(net);ne.style.color=net>=0?'#16a34a':'#dc2626';}
+    set('ab-eff',eff.toFixed(1)+'%');
+  }
+
+  const SC_DEF=[
+    {id:'sc-pm',  w:.25, lblId:'sc-pm-lbl',  barId:'sc-bar-pm',  ptsId:'sc-pts-pm',  key:'pm',
+     labels:['<10% margin','10–20%','30–40%','40–60%','60%+']},
+    {id:'sc-comp',w:.20, lblId:'sc-comp-lbl',barId:'sc-bar-comp',ptsId:'sc-pts-comp',key:'comp',
+     labels:['Saturated','High','Medium','Low','Very Low']},
+    {id:'sc-trend',w:.20,lblId:'sc-trend-lbl',barId:'sc-bar-trend',ptsId:'sc-pts-trend',key:'trend',
+     labels:['Declining','Slow','Stable','Growing','Viral']},
+    {id:'sc-prob',w:.15,lblId:'sc-prob-lbl',barId:'sc-bar-prob',ptsId:'sc-pts-prob',key:'prob',
+     labels:['None','Weak','Useful','Strong','Essential']},
+    {id:'sc-ship',w:.10,lblId:'sc-ship-lbl',barId:'sc-bar-ship',ptsId:'sc-pts-ship',key:'ship',
+     labels:['Very Hard','Difficult','Moderate','Easy','Very Easy']},
+    {id:'sc-ads', w:.10,lblId:'sc-ads-lbl', barId:'sc-bar-ads', ptsId:'sc-pts-ads', key:'ads',
+     labels:['Poor','Below Avg','Average','Good','Excellent']},
+  ];
+  function calcSC() {
+    let total=0;
+    SC_DEF.forEach(f=>{
+      const val=parseInt(document.getElementById(f.id).value)||1;
+      const pts=Math.round(f.w*val*20);
+      total+=pts;
+      set(f.lblId,f.labels[val-1]);
+      set(f.ptsId,'+'+pts);
+      const bar=document.getElementById(f.barId); if(bar) bar.style.width=(val/5*100)+'%';
+    });
+    const se=document.getElementById('sc-score'); if(se){se.textContent=total;se.style.color=total>=75?'#16a34a':total>=60?'#b45309':'#dc2626';}
+    let verdict,vc,rec;
+    if(total>=90){verdict='Winner!';vc='';rec='Exceptional product! Prioritize this and scale aggressively once profitable.';}
+    else if(total>=75){verdict='Strong Product';vc='';rec='Strong product! Scale carefully once you\'re profitable.';}
+    else if(total>=60){verdict='Worth Testing';vc='warn';rec='Worth testing, but watch your metrics closely. Be ready to pivot.';}
+    else if(total>=40){verdict='Risky';vc='warn';rec='Risky. Only test with a very small budget. Consider improving key factors first.';}
+    else{verdict="Don't Test";vc='bad';rec='High risk. Consider finding a different product.';}
+    const vd=document.getElementById('sc-verdict'); if(vd){vd.textContent=verdict;vd.className='res-badge '+vc;}
+    set('sc-rec',rec);
+  }
+
+  function initTools() {
+    document.querySelectorAll('.tool-slider').forEach(s=>updateSlider(s));
+    calcPM(); calcROAS(); calcBE(); calcAB(); calcSC();
+  }
+
   // ── Elite Status ──────────────────────────────────────
   const ES_PENDING_KEY  = storageKey('es_pending');
   const ES_UNLOCKED_KEY = storageKey('es_unlocked');
@@ -1577,6 +2015,9 @@
       if (lock) lock.style.display = unlocked ? 'none' : '';
     });
   }
+
+  // Init tools on page load so values are correct when user navigates there
+  document.addEventListener('DOMContentLoaded', initTools);
 </script>
 </body>
 </html>
