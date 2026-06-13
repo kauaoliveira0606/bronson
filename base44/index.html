@@ -286,6 +286,13 @@
     .lesson-item-name { font-size: .8rem; font-weight: 500; line-height: 1.3; }
     .lesson-status-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.15); margin-left: auto; flex-shrink: 0; }
     .lesson-status-dot.done { background: var(--green); }
+    .day-group-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 5px; margin-top: 4px; }
+    .day-group-header:first-child { margin-top: 0; }
+    .day-group-label { font-size: .6rem; font-weight: 800; letter-spacing: .1em; color: var(--text3); text-transform: uppercase; }
+    .day-group-links { display: flex; gap: 8px; align-items: center; }
+    .sop-link { font-size: .62rem; font-weight: 600; color: var(--green); text-decoration: none; white-space: nowrap; }
+    .sop-link:hover { text-decoration: underline; }
+    .sop-link.disabled { color: var(--text3); cursor: default; pointer-events: none; }
 
     /* Lesson content area */
     .lesson-content { flex: 1; padding: 32px 36px; overflow-y: auto; }
@@ -684,7 +691,22 @@
       unlocked: true,
       color: '#f59e0b',
       icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>`,
-      lessons: [],
+      days: [
+        { label: 'DAY 01', sopUrl: '' },
+        { label: 'DAY 02', sopUrl: '' },
+        { label: 'DAY 03', sopUrl: '', fullSopUrl: '' },
+      ],
+      lessons: [
+        { title: 'Module 1.1 — Placeholder', desc: '', videoUrl: '' },
+        { title: 'Module 1.2 — Placeholder', desc: '', videoUrl: '' },
+        { title: 'Module 1.3 — Placeholder', desc: '', videoUrl: '' },
+        { title: 'Module 2.1 — Placeholder', desc: '', videoUrl: '' },
+        { title: 'Module 2.2 — Placeholder', desc: '', videoUrl: '' },
+        { title: 'Module 2.3 — Placeholder', desc: '', videoUrl: '' },
+        { title: 'Module 3.1 — Placeholder', desc: '', videoUrl: '' },
+        { title: 'Module 3.2 — Placeholder', desc: '', videoUrl: '' },
+        { title: 'Module 3.3 — Placeholder', desc: '', videoUrl: '' },
+      ],
     },
     {
       title: 'Finding a Product',
@@ -941,14 +963,40 @@
     else        { btn.textContent = 'Mark Complete'; btn.disabled = false; }
 
     // Sidebar lessons
-    document.getElementById('lesson-sidebar-list').innerHTML = lessons.map((ls, j) => {
-      const done_j = isLessonDone(currentPhase, j);
-      return `<div class="lesson-item${j === currentLesson ? ' active' : ''}${done_j ? ' done' : ''}" onclick="openPhase(${currentPhase},${j})">
-        <div class="lesson-num">${j + 1}</div>
-        <div class="lesson-item-name">${ls.title}</div>
-        <div class="lesson-status-dot${done_j ? ' done' : ''}"></div>
-      </div>`;
-    }).join('') || `<div style="padding:16px 20px;font-size:.78rem;color:var(--text3);">Lessons coming soon.</div>`;
+    const sidebarEl = document.getElementById('lesson-sidebar-list');
+    if (p.days) {
+      const perDay = Math.ceil(lessons.length / p.days.length);
+      sidebarEl.innerHTML = p.days.map((day, di) => {
+        const startIdx = di * perDay;
+        const dayLessons = lessons.slice(startIdx, startIdx + perDay);
+        const sopLink = day.sopUrl
+          ? `<a href="${day.sopUrl}" target="_blank" class="sop-link">Open SOP →</a>`
+          : `<span class="sop-link disabled">Open SOP →</span>`;
+        const fullSopLink = day.fullSopUrl
+          ? `<a href="${day.fullSopUrl}" target="_blank" class="sop-link">Full SOP (Days 1-3) →</a>`
+          : (day.hasOwnProperty('fullSopUrl') ? `<span class="sop-link disabled">Full SOP (Days 1-3) →</span>` : '');
+        const header = `<div class="day-group-header"><span class="day-group-label">${day.label}</span><div class="day-group-links">${sopLink}${fullSopLink}</div></div>`;
+        const items = dayLessons.map((ls, j) => {
+          const idx = startIdx + j;
+          const done_j = isLessonDone(currentPhase, idx);
+          return `<div class="lesson-item${idx === currentLesson ? ' active' : ''}${done_j ? ' done' : ''}" onclick="openPhase(${currentPhase},${idx})">
+            <div class="lesson-num">${idx + 1}</div>
+            <div class="lesson-item-name">${ls.title}</div>
+            <div class="lesson-status-dot${done_j ? ' done' : ''}"></div>
+          </div>`;
+        }).join('');
+        return header + items;
+      }).join('');
+    } else {
+      sidebarEl.innerHTML = lessons.map((ls, j) => {
+        const done_j = isLessonDone(currentPhase, j);
+        return `<div class="lesson-item${j === currentLesson ? ' active' : ''}${done_j ? ' done' : ''}" onclick="openPhase(${currentPhase},${j})">
+          <div class="lesson-num">${j + 1}</div>
+          <div class="lesson-item-name">${ls.title}</div>
+          <div class="lesson-status-dot${done_j ? ' done' : ''}"></div>
+        </div>`;
+      }).join('') || `<div style="padding:16px 20px;font-size:.78rem;color:var(--text3);">Lessons coming soon.</div>`;
+    }
   }
 
   function markComplete() {
