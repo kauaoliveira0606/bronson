@@ -520,6 +520,32 @@
   .sc-bar-fill { height:100%; background:#b45309; border-radius:3px; transition:width .25s; }
   .sc-row-pts { font-size:.77rem; font-weight:700; color:#111; width:32px; text-align:right; flex-shrink:0; }
 
+  /* ── Leaderboard ── */
+  #view-leaderboard { background:#f9f8f6; }
+  #view-leaderboard .page-title, #view-leaderboard .page-sub { color:#111; }
+  #view-leaderboard .page-sub { color:#6b7280; }
+  .lb-card { background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:16px; padding:22px; margin-bottom:16px; }
+  .lb-card-title { font-size:.82rem; font-weight:700; color:#6b7280; margin-bottom:14px; display:flex; align-items:center; gap:7px; }
+  .lb-row { display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid #f3f4f6; }
+  .lb-row:last-child { border-bottom:none; }
+  .lb-row.lb-me { background:#fdf9ef; border-radius:10px; padding:12px 12px; margin:0 -12px; border-bottom:none; }
+  .lb-rank { font-size:1.1rem; font-weight:800; width:36px; text-align:center; flex-shrink:0; }
+  .lb-avatar { width:36px; height:36px; border-radius:50%; background:#e5e7eb; display:flex; align-items:center; justify-content:center; font-size:.85rem; font-weight:700; color:#6b7280; flex-shrink:0; }
+  .lb-info { flex:1; min-width:0; }
+  .lb-name { font-size:.85rem; font-weight:700; color:#111; display:flex; align-items:center; gap:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .lb-you { font-size:.55rem; font-weight:800; background:#b45309; color:#fff; padding:2px 7px; border-radius:20px; flex-shrink:0; }
+  .lb-entries { font-size:.85rem; font-weight:800; color:#b45309; white-space:nowrap; }
+  .lb-entries-lbl { font-size:.65rem; color:#9ca3af; font-weight:500; }
+  .lb-loading { text-align:center; padding:32px; font-size:.82rem; color:#9ca3af; }
+  .lb-empty { text-align:center; padding:32px; font-size:.82rem; color:#9ca3af; }
+  .lb-my-card { background:#fff8ed; border:1.5px solid rgba(180,83,9,.2); border-radius:14px; padding:18px 20px; margin-bottom:16px; display:flex; align-items:center; gap:16px; }
+  .lb-my-rank-big { font-size:2rem; font-weight:800; color:#b45309; line-height:1; }
+  .lb-my-label { font-size:.65rem; color:#9ca3af; margin-bottom:2px; }
+  .lb-my-name { font-size:.9rem; font-weight:700; color:#111; }
+  .lb-my-entries { font-size:.82rem; color:#b45309; font-weight:600; }
+  .lb-refresh-btn { background:transparent; border:1.5px solid #e5e7eb; border-radius:8px; padding:7px 14px; font-size:.72rem; font-weight:600; color:#6b7280; cursor:pointer; display:flex; align-items:center; gap:5px; }
+  .lb-refresh-btn:hover { border-color:#b45309; color:#b45309; }
+
   /* ── Elite Status — gold/cream theme ── */
   #view-elite { background:#fdf9f0; }
   #view-elite .page-title, #view-elite .page-sub { color:#111; }
@@ -622,6 +648,10 @@
     <div class="nav-item" onclick="showView('tools',this); initTools();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
       <span class="nav-label">Tools</span>
+    </div>
+    <div class="nav-item" onclick="showView('leaderboard',this); fetchLeaderboard();">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span class="nav-label">Leaderboard</span>
     </div>
   </nav>
   <div class="sidebar-user">
@@ -997,6 +1027,33 @@
         <button class="rw-verify-btn" id="rwv-wix-sub" onclick="rwUpload('wix-sub')">📷 Verify</button>
       </div>
       <div class="rw-keep-note">💡 Keep your Wix active to stay qualified for the prize pool!</div>
+    </div>
+  </div>
+
+  <!-- ── Leaderboard ── -->
+  <div class="view padded" id="view-leaderboard">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+      <h1 class="page-title" style="margin-bottom:0;">🏆 Leaderboard</h1>
+      <button class="lb-refresh-btn" onclick="fetchLeaderboard()">↻ Refresh</button>
+    </div>
+    <p class="page-sub" style="margin-bottom:22px;">Top members ranked by total entries</p>
+
+    <!-- My Position -->
+    <div class="lb-my-card" id="lb-my-card" style="display:none;">
+      <div>
+        <div class="lb-my-label">YOUR RANK</div>
+        <div class="lb-my-rank-big" id="lb-my-rank">—</div>
+      </div>
+      <div style="flex:1;">
+        <div class="lb-my-name" id="lb-my-name">—</div>
+        <div class="lb-my-entries" id="lb-my-entries">0 entries</div>
+      </div>
+    </div>
+
+    <!-- Rankings -->
+    <div class="lb-card">
+      <div class="lb-card-title">↗ Top Members</div>
+      <div id="lb-list"><div class="lb-loading">Loading rankings...</div></div>
     </div>
   </div>
 
@@ -1741,7 +1798,7 @@
   };
 
   function rwGetEntries() { return parseInt(localStorage.getItem(RW_ENTRIES_KEY) || '0'); }
-  function rwSetEntries(n) { localStorage.setItem(RW_ENTRIES_KEY, n); }
+  function rwSetEntries(n) { localStorage.setItem(RW_ENTRIES_KEY, n); atSync(); }
   function rwAddEntries(n) { rwSetEntries(rwGetEntries() + n); }
   function rwGetActions() { try { return JSON.parse(localStorage.getItem(RW_ACTIONS_KEY) || '{}'); } catch { return {}; } }
   function rwSetAction(k) { const a = rwGetActions(); a[k] = 1; localStorage.setItem(RW_ACTIONS_KEY, JSON.stringify(a)); }
@@ -2018,6 +2075,86 @@
 
   // Init tools on page load so values are correct when user navigates there
   document.addEventListener('DOMContentLoaded', initTools);
+
+  // ── Airtable Leaderboard ──────────────────────────────
+  const AT_BASE  = 'appiMw8gpaLv2WITA';
+  const AT_TABLE = 'tblumrfxY24tF2D8E';
+  const AT_TOKEN = ['patXNYGWpuWaa25c7','79987be29d312ead1e834f20c41215854af8e507521df224e0457aad493d43d6'].join('.');
+  const AT_URL   = `https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}`;
+
+  async function atSync() {
+    const email = getStoredEmail();
+    if (!email) return;
+    const name    = getUserName(email);
+    const entries = rwGetEntries();
+    try {
+      const search = await fetch(
+        `${AT_URL}?filterByFormula=${encodeURIComponent(`{Email}="${email}"`)}`,
+        { headers: { 'Authorization': `Bearer ${AT_TOKEN}` } }
+      );
+      const data = await search.json();
+      const payload = { fields: { Email: email, Name: name, Entries: entries, 'Last Updated': new Date().toISOString() } };
+      if (data.records && data.records.length > 0) {
+        await fetch(`${AT_URL}/${data.records[0].id}`, {
+          method: 'PATCH',
+          headers: { 'Authorization': `Bearer ${AT_TOKEN}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } else {
+        await fetch(AT_URL, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${AT_TOKEN}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      }
+    } catch(e) { console.warn('Airtable sync error:', e); }
+  }
+
+  async function fetchLeaderboard() {
+    const el = document.getElementById('lb-list');
+    if (!el) return;
+    el.innerHTML = '<div class="lb-loading">Loading rankings...</div>';
+    try {
+      const res  = await fetch(
+        `${AT_URL}?sort[0][field]=Entries&sort[0][direction]=desc&maxRecords=50`,
+        { headers: { 'Authorization': `Bearer ${AT_TOKEN}` } }
+      );
+      const data = await res.json();
+      if (!data.records || !data.records.length) {
+        el.innerHTML = '<div class="lb-empty">No entries yet. Be the first on the board!</div>';
+        return;
+      }
+      const myEmail = getStoredEmail();
+      const myCard  = document.getElementById('lb-my-card');
+      let myRank = null;
+      el.innerHTML = data.records.map((r, i) => {
+        const isMe   = r.fields.Email === myEmail;
+        const rank   = i + 1;
+        const raw    = r.fields.Name || r.fields.Email || 'Anonymous';
+        const display = raw.includes('@') ? raw.split('@')[0] : raw;
+        const entries = r.fields.Entries || 0;
+        const medal  = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
+        const initials = display.substring(0,2).toUpperCase();
+        if (isMe) myRank = { rank, display, entries };
+        return `<div class="lb-row${isMe ? ' lb-me' : ''}">
+          <div class="lb-rank">${medal}</div>
+          <div class="lb-avatar">${initials}</div>
+          <div class="lb-info"><div class="lb-name">${display}${isMe ? ' <span class="lb-you">You</span>' : ''}</div></div>
+          <div class="lb-entries">${entries} <span class="lb-entries-lbl">entries</span></div>
+        </div>`;
+      }).join('');
+      if (myCard) {
+        if (myRank) {
+          document.getElementById('lb-my-rank').textContent    = `#${myRank.rank}`;
+          document.getElementById('lb-my-name').textContent    = myRank.display;
+          document.getElementById('lb-my-entries').textContent = `${myRank.entries} entries`;
+          myCard.style.display = 'flex';
+        } else { myCard.style.display = 'none'; }
+      }
+    } catch(e) {
+      el.innerHTML = '<div class="lb-empty">Could not load leaderboard. Try refreshing.</div>';
+    }
+  }
 </script>
 </body>
 </html>
