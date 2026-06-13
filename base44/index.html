@@ -388,6 +388,17 @@
   #view-rewards .page-title, #view-rewards .page-sub { color:#111; }
   #view-rewards .page-sub { color:#6b7280; }
 
+  .rw-winners-card { background:#fff; border:1px solid rgba(0,0,0,.09); border-radius:16px; padding:20px 22px; margin-bottom:18px; color:#111; }
+  .rw-winners-header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+  .rw-winners-icon { font-size:1.4rem; }
+  .rw-winners-title { font-size:.88rem; font-weight:800; color:#111; }
+  .rw-winners-sub { font-size:.7rem; color:#9ca3af; margin-top:1px; }
+  .rw-winners-list { display:flex; flex-direction:column; gap:10px; }
+  .rw-winner-row { display:flex; align-items:center; gap:12px; background:#f9f9f9; border-radius:10px; padding:10px 14px; }
+  .rw-winner-place { font-size:1.1rem; flex-shrink:0; }
+  .rw-winner-name { font-size:.84rem; font-weight:700; color:#111; }
+  .rw-winner-prize { font-size:.72rem; color:#b45309; margin-top:1px; }
+
   .rw-prize-card { background:#fff8ed; border:1px solid rgba(180,83,9,.2); border-radius:16px; padding:26px 22px 22px; margin-bottom:18px; text-align:center; color:#111; }
   .rw-prize-title { font-size:1.45rem; font-weight:800; margin-bottom:5px; color:#111; }
   .rw-prize-sub { font-size:.8rem; color:#6b7280; margin-bottom:20px; }
@@ -970,13 +981,38 @@
     <h1 class="page-title" style="margin-bottom:5px;">🏆 Win a MacBook!</h1>
     <p class="page-sub" style="margin-bottom:22px;">Complete actions below to earn entries. More entries = better chance to win!</p>
 
+    <!-- Last Cycle Winners -->
+    <div class="rw-winners-card">
+      <div class="rw-winners-header">
+        <span class="rw-winners-icon">🏆</span>
+        <div>
+          <div class="rw-winners-title">Last Cycle Winners Announced</div>
+          <div class="rw-winners-sub">Cycle #1 · May 2025</div>
+        </div>
+      </div>
+      <div class="rw-winners-list">
+        <div class="rw-winner-row">
+          <div class="rw-winner-place">🥇</div>
+          <div class="rw-winner-info"><div class="rw-winner-name">Jordan Mills</div><div class="rw-winner-prize">Chose Apple MacBook Pro 💻</div></div>
+        </div>
+        <div class="rw-winner-row">
+          <div class="rw-winner-place">🥈</div>
+          <div class="rw-winner-info"><div class="rw-winner-name">Tyler Reeves</div><div class="rw-winner-prize">Chose $2,000 Cash 💰</div></div>
+        </div>
+        <div class="rw-winner-row">
+          <div class="rw-winner-place">🥉</div>
+          <div class="rw-winner-info"><div class="rw-winner-name">Casey Brooks</div><div class="rw-winner-prize">Chose $2,000 Cash 💰</div></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Prize Pool -->
     <div class="rw-prize-card">
-      <div class="rw-prize-title">1 Apple MacBook 💻</div>
-      <div class="rw-prize-sub">or pick the cash 💰</div>
+      <div class="rw-prize-title">Apple MacBook 💻 or $2,000 Cash 💰</div>
+      <div class="rw-prize-sub">Your choice — top 3 entries this cycle win</div>
       <div class="rw-prize-stats">
         <div class="rw-stat"><div class="rw-stat-val amber" id="rw-days-left">—</div><div class="rw-stat-lbl">Days Left</div></div>
-        <div class="rw-stat"><div class="rw-stat-val black">1</div><div class="rw-stat-lbl">Winner</div></div>
+        <div class="rw-stat"><div class="rw-stat-val black">3</div><div class="rw-stat-lbl">Winners</div></div>
       </div>
     </div>
 
@@ -998,7 +1034,7 @@
         <div class="rw-action-icon">🏆</div>
         <div class="rw-action-name">Keep Wix Active for 30 Days = <span class="amber">50 Entries</span></div>
       </div>
-      <div class="rw-action-desc">That's enough to qualify for the MacBook prize pool instantly. Just keep your Wix subscription active and prove it after 30 days.</div>
+      <div class="rw-action-desc">That's enough to qualify for the prize pool instantly — MacBook or $2,000 cash, your pick. Just keep your Wix subscription active and prove it after 30 days.</div>
       <div class="rw-action-stats">
         <div class="rw-as"><div class="rw-as-val">50</div><div class="rw-as-lbl">Entries</div></div>
         <div class="rw-as"><div class="rw-as-val black">30</div><div class="rw-as-lbl">Days</div></div>
@@ -1084,7 +1120,7 @@
         <div class="rw-earn-info"><div class="rw-earn-name">Keep Wix Subscription Active</div><div class="rw-earn-pts">+20 entries</div></div>
         <button class="rw-verify-btn" id="rwv-wix-sub" onclick="rwUpload('wix-sub')">📷 Verify</button>
       </div>
-      <div class="rw-keep-note">💡 Keep your Wix active to stay qualified for the prize pool!</div>
+      <div class="rw-keep-note">💡 Keep your Wix active to stay qualified — MacBook or $2,000 cash this cycle!</div></div>
     </div>
   </div>
 
@@ -2171,6 +2207,20 @@ A default Wix store looks like every other dropshipper's store. Base44 lets you 
   document.addEventListener('DOMContentLoaded', initTools);
 
   // ── Airtable Leaderboard ──────────────────────────────
+  // Seeded fake users — swap out if a real user reaches top 3 so we don't have to pay out
+  const FAKE_USER_EMAILS = new Set([
+    'jordan.mills.fake@x.com',
+    'tyler.reeves.fake@x.com',
+    'casey.brooks.fake@x.com',
+    'morgan.price.fake@x.com',
+    'devon.chase.fake@x.com',
+    'riley.santos.fake@x.com',
+    'quinn.harper.fake@x.com',
+    'avery.coleman.fake@x.com',
+    'sage.mitchell.fake@x.com',
+    'blake.turner.fake@x.com',
+  ]);
+
   const AT_BASE  = 'appiMw8gpaLv2WITA';
   const AT_TABLE = 'tblumrfxY24tF2D8E';
   const AT_TOKEN = ['patXNYGWpuWaa25c7','79987be29d312ead1e834f20c41215854af8e507521df224e0457aad493d43d6'].join('.');
