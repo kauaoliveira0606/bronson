@@ -325,7 +325,10 @@
       padding: 24px 28px;
     }
     .lesson-info-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
-    .lesson-info-desc  { font-size: .82rem; color: var(--text2); line-height: 1.6; margin-bottom: 24px; }
+    .lesson-info-desc  { font-size: .82rem; color: var(--text2); line-height: 1.6; margin-bottom: 16px; }
+    .lesson-sop-row { font-size: .82rem; color: var(--text3); margin-bottom: 24px; }
+    .lesson-sop-link { color: #60a5fa; text-decoration: none; }
+    .lesson-sop-link:hover { text-decoration: underline; }
 
     .mark-complete-btn {
       width: 100%;
@@ -516,7 +519,8 @@
         </div>
         <div class="lesson-info-card">
           <h2 class="lesson-info-title" id="lv-lesson-title">Lesson Title</h2>
-          <p class="lesson-info-desc"  id="lv-lesson-desc">Lesson description coming soon.</p>
+          <p class="lesson-info-desc" id="lv-lesson-desc">Lesson description coming soon.</p>
+          <div class="lesson-sop-row" id="lv-sop-row" style="display:none">SOP: <a class="lesson-sop-link" id="lv-sop-link" href="#" target="_blank"></a></div>
           <button class="mark-complete-btn" id="mark-btn" onclick="markComplete()">Mark Complete</button>
         </div>
       </div>
@@ -697,7 +701,7 @@
         { label: 'DAY 03', sopUrl: '', fullSopUrl: '' },
       ],
       lessons: [
-        { title: '1) Welcome + instructions', desc: '', videoUrl: '' },
+        { title: '1) Welcome + instructions', desc: 'Day 1 · Workshop overview — meet Base44 and see what you\'re going to build over the next three days.', videoUrl: '', sopUrl: '' },
         { title: 'Module 1.2 — Placeholder', desc: '', videoUrl: '' },
         { title: 'Module 1.3 — Placeholder', desc: '', videoUrl: '' },
         { title: 'Module 2.1 — Placeholder', desc: '', videoUrl: '' },
@@ -948,6 +952,10 @@
     document.getElementById('lv-pct').textContent          = pct + '%';
     document.getElementById('lv-lesson-title').textContent = l.title;
     document.getElementById('lv-lesson-desc').textContent  = l.desc || 'Content coming soon.';
+    const sopRow = document.getElementById('lv-sop-row');
+    const sopLink = document.getElementById('lv-sop-link');
+    if (l.sopUrl) { sopRow.style.display = ''; sopLink.href = l.sopUrl; sopLink.textContent = l.sopUrl; }
+    else { sopRow.style.display = 'none'; }
 
     // Video
     const va = document.getElementById('video-area');
