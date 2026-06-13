@@ -889,15 +889,17 @@
     const desc   = locked ? 'Finish the previous phase to unlock.' : (p.desc || 'Your content coming soon.');
     const lessTxt = total > 0 ? (locked ? `${total} lesson${total !== 1 ? 's' : ''}` : `${done} / ${total} lessons`) : 'Coming soon';
     const pctTxt  = locked ? '—' : pct + '%';
-    return `<div class="phase-card${locked ? ' locked' : ''}" onclick="${locked ? '' : `openPhase(${i})`}">
+    const cardColor = p.unlocked && p.color ? p.color : null;
+    const cardStyle = cardColor ? `background:${cardColor}18; border-color:${cardColor}45;` : '';
+    return `<div class="phase-card${locked ? ' locked' : ''}" onclick="${locked ? '' : `openPhase(${i})`}" style="${cardStyle}">
       <div class="phase-head">
-        <div class="phase-icon-wrap${p.unlocked ? ' open' : ''}" style="${p.unlocked && p.color ? `background:${p.color}22;` : ''}">${p.unlocked ? (p.icon || playIcon) : lockIcon}</div>
+        <div class="phase-icon-wrap${p.unlocked ? ' open' : ''}" style="${p.unlocked && p.color ? `background:${p.color}30;` : ''}">${p.unlocked ? (p.icon || playIcon) : lockIcon}</div>
         <div><div class="phase-lbl">${label}</div><div class="phase-name">${p.title}</div></div>
       </div>
       <p class="phase-desc${locked ? ' dim' : ''}">${desc}</p>
       <div class="phase-foot">
         <span class="phase-lessons-lbl">${lessTxt}</span>
-        <div class="phase-bar-track"><div class="phase-bar-fill" style="width:${locked ? 0 : pct}%"></div></div>
+        <div class="phase-bar-track"><div class="phase-bar-fill" style="width:${locked ? 0 : pct}%;${cardColor ? `background:${cardColor};` : ''}"></div></div>
         <span class="phase-pct-lbl">${pctTxt}</span>
       </div>
     </div>`;
