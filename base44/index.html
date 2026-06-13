@@ -521,29 +521,41 @@
   .sc-row-pts { font-size:.77rem; font-weight:700; color:#111; width:32px; text-align:right; flex-shrink:0; }
 
   /* ── Leaderboard ── */
-  #view-leaderboard { background:#f9f8f6; }
-  #view-leaderboard .page-title, #view-leaderboard .page-sub { color:#111; }
-  #view-leaderboard .page-sub { color:#6b7280; }
-  .lb-card { background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:16px; padding:22px; margin-bottom:16px; }
-  .lb-card-title { font-size:.82rem; font-weight:700; color:#6b7280; margin-bottom:14px; display:flex; align-items:center; gap:7px; }
-  .lb-row { display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid #f3f4f6; }
+  #view-leaderboard { background:#fff; }
+  .lb-header { text-align:center; padding:32px 0 24px; }
+  .lb-header-icon { font-size:2rem; margin-bottom:8px; }
+  .lb-header-title { font-size:1.5rem; font-weight:800; color:#111; margin-bottom:6px; }
+  .lb-header-sub { font-size:.82rem; color:#9ca3af; }
+  /* Podium */
+  .lb-podium { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:20px; }
+  .lb-pod { background:#f5f5f5; border-radius:16px; padding:22px 16px; text-align:center; }
+  .lb-pod.first { background:#fdf8ec; border:1.5px solid #e8c96a; }
+  .lb-pod-medal { font-size:1.4rem; margin-bottom:12px; display:flex; justify-content:center; }
+  .lb-pod-avatar { width:44px; height:44px; border-radius:50%; background:#e5e7eb; display:flex; align-items:center; justify-content:center; font-size:.9rem; font-weight:700; color:#6b7280; margin:0 auto 10px; }
+  .lb-pod.first .lb-pod-avatar { background:#f3e8b0; color:#92400e; }
+  .lb-pod-name { font-size:.82rem; font-weight:600; color:#111; margin-bottom:4px; }
+  .lb-pod-entries { font-size:1.4rem; font-weight:800; color:#b45309; line-height:1; }
+  .lb-pod-entries-lbl { font-size:.65rem; color:#9ca3af; margin-top:2px; }
+  /* List */
+  .lb-list-card { background:#fff; border:1px solid #f0f0f0; border-radius:16px; overflow:hidden; margin-bottom:16px; }
+  .lb-row { display:flex; align-items:center; gap:12px; padding:14px 20px; border-bottom:1px solid #f5f5f5; }
   .lb-row:last-child { border-bottom:none; }
-  .lb-row.lb-me { background:#fdf9ef; border-radius:10px; padding:12px 12px; margin:0 -12px; border-bottom:none; }
-  .lb-rank { font-size:1.1rem; font-weight:800; width:36px; text-align:center; flex-shrink:0; }
-  .lb-avatar { width:36px; height:36px; border-radius:50%; background:#e5e7eb; display:flex; align-items:center; justify-content:center; font-size:.85rem; font-weight:700; color:#6b7280; flex-shrink:0; }
-  .lb-info { flex:1; min-width:0; }
-  .lb-name { font-size:.85rem; font-weight:700; color:#111; display:flex; align-items:center; gap:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .lb-you { font-size:.55rem; font-weight:800; background:#b45309; color:#fff; padding:2px 7px; border-radius:20px; flex-shrink:0; }
-  .lb-entries { font-size:.85rem; font-weight:800; color:#b45309; white-space:nowrap; }
-  .lb-entries-lbl { font-size:.65rem; color:#9ca3af; font-weight:500; }
-  .lb-loading { text-align:center; padding:32px; font-size:.82rem; color:#9ca3af; }
-  .lb-empty { text-align:center; padding:32px; font-size:.82rem; color:#9ca3af; }
-  .lb-my-card { background:#fff8ed; border:1.5px solid rgba(180,83,9,.2); border-radius:14px; padding:18px 20px; margin-bottom:16px; display:flex; align-items:center; gap:16px; }
-  .lb-my-rank-big { font-size:2rem; font-weight:800; color:#b45309; line-height:1; }
-  .lb-my-label { font-size:.65rem; color:#9ca3af; margin-bottom:2px; }
+  .lb-row.lb-me { background:#fdf9ef; }
+  .lb-rank { font-size:.9rem; font-weight:800; width:28px; text-align:center; flex-shrink:0; color:#9ca3af; display:flex; justify-content:center; }
+  .lb-avatar { width:36px; height:36px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:700; color:#6b7280; flex-shrink:0; }
+  .lb-name { flex:1; font-size:.9rem; font-weight:600; color:#111; display:flex; align-items:center; gap:6px; }
+  .lb-you { font-size:.5rem; font-weight:800; background:#b45309; color:#fff; padding:2px 7px; border-radius:20px; }
+  .lb-entries-wrap { text-align:right; }
+  .lb-entries { font-size:1rem; font-weight:800; color:#111; line-height:1; }
+  .lb-entries-lbl { font-size:.62rem; color:#9ca3af; }
+  .lb-loading { text-align:center; padding:40px; font-size:.82rem; color:#9ca3af; }
+  .lb-empty { text-align:center; padding:40px; font-size:.82rem; color:#9ca3af; }
+  .lb-my-card { background:#fdf8ec; border:1.5px solid #e8c96a; border-radius:14px; padding:16px 20px; margin-bottom:16px; display:flex; align-items:center; gap:16px; }
+  .lb-my-rank-big { font-size:1.8rem; font-weight:800; color:#b45309; line-height:1; min-width:48px; text-align:center; }
+  .lb-my-label { font-size:.6rem; color:#9ca3af; margin-bottom:2px; text-transform:uppercase; letter-spacing:.05em; }
   .lb-my-name { font-size:.9rem; font-weight:700; color:#111; }
-  .lb-my-entries { font-size:.82rem; color:#b45309; font-weight:600; }
-  .lb-refresh-btn { background:transparent; border:1.5px solid #e5e7eb; border-radius:8px; padding:7px 14px; font-size:.72rem; font-weight:600; color:#6b7280; cursor:pointer; display:flex; align-items:center; gap:5px; }
+  .lb-my-entries { font-size:.78rem; color:#b45309; font-weight:600; }
+  .lb-refresh-btn { background:transparent; border:1.5px solid #e5e7eb; border-radius:8px; padding:7px 14px; font-size:.72rem; font-weight:600; color:#6b7280; cursor:pointer; }
   .lb-refresh-btn:hover { border-color:#b45309; color:#b45309; }
 
   /* ── Elite Status — gold/cream theme ── */
@@ -1031,29 +1043,41 @@
   </div>
 
   <!-- ── Leaderboard ── -->
-  <div class="view padded" id="view-leaderboard">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-      <h1 class="page-title" style="margin-bottom:0;">🏆 Leaderboard</h1>
-      <button class="lb-refresh-btn" onclick="fetchLeaderboard()">↻ Refresh</button>
-    </div>
-    <p class="page-sub" style="margin-bottom:22px;">Top members ranked by total entries</p>
+  <div class="view padded" id="view-leaderboard" style="max-width:640px;margin:0 auto;">
 
-    <!-- My Position -->
+    <!-- Header -->
+    <div class="lb-header">
+      <div class="lb-header-icon">🏆</div>
+      <div class="lb-header-title">Leaderboard</div>
+      <div class="lb-header-sub">Top students ranked by entries this prize cycle</div>
+    </div>
+
+    <!-- My Position (shown when on board) -->
     <div class="lb-my-card" id="lb-my-card" style="display:none;">
       <div>
-        <div class="lb-my-label">YOUR RANK</div>
+        <div class="lb-my-label">Your Rank</div>
         <div class="lb-my-rank-big" id="lb-my-rank">—</div>
       </div>
       <div style="flex:1;">
         <div class="lb-my-name" id="lb-my-name">—</div>
         <div class="lb-my-entries" id="lb-my-entries">0 entries</div>
       </div>
+      <button class="lb-refresh-btn" onclick="fetchLeaderboard()">↻</button>
     </div>
 
-    <!-- Rankings -->
-    <div class="lb-card">
-      <div class="lb-card-title">↗ Top Members</div>
-      <div id="lb-list"><div class="lb-loading">Loading rankings...</div></div>
+    <!-- Top 3 Podium -->
+    <div class="lb-podium" id="lb-podium" style="display:none;"></div>
+
+    <!-- Full List (4th+) -->
+    <div class="lb-list-card" id="lb-list-wrap" style="display:none;">
+      <div id="lb-list"></div>
+    </div>
+
+    <!-- Loading/Empty state -->
+    <div id="lb-state"><div class="lb-loading">Loading rankings...</div></div>
+
+    <div style="text-align:center;margin-top:16px;">
+      <button class="lb-refresh-btn" onclick="fetchLeaderboard()">↻ Refresh</button>
     </div>
   </div>
 
@@ -2110,10 +2134,27 @@
     } catch(e) { console.warn('Airtable sync error:', e); }
   }
 
+  function lbInitials(name) { return name.substring(0,2).toUpperCase(); }
+  function lbDisplayName(raw) { return (raw||'').includes('@') ? raw.split('@')[0] : (raw||'Anonymous'); }
+
+  const MEDAL_SVG = {
+    1: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c9a227" stroke-width="2"/><path d="M12 6l1.5 3.5L17 10l-2.5 2.5.5 3.5L12 14.5 9 16l.5-3.5L7 10l3.5-.5z" fill="#c9a227"/></svg>`,
+    2: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12l-4-4m0 0l4-4M5 8h14M15 12l4 4m0 0l-4 4M19 16H5" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"/></svg>`,
+    3: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12l-4-4m0 0l4-4M5 8h14M15 12l4 4m0 0l-4 4M19 16H5" stroke="#cd7f32" stroke-width="2" stroke-linecap="round"/></svg>`,
+  };
+  const CROWN_SVG = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c9a227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12-6 4-4-8-4 8-6-4z"/></svg>`;
+  const MEDAL_GRAY = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
   async function fetchLeaderboard() {
-    const el = document.getElementById('lb-list');
-    if (!el) return;
-    el.innerHTML = '<div class="lb-loading">Loading rankings...</div>';
+    const stateEl   = document.getElementById('lb-state');
+    const podiumEl  = document.getElementById('lb-podium');
+    const listEl    = document.getElementById('lb-list');
+    const listWrap  = document.getElementById('lb-list-wrap');
+    const myCard    = document.getElementById('lb-my-card');
+    if (stateEl)  { stateEl.innerHTML  = '<div class="lb-loading">Loading rankings...</div>'; stateEl.style.display=''; }
+    if (podiumEl)  podiumEl.style.display  = 'none';
+    if (listWrap)  listWrap.style.display  = 'none';
+    if (myCard)    myCard.style.display    = 'none';
     try {
       const res  = await fetch(
         `${AT_URL}?sort[0][field]=Entries&sort[0][direction]=desc&maxRecords=50`,
@@ -2121,38 +2162,70 @@
       );
       const data = await res.json();
       if (!data.records || !data.records.length) {
-        el.innerHTML = '<div class="lb-empty">No entries yet. Be the first on the board!</div>';
+        if (stateEl) stateEl.innerHTML = '<div class="lb-empty">No entries yet — be the first on the board!</div>';
         return;
       }
+      if (stateEl) stateEl.style.display = 'none';
       const myEmail = getStoredEmail();
-      const myCard  = document.getElementById('lb-my-card');
       let myRank = null;
-      el.innerHTML = data.records.map((r, i) => {
-        const isMe   = r.fields.Email === myEmail;
-        const rank   = i + 1;
-        const raw    = r.fields.Name || r.fields.Email || 'Anonymous';
-        const display = raw.includes('@') ? raw.split('@')[0] : raw;
-        const entries = r.fields.Entries || 0;
-        const medal  = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
-        const initials = display.substring(0,2).toUpperCase();
-        if (isMe) myRank = { rank, display, entries };
-        return `<div class="lb-row${isMe ? ' lb-me' : ''}">
-          <div class="lb-rank">${medal}</div>
-          <div class="lb-avatar">${initials}</div>
-          <div class="lb-info"><div class="lb-name">${display}${isMe ? ' <span class="lb-you">You</span>' : ''}</div></div>
-          <div class="lb-entries">${entries} <span class="lb-entries-lbl">entries</span></div>
-        </div>`;
-      }).join('');
-      if (myCard) {
-        if (myRank) {
-          document.getElementById('lb-my-rank').textContent    = `#${myRank.rank}`;
-          document.getElementById('lb-my-name').textContent    = myRank.display;
-          document.getElementById('lb-my-entries').textContent = `${myRank.entries} entries`;
-          myCard.style.display = 'flex';
-        } else { myCard.style.display = 'none'; }
+
+      // Build podium (top 3) — order: 2nd left, 1st center, 3rd right
+      const top3Order = [data.records[1], data.records[0], data.records[2]];
+      if (podiumEl) {
+        podiumEl.style.display = 'grid';
+        podiumEl.innerHTML = top3Order.map((r, idx) => {
+          if (!r) return '<div></div>';
+          const realRank = idx === 0 ? 2 : idx === 1 ? 1 : 3;
+          const isFirst  = realRank === 1;
+          const isMe     = r.fields.Email === myEmail;
+          const display  = lbDisplayName(r.fields.Name || r.fields.Email);
+          const entries  = r.fields.Entries || 0;
+          const initials = lbInitials(display);
+          return `<div class="lb-pod${isFirst ? ' first' : ''}">
+            <div class="lb-pod-medal">${isFirst ? CROWN_SVG : MEDAL_GRAY}</div>
+            <div class="lb-pod-avatar">${initials}</div>
+            <div class="lb-pod-name">${display}${isMe ? ' <span class="lb-you">You</span>' : ''}</div>
+            <div class="lb-pod-entries">${entries}</div>
+            <div class="lb-pod-entries-lbl">entries</div>
+          </div>`;
+        }).join('');
+      }
+
+      // Build list (4th+)
+      const rest = data.records.slice(3);
+      if (rest.length && listEl && listWrap) {
+        listWrap.style.display = '';
+        listEl.innerHTML = rest.map((r, i) => {
+          const rank    = i + 4;
+          const isMe    = r.fields.Email === myEmail;
+          const display = lbDisplayName(r.fields.Name || r.fields.Email);
+          const entries = r.fields.Entries || 0;
+          const initials= lbInitials(display);
+          if (isMe) myRank = { rank, display, entries };
+          return `<div class="lb-row${isMe ? ' lb-me' : ''}">
+            <div class="lb-rank">${rank <= 3 ? MEDAL_GRAY : rank}</div>
+            <div class="lb-avatar">${initials}</div>
+            <div class="lb-name">${display}${isMe ? ' <span class="lb-you">You</span>' : ''}</div>
+            <div class="lb-entries-wrap"><div class="lb-entries">${entries}</div><div class="lb-entries-lbl">entries</div></div>
+          </div>`;
+        }).join('');
+      }
+
+      // Check if user is in top 3
+      if (!myRank) {
+        data.records.slice(0,3).forEach((r, i) => {
+          if (r && r.fields.Email === myEmail) myRank = { rank: i+1, display: lbDisplayName(r.fields.Name||r.fields.Email), entries: r.fields.Entries||0 };
+        });
+      }
+
+      if (myCard && myRank) {
+        document.getElementById('lb-my-rank').textContent    = `#${myRank.rank}`;
+        document.getElementById('lb-my-name').textContent    = myRank.display;
+        document.getElementById('lb-my-entries').textContent = `${myRank.entries} entries`;
+        myCard.style.display = 'flex';
       }
     } catch(e) {
-      el.innerHTML = '<div class="lb-empty">Could not load leaderboard. Try refreshing.</div>';
+      if (stateEl) stateEl.innerHTML = '<div class="lb-empty">Could not load leaderboard. Try refreshing.</div>';
     }
   }
 </script>
