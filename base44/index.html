@@ -10,15 +10,15 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg:      #0d1117;
-      --sidebar: #111827;
-      --card:    #161d2b;
-      --border:  rgba(255,255,255,0.07);
-      --active:  #1c2a3a;
-      --text:    #f1f5f9;
-      --text2:   #8b9ab3;
-      --text3:   #4b5563;
-      --green:   #22c55e;
+      --bg:      #f5f0e8;
+      --sidebar: #ffffff;
+      --card:    #ffffff;
+      --border:  rgba(0,0,0,0.09);
+      --active:  #fdf3e3;
+      --text:    #111111;
+      --text2:   #6b7280;
+      --text3:   #9ca3af;
+      --green:   #16a34a;
       --red:     #ef4444;
       --blue:    #3b82f6;
       --orange:  #f97316;
@@ -57,7 +57,7 @@
     .gate-warning-text { font-size: .73rem; color: #fbbf24; line-height: 1.45; }
     .gate-label { font-size: .72rem; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
     .gate-input {
-      width: 100%; background: rgba(255,255,255,.05);
+      width: 100%; background: rgba(0,0,0,.04);
       border: 1px solid var(--border); border-radius: 8px;
       color: var(--text); font-family: 'Inter', sans-serif;
       font-size: .88rem; padding: 11px 14px; outline: none;
@@ -101,7 +101,7 @@
       font-size: 0.83rem; font-weight: 500; color: var(--text2);
       cursor: pointer; transition: background .12s, color .12s; user-select: none;
     }
-    .nav-item:hover { background: rgba(255,255,255,.04); color: var(--text); }
+    .nav-item:hover { background: rgba(0,0,0,.04); color: var(--text); }
     .nav-item.active { background: var(--active); color: var(--text); font-weight: 600; }
     .nav-item svg { width: 17px; height: 17px; flex-shrink: 0; }
     .nav-label { flex: 1; }
@@ -162,9 +162,9 @@
     .hm-day-lbl { font-size: .57rem; color: var(--text3); height: 11px; line-height: 11px; }
     .hm-weeks { display: flex; gap: 3px; flex: 1; }
     .hm-week  { display: flex; flex-direction: column; gap: 3px; flex: 1; }
-    .hm-cell  { flex: 1; min-height: 11px; border-radius: 2px; background: rgba(255,255,255,.05); }
+    .hm-cell  { flex: 1; min-height: 11px; border-radius: 2px; background: rgba(0,0,0,.07); }
     .hm-cell.future { background: transparent; }
-    .hm-cell.today  { outline: 1px solid rgba(255,255,255,.35); outline-offset: 1px; }
+    .hm-cell.today  { outline: 1px solid rgba(0,0,0,.35); outline-offset: 1px; }
     .hm-cell.l1 { background: #14532d; } .hm-cell.l2 { background: #166534; }
     .hm-cell.l3 { background: #15803d; } .hm-cell.l4 { background: #16a34a; }
     .hm-cell.l5 { background: #22c55e; }
@@ -193,13 +193,13 @@
       border-radius: 12px; padding: 20px 22px;
       cursor: pointer; transition: border-color .18s;
     }
-    .phase-card:hover:not(.locked) { border-color: rgba(255,255,255,.15); }
+    .phase-card:hover:not(.locked) { border-color: rgba(0,0,0,.2); }
     .phase-card.locked { cursor: default; }
 
     .phase-head { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
     .phase-icon-wrap {
       width: 42px; height: 42px; border-radius: 10px;
-      background: rgba(255,255,255,.05);
+      background: rgba(0,0,0,.04);
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
     .phase-icon-wrap.open { background: rgba(239,68,68,.18); }
@@ -210,7 +210,7 @@
     .phase-desc.dim { color: var(--text3); }
     .phase-foot { display: flex; align-items: center; gap: 12px; padding-top: 14px; border-top: 1px solid var(--border); }
     .phase-lessons-lbl { font-size: .7rem; color: var(--text3); white-space: nowrap; }
-    .phase-bar-track { flex: 1; height: 3px; background: rgba(255,255,255,.07); border-radius: 2px; overflow: hidden; }
+    .phase-bar-track { flex: 1; height: 3px; background: rgba(0,0,0,.1); border-radius: 2px; overflow: hidden; }
     .phase-bar-fill  { height: 100%; background: var(--green); border-radius: 2px; }
     .phase-pct-lbl   { font-size: .7rem; color: var(--text3); white-space: nowrap; min-width: 24px; text-align: right; }
 
@@ -222,9 +222,9 @@
       display: flex; align-items: center; gap: 14px;
       cursor: pointer; transition: border-color .15s;
     }
-    .mod-row:hover:not(.locked) { border-color: rgba(255,255,255,.14); }
+    .mod-row:hover:not(.locked) { border-color: rgba(0,0,0,.2); }
     .mod-row.locked { cursor: default; opacity: .5; }
-    .mod-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .mod-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(0,0,0,.05); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .mod-icon.open { background: rgba(239,68,68,.18); }
     .mod-icon svg { width: 18px; height: 18px; }
     .mod-info { flex: 1; min-width: 0; }
@@ -255,7 +255,7 @@
     .lesson-module-desc  { font-size: .82rem; color: var(--text2); margin-bottom: 16px; }
     .lesson-progress-row { display: flex; align-items: center; gap: 10px; }
     .lesson-prog-lbl  { font-size: .72rem; color: var(--text2); white-space: nowrap; }
-    .lesson-prog-track { flex: 1; max-width: 320px; height: 3px; background: rgba(255,255,255,.07); border-radius: 2px; overflow: hidden; }
+    .lesson-prog-track { flex: 1; max-width: 320px; height: 3px; background: rgba(0,0,0,.1); border-radius: 2px; overflow: hidden; }
     .lesson-prog-fill  { height: 100%; background: var(--green); border-radius: 2px; transition: width .4s; }
     .lesson-prog-pct   { font-size: .72rem; color: var(--text2); }
 
@@ -285,8 +285,8 @@
       transition: background .12s;
       border-radius: 0;
     }
-    .lesson-item:hover { background: rgba(255,255,255,.03); }
-    .lesson-item.active { background: rgba(255,255,255,.05); }
+    .lesson-item:hover { background: rgba(0,0,0,.04); }
+    .lesson-item.active { background: rgba(0,0,0,.06); }
     .lesson-item.done .lesson-num { background: var(--green); color: #000; }
     .lesson-num {
       width: 26px; height: 26px; border-radius: 50%;
@@ -295,7 +295,7 @@
       font-size: .72rem; font-weight: 700; flex-shrink: 0;
     }
     .lesson-item-name { font-size: .8rem; font-weight: 500; line-height: 1.3; }
-    .lesson-status-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.15); margin-left: auto; flex-shrink: 0; }
+    .lesson-status-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(0,0,0,.15); margin-left: auto; flex-shrink: 0; }
     .lesson-status-dot.done { background: var(--green); }
     .day-group-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 5px; margin-top: 4px; }
     .day-group-header:first-child { margin-top: 0; }
@@ -322,7 +322,7 @@
     .video-placeholder iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; border-radius: 12px; }
     .video-play-icon {
       width: 64px; height: 64px;
-      background: rgba(255,255,255,.1);
+      background: rgba(0,0,0,.06);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
     }
@@ -351,7 +351,7 @@
       cursor: pointer; transition: opacity .15s;
     }
     .mark-complete-btn:hover { opacity: .88; }
-    .mark-complete-btn:disabled { background: rgba(255,255,255,.1); color: var(--text3); cursor: default; }
+    .mark-complete-btn:disabled { background: rgba(0,0,0,.06); color: var(--text3); cursor: default; }
 
     /* Placeholder views */
     .empty-state { text-align: center; padding: 60px 40px; color: var(--text2); font-size: .84rem; }
@@ -375,7 +375,7 @@
   .deals-banner-title { font-size:.88rem; font-weight:700; margin-bottom:3px; }
   .deals-banner-desc { font-size:.76rem; color:var(--text2); line-height:1.5; }
   .deal-row { display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 18px; margin-bottom:10px; text-decoration:none; color:inherit; transition:border-color .15s; }
-  .deal-row:hover { border-color:rgba(255,255,255,.18); }
+  .deal-row:hover { border-color:rgba(0,0,0,.2); }
   .deal-logo { width:50px; height:50px; border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1.4rem; }
   .deal-info { flex:1; }
   .deal-name-row { display:flex; align-items:center; gap:8px; margin-bottom:3px; }
@@ -748,7 +748,7 @@
         </div>
         <div class="hm-legend">
           <span>Less</span>
-          <div class="hm-legend-cell" style="background:rgba(255,255,255,.05)"></div>
+          <div class="hm-legend-cell" style="background:rgba(0,0,0,.07)"></div>
           <div class="hm-legend-cell" style="background:#14532d"></div>
           <div class="hm-legend-cell" style="background:#15803d"></div>
           <div class="hm-legend-cell" style="background:#16a34a"></div>
@@ -851,79 +851,79 @@
     <p class="page-sub" style="margin-bottom:24px;">Real results from members inside the program.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">PERSONAL RECORD</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">Ryan hit a personal record — $20k in a single month.</p></div>
-        <img src="/13.png" alt="PERSONAL RECORD" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="/13.png" alt="PERSONAL RECORD" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">BEST DAY</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">Jaden pulled an $8k day.</p></div>
-        <img src="/14.jpeg" alt="BEST DAY" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="/14.jpeg" alt="BEST DAY" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">SCALING FAST</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">Tyler hit $100k in just two weeks.</p></div>
-        <img src="/15.jpeg" alt="SCALING FAST" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="/15.jpeg" alt="SCALING FAST" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">CONSISTENT GROWTH</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">"The month over month growth has been nuts!" — Kaleb</p></div>
-        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/68e955a65db7d666d86e6e1e.png" alt="CONSISTENT GROWTH" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/68e955a65db7d666d86e6e1e.png" alt="CONSISTENT GROWTH" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#60a5fa;background:rgba(96,165,250,0.12);">MEMBER WIN</span></div>
-        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/68e955c5476e1f4ade1cfad2.png" alt="MEMBER WIN" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/68e955c5476e1f4ade1cfad2.png" alt="MEMBER WIN" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#60a5fa;background:rgba(96,165,250,0.12);">MEMBER WIN</span></div>
-        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee88eee416f18af1a4021a.png" alt="MEMBER WIN" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee88eee416f18af1a4021a.png" alt="MEMBER WIN" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#fbbf24;background:rgba(251,191,36,0.12);">FROM ZERO</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">"1 month in and look at that spike. Zero sales before. The guarantee makes this a no brainer." — Daniel</p></div>
-        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee8a07f504aeaca49f2f7f.jpeg" alt="FROM ZERO" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee8a07f504aeaca49f2f7f.jpeg" alt="FROM ZERO" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#60a5fa;background:rgba(96,165,250,0.12);">ADS SUCCESS</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">"The 1-on-1 help with running the ads has been so awesome and my store is finally starting to take off!" — Micah</p></div>
-        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee8b33585902432f7f8a20.jpeg" alt="ADS SUCCESS" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee8b33585902432f7f8a20.jpeg" alt="ADS SUCCESS" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">$30K IN 23 DAYS</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">A member did $30k in the last 23 days.</p></div>
-        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee920b8f6c2c4ed1a2d580.png" alt="$30K IN 23 DAYS" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee920b8f6c2c4ed1a2d580.png" alt="$30K IN 23 DAYS" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">8.79x ROAS</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">TikTok Ads crushing it for a Skin Care niche member.</p></div>
-        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee9318918308897e0d8c9b.png" alt="8.79x ROAS" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee9318918308897e0d8c9b.png" alt="8.79x ROAS" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">3.59x ROAS</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">Another new student, less than 1 month in. Already scaling.</p></div>
-        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee939558590276507f9c6c.png" alt="3.59x ROAS" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee939558590276507f9c6c.png" alt="3.59x ROAS" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#fbbf24;background:rgba(251,191,36,0.12);">LIVE RESULTS</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">These are current results. No old screenshots here.</p></div>
-        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee946b918308652f0d8de4.png" alt="LIVE RESULTS" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee946b918308652f0d8de4.png" alt="LIVE RESULTS" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#60a5fa;background:rgba(96,165,250,0.12);">CLOTHING NICHE</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">Clothing brand owner — first drop sold out. Look at that ROAS.</p></div>
-        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95224930c4210b003576.png" alt="CLOTHING NICHE" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95224930c4210b003576.png" alt="CLOTHING NICHE" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#22c55e;background:rgba(34,197,94,0.12);">3.61x ROAS</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">Organic hair and skin care brand ripping sales with Meta ads.</p></div>
-        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95b6e416f131f1a415da.png" alt="3.61x ROAS" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95b6e416f131f1a415da.png" alt="3.61x ROAS" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
-      <div style="background:#0e0e0e;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="background:#ffffff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;">
         <div style="padding:14px 14px 10px;"><span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#60a5fa;background:rgba(96,165,250,0.12);">SUPPLEMENT NICHE</span><p style="margin:8px 0 0;font-size:0.82rem;font-weight:600;color:#d1d5db;line-height:1.45;">Supplement brand owner getting into the BIG numbers. $100k+ months incoming.</p></div>
-        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee96518f6c2cb9f8a2da5b.png" alt="SUPPLEMENT NICHE" style="width:100%;display:block;border-top:1px solid rgba(255,255,255,0.07);" loading="lazy">
+        <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee96518f6c2cb9f8a2da5b.png" alt="SUPPLEMENT NICHE" style="width:100%;display:block;border-top:1px solid rgba(0,0,0,0.07);" loading="lazy">
       </div>
 
     </div>
