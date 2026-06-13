@@ -1384,7 +1384,7 @@
     document.querySelectorAll('.rw-verify-btn').forEach(btn => {
       const key = btn.id.replace('rwv-', '');
       if (actions[key])       { btn.textContent = '✓ Approved'; btn.className = 'rw-verify-btn submitted'; }
-      else if (pending[key])  { btn.textContent = '⏳ Under Review'; btn.className = 'rw-verify-btn submitted'; }
+      else if (pending[key])  { btn.textContent = '⏳ Awaiting Approval'; btn.className = 'rw-verify-btn submitted'; }
       else                    { btn.textContent = '📷 Verify'; btn.className = 'rw-verify-btn'; btn.onclick = function(){ rwUpload(key); }; }
     });
 
@@ -1392,7 +1392,7 @@
     const wixKey = 'wix-30-days';
     if (wixBtn) {
       if (actions[wixKey])      { wixBtn.textContent = '✓ Approved'; wixBtn.disabled = true; }
-      else if (pending[wixKey]) { wixBtn.textContent = '⏳ Under Review'; wixBtn.disabled = true; }
+      else if (pending[wixKey]) { wixBtn.textContent = '⏳ Awaiting Approval'; wixBtn.disabled = true; }
       else                      { wixBtn.textContent = '📷 Upload Proof (After 30 Days)'; wixBtn.disabled = false; }
     }
   }
