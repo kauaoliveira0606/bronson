@@ -967,36 +967,6 @@
         </ul>
       </div>
 
-      <div class="es-perk-card es-locked" id="es-perk-2">
-        <div class="es-perk-header">
-          <span class="es-perk-icon">🎯</span>
-          <span class="es-perk-lock" id="es-perk-lock-2">🔒 Locked</span>
-        </div>
-        <div class="es-perk-name">8-Figure Coach Call</div>
-        <div class="es-perk-freq">1x per month</div>
-        <ul class="es-perk-list">
-          <li>Direct access to an 8-figure E-Com coach</li>
-          <li>Advanced strategy sessions for scaling</li>
-          <li>Personalized feedback on your ads and store</li>
-          <li>Exclusively available to Elite members</li>
-        </ul>
-      </div>
-
-      <div class="es-perk-card es-locked" id="es-perk-3">
-        <div class="es-perk-header">
-          <span class="es-perk-icon">💬</span>
-          <span class="es-perk-lock" id="es-perk-lock-3">🔒 Locked</span>
-        </div>
-        <div class="es-perk-name">Elite Private Community</div>
-        <div class="es-perk-freq">24/7 Access</div>
-        <ul class="es-perk-list">
-          <li>Private channel for Elite members only</li>
-          <li>Share wins, strategies, and product finds</li>
-          <li>Direct messaging with coaches</li>
-          <li>Early access to new features and tools</li>
-        </ul>
-      </div>
-
     </div>
 
     <!-- How to Unlock -->
@@ -1597,7 +1567,7 @@
       else              { verifyBtn.textContent = '⬆ Upload Verification'; verifyBtn.disabled = false; }
     }
 
-    [1, 2, 3].forEach(i => {
+    [1].forEach(i => {
       const card = document.getElementById('es-perk-' + i);
       const lock = document.getElementById('es-perk-lock-' + i);
       if (card) {
