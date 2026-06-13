@@ -803,24 +803,10 @@
         <div class="rw-as"><div class="rw-as-val black">30</div><div class="rw-as-lbl">Days</div></div>
         <div class="rw-as"><div class="rw-as-val grn">✓</div><div class="rw-as-lbl">Auto-Qualify</div></div>
       </div>
-      <button class="rw-btn gold" onclick="rwSubmitProof('wix-30-days','Keep Wix Active (30 Days)')">📷 Upload Proof (After 30 Days)</button>
+      <button class="rw-btn gold" id="rw-wix-proof-btn" onclick="rwUpload('wix-30-days')">📷 Upload Proof (After 30 Days)</button>
       <div class="rw-proof-note">📸 Screenshot your Wix dashboard showing your active subscription with 30+ days</div>
     </div>
 
-    <!-- Trustpilot Review -->
-    <div class="rw-action-card">
-      <div class="rw-corner-tag orange">EASY 20 ENTRIES</div>
-      <div class="rw-action-head">
-        <div class="rw-action-icon">⭐</div>
-        <div class="rw-action-name">Leave a Trustpilot Review = <span class="amber">20 Entries</span></div>
-      </div>
-      <div class="rw-action-desc">Takes 2 minutes! Share your experience and earn 20 entries instantly.</div>
-      <div class="rw-btn-pair">
-        <a class="rw-btn outline" href="https://www.trustpilot.com" target="_blank" style="text-decoration:none;">↗ Leave Review</a>
-        <button class="rw-btn outline" style="flex:1" onclick="rwSubmitProof('trustpilot','Trustpilot Review')">📷 Upload Proof</button>
-      </div>
-      <div class="rw-proof-note">📸 After leaving your review, screenshot it and upload as proof</div>
-    </div>
 
     <!-- Earn Entries (one-time) -->
     <div class="rw-section-title">🎁 Earn Entries <span style="font-weight:400;color:var(--text3);font-size:.75rem;">· Complete these once</span></div>
@@ -828,27 +814,27 @@
     <div class="rw-earn-item">
       <div class="rw-earn-icon">🎁</div>
       <div class="rw-earn-info"><div class="rw-earn-name">First Sale</div><div class="rw-earn-pts">+50 entries</div></div>
-      <button class="rw-verify-btn" id="rwv-first-sale" onclick="rwVerify('first-sale',this)">📷 Verify</button>
+      <button class="rw-verify-btn" id="rwv-first-sale" onclick="rwUpload('first-sale')">📷 Verify</button>
     </div>
     <div class="rw-earn-item">
       <div class="rw-earn-icon">🎁</div>
       <div class="rw-earn-info"><div class="rw-earn-name">Buy Wix Domain</div><div class="rw-earn-pts">+10 entries</div></div>
-      <button class="rw-verify-btn" id="rwv-wix-domain" onclick="rwVerify('wix-domain',this)">📷 Verify</button>
+      <button class="rw-verify-btn" id="rwv-wix-domain" onclick="rwUpload('wix-domain')">📷 Verify</button>
     </div>
     <div class="rw-earn-item">
       <div class="rw-earn-icon">🎁</div>
       <div class="rw-earn-info"><div class="rw-earn-name">Buy Wix Business Email</div><div class="rw-earn-pts">+10 entries</div></div>
-      <button class="rw-verify-btn" id="rwv-wix-email" onclick="rwVerify('wix-email',this)">📷 Verify</button>
+      <button class="rw-verify-btn" id="rwv-wix-email" onclick="rwUpload('wix-email')">📷 Verify</button>
     </div>
     <div class="rw-earn-item">
       <div class="rw-earn-icon">🎁</div>
       <div class="rw-earn-info"><div class="rw-earn-name">Set Up Payments</div><div class="rw-earn-pts">+10 entries</div></div>
-      <button class="rw-verify-btn" id="rwv-payments" onclick="rwVerify('payments',this)">📷 Verify</button>
+      <button class="rw-verify-btn" id="rwv-payments" onclick="rwUpload('payments')">📷 Verify</button>
     </div>
     <div class="rw-earn-item">
       <div class="rw-earn-icon">🎁</div>
       <div class="rw-earn-info"><div class="rw-earn-name">Create Facebook Ads Account</div><div class="rw-earn-pts">+10 entries</div></div>
-      <button class="rw-verify-btn" id="rwv-fb-ads" onclick="rwVerify('fb-ads',this)">📷 Verify</button>
+      <button class="rw-verify-btn" id="rwv-fb-ads" onclick="rwUpload('fb-ads')">📷 Verify</button>
     </div>
 
     <!-- Daily Learning Bonus -->
@@ -873,17 +859,17 @@
       <div class="rw-earn-item" style="background:#fff;">
         <div class="rw-earn-icon">🎁</div>
         <div class="rw-earn-info"><div class="rw-earn-name">Spend $100+ on Facebook Ads (14 days)</div><div class="rw-earn-pts">+10 entries</div></div>
-        <button class="rw-verify-btn" id="rwv-spend-100" onclick="rwVerify('spend-100',this)">📷 Verify</button>
+        <button class="rw-verify-btn" id="rwv-spend-100" onclick="rwUpload('spend-100')">📷 Verify</button>
       </div>
       <div class="rw-earn-item" style="background:#fff;">
         <div class="rw-earn-icon">🎁</div>
         <div class="rw-earn-info"><div class="rw-earn-name">Spend $500+ on Facebook Ads (this cycle)</div><div class="rw-earn-pts">+20 entries</div></div>
-        <button class="rw-verify-btn" id="rwv-spend-500" onclick="rwVerify('spend-500',this)">📷 Verify</button>
+        <button class="rw-verify-btn" id="rwv-spend-500" onclick="rwUpload('spend-500')">📷 Verify</button>
       </div>
       <div class="rw-earn-item" style="background:#fff;">
         <div class="rw-earn-icon">🎁</div>
         <div class="rw-earn-info"><div class="rw-earn-name">Spend $1,000+ on Facebook Ads (this cycle)</div><div class="rw-earn-pts">+30 entries</div></div>
-        <button class="rw-verify-btn" id="rwv-spend-1000" onclick="rwVerify('spend-1000',this)">📷 Verify</button>
+        <button class="rw-verify-btn" id="rwv-spend-1000" onclick="rwUpload('spend-1000')">📷 Verify</button>
       </div>
       <div class="rw-proof-note" style="margin-top:8px;">📊 Upload a screenshot of your Facebook Ads Manager showing your spend</div>
     </div>
@@ -895,13 +881,14 @@
       <div class="rw-earn-item">
         <div class="rw-earn-icon">🎁</div>
         <div class="rw-earn-info"><div class="rw-earn-name">Keep Wix Subscription Active</div><div class="rw-earn-pts">+20 entries</div></div>
-        <button class="rw-verify-btn" id="rwv-wix-sub" onclick="rwVerify('wix-sub',this)">📷 Verify</button>
+        <button class="rw-verify-btn" id="rwv-wix-sub" onclick="rwUpload('wix-sub')">📷 Verify</button>
       </div>
       <div class="rw-keep-note">💡 Keep your Wix active to stay qualified for the prize pool!</div>
     </div>
   </div>
 
   <div class="rw-toast" id="rw-toast"></div>
+  <input type="file" id="rw-file-input" accept="image/*" style="display:none" onchange="rwOnFileSelected(this)">
 
 </main>
 
@@ -1312,63 +1299,113 @@
   if (_autoLogin) initPortal();
 
   // ── Rewards ──
-  const PRIZE_END = new Date('2026-07-27');
-  const RW_ENTRIES_KEY  = storageKey('rw_entries');
-  const RW_ACTIONS_KEY  = storageKey('rw_actions');
-  const RW_DAILY_KEY    = storageKey('rw_daily');
-  const RW_QUALIFY      = 50;
+  const PRIZE_END        = new Date('2026-07-27');
+  const RW_ENTRIES_KEY   = storageKey('rw_entries');
+  const RW_ACTIONS_KEY   = storageKey('rw_actions');
+  const RW_DAILY_KEY     = storageKey('rw_daily');
+  const RW_PENDING_KEY   = storageKey('rw_pending');
+  const RW_QUALIFY       = 50;
+  const RW_AUTO_MS       = 2 * 60 * 60 * 1000; // auto-approve after 2 hours
+  const RW_ENTRY_MAP     = {
+    'wix-30-days': 50, 'first-sale': 50,
+    'wix-domain': 10, 'wix-email': 10, 'payments': 10, 'fb-ads': 10,
+    'spend-100': 10, 'spend-500': 20, 'spend-1000': 30, 'wix-sub': 20,
+  };
 
   function rwGetEntries() { return parseInt(localStorage.getItem(RW_ENTRIES_KEY) || '0'); }
-  function rwAddEntries(n) { localStorage.setItem(RW_ENTRIES_KEY, rwGetEntries() + n); updateRewardsUI(); }
+  function rwSetEntries(n) { localStorage.setItem(RW_ENTRIES_KEY, n); }
+  function rwAddEntries(n) { rwSetEntries(rwGetEntries() + n); }
   function rwGetActions() { try { return JSON.parse(localStorage.getItem(RW_ACTIONS_KEY) || '{}'); } catch { return {}; } }
   function rwSetAction(k) { const a = rwGetActions(); a[k] = 1; localStorage.setItem(RW_ACTIONS_KEY, JSON.stringify(a)); }
+  function rwGetPending() { try { return JSON.parse(localStorage.getItem(RW_PENDING_KEY) || '{}'); } catch { return {}; } }
   function rwDailyCount() { try { return (JSON.parse(localStorage.getItem(RW_DAILY_KEY) || '{}'))[localDate()] || 0; } catch { return 0; } }
+
   function rwAddDaily() {
     const d = localDate();
     let rec; try { rec = JSON.parse(localStorage.getItem(RW_DAILY_KEY) || '{}'); } catch { rec = {}; }
-    if ((rec[d] || 0) < 5) { rec[d] = (rec[d] || 0) + 1; localStorage.setItem(RW_DAILY_KEY, JSON.stringify(rec)); rwAddEntries(1); }
+    if ((rec[d] || 0) < 5) {
+      rec[d] = (rec[d] || 0) + 1;
+      localStorage.setItem(RW_DAILY_KEY, JSON.stringify(rec));
+      rwAddEntries(1);
+      rwShowToast('+1 entry earned! (' + rec[d] + '/5 today)');
+    }
+    updateRewardsUI();
+  }
+
+  function rwCheckPending() {
+    const pending = rwGetPending();
+    const actions = rwGetActions();
+    const now = Date.now();
+    let changed = false;
+    for (const [key, ts] of Object.entries(pending)) {
+      if (now - ts >= RW_AUTO_MS && !actions[key]) {
+        rwSetAction(key);
+        rwAddEntries(RW_ENTRY_MAP[key] || 0);
+        delete pending[key];
+        changed = true;
+        rwShowToast('✓ Proof approved! +' + (RW_ENTRY_MAP[key] || 0) + ' entries added.');
+      }
+    }
+    if (changed) localStorage.setItem(RW_PENDING_KEY, JSON.stringify(pending));
+  }
+
+  function rwUpload(actionKey) {
+    const input = document.getElementById('rw-file-input');
+    input.dataset.action = actionKey;
+    input.click();
+  }
+
+  function rwOnFileSelected(input) {
+    if (!input.files || !input.files.length) return;
+    const actionKey = input.dataset.action;
+    const actions = rwGetActions();
+    const pending = rwGetPending();
+    if (actions[actionKey] || pending[actionKey]) { input.value = ''; return; }
+    pending[actionKey] = Date.now();
+    localStorage.setItem(RW_PENDING_KEY, JSON.stringify(pending));
+    input.value = '';
+    rwShowToast('📸 Proof received! Entries will be added within 2 hours.');
     updateRewardsUI();
   }
 
   function updateRewardsUI() {
-    const entries = rwGetEntries();
-    const needed  = Math.max(0, RW_QUALIFY - entries);
-    const pct     = Math.min(100, Math.round(entries / RW_QUALIFY * 100));
+    rwCheckPending();
+    const entries  = rwGetEntries();
+    const needed   = Math.max(0, RW_QUALIFY - entries);
+    const pct      = Math.min(100, Math.round(entries / RW_QUALIFY * 100));
     const daysLeft = Math.max(0, Math.ceil((PRIZE_END - new Date()) / 86400000));
+    const actions  = rwGetActions();
+    const pending  = rwGetPending();
 
     const el = (id) => document.getElementById(id);
-    if (el('rw-entries-count'))  el('rw-entries-count').textContent  = entries;
-    if (el('rw-entries-bar'))    el('rw-entries-bar').style.width    = pct + '%';
+    if (el('rw-entries-count'))  el('rw-entries-count').textContent = entries;
+    if (el('rw-entries-bar'))    el('rw-entries-bar').style.width   = pct + '%';
     if (el('rw-entries-needed')) el('rw-entries-needed').textContent = needed + (needed === 1 ? ' entry' : ' entries');
     if (el('rw-qualify-badge'))  el('rw-qualify-badge').textContent  = needed > 0 ? needed + ' more to qualify' : '✓ Qualified!';
     if (el('rw-days-left'))      el('rw-days-left').textContent      = daysLeft;
     if (el('rw-daily-count'))    el('rw-daily-count').textContent    = rwDailyCount();
 
-    const actions = rwGetActions();
     document.querySelectorAll('.rw-verify-btn').forEach(btn => {
-      const id = btn.id.replace('rwv-', '');
-      if (actions[id]) { btn.textContent = '✓ Submitted'; btn.classList.add('submitted'); }
+      const key = btn.id.replace('rwv-', '');
+      if (actions[key])       { btn.textContent = '✓ Approved'; btn.className = 'rw-verify-btn submitted'; }
+      else if (pending[key])  { btn.textContent = '⏳ Under Review'; btn.className = 'rw-verify-btn submitted'; }
+      else                    { btn.textContent = '📷 Verify'; btn.className = 'rw-verify-btn'; btn.onclick = function(){ rwUpload(key); }; }
     });
-  }
 
-  function rwVerify(actionKey, btn) {
-    if (btn.classList.contains('submitted')) return;
-    rwSetAction(actionKey);
-    rwShowToast('Proof submitted! We\'ll review within 24 hours.');
-    updateRewardsUI();
-  }
-
-  function rwSubmitProof(actionKey, label) {
-    rwSetAction(actionKey);
-    rwShowToast('Proof submitted! We\'ll review within 24 hours.');
-    updateRewardsUI();
+    const wixBtn = el('rw-wix-proof-btn');
+    const wixKey = 'wix-30-days';
+    if (wixBtn) {
+      if (actions[wixKey])      { wixBtn.textContent = '✓ Approved'; wixBtn.disabled = true; }
+      else if (pending[wixKey]) { wixBtn.textContent = '⏳ Under Review'; wixBtn.disabled = true; }
+      else                      { wixBtn.textContent = '📷 Upload Proof (After 30 Days)'; wixBtn.disabled = false; }
+    }
   }
 
   function rwShowToast(msg) {
     const t = document.getElementById('rw-toast');
     if (!t) return;
     t.textContent = msg; t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
+    setTimeout(() => t.classList.remove('show'), 3500);
   }
 </script>
 </body>
