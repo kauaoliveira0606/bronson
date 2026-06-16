@@ -1633,7 +1633,7 @@ A default Wix store looks like every other dropshipper's store. Base44 lets you 
       color: '#6366f1',
       icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8l3 3-3 3"/><path d="M13 14h4"/></svg>`,
       days: [
-        { label: 'BASE44', count: 4 },
+        { label: 'BASE44', count: 5 },
       ],
       lessons: [
         { title: 'Step 1 — Getting Started with Base44', desc: `Build your complete ecommerce site connected to your Wix store using this master prompt. Copy it and paste it directly into Base44.<br><br><strong>Master Prompt — Copy & Paste into Base44 ⬇️</strong><br><br><div style="background:#f5f0e8;border:1px solid rgba(0,0,0,0.1);border-radius:10px;padding:16px 18px;font-size:.78rem;line-height:1.7;color:#111;white-space:pre-wrap;font-family:inherit;margin-top:8px;position:relative;"><button onclick="navigator.clipboard.writeText(document.getElementById('b44-master-prompt').innerText).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy Prompt',1500)})" style="position:absolute;top:10px;right:10px;background:#6366f1;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:.7rem;font-weight:700;cursor:pointer;">Copy Prompt</button><span id="b44-master-prompt">Build me a complete, fully functional ecommerce website connected to my Wix store. This website is for a dropshipping brand that receives cold traffic from Facebook and Instagram ads. It needs to be mobile-first, fast-loading, professional, and built to convert visitors who have never heard of my brand.
@@ -1715,6 +1715,298 @@ Animations:
 - This is a template I want to reuse</span></div>`, videoUrl: '' },
         { title: 'Step 2 — Building Your Site with AI', desc: '', videoUrl: '' },
         { title: 'Step 3 — Launching & Publishing', desc: `Use this prompt to redesign your product page to match a high-converting layout — just swap in your product name.<br><br><strong>Redesign Prompt — Copy & Paste into Base44 ⬇️</strong><br><br><div style="background:#f5f0e8;border:1px solid rgba(0,0,0,0.1);border-radius:10px;padding:16px 18px;font-size:.78rem;line-height:1.7;color:#111;white-space:pre-wrap;font-family:inherit;margin-top:8px;position:relative;"><button onclick="navigator.clipboard.writeText(document.getElementById('b44-redesign-prompt').innerText).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy Prompt',1500)})" style="position:absolute;top:10px;right:10px;background:#6366f1;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:.7rem;font-weight:700;cursor:pointer;">Copy Prompt</button><span id="b44-redesign-prompt">for [INSERT PRODUCT] product, please redesign the product page 1:1 with this one here: https://nad-boost-now.base44.app/ please change the colors though to match the vibe for the product and all the product information as well, but I want the 1:1 layout.</span></div>`, videoUrl: '' },
+        { title: 'Troubleshooting', desc: `Common fixes for Base44 + Wix issues. Find your problem below and copy the prompt directly into Base44.<br><br>
+
+<div style="display:flex;flex-direction:column;gap:20px;margin-top:8px;">
+
+<div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;padding:20px;">
+<div style="font-size:.82rem;font-weight:800;color:#111;margin-bottom:12px;">🛒 If Wix checkout shows "Cart is empty"</div>
+<div style="background:#f5f0e8;border:1px solid rgba(0,0,0,0.1);border-radius:10px;padding:14px 16px;font-size:.75rem;line-height:1.7;color:#111;white-space:pre-wrap;font-family:inherit;position:relative;"><button onclick="navigator.clipboard.writeText(document.getElementById('ts-prompt-1').innerText).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy Prompt',1500)})" style="position:absolute;top:10px;right:10px;background:#6366f1;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:.65rem;font-weight:700;cursor:pointer;">Copy Prompt</button><span id="ts-prompt-1">I need you to fully audit and fix my Base44 → Wix checkout integration and review the entire website codebase for potential issues, with a primary focus on the cart and checkout flow.
+
+Current issue:
+When users click checkout from the Base44 cart and get redirected to Wix Checkout, the cart is empty and Wix shows:
+"You can't place your order just yet. It looks like your cart is empty."
+
+What should happen:
+Products added to the Base44 cart should automatically transfer into the Wix cart/checkout before redirecting the customer.
+
+Please thoroughly review the entire website codebase and identify any bugs, broken logic, unstable integrations, bad practices, missing validations, or anything that could cause functionality problems now or later.
+
+Priority focus areas:
+Cart functionality
+Checkout flow
+Base44 ↔ Wix integration
+Product syncing
+Redirect logic
+API calls
+State management
+Authentication/session handling
+Mobile responsiveness
+Error handling
+Performance issues
+
+Specifically check and fix:
+
+The Base44 cart data is actually being sent to Wix before redirecting.
+Wix cart/checkout APIs are being used correctly.
+Product IDs and variant IDs from Base44 match Wix product IDs.
+The checkout redirect only happens AFTER the Wix cart is successfully created.
+Any failed API calls, auth issues, CORS issues, or invalid payloads.
+The redirect URL should come from the Wix checkout/cart API response, not a static /checkout URL.
+Cart persistence/session storage issues.
+Timing/race condition issues during redirect.
+Any frontend or backend logic that could clear the cart unexpectedly.
+Any console errors, network errors, or hidden failures.
+
+Expected flow:
+Base44 cart → create Wix cart with line items → receive Wix checkout URL → redirect customer to populated Wix checkout.
+
+Please add logging/debugging so we can verify:
+cart payload being sent
+Wix API response
+checkout URL returned
+line items successfully added
+redirect timing
+
+Also:
+Clean up any messy or redundant code
+Optimize checkout reliability
+Make the integration production-safe
+Ensure there are no silent failures
+Verify the full customer purchase flow from add-to-cart to completed checkout
+
+Right now Wix checkout is opening with 0 items.</span></div>
+</div>
+
+<div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;padding:20px;">
+<div style="font-size:.82rem;font-weight:800;color:#111;margin-bottom:12px;">📦 If delivery details are not showing at checkout</div>
+<div style="background:#f5f0e8;border:1px solid rgba(0,0,0,0.1);border-radius:10px;padding:14px 16px;font-size:.75rem;line-height:1.7;color:#111;white-space:pre-wrap;font-family:inherit;position:relative;"><button onclick="navigator.clipboard.writeText(document.getElementById('ts-prompt-2').innerText).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy Prompt',1500)})" style="position:absolute;top:10px;right:10px;background:#6366f1;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:.65rem;font-weight:700;cursor:pointer;">Copy Prompt</button><span id="ts-prompt-2">Fix the Wix checkout integration so that shipping address fields appear when redirecting directly from the Base44 cart to Wix checkout.
+
+Current issue:
+Wix checkout is not showing address fields because the cart session being sent does not properly indicate that shipping is required.
+
+Update the cart/checkout logic as follows:
+
+When creating the cart session for Wix checkout, ensure each line item includes full product data:
+
+productId
+quantity
+variantId (if applicable)
+Ensure it maps to a physical product in Wix
+
+Ensure the cart session explicitly triggers shipping requirements:
+
+The product must be treated as a physical product
+Do not allow any fallback to digital/service product handling
+Ensure shipping profile is applied
+
+Use Wix Catalog V1 API correctly (store is on V1, not V3):
+
+Refactor any V3 logic to V1-compatible cart creation
+Ensure proper use of wix-stores-backend functions
+
+Do NOT use a static or preloaded checkout URL
+
+The checkout must be generated dynamically from the cart session
+
+Ensure the checkout URL is generated only AFTER the cart is fully initialized with valid shipping-required items
+
+Validate that:
+
+The product has weight and shipping enabled in Wix
+The cart session correctly reflects this before redirect
+
+Add a verification step:
+
+Log or confirm that the cart being sent to Wix includes a shippable item before redirecting
+
+Goal:
+Allow direct redirect from Base44 cart → Wix checkout while ensuring Wix recognizes the order as requiring shipping, so address fields (address, city, ZIP, country) are displayed.
+
+Do not change the UX flow (must remain direct to checkout). Only fix the cart/session initialization and API usage.</span></div>
+</div>
+
+<div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;padding:20px;">
+<div style="font-size:.82rem;font-weight:800;color:#111;margin-bottom:12px;">🔗 Fully and correctly integrate Wix to your Base44</div>
+<div style="background:#f5f0e8;border:1px solid rgba(0,0,0,0.1);border-radius:10px;padding:14px 16px;font-size:.75rem;line-height:1.7;color:#111;white-space:pre-wrap;font-family:inherit;position:relative;"><button onclick="navigator.clipboard.writeText(document.getElementById('ts-prompt-3').innerText).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy Prompt',1500)})" style="position:absolute;top:10px;right:10px;background:#6366f1;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:.65rem;font-weight:700;cursor:pointer;">Copy Prompt</button><span id="ts-prompt-3">Build a complete Wix Stores integration for a store that is on Catalog V1, not V3.
+
+Goal:
+Sync the full Wix product catalog into the app and make checkout creation reliable for every product and variant.
+
+Hard requirements:
+1. Use Wix Catalog V1 only.
+2. Do not use any /stores/v3/ endpoints anywhere in the flow.
+3. Assume the site is V1 and build against V1 response shapes and V1 checkout rules.
+4. Import all products, including:
+   - product id
+   - product name
+   - product slug or URL if available
+   - product images/media
+   - price data
+   - compare-at price if available
+   - product options
+   - variants
+   - variant ids
+   - variant choice mapping
+   - stock / availability if available
+5. Do not sync or prioritize descriptions. Names, images, prices, options, variant IDs, and checkout correctness matter most.
+6. The checkout must never fail because of wrong product/variant references.
+
+Catalog rules to implement:
+1. Query products from Wix Catalog V1 using the V1 products query endpoint:
+   POST /stores-reader/v1/products/query
+2. Never use V3 product endpoints.
+3. If filtering or sorting is used, remember V1 expects filter and sort as JSON-encoded strings, not plain objects.
+4. Pull all pages until the full catalog is synced.
+5. Store a normalized local catalog table that includes:
+   - wixProductId
+   - productName
+   - productMedia
+   - productPriceData
+   - manageVariants
+   - productOptions
+   - variant records
+   - each variant's variantId
+   - each variant's selected option/choice combination
+   - a deterministic lookup key for variant resolution
+
+Variant handling rules:
+1. Treat product.id as the checkout catalogItemId.
+2. For managed variants (manageVariants === true):
+   - resolve the exact variant belonging to the user's selected options
+   - store and use that variant's real Wix variantId
+   - when creating checkout line items, send:
+     - catalogReference.catalogItemId = product.id
+     - catalogReference.appId = "215238eb-22a5-4c36-9e7b-e7c08025e04e"
+     - catalogReference.options.variantId = exactVariantId
+3. Never send the wrong variantId for a product.
+4. Never use a variantId from one product with another product's productId.
+5. Add validation that blocks checkout if the selected options do not map to a real variant for that exact product.
+6. For non-managed variants (manageVariants === false):
+   - do not force variantId
+   - pass the selected options/choices in catalogReference.options exactly as Wix expects for non-managed variants
+7. Build a resolver that maps selected option choices to the exact Wix variant before checkout.
+
+Checkout rules:
+1. Use Wix eCommerce checkout APIs correctly with lineItems[].catalogReference.
+2. Every checkout line item must include:
+   - catalogItemId = Wix product id
+   - appId = "215238eb-22a5-4c36-9e7b-e7c08025e04e"
+   - correct options payload depending on whether variants are managed
+3. Before creating a checkout, validate:
+   - product exists
+   - product is visible/available if that field is present
+   - variant exists for that product
+   - selected choices match the resolved variant
+   - image, name, and price are loaded for display
+4. If validation fails, return a clear structured error instead of attempting checkout.
+
+Data model expectations:
+1. Build product-level and variant-level tables or collections.
+2. Keep one row per variant for managed-variant products.
+3. Keep image URLs/media references connected to both product display and variant selection where possible.
+4. Keep current price data available to the frontend without needing descriptions.
+5. Support refreshing/resyncing the entire Wix catalog.
+
+Frontend behavior:
+1. Show product name, main image, variant-specific image when available, and current price.
+2. Show selectable options like size/color.
+3. Resolve the exact variant immediately when options are selected.
+4. Only enable checkout when a valid product + variant mapping exists.
+
+Implementation quality bar:
+1. Make the integration production-safe and defensive.
+2. Add logging around product sync, variant resolution, and checkout payload creation.
+3. Add helper functions for:
+   - syncAllWixProductsV1()
+   - resolveVariantForProduct(productId, selectedChoices)
+   - buildCatalogReference(product, selectedChoices)
+   - createCheckoutFromSelection(...)
+4. Add tests or validation checks for:
+   - managed variant checkout
+   - non-managed variant checkout
+   - invalid option combination
+   - stale variant id mismatch
+   - multi-product catalog sync
+5. Prefer correctness over shortcuts.
+
+Important:
+This store is on Wix Catalog V1. Build the integration specifically for V1 semantics and checkout payloads. Do not generate any V3 code paths in this implementation.</span></div>
+</div>
+
+<div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;padding:20px;">
+<div style="font-size:.82rem;font-weight:800;color:#111;margin-bottom:12px;">❌ If you have a 404 error for checkout</div>
+<div style="background:#f5f0e8;border:1px solid rgba(0,0,0,0.1);border-radius:10px;padding:14px 16px;font-size:.75rem;line-height:1.7;color:#111;white-space:pre-wrap;font-family:inherit;position:relative;"><button onclick="navigator.clipboard.writeText(document.getElementById('ts-prompt-4').innerText).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy Prompt',1500)})" style="position:absolute;top:10px;right:10px;background:#6366f1;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:.65rem;font-weight:700;cursor:pointer;">Copy Prompt</button><span id="ts-prompt-4">Fix the checkout flow immediately.
+
+Right now, when I click Checkout, the app routes to /checkout inside Base44 and shows a 404 page: "The page checkout could not be found in this application."
+
+This is wrong. There should NOT be a Base44 /checkout page unless it is only used temporarily to create the Wix checkout session.
+
+Please update the checkout button so it redirects directly to the real Wix checkout URL/session.
+
+Requirements:
+Do not navigate to /checkout in Base44.
+When Checkout is clicked, collect the current cart items, quantities, selected variants/options, and matching Wix product IDs/variant IDs.
+Use the correct Wix integration/API to create a checkout or cart checkout session.
+Redirect the customer to the secure Wix checkout URL returned by Wix.
+Make sure all products in the Base44 cart transfer into Wix checkout with the correct quantity and price.
+Use the same working logic as the product that already successfully connects to Wix checkout, then apply it to every other product.
+Add error handling so if Wix checkout fails, it shows a clear message instead of sending users to a 404 page.
+Remove or replace any hardcoded "/checkout" route/link.
+Test the full flow: add product to cart → click checkout → Wix checkout opens with the correct products and delivery fields.
+
+Do a full scan for any checkout links, checkout buttons, cart checkout functions, or router.navigate('/checkout') calls and replace them with the correct Wix checkout redirect flow.</span></div>
+</div>
+
+<div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;padding:20px;">
+<div style="font-size:.82rem;font-weight:800;color:#111;margin-bottom:12px;">📊 Connect your Meta Pixel to your Base44</div>
+<div style="background:#f5f0e8;border:1px solid rgba(0,0,0,0.1);border-radius:10px;padding:14px 16px;font-size:.75rem;line-height:1.7;color:#111;white-space:pre-wrap;font-family:inherit;position:relative;"><button onclick="navigator.clipboard.writeText(document.getElementById('ts-prompt-5').innerText).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy Prompt',1500)})" style="position:absolute;top:10px;right:10px;background:#6366f1;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:.65rem;font-weight:700;cursor:pointer;">Copy Prompt</button><span id="ts-prompt-5">Please correctly integrate my Meta Pixel into my Base44 website.
+
+My Meta Pixel ID is: [PASTE META PIXEL ID HERE]
+
+Add the Meta Pixel base code globally inside the site head so it loads on every page. Make sure it only fires once per page load and does not duplicate events.
+
+Track only these ecommerce events:
+
+1. PageView
+- Fire on every page load.
+
+2. ViewContent
+- Fire only when someone views a product page.
+
+3. AddToCart
+- Fire only when the customer clicks Add to Cart and the item is successfully added to the cart.
+
+4. InitiateCheckout
+- Fire only when the customer clicks the checkout button and is successfully redirected to Wix checkout.
+
+Do NOT fire Purchase on Base44 unless there is a real order confirmation/thank-you page hosted on Base44 after a completed payment. Since checkout happens on Wix, Purchase should be tracked through Wix/Meta integration instead.
+
+Use dynamic product data in the events:
+- product ID
+- product name
+- price
+- quantity
+- currency: USD
+- content_type: product
+
+Make sure the Pixel works on both mobile and desktop.
+
+Also verify that events are NOT firing on:
+- random button clicks
+- page refreshes
+- failed checkout attempts
+- cart page views without checkout clicks
+- duplicate page loads
+
+After implementing, add clear comments in the code showing where the Pixel ID is used and where each event fires.</span></div>
+
+<div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:12px;padding:20px;">
+<div style="font-size:.82rem;font-weight:800;color:#111;margin-bottom:12px;">⚡ Connect Pixel to Base44 (quick version)</div>
+<div style="background:#f5f0e8;border:1px solid rgba(0,0,0,0.1);border-radius:10px;padding:14px 16px;font-size:.75rem;line-height:1.7;color:#111;white-space:pre-wrap;font-family:inherit;position:relative;"><button onclick="navigator.clipboard.writeText(document.getElementById('ts-prompt-6').innerText).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy Prompt',1500)})" style="position:absolute;top:10px;right:10px;background:#6366f1;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:.65rem;font-weight:700;cursor:pointer;">Copy Prompt</button><span id="ts-prompt-6">Install my Meta Pixel across the entire website using Pixel ID: [YOUR_PIXEL_ID]. Configure the pixel to track PageView on every page load, AddToCart when a customer adds a product to their cart, InitiateCheckout when a customer clicks the checkout button, and track all outbound link clicks and unique link clicks throughout the site. Ensure all events are sent to the Meta Pixel correctly and are visible inside Meta Events Manager.</span></div>
+</div>
+
+</div>`, videoUrl: '' },
         { title: 'Connect Base44 to your store', desc: `Wire your Base44-powered features to your live store so logins, dashboards, and rewards all point at the right place.<br><br><div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:16px;padding:24px;margin-top:12px;"><div style="font-size:1rem;font-weight:800;color:#111;margin-bottom:20px;">See the Difference</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;"><div><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;"><span style="background:#fee2e2;color:#dc2626;font-size:.65rem;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.05em;">BEFORE</span><span style="font-size:.82rem;color:#6b7280;">Default Wix store</span></div><img src="/base44/img/before.png" style="width:100%;border-radius:10px;display:block;" alt="Default Wix store"></div><div><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;"><span style="background:#dcfce7;color:#16a34a;font-size:.65rem;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.05em;">AFTER</span><span style="font-size:.82rem;color:#6b7280;">AI-built with Base44</span></div><img src="/base44/img/after.png" style="width:100%;border-radius:10px;display:block;" alt="Base44 demo store"></div></div><div style="margin-top:20px;text-align:center;"><a href="https://nad-boost-now.base44.app/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#6366f1;color:#fff;font-size:.82rem;font-weight:700;padding:12px 28px;border-radius:10px;text-decoration:none;">↗ View Demo Site</a></div></div><br><div style="background:#e8e8f8;border:1.5px solid #c7c7ef;border-radius:16px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:4px;"><div><div style="font-size:.95rem;font-weight:800;color:#111;margin-bottom:4px;">Ready to build your AI website?</div><div style="font-size:.82rem;color:#4b5563;">Sign up to Base44 and launch your store today.</div></div><a href="https://re.aistorebuilder.com/base44-pricing?subid=ad-ventur" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#6366f1;color:#fff;font-size:.82rem;font-weight:700;padding:12px 22px;border-radius:10px;text-decoration:none;white-space:nowrap;flex-shrink:0;">Get Started Free →</a></div>`, videoUrl: '' },
       ],
     },
