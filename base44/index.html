@@ -1518,9 +1518,8 @@
     if (e.key === 'Enter') submitGate();
   });
 
-  // Auto-enter if email already saved
-  const _autoLogin = !!getStoredEmail();
-  if (_autoLogin) document.getElementById('email-gate').style.display = 'none';
+  // Login gate disabled — always skip
+  document.getElementById('email-gate').style.display = 'none';
 
   const USER_EMAIL = getStoredEmail();
   const USER_NAME  = getUserName(USER_EMAIL);
@@ -2371,7 +2370,7 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   }
 
   // Run portal init on load if already logged in
-  if (_autoLogin) initPortal();
+  initPortal();
 
   // ── Rewards ──
   const PRIZE_END        = new Date('2026-07-27');
