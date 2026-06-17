@@ -2351,6 +2351,7 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     // Video
     const va = document.getElementById('video-area');
     if (l.videoEmbed) {
+      va.style.display = '';
       va.innerHTML = l.videoEmbed;
       va.querySelectorAll('script').forEach(old => {
         const s = document.createElement('script');
@@ -2361,8 +2362,9 @@ After implementing, add clear comments in the code showing where the Pixel ID is
       });
     } else if (l.videoUrl) {
       va.innerHTML = `<iframe src="${l.videoUrl}" allowfullscreen allow="autoplay; fullscreen"></iframe>`;
+      va.style.display = '';
     } else {
-      va.innerHTML = `<div class="video-play-icon"><svg viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><span class="video-coming-soon">Video content coming soon</span>`;
+      va.style.display = 'none';
     }
 
     // Base44 CTA
