@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commitment · AI Branded Dropshipping</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f5f0e8;
+      --card: #ffffff;
+      --border: rgba(0,0,0,0.09);
+      --text: #111111;
+      --text2: #4b5563;
+      --text3: #9ca3af;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --green: #16a34a;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header-logo { font-size: .95rem; font-weight: 800; color: var(--text); }
+    .header-sep { color: var(--text3); font-size: .85rem; }
+    .header-sub { font-size: .82rem; font-weight: 500; color: var(--text2); }
+
+    /* Page */
+    .page { max-width: 680px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    /* Title block */
+    .page-eyebrow {
+      font-size: .65rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .page-title { font-size: 2rem; font-weight: 800; margin-bottom: 10px; line-height: 1.2; }
+    .page-sub { font-size: .88rem; color: var(--text2); line-height: 1.7; margin-bottom: 36px; }
+
+    /* Intro quote card */
+    .quote-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 32px;
+      font-size: .85rem;
+      color: var(--text2);
+      line-height: 1.75;
+    }
+    .quote-card strong { color: var(--text); font-weight: 700; }
+
+    /* Checklist */
+    .checklist-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .checklist-title { font-size: .9rem; font-weight: 800; color: var(--text); }
+    .checklist-counter {
+      font-size: .75rem; font-weight: 700;
+      background: #f3f4f6; color: var(--text2);
+      padding: 4px 12px; border-radius: 20px;
+      transition: background .2s, color .2s;
+    }
+    .checklist-counter.done { background: #dcfce7; color: var(--green); }
+
+    .checklist { display: flex; flex-direction: column; gap: 10px; margin-bottom: 36px; }
+    .check-item {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      user-select: none;
+    }
+    .check-item:hover { border-color: #c7d2fe; }
+    .check-item.checked { border-color: var(--accent); background: #fafafa; }
+    .check-box {
+      width: 22px; height: 22px; border-radius: 6px;
+      border: 2px solid #d1d5db;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+      transition: background .15s, border-color .15s;
+    }
+    .check-item.checked .check-box {
+      background: var(--accent); border-color: var(--accent);
+    }
+    .check-box svg { display: none; }
+    .check-item.checked .check-box svg { display: block; }
+    .check-text { font-size: .82rem; color: var(--text2); line-height: 1.65; }
+    .check-item.checked .check-text { color: var(--text); }
+
+    /* Signature section */
+    .sig-section { margin-bottom: 32px; }
+    .sig-title { font-size: .9rem; font-weight: 800; color: var(--text); margin-bottom: 16px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    @media (max-width: 540px) { .form-grid { grid-template-columns: 1fr; } }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    label { font-size: .72rem; font-weight: 700; color: var(--text2); letter-spacing: .04em; text-transform: uppercase; }
+    input[type="text"], input[type="email"] {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: 11px 14px;
+      font-size: .84rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      outline: none;
+      transition: border-color .15s;
+    }
+    input[type="text"]:focus, input[type="email"]:focus { border-color: var(--accent); }
+
+    /* Signature pad */
+    .sig-pad-wrap {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    .sig-pad-label {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      font-size: .78rem; color: var(--text3); pointer-events: none;
+      transition: opacity .2s;
+    }
+    canvas#sig-canvas {
+      display: block; width: 100%; height: 160px; cursor: crosshair;
+      touch-action: none;
+    }
+    .sig-clear {
+      font-size: .72rem; font-weight: 600; color: var(--text3);
+      background: none; border: none; cursor: pointer;
+      padding: 0; text-decoration: underline;
+      transition: color .15s;
+    }
+    .sig-clear:hover { color: var(--text); }
+    .witnessed {
+      font-size: .75rem; color: var(--text3);
+      margin-top: 10px;
+    }
+
+    /* CTA button */
+    .cta-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 16px 24px;
+      font-size: .95rem;
+      font-weight: 800;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+      margin-bottom: 12px;
+    }
+    .cta-btn:hover { background: var(--accent-hover); }
+    .cta-btn:active { transform: scale(.99); }
+    .cta-btn:disabled { background: #d1d5db; cursor: not-allowed; }
+    .cta-hint {
+      text-align: center;
+      font-size: .75rem;
+      color: var(--text3);
+    }
+
+    /* Confirmation */
+    #confirm-view { display: none; text-align: center; padding: 60px 24px; }
+    .confirm-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: #dcfce7;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .confirm-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; }
+    .confirm-sub { font-size: .88rem; color: var(--text2); line-height: 1.7; max-width: 420px; margin: 0 auto; }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: .72rem;
+      color: var(--text3);
+      padding: 32px 24px;
+      line-height: 1.65;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+
+    /* Error */
+    .error-msg {
+      background: #fef2f2; border: 1px solid #fecaca;
+      border-radius: 9px; padding: 12px 16px;
+      font-size: .78rem; color: #dc2626;
+      margin-bottom: 14px; display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <span class="header-logo">AI Branded Dropshipping</span>
+  <span class="header-sep">·</span>
+  <span class="header-sub">Commitment</span>
+</div>
+
+<div class="page">
+
+  <!-- Form view -->
+  <div id="form-view">
+
+    <div class="page-eyebrow">Before You Start</div>
+    <h1 class="page-title">The Commitment Agreement</h1>
+    <p class="page-sub">This program works — but only if you do. Read every item below, check the ones you agree to, sign your name, and lock yourself in.</p>
+
+    <div class="quote-card">
+      <strong>A note from your coach:</strong><br><br>
+      This isn't a course you buy and forget about. This is a program for people who are serious about building a real income online. If you're looking for a shortcut or a magic button — this isn't for you.<br><br>
+      If you're willing to show up, do the work, and follow the process — I'll be right there with you every step of the way.
+    </div>
+
+    <!-- Checklist -->
+    <div class="checklist-header">
+      <div class="checklist-title">Your Commitments</div>
+      <div class="checklist-counter" id="counter">0 of 11 agreed</div>
+    </div>
+
+    <div class="checklist" id="checklist">
+
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">I understand this program requires real effort, consistency, and time. Results are not instant and I am not expecting overnight success.</div>
+      </div>
+
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">I commit to following the program steps in order and not skipping ahead. The process is structured for a reason.</div>
+      </div>
+
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">When things get hard or confusing, I will reach out for help instead of giving up. I will not quit at the first sign of difficulty.</div>
+      </div>
+
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">I commit to dedicating real time each week to building and running my store. I understand that inconsistency leads to slow results.</div>
+      </div>
+
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">I understand that difficulty is not a valid reason for a refund. I am investing in a skill and a business, not a guaranteed outcome.</div>
+      </div>
+
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">I understand that building a profitable store takes time — typically weeks to months of consistent work, not days.</div>
+      </div>
+
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">I will show up to live coaching calls and group sessions. I understand that live access is one of the most valuable parts of this program.</div>
+      </div>
+
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">I will engage with the community, share my progress, and ask questions. I will not go through this alone when support is available.</div>
+      </div>
+
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">If I am on a payment plan, I agree to honour every payment on time. Missing payments does not pause or cancel my obligations.</div>
+      </div>
+
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">I take full personal responsibility for my results. My success depends on my actions, not on luck or the actions of others.</div>
+      </div>
+
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">I am ready to start. I am committed to seeing this through and building something I am proud of. This is my word.</div>
+      </div>
+
+    </div>
+
+    <!-- Signature section -->
+    <div class="sig-section">
+      <div class="sig-title">Sign Your Commitment</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Legal Name</label>
+          <input type="text" id="field-name" placeholder="Your full name" />
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="field-email" placeholder="you@example.com" />
+        </div>
+        <div class="form-group full">
+          <label>Date</label>
+          <input type="text" id="field-date" placeholder="" readonly />
+        </div>
+      </div>
+
+      <label style="display:block;margin-bottom:8px;">Your Signature</label>
+      <div class="sig-pad-wrap">
+        <span class="sig-pad-label" id="sig-hint">Sign here with your mouse or finger</span>
+        <canvas id="sig-canvas"></canvas>
+      </div>
+      <button class="sig-clear" onclick="clearSig()">Clear Signature</button>
+      <div class="witnessed">Witnessed by: AI Branded Dropshipping</div>
+    </div>
+
+    <div class="error-msg" id="error-msg">Please check all commitments, fill in your name and email, and add your signature before locking in.</div>
+
+    <button class="cta-btn" id="submit-btn" onclick="submitCommitment()">I'm ready. Lock me in →</button>
+    <div class="cta-hint">By clicking above you agree to all 11 commitments listed.</div>
+
+  </div>
+
+  <!-- Confirmation view -->
+  <div id="confirm-view">
+    <div class="confirm-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2 class="confirm-title">You're Locked In.</h2>
+    <p class="confirm-sub">Your commitment has been recorded. Head back to the course portal and start building — you've already taken the most important step.</p>
+    <br>
+    <a href="/base44" style="display:inline-flex;align-items:center;gap:8px;background:#6366f1;color:#fff;font-size:.85rem;font-weight:700;padding:13px 28px;border-radius:10px;text-decoration:none;margin-top:8px;">Go to Course Portal →</a>
+  </div>
+
+</div>
+
+<div class="footer">
+  © AI Branded Dropshipping. Results are not typical and are not guaranteed. Individual results will vary based on effort, experience, and market conditions.
+</div>
+
+<script>
+  // Set today's date
+  const today = new Date();
+  document.getElementById('field-date').value = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  // Checkbox toggle
+  const TOTAL = 11;
+  function toggle(el) {
+    el.classList.toggle('checked');
+    updateCounter();
+  }
+  function updateCounter() {
+    const checked = document.querySelectorAll('.check-item.checked').length;
+    const el = document.getElementById('counter');
+    el.textContent = `${checked} of ${TOTAL} agreed`;
+    el.classList.toggle('done', checked === TOTAL);
+  }
+
+  // Signature canvas
+  const canvas = document.getElementById('sig-canvas');
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
+  let hasSig = false;
+
+  function resizeCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    ctx.strokeStyle = '#111';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return { x: src.clientX - rect.left, y: src.clientY - rect.top };
+  }
+
+  canvas.addEventListener('mousedown', e => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+  canvas.addEventListener('mousemove', e => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); hasSig = true; document.getElementById('sig-hint').style.opacity = '0'; });
+  canvas.addEventListener('mouseup', () => drawing = false);
+  canvas.addEventListener('mouseleave', () => drawing = false);
+
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }, { passive: false });
+  canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); hasSig = true; document.getElementById('sig-hint').style.opacity = '0'; }, { passive: false });
+  canvas.addEventListener('touchend', () => drawing = false);
+
+  function clearSig() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    hasSig = false;
+    document.getElementById('sig-hint').style.opacity = '1';
+  }
+
+  // Submit
+  function submitCommitment() {
+    const allChecked = document.querySelectorAll('.check-item.checked').length === TOTAL;
+    const name = document.getElementById('field-name').value.trim();
+    const email = document.getElementById('field-email').value.trim();
+    const errEl = document.getElementById('error-msg');
+
+    if (!allChecked || !name || !email || !hasSig) {
+      errEl.style.display = 'block';
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    errEl.style.display = 'none';
+    document.getElementById('form-view').style.display = 'none';
+    document.getElementById('confirm-view').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
