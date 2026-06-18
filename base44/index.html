@@ -853,6 +853,13 @@
             </div>
             <a href="https://re.aistorebuilder.com/drop-shipping?subid=ad-ventur" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:#16a34a;color:#fff;font-size:.8rem;font-weight:700;padding:11px 20px;border-radius:9px;text-decoration:none;white-space:nowrap;flex-shrink:0;">Get Discounted Access →</a>
           </div>
+          <div id="supplier-cta" style="display:none;background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%);border:1.5px solid #fcd34d;border-radius:14px;padding:18px 20px;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
+            <div>
+              <div style="font-size:.88rem;font-weight:800;color:#111;margin-bottom:3px;">Get the best supplier</div>
+              <div style="font-size:.78rem;color:#4b5563;line-height:1.5;">Here is the link to get the best supplier for your store.</div>
+            </div>
+            <a href="https://whop.com/checkout/rs2VwA6jEzfpvMIA9-cwnl-DKgb-BYhA-luEzfiw7zgk5/" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:#d97706;color:#fff;font-size:.8rem;font-weight:700;padding:11px 20px;border-radius:9px;text-decoration:none;white-space:nowrap;flex-shrink:0;">Get The Supplier →</a>
+          </div>
           <button class="mark-complete-btn" id="mark-btn" onclick="markComplete()">Mark Complete</button>
         </div>
       </div>
@@ -2056,7 +2063,7 @@ After implementing, add clear comments in the code showing where the Pixel ID is
           videoUrl: '',
           videoEmbed: `<vturb-smartplayer id="vid-6a2e1d635b719ab8be0e132b" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a2e1d635b719ab8be0e132b/v4/player.js";s.async=!0;document.head.appendChild(s);<\/script>`,
         },
-        { title: 'The Best Supplier', desc: 'Here is the link to get the best supplier<br><br><a href="https://whop.com/checkout/rs2VwA6jEzfpvMIA9-cwnl-DKgb-BYhA-luEzfiw7zgk5/" target="_blank" class="lesson-sop-link">https://whop.com/checkout/rs2VwA6jEzfpvMIA9-cwnl-DKgb-BYhA-luEzfiw7zgk5/</a>', videoUrl: '' },
+        { title: 'The Best Supplier', desc: '', suppliercta: true, videoUrl: '' },
       ],
     },
     {
@@ -2389,6 +2396,7 @@ After implementing, add clear comments in the code showing where the Pixel ID is
 
     // Wix CTA
     document.getElementById('wix-cta').style.display = l.wixcta ? 'flex' : 'none';
+    document.getElementById('supplier-cta').style.display = l.suppliercta ? 'flex' : 'none';
 
     // Mark Complete button
     const btn = document.getElementById('mark-btn');
