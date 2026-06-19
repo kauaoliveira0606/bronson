@@ -2518,12 +2518,16 @@ After implementing, add clear comments in the code showing where the Pixel ID is
       sidebarEl.innerHTML = p.days.map((day, di) => {
         const { start: startIdx, count } = dayRanges[di];
         const dayLessons = lessons.slice(startIdx, startIdx + count);
-        const sopLink = day.sopUrl
-          ? `<a href="${day.sopUrl}" target="_blank" class="sop-link">Open SOP →</a>`
-          : `<span class="sop-link disabled">Open SOP →</span>`;
-        const fullSopLink = day.fullSopUrl
-          ? `<a href="${day.fullSopUrl}" target="_blank" class="sop-link">Full SOP (Days 1-3) →</a>`
-          : (day.hasOwnProperty('fullSopUrl') ? `<span class="sop-link disabled">Full SOP (Days 1-3) →</span>` : '');
+        const sopLink = currentPhase === 2
+          ? (day.sopUrl
+            ? `<a href="${day.sopUrl}" target="_blank" class="sop-link">Open SOP →</a>`
+            : `<span class="sop-link disabled">Open SOP →</span>`)
+          : '';
+        const fullSopLink = currentPhase === 2
+          ? (day.fullSopUrl
+            ? `<a href="${day.fullSopUrl}" target="_blank" class="sop-link">Full SOP (Days 1-3) →</a>`
+            : (day.hasOwnProperty('fullSopUrl') ? `<span class="sop-link disabled">Full SOP (Days 1-3) →</span>` : ''))
+          : '';
         const header = `<div class="day-group-header"><span class="day-group-label">${day.label}</span><div class="day-group-links">${sopLink}${fullSopLink}</div></div>`;
         const items = dayLessons.map((ls, j) => {
           const idx = startIdx + j;
