@@ -624,6 +624,8 @@
 
   /* ── Mobile lesson nav bar ── */
   #mob-lesson-nav { display:none; }
+  #mob-drawer-overlay { display:none; }
+  #mob-drawer { display:none; }
   @media (max-width:700px) {
     #mob-lesson-nav {
       display:none;
@@ -667,14 +669,15 @@
     .lesson-content { padding-bottom:90px !important; }
     /* Drawer */
     #mob-drawer-overlay {
-      display:none;
+      display:none !important;
       position:fixed;
       inset:0;
       background:rgba(0,0,0,0.45);
       z-index:300;
     }
-    #mob-drawer-overlay.open { display:block; }
+    #mob-drawer-overlay.open { display:block !important; }
     #mob-drawer {
+      display:block !important;
       position:fixed;
       bottom:0;
       left:0;
