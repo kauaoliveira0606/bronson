@@ -1706,8 +1706,8 @@
         document.getElementById('pending-screen').style.display = 'flex';
       }
     } else {
-      // New user — create pending profile (no Supabase auth uid, use email as id placeholder)
-      await _supabase.from('profiles').insert({ id: crypto.randomUUID(), email, approved: false });
+      // New user — create pending profile
+      await _supabase.from('profiles').insert({ email, approved: false });
       document.getElementById('email-gate').style.display = 'none';
       document.getElementById('pending-screen').style.display = 'flex';
     }
@@ -3179,7 +3179,7 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     try {
       const { data, error } = await _supabase
         .from('profiles')
-        .select('id, email, approved, created_at')
+        .select('email, approved, created_at')
         .order('created_at', { ascending: false });
       if (error) throw error;
       if (!data || data.length === 0) {
@@ -3195,10 +3195,10 @@ After implementing, add clear comments in the code showing where the Pixel ID is
           <div style="display:flex;gap:6px;flex-shrink:0;">
             ${u.approved
               ? `<span style="font-size:.75rem;color:#16a34a;font-weight:700;background:#dcfce7;border-radius:6px;padding:4px 10px;">Approved</span>
-                 <button onclick="adminSetApproval('${u.id}',false,this)" style="font-size:.75rem;background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Revoke</button>`
+                 <button onclick="adminSetApproval('${u.email}',false,this)" style="font-size:.75rem;background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Revoke</button>`
               : `<span style="font-size:.75rem;color:#d97706;font-weight:700;background:#fef3c7;border-radius:6px;padding:4px 10px;">Pending</span>
-                 <button onclick="adminSetApproval('${u.id}',true,this)" style="font-size:.75rem;background:#dcfce7;color:#16a34a;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Approve</button>
-                 <button onclick="adminSetApproval('${u.id}','delete',this)" style="font-size:.75rem;background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Reject</button>`
+                 <button onclick="adminSetApproval('${u.email}',true,this)" style="font-size:.75rem;background:#dcfce7;color:#16a34a;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Approve</button>
+                 <button onclick="adminSetApproval('${u.email}','delete',this)" style="font-size:.75rem;background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Reject</button>`
             }
           </div>
         </div>`).join('');
@@ -3207,13 +3207,13 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     }
   }
 
-  async function adminSetApproval(userId, value, btn) {
+  async function adminSetApproval(email, value, btn) {
     btn.disabled = true;
     btn.textContent = '...';
     if (value === 'delete') {
-      await _supabase.from('profiles').delete().eq('id', userId);
+      await _supabase.from('profiles').delete().eq('email', email);
     } else {
-      await _supabase.from('profiles').update({ approved: value }).eq('id', userId);
+      await _supabase.from('profiles').update({ approved: value }).eq('email', email);
     }
     openAdminPanel();
   }
