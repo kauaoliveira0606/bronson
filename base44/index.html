@@ -288,6 +288,8 @@
     .lesson-item:hover { background: rgba(0,0,0,.04); }
     .lesson-item.active { background: rgba(0,0,0,.06); }
     .lesson-item.done .lesson-num { background: var(--green); color: #000; }
+    .lesson-item.locked { opacity: 0.38; cursor: default; pointer-events: none; }
+    .lesson-item.locked .lesson-num { background: rgba(0,0,0,0.08); color: #999; }
     .lesson-num {
       width: 26px; height: 26px; border-radius: 50%;
       background: rgba(42,204,18,.25); color: #2acc12;
@@ -2261,6 +2263,7 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   let prog = loadProg();
 
   function isLessonDone(phaseIdx, lessonIdx) { return !!(prog[`${phaseIdx}_${lessonIdx}`]); }
+  function isLessonUnlocked(phaseIdx, lessonIdx) { return lessonIdx === 0 || isLessonDone(phaseIdx, lessonIdx - 1); }
   function setLessonDone(phaseIdx, lessonIdx) { prog[`${phaseIdx}_${lessonIdx}`] = 1; saveProg(prog); }
 
   function phaseDoneCount(i) {
@@ -2444,6 +2447,7 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   let prevView      = 'home';
 
   function openPhase(phaseIdx, lessonIdx = 0) {
+    if (!isLessonUnlocked(phaseIdx, lessonIdx)) return;
     currentPhase  = phaseIdx;
     currentLesson = lessonIdx;
     mobCloseDrawer();
@@ -2539,8 +2543,9 @@ After implementing, add clear comments in the code showing where the Pixel ID is
         const items = dayLessons.map((ls, j) => {
           const idx = startIdx + j;
           const done_j = isLessonDone(currentPhase, idx);
-          return `<div class="lesson-item${idx === currentLesson ? ' active' : ''}${done_j ? ' done' : ''}" onclick="openPhase(${currentPhase},${idx})">
-            <div class="lesson-num">${idx + 1}</div>
+          const locked_j = !isLessonUnlocked(currentPhase, idx);
+          return `<div class="lesson-item${idx === currentLesson ? ' active' : ''}${done_j ? ' done' : ''}${locked_j ? ' locked' : ''}" onclick="openPhase(${currentPhase},${idx})">
+            <div class="lesson-num">${locked_j ? '🔒' : idx + 1}</div>
             <div class="lesson-item-name">${ls.title}</div>
             <div class="lesson-status-dot${done_j ? ' done' : ''}"></div>
           </div>`;
@@ -2550,8 +2555,9 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     } else {
       sidebarEl.innerHTML = lessons.map((ls, j) => {
         const done_j = isLessonDone(currentPhase, j);
-        return `<div class="lesson-item${j === currentLesson ? ' active' : ''}${done_j ? ' done' : ''}" onclick="openPhase(${currentPhase},${j})">
-          <div class="lesson-num">${j + 1}</div>
+        const locked_j = !isLessonUnlocked(currentPhase, j);
+        return `<div class="lesson-item${j === currentLesson ? ' active' : ''}${done_j ? ' done' : ''}${locked_j ? ' locked' : ''}" onclick="openPhase(${currentPhase},${j})">
+          <div class="lesson-num">${locked_j ? '🔒' : j + 1}</div>
           <div class="lesson-item-name">${ls.title}</div>
           <div class="lesson-status-dot${done_j ? ' done' : ''}"></div>
         </div>`;
