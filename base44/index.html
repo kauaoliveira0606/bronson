@@ -2263,7 +2263,15 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   let prog = loadProg();
 
   function isLessonDone(phaseIdx, lessonIdx) { return !!(prog[`${phaseIdx}_${lessonIdx}`]); }
-  function isLessonUnlocked(phaseIdx, lessonIdx) { return lessonIdx === 0 || isLessonDone(phaseIdx, lessonIdx - 1); }
+  function isLessonUnlocked(phaseIdx, lessonIdx) {
+    if (phaseIdx === 0 && lessonIdx === 0) return true;
+    if (lessonIdx === 0) {
+      const prev = PHASES[phaseIdx - 1];
+      const prevLen = (prev && prev.lessons || []).length;
+      return prevLen === 0 || isLessonDone(phaseIdx - 1, prevLen - 1);
+    }
+    return isLessonDone(phaseIdx, lessonIdx - 1);
+  }
   function setLessonDone(phaseIdx, lessonIdx) { prog[`${phaseIdx}_${lessonIdx}`] = 1; saveProg(prog); }
 
   function phaseDoneCount(i) {
