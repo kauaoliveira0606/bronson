@@ -743,6 +743,29 @@
   </div>
 </div>
 
+<!-- ═══ Pending approval screen ═══ -->
+<div id="pending-screen" style="display:none;position:fixed;inset:0;background:#f8fafc;z-index:9998;display:none;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:40px 36px;max-width:420px;width:90%;box-shadow:0 4px 24px rgba(0,0,0,.08);text-align:center;">
+    <div style="font-size:2.4rem;margin-bottom:16px;">⏳</div>
+    <div style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:10px;">Access Pending</div>
+    <p style="font-size:.88rem;color:#6b7280;line-height:1.6;margin-bottom:24px;">Your account is waiting for approval.<br>You'll receive an email once your coach approves your access.</p>
+    <button onclick="(async()=>{await _supabase.auth.signOut();localStorage.removeItem('cp_email');location.reload();})()" style="background:#111;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:.88rem;font-weight:700;cursor:pointer;">Sign Out</button>
+  </div>
+</div>
+
+<!-- ═══ Admin panel ═══ -->
+<div id="admin-panel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:32px;max-width:560px;width:94%;box-shadow:0 8px 40px rgba(0,0,0,.18);max-height:88vh;overflow-y:auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div style="font-size:1rem;font-weight:800;color:#111;">Admin — User Approvals</div>
+      <button onclick="document.getElementById('admin-panel').style.display='none'" style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:#6b7280;">×</button>
+    </div>
+    <div id="admin-user-list" style="display:flex;flex-direction:column;gap:10px;">
+      <p style="color:#6b7280;font-size:.85rem;">Loading...</p>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ Sidebar ═══ -->
 <aside class="sidebar">
   <div class="sidebar-logo">
@@ -784,6 +807,10 @@
     <div class="nav-item" onclick="showView('leaderboard',this); fetchLeaderboard();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       <span class="nav-label">Leaderboard</span>
+    </div>
+    <div class="nav-item" id="nav-admin" style="display:none;" onclick="openAdminPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><circle cx="18" cy="6" r="3" fill="currentColor" stroke="none"/><path d="M17 6h2M18 5v2" stroke="#fff" stroke-width="1.5"/></svg>
+      <span class="nav-label">Admin</span>
     </div>
   </nav>
   <div class="sidebar-user">
@@ -1673,23 +1700,40 @@
     document.getElementById('email-gate').style.display = 'none';
   }
 
+  const ADMIN_EMAIL = 'kaua.bage@gmail.com';
+
+  async function handleSession(session) {
+    if (!session) { showGate(); return; }
+    const email = session.user.email;
+    // Upsert profile row (creates it on first login)
+    await _supabase.from('profiles').upsert({ id: session.user.id, email }, { onConflict: 'id', ignoreDuplicates: true });
+    // Admin bypasses approval check
+    if (email === ADMIN_EMAIL) {
+      hideGate(email);
+      document.getElementById('nav-admin').style.display = '';
+      initPortal();
+      return;
+    }
+    // Check approval
+    const { data: profile } = await _supabase.from('profiles').select('approved').eq('id', session.user.id).single();
+    if (profile && profile.approved) {
+      hideGate(email);
+      initPortal();
+    } else {
+      document.getElementById('email-gate').style.display = 'none';
+      document.getElementById('pending-screen').style.display = 'flex';
+    }
+  }
+
   // Listen for auth changes (handles magic link redirect)
   _supabase.auth.onAuthStateChange((event, session) => {
-    if (session) {
-      hideGate(session.user.email);
-      initPortal();
-    }
+    if (session) handleSession(session);
   });
 
   // Check existing session on load
   (async () => {
     const { data: { session } } = await _supabase.auth.getSession();
-    if (session) {
-      hideGate(session.user.email);
-      initPortal();
-    } else {
-      showGate();
-    }
+    await handleSession(session);
   })();
 
   const USER_EMAIL = getStoredEmail();
@@ -3120,6 +3164,53 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     } catch(e) {
       if (stateEl) stateEl.innerHTML = '<div class="lb-empty">Could not load leaderboard. Try refreshing.</div>';
     }
+  }
+
+  async function openAdminPanel() {
+    const panel = document.getElementById('admin-panel');
+    const list  = document.getElementById('admin-user-list');
+    panel.style.display = 'flex';
+    list.innerHTML = '<p style="color:#6b7280;font-size:.85rem;">Loading...</p>';
+    try {
+      const { data, error } = await _supabase
+        .from('profiles')
+        .select('id, email, approved, created_at')
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      if (!data || data.length === 0) {
+        list.innerHTML = '<p style="color:#6b7280;font-size:.85rem;">No users yet.</p>';
+        return;
+      }
+      list.innerHTML = data.map(u => `
+        <div style="display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border-radius:10px;padding:12px 14px;gap:10px;">
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:.88rem;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${u.email}</div>
+            <div style="font-size:.75rem;color:#9ca3af;margin-top:2px;">${new Date(u.created_at).toLocaleDateString()}</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-shrink:0;">
+            ${u.approved
+              ? `<span style="font-size:.75rem;color:#16a34a;font-weight:700;background:#dcfce7;border-radius:6px;padding:4px 10px;">Approved</span>
+                 <button onclick="adminSetApproval('${u.id}',false,this)" style="font-size:.75rem;background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Revoke</button>`
+              : `<span style="font-size:.75rem;color:#d97706;font-weight:700;background:#fef3c7;border-radius:6px;padding:4px 10px;">Pending</span>
+                 <button onclick="adminSetApproval('${u.id}',true,this)" style="font-size:.75rem;background:#dcfce7;color:#16a34a;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Approve</button>
+                 <button onclick="adminSetApproval('${u.id}','delete',this)" style="font-size:.75rem;background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Reject</button>`
+            }
+          </div>
+        </div>`).join('');
+    } catch(e) {
+      list.innerHTML = `<p style="color:#dc2626;font-size:.85rem;">Error: ${e.message}</p>`;
+    }
+  }
+
+  async function adminSetApproval(userId, value, btn) {
+    btn.disabled = true;
+    btn.textContent = '...';
+    if (value === 'delete') {
+      await _supabase.from('profiles').delete().eq('id', userId);
+    } else {
+      await _supabase.from('profiles').update({ approved: value }).eq('id', userId);
+    }
+    openAdminPanel();
   }
 </script>
 
