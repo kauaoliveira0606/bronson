@@ -2455,7 +2455,6 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   let prevView      = 'home';
 
   function openPhase(phaseIdx, lessonIdx = 0) {
-    if (!isLessonUnlocked(phaseIdx, lessonIdx)) return;
     currentPhase  = phaseIdx;
     currentLesson = lessonIdx;
     mobCloseDrawer();
