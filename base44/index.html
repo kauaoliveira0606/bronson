@@ -1647,11 +1647,27 @@
   //  COURSE DATA — edit this section
   // ═══════════════════════════════════════════════
 
-  // ── Supabase Auth ──
-  const _supabase = window.supabase.createClient(
-    'https://gpthswrobafxtmsuouph.supabase.co',
-    'sb_publishable_OohV5WdfvqHdsgcjKZqFGg_DE7SZmtD'
-  );
+  // ── Supabase DB (direct REST, no JS client needed) ──
+  const SB_URL = 'https://gpthswrobafxtmsuouph.supabase.co/rest/v1';
+  const SB_KEY = 'sb_publishable_OohV5WdfvqHdsgcjKZqFGg_DE7SZmtD';
+  const sbHeaders = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
+
+  async function sbSelect(table, filter) {
+    const res = await fetch(`${SB_URL}/${table}?${filter}&select=*`, { headers: sbHeaders });
+    return res.json();
+  }
+  async function sbInsert(table, body) {
+    const res = await fetch(`${SB_URL}/${table}`, { method: 'POST', headers: { ...sbHeaders, 'Prefer': 'return=minimal' }, body: JSON.stringify(body) });
+    return { ok: res.ok, status: res.status };
+  }
+  async function sbUpdate(table, filter, body) {
+    const res = await fetch(`${SB_URL}/${table}?${filter}`, { method: 'PATCH', headers: { ...sbHeaders, 'Prefer': 'return=minimal' }, body: JSON.stringify(body) });
+    return { ok: res.ok };
+  }
+  async function sbDelete(table, filter) {
+    const res = await fetch(`${SB_URL}/${table}?${filter}`, { method: 'DELETE', headers: sbHeaders });
+    return { ok: res.ok };
+  }
 
   function getStoredEmail() { return localStorage.getItem('cp_email') || ''; }
   function getUserName(email) {
@@ -1695,7 +1711,8 @@
     }
 
     // Check if profile exists
-    const { data: existing } = await _supabase.from('profiles').select('approved').eq('email', email).maybeSingle();
+    const rows = await sbSelect('profiles', `email=eq.${encodeURIComponent(email)}`);
+    const existing = Array.isArray(rows) ? rows[0] : null;
 
     if (existing) {
       if (existing.approved) {
@@ -1706,8 +1723,7 @@
         document.getElementById('pending-screen').style.display = 'flex';
       }
     } else {
-      // New user — create pending profile
-      await _supabase.from('profiles').insert({ email, approved: false });
+      await sbInsert('profiles', { email, approved: false });
       document.getElementById('email-gate').style.display = 'none';
       document.getElementById('pending-screen').style.display = 'flex';
     }
@@ -1729,7 +1745,8 @@
       initPortal();
       return;
     }
-    const { data: profile } = await _supabase.from('profiles').select('approved').eq('email', saved).maybeSingle();
+    const savedRows = await sbSelect('profiles', `email=eq.${encodeURIComponent(saved)}`);
+    const profile = Array.isArray(savedRows) ? savedRows[0] : null;
     if (profile && profile.approved) {
       hideGate(saved);
       initPortal();
@@ -3177,12 +3194,8 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     panel.style.display = 'flex';
     list.innerHTML = '<p style="color:#6b7280;font-size:.85rem;">Loading...</p>';
     try {
-      const { data, error } = await _supabase
-        .from('profiles')
-        .select('email, approved, created_at')
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      if (!data || data.length === 0) {
+      const data = await sbSelect('profiles', 'order=created_at.desc');
+      if (!Array.isArray(data) || data.length === 0) {
         list.innerHTML = '<p style="color:#6b7280;font-size:.85rem;">No users yet.</p>';
         return;
       }
@@ -3203,7 +3216,7 @@ After implementing, add clear comments in the code showing where the Pixel ID is
           </div>
         </div>`).join('');
     } catch(e) {
-      list.innerHTML = `<p style="color:#dc2626;font-size:.85rem;">Error: ${e.message}</p>`;
+      list.innerHTML = `<p style="color:#dc2626;font-size:.85rem;">Error loading users. Try again.</p>`;
     }
   }
 
@@ -3211,9 +3224,9 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     btn.disabled = true;
     btn.textContent = '...';
     if (value === 'delete') {
-      await _supabase.from('profiles').delete().eq('email', email);
+      await sbDelete('profiles', `email=eq.${encodeURIComponent(email)}`);
     } else {
-      await _supabase.from('profiles').update({ approved: value }).eq('email', email);
+      await sbUpdate('profiles', `email=eq.${encodeURIComponent(email)}`, { approved: value });
     }
     openAdminPanel();
   }
