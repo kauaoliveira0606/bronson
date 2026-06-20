@@ -727,8 +727,8 @@
       <img src="/logo.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="Logo" onerror="this.outerHTML='<div class=\'gate-logo-icon\'>AI</div>'">
       <span class="gate-logo-name">Course Portal</span>
     </div>
-    <h1 class="gate-heading">Welcome Back</h1>
-    <p class="gate-sub">Enter your email and we'll send you a magic link to sign in instantly.</p>
+    <h1 class="gate-heading">Course Portal</h1>
+    <p class="gate-sub">This is a private portal. Enter your email below to access your course.</p>
     <div id="gate-form-wrap">
       <p class="gate-label">Email address</p>
       <input type="email" id="gate-email" class="gate-input" placeholder="you@example.com" />
@@ -1648,7 +1648,9 @@
       options: { emailRedirectTo: 'https://www.aidropshippingstore.com/base44' }
     });
     if (error) {
-      err.textContent = error.message;
+      err.textContent = error.message.toLowerCase().includes('signup') || error.message.toLowerCase().includes('not allowed')
+        ? 'You don\'t have access to this portal. Contact your coach to get access.'
+        : error.message;
       err.style.display = 'block';
       btn.textContent = 'Send Magic Link →';
       btn.disabled = false;
