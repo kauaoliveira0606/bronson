@@ -728,17 +728,12 @@
       <span class="gate-logo-name">Course Portal</span>
     </div>
     <h1 class="gate-heading">Course Portal</h1>
-    <p class="gate-sub">This is a private portal. Enter your email below to access your course.</p>
+    <p class="gate-sub">This is a private portal. Enter your email to request access or sign in.</p>
     <div id="gate-form-wrap">
       <p class="gate-label">Email address</p>
       <input type="email" id="gate-email" class="gate-input" placeholder="you@example.com" />
-      <button class="gate-btn" id="gate-btn" onclick="submitGate()">Send Magic Link →</button>
-      <p class="gate-error" id="gate-error">Please enter a valid email address.</p>
-    </div>
-    <div id="gate-success" style="display:none;text-align:center;padding:12px 0;">
-      <div style="font-size:2rem;margin-bottom:12px;">✉️</div>
-      <div style="font-size:1rem;font-weight:800;color:#111;margin-bottom:6px;">Check your inbox</div>
-      <p style="font-size:.82rem;color:#6b7280;line-height:1.6;">We sent a magic link to <strong id="gate-email-sent"></strong>.<br>Click it to access the portal.</p>
+      <button class="gate-btn" id="gate-btn" onclick="submitGate()">Request Access →</button>
+      <p class="gate-error" id="gate-error" style="display:none;"></p>
     </div>
   </div>
 </div>
@@ -749,7 +744,7 @@
     <div style="font-size:2.4rem;margin-bottom:16px;">⏳</div>
     <div style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:10px;">Access Pending</div>
     <p style="font-size:.88rem;color:#6b7280;line-height:1.6;margin-bottom:24px;">Your account is waiting for approval.<br>You'll receive an email once your coach approves your access.</p>
-    <button onclick="(async()=>{await _supabase.auth.signOut();localStorage.removeItem('cp_email');location.reload();})()" style="background:#111;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:.88rem;font-weight:700;cursor:pointer;">Sign Out</button>
+    <button onclick="localStorage.removeItem('cp_email');location.reload()" style="background:#111;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:.88rem;font-weight:700;cursor:pointer;">Sign Out</button>
   </div>
 </div>
 
@@ -1659,38 +1654,7 @@
     return email ? `${key}_${email}` : key;
   }
 
-  async function submitGate() {
-    const input = document.getElementById('gate-email');
-    const email = input.value.trim().toLowerCase();
-    const err   = document.getElementById('gate-error');
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      err.style.display = 'block'; return;
-    }
-    err.style.display = 'none';
-    const btn = document.getElementById('gate-btn');
-    btn.textContent = 'Sending...';
-    btn.disabled = true;
-    const { error } = await _supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: 'https://www.aidropshippingstore.com/base44' }
-    });
-    if (error) {
-      err.textContent = error.message.toLowerCase().includes('signup') || error.message.toLowerCase().includes('not allowed')
-        ? 'You don\'t have access to this portal. Contact your coach to get access.'
-        : error.message;
-      err.style.display = 'block';
-      btn.textContent = 'Send Magic Link →';
-      btn.disabled = false;
-    } else {
-      document.getElementById('gate-email-sent').textContent = email;
-      document.getElementById('gate-form-wrap').style.display = 'none';
-      document.getElementById('gate-success').style.display = 'block';
-    }
-  }
-
-  document.getElementById('gate-email').addEventListener('keydown', e => {
-    if (e.key === 'Enter') submitGate();
-  });
+  const ADMIN_EMAIL = 'kaua.bage@gmail.com';
 
   function showGate() {
     document.getElementById('email-gate').style.display = 'flex';
@@ -1700,40 +1664,73 @@
     document.getElementById('email-gate').style.display = 'none';
   }
 
-  const ADMIN_EMAIL = 'kaua.bage@gmail.com';
+  async function submitGate() {
+    const input = document.getElementById('gate-email');
+    const email = input.value.trim().toLowerCase();
+    const err   = document.getElementById('gate-error');
+    err.style.display = 'none';
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      err.textContent = 'Please enter a valid email address.';
+      err.style.display = 'block'; return;
+    }
+    const btn = document.getElementById('gate-btn');
+    btn.textContent = 'Checking...';
+    btn.disabled = true;
 
-  async function handleSession(session) {
-    if (!session) { showGate(); return; }
-    const email = session.user.email;
-    // Upsert profile row (creates it on first login)
-    await _supabase.from('profiles').upsert({ id: session.user.id, email }, { onConflict: 'id', ignoreDuplicates: true });
-    // Admin bypasses approval check
+    // Admin bypass
     if (email === ADMIN_EMAIL) {
       hideGate(email);
       document.getElementById('nav-admin').style.display = '';
       initPortal();
       return;
     }
-    // Check approval
-    const { data: profile } = await _supabase.from('profiles').select('approved').eq('id', session.user.id).single();
-    if (profile && profile.approved) {
-      hideGate(email);
-      initPortal();
+
+    // Check if profile exists
+    const { data: existing } = await _supabase.from('profiles').select('approved').eq('email', email).maybeSingle();
+
+    if (existing) {
+      if (existing.approved) {
+        hideGate(email);
+        initPortal();
+      } else {
+        document.getElementById('email-gate').style.display = 'none';
+        document.getElementById('pending-screen').style.display = 'flex';
+      }
     } else {
+      // New user — create pending profile (no Supabase auth uid, use email as id placeholder)
+      await _supabase.from('profiles').insert({ id: crypto.randomUUID(), email, approved: false });
       document.getElementById('email-gate').style.display = 'none';
       document.getElementById('pending-screen').style.display = 'flex';
     }
+    btn.textContent = 'Request Access →';
+    btn.disabled = false;
   }
 
-  // Listen for auth changes (handles magic link redirect)
-  _supabase.auth.onAuthStateChange((event, session) => {
-    if (session) handleSession(session);
+  document.getElementById('gate-email').addEventListener('keydown', e => {
+    if (e.key === 'Enter') submitGate();
   });
 
-  // Check existing session on load
+  // Check saved email on load
   (async () => {
-    const { data: { session } } = await _supabase.auth.getSession();
-    await handleSession(session);
+    const saved = localStorage.getItem('cp_email');
+    if (!saved) { showGate(); return; }
+    if (saved === ADMIN_EMAIL) {
+      hideGate(saved);
+      document.getElementById('nav-admin').style.display = '';
+      initPortal();
+      return;
+    }
+    const { data: profile } = await _supabase.from('profiles').select('approved').eq('email', saved).maybeSingle();
+    if (profile && profile.approved) {
+      hideGate(saved);
+      initPortal();
+    } else if (profile) {
+      document.getElementById('email-gate').style.display = 'none';
+      document.getElementById('pending-screen').style.display = 'flex';
+    } else {
+      localStorage.removeItem('cp_email');
+      showGate();
+    }
   })();
 
   const USER_EMAIL = getStoredEmail();
@@ -2392,9 +2389,8 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   }
 
   // Logout
-  document.querySelector('.logout-btn').addEventListener('click', async () => {
+  document.querySelector('.logout-btn').addEventListener('click', () => {
     if (confirm('Sign out?')) {
-      await _supabase.auth.signOut();
       localStorage.removeItem('cp_email');
       location.reload();
     }
