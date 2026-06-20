@@ -6,6 +6,7 @@
   <title>Course Portal</title>
   <link rel="icon" type="image/png" href="/base44/img/aids.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -726,16 +727,19 @@
       <img src="/logo.png" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" alt="Logo" onerror="this.outerHTML='<div class=\'gate-logo-icon\'>AI</div>'">
       <span class="gate-logo-name">Course Portal</span>
     </div>
-    <h1 class="gate-heading">Welcome</h1>
-    <p class="gate-sub">Enter your email to access your course and track your progress.</p>
-    <div class="gate-warning">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      <span class="gate-warning-text">You must use the same email you signed up with. Using a different email will create a separate account and your progress won't be linked.</span>
+    <h1 class="gate-heading">Welcome Back</h1>
+    <p class="gate-sub">Enter your email and we'll send you a magic link to sign in instantly.</p>
+    <div id="gate-form-wrap">
+      <p class="gate-label">Email address</p>
+      <input type="email" id="gate-email" class="gate-input" placeholder="you@example.com" />
+      <button class="gate-btn" id="gate-btn" onclick="submitGate()">Send Magic Link →</button>
+      <p class="gate-error" id="gate-error">Please enter a valid email address.</p>
     </div>
-    <p class="gate-label">Email address</p>
-    <input type="email" id="gate-email" class="gate-input" placeholder="you@example.com" />
-    <button class="gate-btn" onclick="submitGate()">Enter Portal</button>
-    <p class="gate-error" id="gate-error">Please enter a valid email address.</p>
+    <div id="gate-success" style="display:none;text-align:center;padding:12px 0;">
+      <div style="font-size:2rem;margin-bottom:12px;">✉️</div>
+      <div style="font-size:1rem;font-weight:800;color:#111;margin-bottom:6px;">Check your inbox</div>
+      <p style="font-size:.82rem;color:#6b7280;line-height:1.6;">We sent a magic link to <strong id="gate-email-sent"></strong>.<br>Click it to access the portal.</p>
+    </div>
   </div>
 </div>
 
@@ -1612,7 +1616,12 @@
   //  COURSE DATA — edit this section
   // ═══════════════════════════════════════════════
 
-  // ── Email gate ──
+  // ── Supabase Auth ──
+  const _supabase = window.supabase.createClient(
+    'https://gpthswrobafxtmsuouph.supabase.co',
+    'sb_publishable_OohV5WdfvqHdsgcjKZqFGg_DE7SZmtD'
+  );
+
   function getStoredEmail() { return localStorage.getItem('cp_email') || ''; }
   function getUserName(email) {
     if (!email) return 'Student';
@@ -1623,7 +1632,7 @@
     return email ? `${key}_${email}` : key;
   }
 
-  function submitGate() {
+  async function submitGate() {
     const input = document.getElementById('gate-email');
     const email = input.value.trim().toLowerCase();
     const err   = document.getElementById('gate-error');
@@ -1631,17 +1640,55 @@
       err.style.display = 'block'; return;
     }
     err.style.display = 'none';
-    localStorage.setItem('cp_email', email);
-    document.getElementById('email-gate').style.display = 'none';
-    initPortal();
+    const btn = document.getElementById('gate-btn');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    const { error } = await _supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: 'https://www.aidropshippingstore.com/base44' }
+    });
+    if (error) {
+      err.textContent = error.message;
+      err.style.display = 'block';
+      btn.textContent = 'Send Magic Link →';
+      btn.disabled = false;
+    } else {
+      document.getElementById('gate-email-sent').textContent = email;
+      document.getElementById('gate-form-wrap').style.display = 'none';
+      document.getElementById('gate-success').style.display = 'block';
+    }
   }
 
   document.getElementById('gate-email').addEventListener('keydown', e => {
     if (e.key === 'Enter') submitGate();
   });
 
-  // Login gate disabled — always skip
-  document.getElementById('email-gate').style.display = 'none';
+  function showGate() {
+    document.getElementById('email-gate').style.display = 'flex';
+  }
+  function hideGate(userEmail) {
+    localStorage.setItem('cp_email', userEmail);
+    document.getElementById('email-gate').style.display = 'none';
+  }
+
+  // Listen for auth changes (handles magic link redirect)
+  _supabase.auth.onAuthStateChange((event, session) => {
+    if (session) {
+      hideGate(session.user.email);
+      initPortal();
+    }
+  });
+
+  // Check existing session on load
+  (async () => {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (session) {
+      hideGate(session.user.email);
+      initPortal();
+    } else {
+      showGate();
+    }
+  })();
 
   const USER_EMAIL = getStoredEmail();
   const USER_NAME  = getUserName(USER_EMAIL);
@@ -2299,8 +2346,9 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   }
 
   // Logout
-  document.querySelector('.logout-btn').addEventListener('click', () => {
+  document.querySelector('.logout-btn').addEventListener('click', async () => {
     if (confirm('Sign out?')) {
+      await _supabase.auth.signOut();
       localStorage.removeItem('cp_email');
       location.reload();
     }
@@ -2635,8 +2683,6 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     if (el) el.classList.add('active');
   }
 
-  // Run portal init on load if already logged in
-  initPortal();
 
   // ── Rewards ──
   const PRIZE_END        = new Date('2026-07-27');
