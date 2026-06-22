@@ -2402,6 +2402,25 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   const totalLessons     = PHASES.reduce((s, p) => s + (p.lessons || []).length, 0);
   function completedLessons() { return PHASES.reduce((s, _, i) => s + phaseDoneCount(i), 0); }
 
+  function handleDeepLink() {
+    const match = location.hash.match(/^#p(\d+)l(\d+)$/);
+    if (!match) return;
+    const pi = parseInt(match[1]);
+    const li = parseInt(match[2]);
+    history.replaceState(null, '', location.pathname);
+    if (!PHASES[pi] || !PHASES[pi].lessons || !PHASES[pi].lessons[li]) return;
+    if (isLessonUnlocked(pi, li)) {
+      openPhase(pi, li);
+    } else {
+      // Open the furthest unlocked lesson in that phase
+      let last = 0;
+      for (let i = 0; i < PHASES[pi].lessons.length; i++) {
+        if (isLessonUnlocked(pi, i)) last = i; else break;
+      }
+      openPhase(pi, last);
+    }
+  }
+
   function initPortal() {
     // Re-read after gate sets email
     const email = getStoredEmail();
@@ -2412,6 +2431,9 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     document.getElementById('u-name').textContent      = name;
     document.getElementById('u-email').textContent     = email || '—';
     document.getElementById('u-avatar').textContent    = name.charAt(0).toUpperCase();
+
+    // Handle deep link from email
+    setTimeout(handleDeepLink, 100);
   }
 
   // Logout
