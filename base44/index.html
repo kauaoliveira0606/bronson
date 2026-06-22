@@ -364,7 +364,7 @@
     @media (max-width: 700px) {
       :root { --sw: 0px; }
       .sidebar { display: none; }
-      .main { margin-left: 0; }
+      .main { margin-left: 0; padding-bottom: 72px; }
       .padded { padding: 24px 16px; }
       .phases-grid { grid-template-columns: 1fr; }
       .phases-grid > .phase-card:last-child:nth-child(odd) { grid-column: 1; }
@@ -372,6 +372,31 @@
       .lesson-sidebar { display: none; }
       .lesson-content { padding: 20px 16px; }
     }
+
+    /* ── Mobile bottom nav ── */
+    .mob-nav {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      background: #fff; border-top: 1px solid rgba(0,0,0,.09);
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .mob-nav::-webkit-scrollbar { display: none; }
+    .mob-nav-inner {
+      display: flex; align-items: stretch;
+      min-width: max-content; padding: 0 4px;
+    }
+    .mob-nav-item {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 3px; padding: 8px 14px 10px;
+      font-size: .6rem; font-weight: 600; color: #94a3b8;
+      cursor: pointer; border: none; background: none;
+      letter-spacing: .02em; white-space: nowrap; flex-shrink: 0;
+      font-family: inherit;
+    }
+    .mob-nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .mob-nav-item.active { color: #6366f1; }
+    @media (max-width: 700px) { .mob-nav { display: block; } }
   /* ── Deals ── */
   .deals-banner { background:rgba(180,83,9,.1); border:1px solid rgba(180,83,9,.2); border-radius:14px; padding:16px 20px; margin-bottom:22px; display:flex; align-items:flex-start; gap:14px; }
   .deals-banner-icon { font-size:1.4rem; flex-shrink:0; margin-top:2px; }
@@ -817,6 +842,48 @@
     <svg class="logout-btn" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
   </div>
 </aside>
+
+<!-- ═══ Mobile bottom nav ═══ -->
+<nav class="mob-nav" id="mob-nav">
+  <div class="mob-nav-inner">
+    <button class="mob-nav-item active" id="mnav-home" onclick="showView('home', document.getElementById('nav-home'))">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </button>
+    <button class="mob-nav-item" id="mnav-modules" onclick="showView('modules', document.getElementById('nav-modules'))">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      Modules
+    </button>
+    <button class="mob-nav-item" id="mnav-wins" onclick="showView('wins', null)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Wins
+    </button>
+    <button class="mob-nav-item" id="mnav-deals" onclick="showView('deals', null)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Deals
+    </button>
+    <button class="mob-nav-item" id="mnav-rewards" onclick="showView('rewards', null); updateRewardsUI();">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>
+      Rewards
+    </button>
+    <button class="mob-nav-item" id="mnav-elite" onclick="showView('elite', null); updateEliteUI();">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12-6 4-4-8-4 8-6-4z"/></svg>
+      Elite
+    </button>
+    <button class="mob-nav-item" id="mnav-tools" onclick="showView('tools', null); initTools();">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+      Tools
+    </button>
+    <button class="mob-nav-item" id="mnav-leaderboard" onclick="showView('leaderboard', null); fetchLeaderboard();">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Rank
+    </button>
+    <button class="mob-nav-item" id="mnav-admin" style="display:none;" onclick="openAdminPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Admin
+    </button>
+  </div>
+</nav>
 
 <!-- ═══ Main ═══ -->
 <main class="main">
@@ -1706,6 +1773,8 @@
     if (email === ADMIN_EMAIL) {
       hideGate(email);
       document.getElementById('nav-admin').style.display = '';
+      const mAdmin = document.getElementById('mnav-admin');
+      if (mAdmin) mAdmin.style.display = '';
       initPortal();
       return;
     }
@@ -1742,6 +1811,8 @@
     if (saved === ADMIN_EMAIL) {
       hideGate(saved);
       document.getElementById('nav-admin').style.display = '';
+      const mAdmin = document.getElementById('mnav-admin');
+      if (mAdmin) mAdmin.style.display = '';
       initPortal();
       return;
     }
@@ -2601,6 +2672,9 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     document.getElementById('view-lesson').classList.add('active');
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('nav-modules').classList.add('active');
+    document.querySelectorAll('.mob-nav-item').forEach(n => n.classList.remove('active'));
+    const mMod = document.getElementById('mnav-modules');
+    if (mMod) mMod.classList.add('active');
     document.getElementById('mob-lesson-nav').classList.add('visible');
     window.scrollTo(0, 0);
   }
@@ -2771,6 +2845,11 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('view-' + id).classList.add('active');
     if (el) el.classList.add('active');
+    // sync mobile bottom nav
+    document.querySelectorAll('.mob-nav-item').forEach(n => n.classList.remove('active'));
+    const mItem = document.getElementById('mnav-' + id);
+    if (mItem) mItem.classList.add('active');
+    window.scrollTo(0, 0);
   }
 
 
