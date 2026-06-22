@@ -93,6 +93,18 @@
 
     .loading { color: var(--text2); font-size: .85rem; padding: 40px; text-align: center; }
 
+    .scorecard-week { font-size: .72rem; color: var(--text2); margin-bottom: 14px; }
+    .scorecard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+    .sc-card { background: rgba(255,255,255,0.025); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+    .sc-metric { font-size: .68rem; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+    .sc-value { font-size: 1.45rem; font-weight: 800; line-height: 1; }
+    .sc-goal { font-size: .68rem; color: var(--text2); margin-top: 4px; }
+    .sc-bar { height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+    .sc-fill { height: 100%; border-radius: 2px; }
+    .sc-green { color: var(--green); } .sc-fill-green { background: var(--green); }
+    .sc-red   { color: var(--red);   } .sc-fill-red   { background: var(--red); }
+    .sc-white { color: #fff; }         .sc-fill-blue  { background: var(--blue); }
+
     @media (max-width: 900px) {
       .charts-row { grid-template-columns: 1fr; }
       .main { padding: 16px; }
@@ -148,6 +160,14 @@
       <div style="font-size:.72rem;color:var(--text2);" id="lead-count-label"></div>
     </div>
     <div id="table-wrap"><div class="loading">Loading...</div></div>
+  </div>
+
+  <div class="chart-card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+      <div class="chart-title" style="margin-bottom:0;">Weekly Scorecard</div>
+      <div class="scorecard-week" id="scorecard-week"></div>
+    </div>
+    <div id="scorecard-wrap"><div class="loading">Loading scorecard...</div></div>
   </div>
 
 </div>
@@ -368,8 +388,121 @@
     }
   }
 
+  // ── Scorecard ──────────────────────────────────────────────────────────────
+  const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Koljpe91Y3rbz0C9cXzIxt9ZFlLk6plrxItZaE0-sQxaNAnGxxV7WSD-9f0qG7-0JVZFI7UySbCF/pub?output=csv&cachebust=' + Date.now();
+
+  // Minimal CSV parser (handles quoted fields with commas)
+  function parseCSVLine(line) {
+    const cols = []; let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { cols.push(cur); cur = ''; }
+      else { cur += c; }
+    }
+    cols.push(cur);
+    return cols;
+  }
+
+  // Parse a value like "$1,234.56" or "45.00%" or "0.4567" into a display string + numeric
+  function parseVal(raw) {
+    if (!raw || raw.trim() === '' || raw === '#DIV/0!') return { display: '—', num: null };
+    const s = raw.trim();
+    if (s.startsWith('$')) {
+      const n = parseFloat(s.replace(/[$,]/g, ''));
+      return { display: s, num: isNaN(n) ? null : n };
+    }
+    if (s.endsWith('%')) {
+      const n = parseFloat(s);
+      return { display: s, num: isNaN(n) ? null : n };
+    }
+    const n = parseFloat(s);
+    if (!isNaN(n)) {
+      // if between 0 and 1, likely a raw fraction → show as %
+      if (n > 0 && n < 1) return { display: (n * 100).toFixed(1) + '%', num: n * 100 };
+      return { display: s, num: n };
+    }
+    return { display: s, num: null };
+  }
+
+  // Determine if actual meets or exceeds goal (handle % goals like "35%" or "<20%")
+  function isOnTrack(actual, goalRaw) {
+    if (actual.num === null) return null;
+    const g = goalRaw.trim();
+    if (!g || g === '' || g === '#DIV/0!') return null;
+    // "20% <" or "< 20%" means "less than" is the goal
+    const lessThan = /^[<]/.test(g) || /[<]$/.test(g);
+    const gNum = parseFloat(g.replace(/[%$<>, ]/g, ''));
+    if (isNaN(gNum)) return null;
+    const aNum = actual.num;
+    return lessThan ? aNum < gNum : aNum >= gNum;
+  }
+
+  const SCORECARD_METRICS = [
+    'Ad Spend Meta', 'Landing Page Connect Rate', 'VSL Play Rate',
+    'VSL Engagement Rate', 'Forms submitted', 'Dials',
+    'Sales - High Ticket', 'Close Rate'
+  ];
+
+  async function loadScorecard() {
+    try {
+      const res = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Koljpe91Y3rbz0C9cXzIxt9ZFlLk6plrxItZaE0-sQxaNAnGxxV7WSD-9f0qG7-0JVZFI7UySbCF/pub?output=csv&t=' + Date.now());
+      const text = await res.text();
+      const lines = text.split('\n').filter(l => l.trim());
+      if (lines.length < 4) throw new Error('Sheet empty');
+
+      const dateRow = parseCSVLine(lines[1]);
+      const dateStart = dateRow.slice(1, 8).find(d => d.trim()) || '';
+      const dateEnd   = dateRow.slice(1, 8).filter(d => d.trim()).pop() || '';
+      if (dateStart) document.getElementById('scorecard-week').textContent = dateStart + ' – ' + dateEnd;
+
+      // col 0=name, 1-7=days, 8=dailyGoal, 9=weeklyActual, 10=weeklyGoal
+      const rows = {};
+      for (let r = 3; r < lines.length; r++) {
+        const cols = parseCSVLine(lines[r]);
+        const name = cols[0] ? cols[0].trim() : '';
+        if (!name) continue;
+        rows[name] = {
+          weeklyActual: cols[9] || '',
+          weeklyGoal:   cols[10] || '',
+        };
+      }
+
+      const cards = SCORECARD_METRICS.map(metric => {
+        const row = rows[metric];
+        if (!row) return '';
+        const actual = parseVal(row.weeklyActual);
+        const goal   = parseVal(row.weeklyGoal);
+        const track  = isOnTrack(actual, row.weeklyGoal);
+        const valCls = track === true ? 'sc-green' : track === false ? 'sc-red' : 'sc-white';
+
+        let barHtml = '';
+        if (goal.num !== null && actual.num !== null && goal.num > 0) {
+          const pct = Math.min(100, Math.round((actual.num / goal.num) * 100));
+          const fillCls = track === true ? 'sc-fill-green' : track === false ? 'sc-fill-red' : 'sc-fill-blue';
+          barHtml = `<div class="sc-bar"><div class="sc-fill ${fillCls}" style="width:${pct}%"></div></div>`;
+        }
+
+        return `<div class="sc-card">
+          <div class="sc-metric">${metric}</div>
+          <div class="sc-value ${valCls}">${actual.display}</div>
+          ${goal.display !== '—' ? `<div class="sc-goal">Goal: ${goal.display}</div>` : '<div class="sc-goal">No goal set</div>'}
+          ${barHtml}
+        </div>`;
+      }).join('');
+
+      document.getElementById('scorecard-wrap').innerHTML =
+        `<div class="scorecard-grid">${cards || '<div class="loading">No data found</div>'}</div>`;
+    } catch (e) {
+      document.getElementById('scorecard-wrap').innerHTML =
+        `<div class="loading" style="color:#ef4444;">Scorecard error: ${e.message}</div>`;
+    }
+  }
+
   loadAll();
+  loadScorecard();
   setInterval(loadAll, 5 * 60 * 1000);
+  setInterval(loadScorecard, 10 * 60 * 1000);
 </script>
 </body>
 </html>
