@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Sales Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', -apple-system, sans-serif; background: #f8fafc; overflow: hidden; }
+
+  #topbar {
+    position: fixed; top: 0; left: 0; right: 0; height: 52px;
+    background: #1e293b; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 20px; z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .tb-left { display: flex; align-items: center; gap: 12px; }
+  .tb-logo {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800; color: #fff; flex-shrink: 0;
+  }
+  .tb-title { color: #fff; font-size: 15px; font-weight: 600; }
+  .tb-sub { color: #94a3b8; font-size: 12px; margin-left: 8px; }
+  .tb-right { display: flex; align-items: center; gap: 8px; }
+  .zoom-btn {
+    background: #334155; border: none; color: #fff;
+    width: 32px; height: 32px; border-radius: 6px;
+    font-size: 18px; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; font-family: inherit;
+  }
+  .zoom-btn:hover { background: #475569; }
+  #zoom-label { color: #94a3b8; font-size: 12px; min-width: 45px; text-align: center; }
+  .reset-btn {
+    background: #334155; border: none; color: #cbd5e1;
+    height: 32px; border-radius: 6px; font-size: 12px;
+    cursor: pointer; padding: 0 12px; margin-left: 4px;
+    font-family: inherit;
+  }
+  .reset-btn:hover { background: #475569; }
+
+  #legend {
+    position: fixed; bottom: 16px; left: 16px;
+    background: #fff; border-radius: 10px; padding: 12px 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1); z-index: 100;
+    display: flex; gap: 16px; font-size: 11px; color: #475569;
+    flex-wrap: wrap;
+  }
+  .leg-item { display: flex; align-items: center; gap: 6px; }
+  .leg-dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+
+  #canvas-wrap {
+    position: fixed; top: 52px; left: 0; right: 0; bottom: 0;
+    cursor: grab; user-select: none; overflow: hidden;
+  }
+  #canvas-wrap.dragging { cursor: grabbing; }
+
+  #svg-canvas { width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="tb-left">
+    <div class="tb-logo">A</div>
+    <span class="tb-title">Ad Ventur — Sales Script</span>
+    <span class="tb-sub">AI Dropshipping Course</span>
+  </div>
+  <div class="tb-right">
+    <button class="zoom-btn" onclick="zoom(-0.1)">−</button>
+    <span id="zoom-label">75%</span>
+    <button class="zoom-btn" onclick="zoom(0.1)">+</button>
+    <button class="reset-btn" onclick="resetView()">Reset</button>
+  </div>
+</div>
+
+<div id="legend">
+  <div class="leg-item">
+    <div class="leg-dot" style="background:#fff;border:1.5px solid #334155;"></div> Word Track
+  </div>
+  <div class="leg-item">
+    <div class="leg-dot" style="background:#fef9c3;border:1.5px solid #ca8a04;"></div> Branch / Response
+  </div>
+  <div class="leg-item">
+    <div class="leg-dot" style="background:#ecfdf5;border:1.5px solid #059669;"></div> Principle / Outcome
+  </div>
+  <div class="leg-item">
+    <div class="leg-dot" style="background:#eff6ff;border:1.5px solid #3b82f6;"></div> Framework / Rule
+  </div>
+  <div class="leg-item">
+    <div class="leg-dot" style="background:#1e293b;border:1.5px solid #1e293b;"></div> Stage Label
+  </div>
+</div>
+
+<div id="canvas-wrap">
+  <svg id="svg-canvas" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+        <circle cx="2" cy="2" r="0.8" fill="#cbd5e1" opacity="0.5"/>
+      </pattern>
+      <filter id="shadow" x="-4%" y="-4%" width="108%" height="116%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
+      </filter>
+      <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+        <polygon points="0 0, 8 4, 0 8" fill="#94a3b8"/>
+      </marker>
+      <marker id="arrow-dashed" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+        <polygon points="0 0, 8 4, 0 8" fill="#94a3b8"/>
+      </marker>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#dots)"/>
+    <g id="main-group">
+      <!-- rendered by JS -->
+    </g>
+  </svg>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────
+//  NODE DATA  — edit text here to change script content
+//
+//  Types:
+//    'stage'      → dark label (STAGE 1, WARM UP THE LEAD)
+//    'word-track' → white card with border (what to say)
+//    'branch'     → yellow card (response paths)
+//    'principle'  → green card (★ coaching notes)
+//    'framework'  → blue card (rules / frameworks)
+//
+//  x, y = top-left corner (in canvas pixels at 1× scale)
+//  w, h = width / height
+//  For 'stage': stageNum + title
+//  For 'branch': title (bold) + sub (italic, optional)
+//  All others: html (inner HTML, use \n for new lines)
+// ─────────────────────────────────────────────────────────────────
+const NODES = [
+
+  // ══ STAGE 1: WARM UP THE LEAD ════════════════════════════════
+  { id: 's1', type: 'stage', x: 600, y: 30, w: 200, h: 60,
+    stageNum: '1', title: 'WARM UP THE LEAD' },
+
+  { id: 's1_open', type: 'word-track', x: 460, y: 120, w: 480, h: 110,
+    html: `"Hey, is this [Name]?\n\nWhat's going on [Name]? This is [Rep] from Kaua's team here. I saw you requested the free course to start AI dropshipping, is that correct?"` },
+
+  { id: 's1_qualify', type: 'word-track', x: 460, y: 270, w: 480, h: 110,
+    html: `"Awesome, we'll get you access to everything here in a sec. Just kinda walk me through, [Name] — what exactly got you interested in joining the free course and learning how to dropship with AI?"` },
+
+  { id: 's1_b_escape', type: 'branch', x: 100, y: 430, w: 260, h: 70,
+    title: 'ESCAPE THE MATRIX',
+    sub: 'Making money, replace job, freedom, new income, side hustle' },
+
+  { id: 's1_b_vague', type: 'branch', x: 560, y: 430, w: 280, h: 70,
+    title: 'VAGUE / JUST LOOKING',
+    sub: 'Just checking it out, not sure yet, looking for info' },
+
+  { id: 's1_b_b2b', type: 'branch', x: 1040, y: 430, w: 260, h: 70,
+    title: 'B2B / SCALE BUSINESS',
+    sub: 'Has a business, wants more clients, grow company' },
+
+  { id: 's1_escape_q', type: 'word-track', x: 30, y: 550, w: 400, h: 110,
+    html: `"Ok, and I'm sure you're aware there's a lot of business models out there. I guess, what did you see in Kaua's content that made you feel like AI dropshipping would be the right fit for you?"` },
+
+  { id: 's1_escape_p', type: 'principle', x: 30, y: 680, w: 400, h: 60,
+    html: `★ Get them to articulate WHY this business model. Their answer tells you how aware they are of what AI dropshipping actually is.` },
+
+  { id: 's1_vague_q', type: 'word-track', x: 460, y: 550, w: 480, h: 130,
+    html: `"Got you. People typically request the free course for one of two reasons: they're either looking for another source of income, or they're already doing dropshipping and just looking to get to that next level. Which one of those boats do you feel like you're in personally?"` },
+
+  { id: 's1_vague_p', type: 'principle', x: 460, y: 700, w: 480, h: 50,
+    html: `★ "Just looking for info" people don't buy. This question forces them to pick a lane. Whatever they pick, follow that path.` },
+
+  { id: 's1_b2b_q', type: 'word-track', x: 970, y: 550, w: 400, h: 110,
+    html: `"Awesome, and I'm sure you're aware that there are a lot of tools and courses out there in this industry. I guess, what did you see in Kaua's content that made you want to apply to work with him specifically?"` },
+
+  // ══ STAGE 2: CURRENT STATE ════════════════════════════════════
+  { id: 's2', type: 'stage', x: 600, y: 820, w: 200, h: 60,
+    stageNum: '2', title: 'CURRENT STATE' },
+
+  { id: 's2_q', type: 'word-track', x: 460, y: 910, w: 480, h: 90,
+    html: `"Ok, well just so I could understand your current situation a little better — what exactly are you doing for work right now?"` },
+
+  { id: 's2_nojob', type: 'branch', x: 300, y: 1050, w: 160, h: 50,
+    title: 'NO JOB' },
+
+  { id: 's2_hasjob', type: 'branch', x: 940, y: 1050, w: 160, h: 50,
+    title: 'HAS A JOB' },
+
+  { id: 's2_nojob_q', type: 'word-track', x: 160, y: 1130, w: 440, h: 90,
+    html: `"Ok, and I guess what's the goal here with AI dropshipping? Are you hoping this could become your main source of income, or what does that look like?"` },
+
+  { id: 's2_hasjob_q', type: 'word-track', x: 800, y: 1130, w: 440, h: 90,
+    html: `"Oh, you're doing [JOB]. And I guess, what would be the goal here with AI dropshipping? Are you hoping this could replace the [JOB] job, or what does that look like?"` },
+
+  { id: 's2_p', type: 'principle', x: 460, y: 1260, w: 480, h: 50,
+    html: `★ We need to know: do they want to REPLACE their situation or ADD to it? This determines how deep we go on problem awareness.` },
+
+  // ══ STAGE 3: PROBLEM AWARENESS ════════════════════════════════
+  { id: 's3', type: 'stage', x: 570, y: 1370, w: 260, h: 60,
+    stageNum: '3', title: 'PROBLEM AWARENESS' },
+
+  { id: 's3_path1', type: 'branch', x: 60, y: 1480, w: 300, h: 60,
+    title: 'PATH 1: "YES, I WANT OUT"',
+    sub: '★ EASY' },
+
+  { id: 's3_path2', type: 'branch', x: 550, y: 1480, w: 300, h: 60,
+    title: `PATH 2: "JOB'S GOOD, JUST WANT X"`,
+    sub: '★ MEDIUM' },
+
+  { id: 's3_path3', type: 'branch', x: 1040, y: 1480, w: 300, h: 60,
+    title: 'PATH 3: "NOTHING WRONG, JUST LOOKING"',
+    sub: '★ HARDEST' },
+
+  { id: 's3_p1_q1', type: 'word-track', x: 20, y: 1580, w: 380, h: 70,
+    html: `"Ok, and I guess — what's causing you to want to get out of your [JOB], bro?"` },
+
+  { id: 's3_p1_q2', type: 'word-track', x: 20, y: 1680, w: 380, h: 70,
+    html: `"And when you say [THEIR WORD] — can you give me an example? What's that actually look like day to day?"` },
+
+  { id: 's3_p1_see', type: 'principle', x: 20, y: 1780, w: 380, h: 55,
+    html: `★ SEE: Get the specific event or reality they experience. "My back is messed up from lifting equipment."` },
+
+  { id: 's3_p1_q3', type: 'word-track', x: 20, y: 1860, w: 380, h: 120,
+    html: `"And when you say [THEIR WORD], like — can you give me an example? What's that actually look like day to day?"\n\n(Probe & clarify — mirror their vague word back and ask for specifics. Keep probing until you get the FEEL.)` },
+
+  { id: 's3_p1_feel', type: 'principle', x: 20, y: 2010, w: 380, h: 55,
+    html: `★ FEEL: Get the negative emotion. "I can't sleep, I never recover, I go right back to work."` },
+
+  { id: 's3_p2_q1', type: 'word-track', x: 510, y: 1580, w: 380, h: 80,
+    html: `"Ok, and I guess — what's preventing you from [MAKING MORE MONEY / HAVING FREEDOM] with what you're currently doing?"` },
+
+  { id: 's3_p2_fw', type: 'framework', x: 510, y: 1690, w: 380, h: 130,
+    html: `CLARIFY VAGUE WORDS:\n• "capped" → "How do you mean?"\n• "freedom" → "What do you mean by that?"\n• "more money" → "How much are you making now?"\n• "stuck" → "Give me an example?"\n• "limited" → "Limited in what way?"` },
+
+  { id: 's3_p2_q2', type: 'word-track', x: 510, y: 1850, w: 380, h: 60,
+    html: `"And how much are you making right now, if you don't mind me asking?"` },
+
+  { id: 's3_p2_q3', type: 'word-track', x: 510, y: 1940, w: 380, h: 90,
+    html: `"I don't want to assume anything, but — what's wrong with making $[X]k a month? Is that not enough, or what's going on?"\n\nALT: "$7k is not bad. What makes you feel like it's not enough?"` },
+
+  { id: 's3_p2_q4', type: 'word-track', x: 510, y: 2060, w: 380, h: 70,
+    html: `"And I guess, you're living check to check — is that causing any problems? What does that actually look like for you?"` },
+
+  { id: 's3_p2_p', type: 'principle', x: 510, y: 2150, w: 380, h: 50,
+    html: `★ DON'T say "what negative impact is that having on you" — too salesy. Keep it conversational.` },
+
+  { id: 's3_p3_q1', type: 'word-track', x: 1000, y: 1580, w: 380, h: 80,
+    html: `"Yeah, no, 100% — but I guess, what's kind of been going on at the job that's having you look into other things?"` },
+
+  { id: 's3_p3_b1', type: 'branch', x: 1000, y: 1700, w: 180, h: 60,
+    title: '"Not making enough"',
+    sub: '→ Goes to PATH 2' },
+
+  { id: 's3_p3_b2', type: 'branch', x: 1200, y: 1700, w: 180, h: 60,
+    title: '"Job isn\'t it anymore"',
+    sub: '→ Goes to PATH 1' },
+
+  { id: 's3_p3_still', type: 'branch', x: 1100, y: 1800, w: 180, h: 40,
+    title: 'STILL VAGUE' },
+
+  { id: 's3_p3_q2', type: 'word-track', x: 1000, y: 1870, w: 380, h: 80,
+    html: `"For sure — is there any particular reason why you're not able to [make more money / hit your goals] with your current job right now?"` },
+
+  { id: 's3_p3_p', type: 'principle', x: 1000, y: 1980, w: 380, h: 85,
+    html: `★ You CANNOT move forward without a tangible problem. If they won't give one, they're not buying. Keep probing or recognize the tire-kicker and fast-track to product pitch.` },
+
+  // ══ STAGE 4: SUMMARIZE + TRANSITION ══════════════════════════
+  { id: 's4', type: 'stage', x: 570, y: 2270, w: 260, h: 60,
+    stageNum: '4', title: 'SUMMARIZE + TRANSITION' },
+
+  { id: 's4_fw', type: 'framework', x: 100, y: 2360, w: 380, h: 210,
+    html: `THE "I DON'T HAVE" RULE:\n\nNever finish with "I WANT." Always finish with "I DON'T HAVE."\n\n❌ "So you want more freedom..."\n✅ "So you're not able to travel or help your family because you're capped at $7K..."\n\n"I want" is aspiration. "I don't have" is pain. Pain drives action.` },
+
+  { id: 's4_q', type: 'word-track', x: 510, y: 2370, w: 480, h: 100,
+    html: `"Ok, so just to make sure I understand — you want to be able to [THEIR SPECIFIC DESIRE], but right now you're in [THEIR SITUATION] because of [WHAT THEY DON'T HAVE]. Is that correct?"` },
+
+  { id: 's4_b1', type: 'word-track', x: 30, y: 2510, w: 320, h: 115,
+    html: `"Ok, and for you personally, how much money would you need to be making per month in order for this to be your main source of income?"` },
+
+  { id: 's4_b2', type: 'word-track', x: 370, y: 2510, w: 320, h: 115,
+    html: `"Ok, and for you personally, how much money would you need to be making per month in order for this to be a solid side hustle for yourself?"` },
+
+  { id: 's4_b3', type: 'word-track', x: 710, y: 2510, w: 320, h: 115,
+    html: `"Ok, and for you personally, how much money would you need to be making per month in order to fully replace your [JOB] job?"` },
+
+  { id: 's4_b4', type: 'word-track', x: 1050, y: 2510, w: 320, h: 115,
+    html: `"Ok, and for you personally, how much money would you need to be making per month in order for this to be a solid side hustle?"` },
+
+  { id: 's4_goal', type: 'word-track', x: 460, y: 2660, w: 480, h: 85,
+    html: `"$5k! What makes you say $5k specifically? How would that change things for you?"\n\n(Repeat back their exact number. Challenge it. Get them to paint the picture.)` },
+
+  // ══ STAGE 5: FINANCIAL QUALIFYING ════════════════════════════
+  { id: 's5', type: 'stage', x: 570, y: 2790, w: 260, h: 60,
+    stageNum: '5', title: 'FINANCIAL QUALIFYING' },
+
+  { id: 's5_fw1', type: 'framework', x: 40, y: 2880, w: 340, h: 130,
+    html: `⚠️ GET OUT ASAP\n\nDo NOT linger here. Get the number, qualify, move on.\n\nONLY DQ = literally < $50.\nEveryone else → Sell the Appointment.\nHT-qualified leads get upsell attempt later.` },
+
+  { id: 's5_q', type: 'word-track', x: 420, y: 2880, w: 520, h: 130,
+    html: `"Ok, and if we could... help you [STATED GOALS]... I'm sure you're aware, like any other business model, when it comes to our program, there is start up capital involved there... as I'm sure you know what sorts of strategies we could even use in your case. How much capital do you have set aside at the moment to get the business up and running?"` },
+
+  { id: 's5_fw2', type: 'framework', x: 1000, y: 2880, w: 300, h: 145,
+    html: `HT QUALIFICATIONS:\n• $2k liquid\n  — OR —\n• Minimum $4k credit limit\n  — OR —\n• 500+ credit score, 21+ and $500 Budget` },
+
+  { id: 's5_dq_b', type: 'branch', x: 1100, y: 3060, w: 200, h: 65,
+    title: '< $50 / Broke',
+    sub: 'Literally cannot afford anything' },
+
+  { id: 's5_dq_fw', type: 'framework', x: 1080, y: 3150, w: 240, h: 120,
+    html: `TRUE DQ\n\n"No worries at all bro. Go through the free course — it's yours regardless. When you're in a position to invest, hit us up."` },
+
+  { id: 's5_ez', type: 'branch', x: 80, y: 3060, w: 220, h: 80,
+    title: '*EZ Qualified*',
+    sub: 'I have x amount set aside to invest!\n($ is enough)' },
+
+  { id: 's5_iffy', type: 'branch', x: 380, y: 3060, w: 260, h: 110,
+    title: '*Iffy Qualified*',
+    sub: '$ is enough but...\n- might / maybe / potentially\n- prospect sounds unsure' },
+
+  { id: 's5_low', type: 'branch', x: 800, y: 3060, w: 220, h: 80,
+    title: '"Budget too low"',
+    sub: 'Has money but less than ideal range' },
+
+  { id: 's5_ht_fw', type: 'framework', x: 1100, y: 3060, w: 280, h: 150,
+    html: `HT Qualifications\n- $2k liquid\n  or\n- Minimum $4k credit limit\n  or\n- 500+ credit score + $500 budget` },
+
+  // ══ STAGE 6: PITCH THE PROGRAM ════════════════════════════════
+  { id: 's6', type: 'stage', x: 570, y: 3320, w: 260, h: 60,
+    stageNum: '6', title: 'PITCH THE PROGRAM' },
+
+  { id: 's6_transition', type: 'word-track', x: 300, y: 3410, w: 580, h: 90,
+    html: `"Ok, so here's what I want to do — I want to walk you through exactly what we do, why it works, and what results students are getting. Then at the end, if it makes sense, we can talk about what it looks like to actually get started. Sound good?"` },
+
+  { id: 's6_p1', type: 'principle', x: 300, y: 3520, w: 580, h: 60,
+    html: `★ Get the YES before pitching. Consent to the pitch = consent to the close. Never pitch without permission.` },
+
+  { id: 's6_pitch', type: 'word-track', x: 200, y: 3610, w: 780, h: 150,
+    html: `"So what we do is we teach people how to build and scale an AI dropshipping store. Basically, AI does the heavy lifting — product research, ad copy, store setup — while you focus on building the business. Students are doing [RESULT] in their first [TIMEFRAME]. The program includes [OFFER STACK]. We only work with people we know we can get results for, which is why we're on this call today."` },
+
+  { id: 's6_p2', type: 'principle', x: 200, y: 3780, w: 780, h: 55,
+    html: `★ Tie the pitch back to THEIR specific problem. Use their words. "You mentioned you want to replace your [JOB] — this is exactly how."` },
+
+  // ══ STAGE 7: HANDLE OBJECTIONS ════════════════════════════════
+  { id: 's7', type: 'stage', x: 570, y: 3870, w: 260, h: 60,
+    stageNum: '7', title: 'HANDLE OBJECTIONS' },
+
+  { id: 's7_b1', type: 'branch', x: 50, y: 3960, w: 250, h: 60,
+    title: '"I need to think about it"' },
+
+  { id: 's7_b2', type: 'branch', x: 330, y: 3960, w: 250, h: 60,
+    title: '"I need to talk to my spouse"' },
+
+  { id: 's7_b3', type: 'branch', x: 610, y: 3960, w: 250, h: 60,
+    title: '"I don\'t have the money"' },
+
+  { id: 's7_b4', type: 'branch', x: 890, y: 3960, w: 250, h: 60,
+    title: '"I need to do more research"' },
+
+  { id: 's7_think', type: 'word-track', x: 50, y: 4060, w: 250, h: 110,
+    html: `"Totally, I get it. Out of curiosity — what specifically are you thinking about? Is it the money side, or is it more like you're not sure if it's the right fit?"` },
+
+  { id: 's7_spouse', type: 'word-track', x: 330, y: 4060, w: 250, h: 110,
+    html: `"Absolutely — is there any particular reason they'd need to be involved in this decision? I want to make sure I understand the situation."` },
+
+  { id: 's7_money', type: 'word-track', x: 610, y: 4060, w: 250, h: 110,
+    html: `"Ok, so if money wasn't an issue — is this something you'd want to do? Like, does the actual program make sense to you, or is there something else holding you back?"` },
+
+  { id: 's7_research', type: 'word-track', x: 890, y: 4060, w: 250, h: 110,
+    html: `"I respect that. Out of curiosity, what exactly would you be researching? Like what specific question do you need answered before you'd feel comfortable moving forward?"` },
+
+  // ══ STAGE 8: CLOSE ════════════════════════════════════════════
+  { id: 's8', type: 'stage', x: 570, y: 4220, w: 260, h: 60,
+    stageNum: '8', title: 'THE CLOSE' },
+
+  { id: 's8_q', type: 'word-track', x: 300, y: 4310, w: 580, h: 90,
+    html: `"Ok, so based on everything we talked about — you want [THEIR GOAL], you're currently stuck because [THEIR PROBLEM], and this program is exactly how you get there. What's stopping you from getting started today?"` },
+
+  { id: 's8_p', type: 'principle', x: 300, y: 4420, w: 580, h: 55,
+    html: `★ Silence is your friend. Ask the question and WAIT. The first person to speak loses. Give them time to respond.` },
+
+  { id: 's8_close', type: 'word-track', x: 300, y: 4500, w: 580, h: 90,
+    html: `"Perfect. Let's get you set up. Here's what we're going to do right now — [NEXT STEPS: payment link, onboarding, etc]. You'll get access within [TIMEFRAME] and we'll have someone reach out within [X] hours to kick things off."` },
+
+  // ══ STAGE 9: UPSELL / FOLLOW-UP ══════════════════════════════
+  { id: 's9', type: 'stage', x: 570, y: 4640, w: 260, h: 60,
+    stageNum: '9', title: 'UPSELL / FOLLOW-UP' },
+
+  { id: 's9_q', type: 'word-track', x: 300, y: 4730, w: 580, h: 90,
+    html: `"By the way — a lot of people who join also end up adding [UPSELL] because [REASON IT MAKES SENSE]. We have a slot open right now. Would that be something you'd want to look at while we're on the call?"` },
+
+  { id: 's9_p', type: 'principle', x: 300, y: 4840, w: 580, h: 60,
+    html: `★ Only offer the upsell AFTER the initial close. Never pitch both at once. One win at a time.` },
+
+  { id: 's9_followup', type: 'framework', x: 300, y: 4920, w: 580, h: 100,
+    html: `FOLLOW-UP SEQUENCE (if no close today):\n• Same day: "Hey, just following up from our call..."\n• Day 2: Send a relevant result/testimonial\n• Day 4: "Spot is still open — are you in or out?"\n• Day 7: Last attempt, then move on` },
+];
+
+// ─────────────────────────────────────────────────────────────────
+//  ARROW DATA — { from: nodeId, to: nodeId, dashed: bool }
+//  dashed = true for "alternative" or branch paths
+// ─────────────────────────────────────────────────────────────────
+const ARROWS = [
+  // Stage 1 main flow
+  { from: 's1',         to: 's1_open',      dashed: false },
+  { from: 's1_open',    to: 's1_qualify',   dashed: false },
+  { from: 's1_qualify', to: 's1_b_escape',  dashed: true  },
+  { from: 's1_qualify', to: 's1_b_vague',   dashed: false },
+  { from: 's1_qualify', to: 's1_b_b2b',     dashed: true  },
+  { from: 's1_b_escape',to: 's1_escape_q',  dashed: false },
+  { from: 's1_escape_q',to: 's1_escape_p',  dashed: false },
+  { from: 's1_b_vague', to: 's1_vague_q',   dashed: false },
+  { from: 's1_vague_q', to: 's1_vague_p',   dashed: false },
+  { from: 's1_b_b2b',   to: 's1_b2b_q',    dashed: false },
+
+  // All paths merge → Stage 2
+  { from: 's1_escape_p',to: 's2',           dashed: true  },
+  { from: 's1_vague_p', to: 's2',           dashed: false },
+  { from: 's1_b2b_q',   to: 's2',           dashed: true  },
+
+  // Stage 2
+  { from: 's2',         to: 's2_q',         dashed: false },
+  { from: 's2_q',       to: 's2_nojob',     dashed: true  },
+  { from: 's2_q',       to: 's2_hasjob',    dashed: true  },
+  { from: 's2_nojob',   to: 's2_nojob_q',   dashed: false },
+  { from: 's2_hasjob',  to: 's2_hasjob_q',  dashed: false },
+  { from: 's2_nojob_q', to: 's2_p',         dashed: true  },
+  { from: 's2_hasjob_q',to: 's2_p',         dashed: true  },
+
+  // Stage 3
+  { from: 's2_p',       to: 's3',           dashed: false },
+  { from: 's3',         to: 's3_path1',     dashed: true  },
+  { from: 's3',         to: 's3_path2',     dashed: false },
+  { from: 's3',         to: 's3_path3',     dashed: true  },
+
+  // Path 1
+  { from: 's3_path1',   to: 's3_p1_q1',    dashed: false },
+  { from: 's3_p1_q1',   to: 's3_p1_q2',    dashed: false },
+  { from: 's3_p1_q2',   to: 's3_p1_see',   dashed: false },
+  { from: 's3_p1_see',  to: 's3_p1_q3',    dashed: false },
+  { from: 's3_p1_q3',   to: 's3_p1_feel',  dashed: false },
+
+  // Path 2
+  { from: 's3_path2',   to: 's3_p2_q1',    dashed: false },
+  { from: 's3_p2_q1',   to: 's3_p2_fw',    dashed: false },
+  { from: 's3_p2_fw',   to: 's3_p2_q2',    dashed: false },
+  { from: 's3_p2_q2',   to: 's3_p2_q3',    dashed: false },
+  { from: 's3_p2_q3',   to: 's3_p2_q4',    dashed: false },
+  { from: 's3_p2_q4',   to: 's3_p2_p',     dashed: false },
+
+  // Path 3
+  { from: 's3_path3',   to: 's3_p3_q1',    dashed: false },
+  { from: 's3_p3_q1',   to: 's3_p3_b1',    dashed: true  },
+  { from: 's3_p3_q1',   to: 's3_p3_b2',    dashed: true  },
+  { from: 's3_p3_b1',   to: 's3_p3_still', dashed: false },
+  { from: 's3_p3_b2',   to: 's3_p3_still', dashed: false },
+  { from: 's3_p3_still',to: 's3_p3_q2',    dashed: false },
+  { from: 's3_p3_q2',   to: 's3_p3_p',     dashed: false },
+
+  // All paths → Stage 4
+  { from: 's3_p1_feel', to: 's4',           dashed: true  },
+  { from: 's3_p2_p',    to: 's4',           dashed: true  },
+  { from: 's3_p3_p',    to: 's4',           dashed: true  },
+
+  // Stage 4
+  { from: 's4',         to: 's4_fw',        dashed: false },
+  { from: 's4',         to: 's4_q',         dashed: false },
+  { from: 's4_q',       to: 's4_b1',        dashed: true  },
+  { from: 's4_q',       to: 's4_b2',        dashed: true  },
+  { from: 's4_q',       to: 's4_b3',        dashed: true  },
+  { from: 's4_q',       to: 's4_b4',        dashed: true  },
+  { from: 's4_b1',      to: 's4_goal',      dashed: true  },
+  { from: 's4_b2',      to: 's4_goal',      dashed: true  },
+  { from: 's4_b3',      to: 's4_goal',      dashed: true  },
+  { from: 's4_b4',      to: 's4_goal',      dashed: true  },
+
+  // Stage 5
+  { from: 's4_goal',    to: 's5',           dashed: false },
+  { from: 's5',         to: 's5_fw1',       dashed: false },
+  { from: 's5',         to: 's5_q',         dashed: false },
+  { from: 's5',         to: 's5_fw2',       dashed: false },
+  { from: 's5_q',       to: 's5_ez',        dashed: false },
+  { from: 's5_q',       to: 's5_iffy',      dashed: false },
+  { from: 's5_q',       to: 's5_low',       dashed: false },
+  { from: 's5_q',       to: 's5_dq_b',      dashed: true  },
+  { from: 's5_dq_b',    to: 's5_dq_fw',     dashed: false },
+
+  // Qualified → Stage 6
+  { from: 's5_ez',      to: 's6',           dashed: true  },
+  { from: 's5_iffy',    to: 's6',           dashed: true  },
+  { from: 's5_low',     to: 's6',           dashed: true  },
+
+  // Stage 6
+  { from: 's6',         to: 's6_transition',dashed: false },
+  { from: 's6_transition',to:'s6_p1',       dashed: false },
+  { from: 's6_p1',      to: 's6_pitch',     dashed: false },
+  { from: 's6_pitch',   to: 's6_p2',        dashed: false },
+
+  // Stage 7
+  { from: 's6_p2',      to: 's7',           dashed: false },
+  { from: 's7',         to: 's7_b1',        dashed: true  },
+  { from: 's7',         to: 's7_b2',        dashed: true  },
+  { from: 's7',         to: 's7_b3',        dashed: true  },
+  { from: 's7',         to: 's7_b4',        dashed: true  },
+  { from: 's7_b1',      to: 's7_think',     dashed: false },
+  { from: 's7_b2',      to: 's7_spouse',    dashed: false },
+  { from: 's7_b3',      to: 's7_money',     dashed: false },
+  { from: 's7_b4',      to: 's7_research',  dashed: false },
+
+  // All objection handles → Stage 8
+  { from: 's7_think',   to: 's8',           dashed: true  },
+  { from: 's7_spouse',  to: 's8',           dashed: true  },
+  { from: 's7_money',   to: 's8',           dashed: true  },
+  { from: 's7_research',to: 's8',           dashed: true  },
+
+  // Stage 8
+  { from: 's8',         to: 's8_q',         dashed: false },
+  { from: 's8_q',       to: 's8_p',         dashed: false },
+  { from: 's8_p',       to: 's8_close',     dashed: false },
+
+  // Stage 9
+  { from: 's8_close',   to: 's9',           dashed: false },
+  { from: 's9',         to: 's9_q',         dashed: false },
+  { from: 's9_q',       to: 's9_p',         dashed: false },
+  { from: 's9_p',       to: 's9_followup',  dashed: false },
+];
+
+// ─────────────────────────────────────────────────────────────────
+//  RENDERING
+// ─────────────────────────────────────────────────────────────────
+const COLORS = {
+  'stage':      { fill: '#1e293b', stroke: '#1e293b', textColor: '#ffffff' },
+  'word-track': { fill: '#ffffff', stroke: '#334155', textColor: '#1e293b' },
+  'branch':     { fill: '#fef9c3', stroke: '#ca8a04', textColor: '#713f12' },
+  'principle':  { fill: '#ecfdf5', stroke: '#059669', textColor: '#064e3b' },
+  'framework':  { fill: '#eff6ff', stroke: '#3b82f6', textColor: '#1e3a5f' },
+};
+
+const NS = 'http://www.w3.org/2000/svg';
+
+function nodeById(id) { return NODES.find(n => n.id === id); }
+
+function nodeCenter(n) {
+  return { x: n.x + n.w / 2, y: n.y + n.h / 2 };
+}
+function nodeBottom(n) {
+  return { x: n.x + n.w / 2, y: n.y + n.h };
+}
+function nodeTop(n) {
+  return { x: n.x + n.w / 2, y: n.y };
+}
+
+function buildPath(a, b, dashed) {
+  const x1 = a.x + a.w / 2, y1 = a.y + a.h;
+  const x2 = b.x + b.w / 2, y2 = b.y;
+  const dy = y2 - y1;
+  const dx = x2 - x1;
+  const cp1y = y1 + Math.max(30, dy * 0.4);
+  const cp2y = y2 - Math.max(30, dy * 0.4);
+  return `M ${x1} ${y1} C ${x1} ${cp1y}, ${x2} ${cp2y}, ${x2} ${y2}`;
+}
+
+function renderArrows(g) {
+  for (const arr of ARROWS) {
+    const from = nodeById(arr.from);
+    const to   = nodeById(arr.to);
+    if (!from || !to) continue;
+    const path = document.createElementNS(NS, 'path');
+    path.setAttribute('d', buildPath(from, to));
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', '#94a3b8');
+    path.setAttribute('stroke-width', '2');
+    if (arr.dashed) path.setAttribute('stroke-dasharray', '6,4');
+    path.setAttribute('marker-end', 'url(#arrow)');
+    g.appendChild(path);
+  }
+}
+
+function escHtml(s) {
+  return s
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function buildNodeHtml(node) {
+  const c = COLORS[node.type];
+  if (node.type === 'stage') {
+    return `<div style="text-align:center;">
+      <div style="font-size:11px;opacity:0.7;letter-spacing:2px;color:${c.textColor};">STAGE ${node.stageNum}</div>
+      <div style="font-size:15px;font-weight:800;color:${c.textColor};">${node.title}</div>
+    </div>`;
+  }
+  if (node.type === 'branch') {
+    let html = `<div style="font-size:12.5px;font-weight:700;color:${c.textColor};line-height:1.4;">${node.title}</div>`;
+    if (node.sub) {
+      html += `<div style="font-size:10.5px;opacity:0.65;margin-top:4px;font-style:italic;color:${c.textColor};">${node.sub.replace(/\n/g,'<br>')}</div>`;
+    }
+    return html;
+  }
+  // word-track, principle, framework
+  const lines = node.html
+    .replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\n/g, '<br>');
+  return `<div style="font-size:12.5px;font-weight:400;color:${c.textColor};line-height:1.4;">${lines}</div>`;
+}
+
+function renderNodes(g) {
+  for (const node of NODES) {
+    const c = COLORS[node.type];
+    const grp = document.createElementNS(NS, 'g');
+
+    const rect = document.createElementNS(NS, 'rect');
+    rect.setAttribute('x', node.x);
+    rect.setAttribute('y', node.y);
+    rect.setAttribute('width', node.w);
+    rect.setAttribute('height', node.h);
+    rect.setAttribute('rx', node.type === 'stage' ? '8' : '6');
+    rect.setAttribute('fill', c.fill);
+    rect.setAttribute('stroke', c.stroke);
+    rect.setAttribute('stroke-width', '1.5');
+    if (node.type === 'word-track') rect.setAttribute('filter', 'url(#shadow)');
+    grp.appendChild(rect);
+
+    const fo = document.createElementNS(NS, 'foreignObject');
+    const pad = 12;
+    fo.setAttribute('x', node.x + pad);
+    fo.setAttribute('y', node.y + pad);
+    fo.setAttribute('width', node.w - pad * 2);
+    fo.setAttribute('height', node.h - pad * 2);
+    fo.style.pointerEvents = 'none';
+    fo.style.overflow = 'visible';
+
+    const div = document.createElement('div');
+    div.style.fontFamily = "'Inter', -apple-system, sans-serif";
+    div.style.fontSize = '12.5px';
+    div.style.lineHeight = '1.4';
+    div.style.whiteSpace = 'pre-wrap';
+    div.style.overflow = 'visible';
+    div.innerHTML = buildNodeHtml(node);
+    fo.appendChild(div);
+    grp.appendChild(fo);
+    g.appendChild(grp);
+  }
+}
+
+function init() {
+  const g = document.getElementById('main-group');
+  renderArrows(g);
+  renderNodes(g);
+  applyTransform();
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  PAN + ZOOM
+// ─────────────────────────────────────────────────────────────────
+let scale = 0.75, panX = 20, panY = 10;
+let dragging = false, lastX = 0, lastY = 0;
+
+function applyTransform() {
+  document.getElementById('main-group').setAttribute(
+    'transform',
+    `translate(${panX}, ${panY}) scale(${scale})`
+  );
+  document.getElementById('zoom-label').textContent = Math.round(scale * 100) + '%';
+}
+
+function zoom(delta) {
+  scale = Math.max(0.2, Math.min(2, scale + delta));
+  applyTransform();
+}
+
+function resetView() {
+  scale = 0.75; panX = 20; panY = 10;
+  applyTransform();
+}
+
+const wrap = document.getElementById('canvas-wrap');
+
+wrap.addEventListener('mousedown', e => {
+  dragging = true; lastX = e.clientX; lastY = e.clientY;
+  wrap.classList.add('dragging');
+});
+window.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  panX += e.clientX - lastX;
+  panY += e.clientY - lastY;
+  lastX = e.clientX; lastY = e.clientY;
+  applyTransform();
+});
+window.addEventListener('mouseup', () => {
+  dragging = false;
+  wrap.classList.remove('dragging');
+});
+
+wrap.addEventListener('wheel', e => {
+  e.preventDefault();
+  const delta = e.deltaY > 0 ? -0.08 : 0.08;
+  // zoom toward mouse pointer
+  const rect = wrap.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top - 0; // offset for topbar handled by fixed positioning
+  const oldScale = scale;
+  scale = Math.max(0.2, Math.min(2, scale + delta));
+  panX = mx - (mx - panX) * (scale / oldScale);
+  panY = my - (my - panY) * (scale / oldScale);
+  applyTransform();
+}, { passive: false });
+
+// Touch support
+let lastTouchDist = null;
+wrap.addEventListener('touchstart', e => {
+  if (e.touches.length === 1) {
+    dragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+  }
+  if (e.touches.length === 2) {
+    lastTouchDist = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
+  }
+}, { passive: true });
+wrap.addEventListener('touchmove', e => {
+  if (e.touches.length === 1 && dragging) {
+    panX += e.touches[0].clientX - lastX;
+    panY += e.touches[0].clientY - lastY;
+    lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+    applyTransform();
+  }
+  if (e.touches.length === 2 && lastTouchDist !== null) {
+    const dist = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
+    scale = Math.max(0.2, Math.min(2, scale * (dist / lastTouchDist)));
+    lastTouchDist = dist;
+    applyTransform();
+  }
+}, { passive: true });
+wrap.addEventListener('touchend', () => { dragging = false; lastTouchDist = null; });
+
+init();
+</script>
+</body>
+</html>
