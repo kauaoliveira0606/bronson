@@ -438,12 +438,6 @@
     return lessThan ? aNum < gNum : aNum >= gNum;
   }
 
-  const SCORECARD_METRICS = [
-    'Ad Spend Meta', 'Landing Page Connect Rate', 'VSL Play Rate',
-    'VSL Engagement Rate', 'Forms submitted', 'Dials',
-    'Sales - High Ticket', 'Close Rate'
-  ];
-
   async function loadScorecard() {
     try {
       const res = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Koljpe91Y3rbz0C9cXzIxt9ZFlLk6plrxItZaE0-sQxaNAnGxxV7WSD-9f0qG7-0JVZFI7UySbCF/pub?output=csv&t=' + Date.now());
@@ -457,23 +451,18 @@
       if (dateStart) document.getElementById('scorecard-week').textContent = dateStart + ' – ' + dateEnd;
 
       // col 0=name, 1-7=days, 8=dailyGoal, 9=weeklyActual, 10=weeklyGoal
-      const rows = {};
+      const metrics = [];
       for (let r = 3; r < lines.length; r++) {
         const cols = parseCSVLine(lines[r]);
         const name = cols[0] ? cols[0].trim() : '';
         if (!name) continue;
-        rows[name] = {
-          weeklyActual: cols[9] || '',
-          weeklyGoal:   cols[10] || '',
-        };
+        metrics.push({ name, weeklyActual: cols[9] || '', weeklyGoal: cols[10] || '' });
       }
 
-      const cards = SCORECARD_METRICS.map(metric => {
-        const row = rows[metric];
-        if (!row) return '';
-        const actual = parseVal(row.weeklyActual);
-        const goal   = parseVal(row.weeklyGoal);
-        const track  = isOnTrack(actual, row.weeklyGoal);
+      const cards = metrics.map(({ name, weeklyActual, weeklyGoal }) => {
+        const actual = parseVal(weeklyActual);
+        const goal   = parseVal(weeklyGoal);
+        const track  = isOnTrack(actual, weeklyGoal);
         const valCls = track === true ? 'sc-green' : track === false ? 'sc-red' : 'sc-white';
 
         let barHtml = '';
@@ -484,7 +473,7 @@
         }
 
         return `<div class="sc-card">
-          <div class="sc-metric">${metric}</div>
+          <div class="sc-metric">${name}</div>
           <div class="sc-value ${valCls}">${actual.display}</div>
           ${goal.display !== '—' ? `<div class="sc-goal">Goal: ${goal.display}</div>` : '<div class="sc-goal">No goal set</div>'}
           ${barHtml}
