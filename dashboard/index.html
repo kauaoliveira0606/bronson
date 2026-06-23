@@ -105,6 +105,19 @@
     .sc-red   { color: var(--red);   } .sc-fill-red   { background: var(--red); }
     .sc-white { color: #fff; }         .sc-fill-blue  { background: var(--blue); }
 
+    .sc-table-wrap { margin-top: 28px; overflow-x: auto; }
+    .sc-table { width: 100%; border-collapse: collapse; font-size: .78rem; font-family: inherit; }
+    .sc-table th { background: rgba(255,255,255,0.05); color: var(--text2); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: .65rem; padding: 9px 14px; text-align: center; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .sc-table th:first-child { text-align: left; }
+    .sc-table td { padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,0.04); text-align: center; color: var(--text2); white-space: nowrap; }
+    .sc-table td:first-child { text-align: left; color: #fff; font-weight: 600; }
+    .sc-table tr:last-child td { border-bottom: none; }
+    .sc-table tr:hover td { background: rgba(255,255,255,0.03); }
+    .sc-table .col-goal { color: var(--blue); font-weight: 700; }
+    .sc-table .col-actual-good { color: var(--green); font-weight: 700; }
+    .sc-table .col-actual-bad  { color: var(--red);   font-weight: 700; }
+    .sc-table .col-actual-na   { color: #fff;          font-weight: 700; }
+
     @media (max-width: 900px) {
       .charts-row { grid-template-columns: 1fr; }
       .main { padding: 16px; }
@@ -411,9 +424,12 @@
       const lines = text.split('\n').filter(l => l.trim());
       if (lines.length < 4) throw new Error('Sheet empty');
 
-      const dateRow = parseCSVLine(lines[1]);
-      const dateStart = dateRow.slice(1, 8).find(d => d.trim()) || '';
-      const dateEnd   = dateRow.slice(1, 8).filter(d => d.trim()).pop() || '';
+      // Row 1 = day headers (cols 1–7), Row 2 = label row
+      const dateRow  = parseCSVLine(lines[1]);
+      const labelRow = parseCSVLine(lines[2]);
+      const dayHeaders = dateRow.slice(1, 8).map(d => d.trim());
+      const dateStart = dayHeaders.find(d => d) || '';
+      const dateEnd   = [...dayHeaders].reverse().find(d => d) || '';
       if (dateStart) document.getElementById('scorecard-week').textContent = dateStart + ' – ' + dateEnd;
 
       // col 0=name, 1-7=days (B-H), 8=goal (I), 9=weekly actual (J)
@@ -422,11 +438,13 @@
         const cols = parseCSVLine(lines[r]);
         const name = cols[0] ? cols[0].trim() : '';
         if (!name) continue;
-        const weeklyGoal   = cols[8] || '';
-        const weeklyActual = cols[9] || '';
-        metrics.push({ name, weeklyActual, weeklyGoal });
+        const days         = cols.slice(1, 8).map(v => (v || '').trim());
+        const weeklyGoal   = (cols[8] || '').trim();
+        const weeklyActual = (cols[9] || '').trim();
+        metrics.push({ name, days, weeklyActual, weeklyGoal });
       }
 
+      // --- CARDS ---
       const cards = metrics.map(({ name, weeklyActual, weeklyGoal }) => {
         const actual = parseVal(weeklyActual);
         const goal   = parseVal(weeklyGoal);
@@ -448,8 +466,34 @@
         </div>`;
       }).join('');
 
+      // --- SHEET TABLE ---
+      const dayLabels = dayHeaders.length ? dayHeaders : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      const thDays = dayLabels.map(d => `<th>${d || '—'}</th>`).join('');
+      const tableRows = metrics.map(({ name, days, weeklyActual, weeklyGoal }) => {
+        const actual = parseVal(weeklyActual);
+        const goal   = parseVal(weeklyGoal);
+        const track  = isOnTrack(actual, weeklyGoal);
+        const actualCls = track === true ? 'col-actual-good' : track === false ? 'col-actual-bad' : 'col-actual-na';
+        const tdDays = days.map(v => `<td>${v || '—'}</td>`).join('');
+        return `<tr>
+          <td>${name}</td>
+          ${tdDays}
+          <td class="col-goal">${goal.display}</td>
+          <td class="${actualCls}">${actual.display}</td>
+        </tr>`;
+      }).join('');
+
+      const table = `<div class="sc-table-wrap">
+        <table class="sc-table">
+          <thead><tr>
+            <th>Metric</th>${thDays}<th>Goal</th><th>Weekly Actual</th>
+          </tr></thead>
+          <tbody>${tableRows}</tbody>
+        </table>
+      </div>`;
+
       document.getElementById('scorecard-wrap').innerHTML =
-        `<div class="scorecard-grid">${cards || '<div class="loading">No data found</div>'}</div>`;
+        `<div class="scorecard-grid">${cards || '<div class="loading">No data found</div>'}</div>${table}`;
     } catch (e) {
       document.getElementById('scorecard-wrap').innerHTML =
         `<div class="loading" style="color:#ef4444;">Scorecard error: ${e.message}</div>`;
