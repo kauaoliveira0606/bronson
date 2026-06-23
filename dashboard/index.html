@@ -479,9 +479,23 @@
         const cols = parseCSVLine(lines[r]);
         const name = cols[0] ? cols[0].trim() : '';
         if (!name) continue;
-        const days         = cols.slice(1, 8).map(v => (v || '').trim());
-        const weeklyGoal   = (cols[8] || '').trim();
-        const weeklyActual = (cols[9] || '').trim();
+        const days       = cols.slice(1, 8).map(v => (v || '').trim());
+        const weeklyGoal = (cols[8] || '').trim();
+        let weeklyActual = (cols[9] || '').trim();
+
+        // If col J is empty or an error, fall back to summing daily values
+        const badVal = !weeklyActual || /^#/.test(weeklyActual);
+        if (badVal) {
+          const isPercent = days.some(v => v.endsWith('%'));
+          if (!isPercent) {
+            const sum = days.reduce((acc, v) => {
+              const n = parseFloat(v.replace(/[^0-9.\-]/g, ''));
+              return acc + (isNaN(n) ? 0 : n);
+            }, 0);
+            if (sum > 0) weeklyActual = String(sum);
+          }
+        }
+
         metrics.push({ name, days, weeklyActual, weeklyGoal });
       }
 
