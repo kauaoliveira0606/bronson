@@ -594,15 +594,6 @@
       });
     });
 
-    // Divider then green
-    if (green.length) {
-      items.push({
-        type: 'good',
-        title: `✓ Performing: ${green.map(m => m.name).join(', ')}`,
-        body: `These are working. Don't over-optimize here — protect what's driving them and keep the reps consistent.`
-      });
-    }
-
     // Overall recommendation
     const topRed = red[0];
     if (topRed) {
