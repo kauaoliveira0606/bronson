@@ -120,6 +120,25 @@
     .sc-table .col-actual-bad  { color: var(--red);    font-weight: 700; }
     .sc-table .col-actual-na   { color: #fff;           font-weight: 700; }
 
+    .ai-health { display:flex; align-items:center; gap:16px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:12px; padding:16px 20px; margin-bottom:20px; }
+    .ai-health-score { font-size:2.4rem; font-weight:900; line-height:1; }
+    .ai-health-label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text2); margin-bottom:4px; }
+    .ai-health-desc  { font-size:.82rem; color:#fff; font-weight:500; }
+    .ai-items { display:flex; flex-direction:column; gap:12px; }
+    .ai-item  { display:flex; gap:14px; align-items:flex-start; padding:14px 16px; border-radius:10px; border:1px solid var(--border); }
+    .ai-item.high   { border-color:rgba(239,68,68,0.25);   background:rgba(239,68,68,0.05); }
+    .ai-item.medium { border-color:rgba(245,158,11,0.25);  background:rgba(245,158,11,0.05); }
+    .ai-item.good   { border-color:rgba(34,197,94,0.2);    background:rgba(34,197,94,0.04); }
+    .ai-item.info   { border-color:rgba(59,130,246,0.2);   background:rgba(59,130,246,0.04); }
+    .ai-dot  { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+    .ai-dot.high   { background:var(--red); }
+    .ai-dot.medium { background:var(--yellow); }
+    .ai-dot.good   { background:var(--green); }
+    .ai-dot.info   { background:var(--blue); }
+    .ai-item-title { font-size:.82rem; font-weight:700; color:#fff; margin-bottom:4px; }
+    .ai-item-body  { font-size:.78rem; color:rgba(255,255,255,0.65); line-height:1.6; }
+    .ai-divider    { border:none; border-top:1px solid var(--border); margin:18px 0; }
+
     @media (max-width: 900px) {
       .charts-row { grid-template-columns: 1fr; }
       .main { padding: 16px; }
@@ -149,6 +168,17 @@
       <div class="scorecard-week" id="scorecard-week"></div>
     </div>
     <div id="scorecard-wrap"><div class="loading">Loading scorecard...</div></div>
+  </div>
+
+  <div class="chart-card" id="ai-summary-card" style="display:none;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+      <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#6366f1,#a855f7);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;">✦</div>
+      <div>
+        <div class="chart-title" style="margin-bottom:0;">Weekly Intelligence Summary</div>
+        <div style="font-size:.68rem;color:var(--text2);margin-top:2px;">Based on live scorecard data</div>
+      </div>
+    </div>
+    <div id="ai-summary-body"></div>
   </div>
 
 </div>
@@ -505,10 +535,102 @@
 
       document.getElementById('scorecard-wrap').innerHTML =
         `<div class="scorecard-grid">${cards || '<div class="loading">No data found</div>'}</div>${table}`;
+
+      generateSummary(metrics);
     } catch (e) {
       document.getElementById('scorecard-wrap').innerHTML =
         `<div class="loading" style="color:#ef4444;">Scorecard error: ${e.message}</div>`;
     }
+  }
+
+  function generateSummary(metrics) {
+    const analyzed = metrics.map(m => {
+      const actual = parseVal(m.weeklyActual);
+      const goal   = parseVal(m.weeklyGoal);
+      const status = trackStatus(actual, m.weeklyGoal);
+      const pctOfGoal = (actual.num !== null && goal.num !== null && goal.num > 0)
+        ? Math.round((actual.num / goal.num) * 100) : null;
+      return { ...m, actual, goal, status, pctOfGoal };
+    }).filter(m => m.status !== null);
+
+    if (!analyzed.length) return;
+
+    const red    = analyzed.filter(m => m.status === 'red').sort((a,b) => (a.pctOfGoal||0)-(b.pctOfGoal||0));
+    const yellow = analyzed.filter(m => m.status === 'yellow').sort((a,b) => (a.pctOfGoal||0)-(b.pctOfGoal||0));
+    const green  = analyzed.filter(m => m.status === 'green');
+
+    const total  = analyzed.length;
+    const score  = Math.round(((green.length + yellow.length * 0.5) / total) * 100);
+    const healthColor = score >= 70 ? 'var(--green)' : score >= 45 ? 'var(--yellow)' : 'var(--red)';
+    const healthLabel = score >= 70 ? 'On Track' : score >= 45 ? 'Needs Attention' : 'Behind';
+    const healthDesc  = score >= 70
+      ? `${green.length} of ${total} metrics are hitting goal. Keep the momentum.`
+      : score >= 45
+      ? `${red.length} metric${red.length !== 1 ? 's' : ''} are significantly behind. Focus there first.`
+      : `Most metrics are off track. Prioritize the highest-revenue levers below.`;
+
+    let items = [];
+
+    // Priority 1: biggest red gaps
+    red.forEach((m, i) => {
+      const gap = m.pctOfGoal !== null ? `at ${m.pctOfGoal}% of goal` : 'below goal';
+      const lever = i === 0
+        ? `This is your #1 lever this week. Every point of improvement here has the most downstream impact on revenue. Identify what's blocking it and remove that friction today.`
+        : `Address this after ${red[0].name}. Small gains here compound quickly.`;
+      items.push({ type: 'high', title: `↑ Prioritize: ${m.name} (${gap})`, body: lever });
+    });
+
+    // Priority 2: yellow close to goal
+    yellow.forEach(m => {
+      const gap = m.pctOfGoal !== null ? `${m.pctOfGoal}% of goal` : 'close to goal';
+      items.push({
+        type: 'medium',
+        title: `⚡ Quick Win: ${m.name} (${gap})`,
+        body: `You're within 20% of target — a focused push today could flip this green. This is low-effort, high-payoff.`
+      });
+    });
+
+    // Divider then green
+    if (green.length) {
+      items.push({
+        type: 'good',
+        title: `✓ Performing: ${green.map(m => m.name).join(', ')}`,
+        body: `These are working. Don't over-optimize here — protect what's driving them and keep the reps consistent.`
+      });
+    }
+
+    // Overall recommendation
+    const topRed = red[0];
+    if (topRed) {
+      items.push({
+        type: 'info',
+        title: `📌 This Week's Focus`,
+        body: `If you could only fix one thing, fix ${topRed.name}. It's the furthest from goal and likely has the highest revenue impact. Everything else is secondary until that moves.`
+      });
+    }
+
+    const html = `
+      <div class="ai-health">
+        <div class="ai-health-score" style="color:${healthColor}">${score}%</div>
+        <div>
+          <div class="ai-health-label">Overall Health — ${healthLabel}</div>
+          <div class="ai-health-desc">${healthDesc}</div>
+        </div>
+      </div>
+      <div class="ai-items">
+        ${items.map(item => `
+          <div class="ai-item ${item.type}">
+            <div class="ai-dot ${item.type}"></div>
+            <div>
+              <div class="ai-item-title">${item.title}</div>
+              <div class="ai-item-body">${item.body}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>`;
+
+    document.getElementById('ai-summary-body').innerHTML = html;
+    document.getElementById('ai-summary-card').style.display = 'block';
   }
 
   loadAll();
