@@ -384,8 +384,19 @@
     .mob-nav::-webkit-scrollbar { display: none; }
     .mob-nav-inner {
       display: flex; align-items: stretch;
-      min-width: max-content; padding: 0 4px;
+      min-width: max-content; padding: 0 36px 0 4px;
     }
+    .mob-nav-fade {
+      position: fixed; right: 0; bottom: 0; width: 52px;
+      height: 64px; z-index: 201; pointer-events: none;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,.97));
+      display: none; align-items: center; justify-content: flex-end; padding-right: 8px;
+    }
+    .mob-nav-fade::after {
+      content: '›';
+      font-size: 1.3rem; color: #94a3b8; line-height: 1;
+    }
+    @media (max-width: 700px) { .mob-nav-fade { display: flex; } }
     .mob-nav-item {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       gap: 3px; padding: 8px 14px 10px;
@@ -884,6 +895,7 @@
     </button>
   </div>
 </nav>
+<div class="mob-nav-fade" id="mob-nav-fade"></div>
 
 <!-- ═══ Main ═══ -->
 <main class="main">
@@ -2840,6 +2852,17 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   }
 
   // ── View switcher ──
+  // Hide the scroll hint arrow once user scrolls the mobile nav
+  (function() {
+    const nav = document.getElementById('mob-nav');
+    const fade = document.getElementById('mob-nav-fade');
+    if (!nav || !fade) return;
+    nav.addEventListener('scroll', function() {
+      const atEnd = nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 8;
+      fade.style.display = atEnd ? 'none' : '';
+    }, { passive: true });
+  })();
+
   function showView(id, el) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
