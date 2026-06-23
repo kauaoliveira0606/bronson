@@ -699,36 +699,14 @@
     }
 
     .ticker-inner {
-      overflow: hidden;
-      position: relative;
-    }
-
-    .ticker-fade-left {
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 100px;
-      background: linear-gradient(to right, var(--bg), transparent);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .ticker-fade-right {
-      position: absolute;
-      right: 0; top: 0; bottom: 0;
-      width: 100px;
-      background: linear-gradient(to left, var(--bg), transparent);
-      z-index: 1;
-      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 40px 56px;
     }
 
     .ticker-track {
-      display: flex;
-      width: max-content;
-      align-items: center;
-      gap: 64px;
-      white-space: nowrap;
-      animation: ticker 20s linear infinite;
-      will-change: transform;
+      display: contents;
     }
 
     .ticker-logo {
@@ -737,15 +715,9 @@
       color: var(--text);
       opacity: 0.55;
       letter-spacing: -0.2px;
-      flex-shrink: 0;
       display: flex;
       align-items: center;
       gap: 6px;
-    }
-
-    @keyframes ticker {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
     }
 
     /* ── SCROLL CTA ── */
@@ -800,15 +772,7 @@
 <div class="ticker-wrap">
   <p class="ticker-label">Backed by Billion-Dollar Partners</p>
   <div class="ticker-inner">
-    <div class="ticker-fade-left"></div>
-    <div class="ticker-fade-right"></div>
     <div class="ticker-track">
-      <span class="ticker-logo">AUTO-DS</span>
-      <span class="ticker-logo">CapCut</span>
-      <span class="ticker-logo">Base44</span>
-      <span class="ticker-logo">WIX</span>
-      <span class="ticker-logo">Snapchat</span>
-      <span class="ticker-logo">Omnisend</span>
       <span class="ticker-logo">AUTO-DS</span>
       <span class="ticker-logo">CapCut</span>
       <span class="ticker-logo">Base44</span>
