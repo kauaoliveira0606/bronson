@@ -190,21 +190,36 @@
     /* ── MODULE CARDS ── */
     .modules-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
     }
 
     .mod-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
     }
 
-    .mod-icon { font-size: 1.4rem; margin-bottom: 10px; }
-    .mod-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
-    .mod-value { font-size: 0.78rem; color: var(--text2); }
+    .mod-icon {
+      width: 44px; height: 44px;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+
+    .mod-info {}
+    .mod-title { font-size: 0.975rem; font-weight: 700; margin-bottom: 4px; }
+    .mod-desc { font-size: 0.85rem; color: var(--text2); line-height: 1.55; }
+    .mod-value { font-size: 0.8rem; color: var(--text2); margin-top: 8px; }
     .mod-value span { color: var(--green); font-weight: 600; }
+
+    @media (max-width: 700px) { .mod-card { flex-direction: column; } }
 
     /* ── TESTIMONIALS ── */
     .testi-grid {
@@ -352,39 +367,58 @@
 
 <!-- MODULES -->
 <div class="section">
-  <p class="section-label">The full program</p>
+  <p class="section-label">Course modules</p>
   <h2 class="section-title">6 phases. One complete system.</h2>
+  <p class="section-desc">Everything structured so you can go from zero to a running brand - without overwhelm.</p>
 
   <div class="modules-grid">
     <div class="mod-card">
       <div class="mod-icon">🧭</div>
-      <div class="mod-title">Phase 1 - Introduction</div>
-      <p class="mod-value">Value: <span>$100</span></p>
+      <div class="mod-info">
+        <div class="mod-title">Phase 1 - Introduction</div>
+        <p class="mod-desc">Get the full picture. Understand the AI branded e-com model, the tools you'll use, and what your path to 6 figures actually looks like.</p>
+        <p class="mod-value">Value: <span>$100</span></p>
+      </div>
     </div>
     <div class="mod-card">
       <div class="mod-icon">🧠</div>
-      <div class="mod-title">Phase 2 - Mindset</div>
-      <p class="mod-value">Value: <span>$100</span></p>
+      <div class="mod-info">
+        <div class="mod-title">Phase 2 - Mindset</div>
+        <p class="mod-desc">The inner game of building a brand. Develop the habits, beliefs, and discipline that separate people who scale from people who give up.</p>
+        <p class="mod-value">Value: <span>$100</span></p>
+      </div>
     </div>
     <div class="mod-card">
       <div class="mod-icon">🌐</div>
-      <div class="mod-title">Phase 3 - Wix Walkthrough</div>
-      <p class="mod-value">Value: <span>$200</span></p>
+      <div class="mod-info">
+        <div class="mod-title">Phase 3 - Wix Walkthrough</div>
+        <p class="mod-desc">Build a professional branded e-com store on Wix using AI. Full walkthrough - from blank page to live store, no design skills required.</p>
+        <p class="mod-value">Value: <span>$200</span></p>
+      </div>
     </div>
     <div class="mod-card">
       <div class="mod-icon">🔍</div>
-      <div class="mod-title">Phase 4 - Finding a Product</div>
-      <p class="mod-value">Value: <span>$200</span></p>
+      <div class="mod-info">
+        <div class="mod-title">Phase 4 - Finding a Product</div>
+        <p class="mod-desc">Use AI to find winning products in real, sellable niches. No trend chasing. No guessing. This is how you start with a brand that lasts.</p>
+        <p class="mod-value">Value: <span>$200</span></p>
+      </div>
     </div>
     <div class="mod-card">
       <div class="mod-icon">🤖</div>
-      <div class="mod-title">Phase 5 - Building a Store with AI</div>
-      <p class="mod-value">Value: <span>$300</span></p>
+      <div class="mod-info">
+        <div class="mod-title">Phase 5 - Building a Store with AI</div>
+        <p class="mod-desc">Full AI-powered store build - branding, product pages, copy, and checkout - done in hours, not weeks. Built to convert.</p>
+        <p class="mod-value">Value: <span>$300</span></p>
+      </div>
     </div>
     <div class="mod-card">
       <div class="mod-icon">📣</div>
-      <div class="mod-title">Phase 6 - Running Ads</div>
-      <p class="mod-value">Value: <span>$300</span></p>
+      <div class="mod-info">
+        <div class="mod-title">Phase 6 - Running Ads</div>
+        <p class="mod-desc">The exact Meta ads strategy Bronson's members use to hit 8x+ ROAS and $20k–$100k months. No guessing - just the system.</p>
+        <p class="mod-value">Value: <span>$300</span></p>
+      </div>
     </div>
   </div>
 </div>
