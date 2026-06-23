@@ -543,15 +543,19 @@
     }
   }
 
+  const SUMMARY_EXCLUDE = ['vsl engagement', 'vsl'];
+
   function generateSummary(metrics) {
-    const analyzed = metrics.map(m => {
-      const actual = parseVal(m.weeklyActual);
-      const goal   = parseVal(m.weeklyGoal);
-      const status = trackStatus(actual, m.weeklyGoal);
-      const pctOfGoal = (actual.num !== null && goal.num !== null && goal.num > 0)
-        ? Math.round((actual.num / goal.num) * 100) : null;
-      return { ...m, actual, goal, status, pctOfGoal };
-    }).filter(m => m.status !== null);
+    const analyzed = metrics
+      .filter(m => !SUMMARY_EXCLUDE.some(ex => m.name.toLowerCase().includes(ex)))
+      .map(m => {
+        const actual = parseVal(m.weeklyActual);
+        const goal   = parseVal(m.weeklyGoal);
+        const status = trackStatus(actual, m.weeklyGoal);
+        const pctOfGoal = (actual.num !== null && goal.num !== null && goal.num > 0)
+          ? Math.round((actual.num / goal.num) * 100) : null;
+        return { ...m, actual, goal, status, pctOfGoal };
+      }).filter(m => m.status !== null);
 
     if (!analyzed.length) return;
 
