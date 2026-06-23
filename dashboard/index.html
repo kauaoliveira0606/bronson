@@ -416,13 +416,15 @@
       const dateEnd   = dateRow.slice(1, 8).filter(d => d.trim()).pop() || '';
       if (dateStart) document.getElementById('scorecard-week').textContent = dateStart + ' – ' + dateEnd;
 
-      // col 0=name, 1-7=days, 8=dailyGoal, 9=weeklyActual, 10=weeklyGoal
+      // col 0=name, 1-7=days (B-H), 8=goal (I), 9=weekly actual (J)
       const metrics = [];
       for (let r = 3; r < lines.length; r++) {
         const cols = parseCSVLine(lines[r]);
         const name = cols[0] ? cols[0].trim() : '';
         if (!name) continue;
-        metrics.push({ name, weeklyActual: cols[9] || '', weeklyGoal: cols[10] || '' });
+        const weeklyGoal   = cols[8] || '';
+        const weeklyActual = cols[9] || '';
+        metrics.push({ name, weeklyActual, weeklyGoal });
       }
 
       const cards = metrics.map(({ name, weeklyActual, weeklyGoal }) => {
