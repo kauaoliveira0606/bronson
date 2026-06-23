@@ -386,16 +386,23 @@
       display: flex; align-items: stretch;
       min-width: max-content; padding: 0 36px 0 4px;
     }
+    .mob-nav-fade, .mob-nav-fade-left {
+      position: fixed; bottom: 0; width: 52px; height: 64px;
+      z-index: 201; pointer-events: auto; cursor: pointer;
+      display: none; align-items: center;
+    }
     .mob-nav-fade {
-      position: fixed; right: 0; bottom: 0; width: 52px;
-      height: 64px; z-index: 201; pointer-events: auto; cursor: pointer;
+      right: 0;
       background: linear-gradient(to right, transparent, rgba(255,255,255,.97));
-      display: none; align-items: center; justify-content: flex-end; padding-right: 8px;
+      justify-content: flex-end; padding-right: 8px;
     }
-    .mob-nav-fade::after {
-      content: '›';
-      font-size: 1.3rem; color: #94a3b8; line-height: 1;
+    .mob-nav-fade::after { content: '›'; font-size: 1.3rem; color: #94a3b8; line-height: 1; }
+    .mob-nav-fade-left {
+      left: 0;
+      background: linear-gradient(to left, transparent, rgba(255,255,255,.97));
+      justify-content: flex-start; padding-left: 8px;
     }
+    .mob-nav-fade-left::after { content: '‹'; font-size: 1.3rem; color: #94a3b8; line-height: 1; }
     @media (max-width: 700px) { .mob-nav-fade { display: flex; } }
     .mob-nav-item {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -895,6 +902,7 @@
     </button>
   </div>
 </nav>
+<div class="mob-nav-fade-left" id="mob-nav-fade-left" style="display:none;"></div>
 <div class="mob-nav-fade" id="mob-nav-fade"></div>
 
 <!-- ═══ Main ═══ -->
@@ -2855,15 +2863,18 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   // Hide the scroll hint arrow once user scrolls the mobile nav
   (function() {
     const nav = document.getElementById('mob-nav');
-    const fade = document.getElementById('mob-nav-fade');
-    if (!nav || !fade) return;
-    nav.addEventListener('scroll', function() {
-      const atEnd = nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 8;
-      fade.style.display = atEnd ? 'none' : '';
-    }, { passive: true });
-    fade.addEventListener('click', function() {
-      nav.scrollBy({ left: 120, behavior: 'smooth' });
-    });
+    const fadeR = document.getElementById('mob-nav-fade');
+    const fadeL = document.getElementById('mob-nav-fade-left');
+    if (!nav || !fadeR) return;
+    function updateFades() {
+      const atEnd   = nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 8;
+      const atStart = nav.scrollLeft <= 8;
+      fadeR.style.display = atEnd   ? 'none' : '';
+      if (fadeL) fadeL.style.display = atStart ? 'none' : 'flex';
+    }
+    nav.addEventListener('scroll', updateFades, { passive: true });
+    fadeR.addEventListener('click', function() { nav.scrollBy({ left: 120, behavior: 'smooth' }); });
+    if (fadeL) fadeL.addEventListener('click', function() { nav.scrollBy({ left: -120, behavior: 'smooth' }); });
   })();
 
   function showView(id, el) {
