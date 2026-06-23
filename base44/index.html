@@ -388,7 +388,7 @@
     }
     .mob-nav-fade {
       position: fixed; right: 0; bottom: 0; width: 52px;
-      height: 64px; z-index: 201; pointer-events: none;
+      height: 64px; z-index: 201; pointer-events: auto; cursor: pointer;
       background: linear-gradient(to right, transparent, rgba(255,255,255,.97));
       display: none; align-items: center; justify-content: flex-end; padding-right: 8px;
     }
@@ -2861,6 +2861,9 @@ After implementing, add clear comments in the code showing where the Pixel ID is
       const atEnd = nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 8;
       fade.style.display = atEnd ? 'none' : '';
     }, { passive: true });
+    fade.addEventListener('click', function() {
+      nav.scrollBy({ left: 120, behavior: 'smooth' });
+    });
   })();
 
   function showView(id, el) {
