@@ -179,6 +179,8 @@
       <button class="sc-filter-btn active" data-f="week"      onclick="setSCFilter('week')">This Week</button>
       <button class="sc-filter-btn"        data-f="today"     onclick="setSCFilter('today')">Today</button>
       <button class="sc-filter-btn"        data-f="yesterday" onclick="setSCFilter('yesterday')">Yesterday</button>
+      <button class="sc-filter-btn"        data-f="7d"        onclick="setSCFilter('7d')">Last 7 Days</button>
+      <button class="sc-filter-btn"        data-f="30d"       onclick="setSCFilter('30d')">Last 30 Days</button>
       <button class="sc-filter-btn"        data-f="alltime"   onclick="setSCFilter('alltime')">All Time</button>
       <div class="sc-filter-sep"></div>
       <input class="sc-date-input" type="date" id="sc-from" onchange="setSCFilter('custom')" title="From">
@@ -513,6 +515,12 @@
       indices = dayDates.reduce((a, d, i) => { if (d && d.getTime() === today.getTime()) a.push(i); return a; }, []);
     } else if (scFilter === 'yesterday') {
       indices = dayDates.reduce((a, d, i) => { if (d && d.getTime() === yest.getTime()) a.push(i); return a; }, []);
+    } else if (scFilter === '7d') {
+      const from7 = new Date(today); from7.setDate(today.getDate() - 6);
+      indices = dayDates.reduce((a, d, i) => { if (d && d >= from7 && d <= today) a.push(i); return a; }, []);
+    } else if (scFilter === '30d') {
+      const from30 = new Date(today); from30.setDate(today.getDate() - 29);
+      indices = dayDates.reduce((a, d, i) => { if (d && d >= from30 && d <= today) a.push(i); return a; }, []);
     } else if (scFilter === 'custom') {
       const fv = document.getElementById('sc-from').value;
       const tv = document.getElementById('sc-to').value;
@@ -617,6 +625,8 @@
     const highlightIdx = new Set();
     if (scFilter === 'today')     dayDates.forEach((d,i) => { if (d && d.getTime()===today.getTime()) highlightIdx.add(i); });
     if (scFilter === 'yesterday') dayDates.forEach((d,i) => { if (d && d.getTime()===yest.getTime())  highlightIdx.add(i); });
+    if (scFilter === '7d')  { const f=new Date(today); f.setDate(today.getDate()-6);  dayDates.forEach((d,i) => { if (d&&d>=f&&d<=today) highlightIdx.add(i); }); }
+    if (scFilter === '30d') { const f=new Date(today); f.setDate(today.getDate()-29); dayDates.forEach((d,i) => { if (d&&d>=f&&d<=today) highlightIdx.add(i); }); }
     if (scFilter === 'custom') {
       const fv = document.getElementById('sc-from').value;
       const tv = document.getElementById('sc-to').value;
@@ -631,6 +641,8 @@
       week: (dayHeaders.find(d=>/[A-Za-z]/.test(d))||'') + ' – ' + ([...dayHeaders].reverse().find(d=>/[A-Za-z]/.test(d))||''),
       today: 'Today',
       yesterday: 'Yesterday',
+      '7d': 'Last 7 Days',
+      '30d': 'Last 30 Days',
       alltime: 'All Time',
       custom: (() => { const f=document.getElementById('sc-from').value, t=document.getElementById('sc-to').value; return f&&t ? f+' → '+t : 'Custom Range'; })(),
     }[scFilter] || '';
