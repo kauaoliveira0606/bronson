@@ -507,56 +507,84 @@
         metrics.push({ name, days, weeklyActual, weeklyGoal });
       }
 
-      // --- CARDS ---
-      const cards = metrics.map(({ name, weeklyActual, weeklyGoal }) => {
+      // --- SECTION SPLIT ---
+      const LEADING = [
+        'ad spend meta',
+        'cost per lead (meta)',
+        'roas - low ticket',
+        'roas - total',
+        'cpa - low ticket',
+        'cash collected - high ticket',
+        'cash collected - low ticket',
+      ];
+      const isLeading = m => LEADING.includes(m.name.toLowerCase().trim());
+      const leadingMetrics = metrics.filter(isLeading);
+      const pipelineMetrics = metrics.filter(m => !isLeading(m));
+
+      // --- CARD BUILDER ---
+      function buildCard({ name, weeklyActual, weeklyGoal }) {
         const actual = parseVal(weeklyActual);
         const goal   = parseVal(weeklyGoal);
         const status = trackStatus(actual, weeklyGoal);
         const valCls = status === 'green' ? 'sc-green' : status === 'yellow' ? 'sc-yellow' : status === 'red' ? 'sc-red' : 'sc-white';
-
         let barHtml = '';
         if (goal.num !== null && actual.num !== null && goal.num > 0) {
           const pct = Math.min(100, Math.round((actual.num / goal.num) * 100));
           const fillCls = status === 'green' ? 'sc-fill-green' : status === 'yellow' ? 'sc-fill-yellow' : status === 'red' ? 'sc-fill-red' : 'sc-fill-blue';
           barHtml = `<div class="sc-bar"><div class="sc-fill ${fillCls}" style="width:${pct}%"></div></div>`;
         }
-
         return `<div class="sc-card">
           <div class="sc-metric">${name}</div>
           <div class="sc-value ${valCls}">${actual.display}</div>
           ${goal.display !== '—' ? `<div class="sc-goal">Goal: ${goal.display}</div>` : '<div class="sc-goal">No goal set</div>'}
           ${barHtml}
         </div>`;
-      }).join('');
+      }
 
-      // --- SHEET TABLE ---
-      const dayLabels = dayHeaders.length ? dayHeaders : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-      const thDays = dayLabels.map(d => `<th>${d || '—'}</th>`).join('');
-      const tableRows = metrics.map(({ name, days, weeklyActual, weeklyGoal }) => {
+      // --- TABLE ROW BUILDER ---
+      function buildTableRow({ name, days, weeklyActual, weeklyGoal }) {
         const actual = parseVal(weeklyActual);
         const goal   = parseVal(weeklyGoal);
         const status = trackStatus(actual, weeklyGoal);
         const actualCls = status === 'green' ? 'col-actual-good' : status === 'yellow' ? 'col-actual-warn' : status === 'red' ? 'col-actual-bad' : 'col-actual-na';
         const tdDays = days.map(v => `<td>${v || '—'}</td>`).join('');
-        return `<tr>
-          <td>${name}</td>
-          ${tdDays}
-          <td class="col-goal">${goal.display}</td>
-          <td class="${actualCls}">${actual.display}</td>
-        </tr>`;
-      }).join('');
+        return `<tr><td>${name}</td>${tdDays}<td class="col-goal">${goal.display}</td><td class="${actualCls}">${actual.display}</td></tr>`;
+      }
+
+      // --- SECTION LABEL ---
+      function sectionLabel(text) {
+        return `<div style="grid-column:1/-1;margin:18px 0 6px;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;">${text}</div>`;
+      }
+      function tableSectionRow(text, colCount) {
+        return `<tr><td colspan="${colCount + 3}" style="padding:14px 12px 4px;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;border-bottom:1px solid rgba(255,255,255,0.06);">${text}</td></tr>`;
+      }
+
+      // --- RENDER ---
+      const colCount = 7;
+      const dayLabels = dayHeaders.length ? dayHeaders : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      const thDays = dayLabels.map(d => `<th>${d || '—'}</th>`).join('');
+
+      const cardsHtml =
+        sectionLabel('💰 Revenue & Cost') +
+        leadingMetrics.map(buildCard).join('') +
+        sectionLabel('📊 Pipeline Metrics') +
+        pipelineMetrics.map(buildCard).join('');
+
+      const tableRowsHtml =
+        tableSectionRow('💰 Revenue & Cost', colCount) +
+        leadingMetrics.map(buildTableRow).join('') +
+        tableSectionRow('📊 Pipeline Metrics', colCount) +
+        pipelineMetrics.map(buildTableRow).join('');
 
       const table = `<div class="sc-table-wrap">
         <table class="sc-table">
-          <thead><tr>
-            <th>Metric</th>${thDays}<th>Goal</th><th>Weekly Actual</th>
-          </tr></thead>
-          <tbody>${tableRows}</tbody>
+          <thead><tr><th>Metric</th>${thDays}<th>Goal</th><th>Weekly Actual</th></tr></thead>
+          <tbody>${tableRowsHtml}</tbody>
         </table>
       </div>`;
 
       document.getElementById('scorecard-wrap').innerHTML =
-        `<div class="scorecard-grid">${cards || '<div class="loading">No data found</div>'}</div>${table}`;
+        `<div class="scorecard-grid">${cardsHtml || '<div class="loading">No data found</div>'}</div>${table}`;
 
       generateSummary(metrics);
     } catch (e) {
