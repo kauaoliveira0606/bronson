@@ -671,8 +671,9 @@
       const goal    = parseVal(m.weeklyGoal);
       const status  = trackStatus(actual, m.weeklyGoal);
       const actCls  = status==='green'?'col-actual-good':status==='yellow'?'col-actual-warn':status==='red'?'col-actual-bad':'col-actual-na';
+      const goalCls = status==='green'?'col-actual-good':status==='yellow'?'col-actual-warn':status==='red'?'col-actual-bad':'col-goal';
       const tdDays  = m.days.map((v,i) => `<td class="${highlightIdx.has(i)?'col-highlight':''}">${v||'—'}</td>`).join('');
-      return `<tr><td>${m.name}</td>${tdDays}<td class="col-goal">${goal.display}</td><td class="${actCls}">${actual.display}</td></tr>`;
+      return `<tr><td>${m.name}</td>${tdDays}<td class="${goalCls}">${goal.display}</td><td class="${actCls}">${actual.display}</td></tr>`;
     }
 
     function sectionLabel(text) {
