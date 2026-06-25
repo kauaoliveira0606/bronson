@@ -516,6 +516,7 @@
         'cpa - low ticket',
         'cash collected - high ticket',
         'cash collected - low ticket',
+        'total cash collected',
       ];
       const LEAD_FLOW = [
         'vsl views',
@@ -529,7 +530,7 @@
         'close rate - low ticket',
         'sales - high ticket',
         'sales - low ticket',
-        'total cash collected',
+        'connection rate (response rate)',
       ];
       const MARKETING = [
         'landing page connect rate',
@@ -538,6 +539,7 @@
         'confirmation email open rate',
         'confirmation email ctr',
         'funnel conversion rate (lt sales/opt ins)',
+        'opt in rate (opt ins vs views)',  // sheet uses "VS" — matched case-insensitively via .toLowerCase()
       ];
       const isLeading    = m => LEADING.includes(m.name.toLowerCase().trim());
       const isLeadFlow   = m => LEAD_FLOW.includes(m.name.toLowerCase().trim());
@@ -593,7 +595,7 @@
       const thDays = dayLabels.map(d => `<th>${d || '—'}</th>`).join('');
 
       const cardsHtml =
-        sectionLabel('💰 Revenue & Cost') +
+        sectionLabel('💰 Leading Metrics') +
         leadingMetrics.map(buildCard).join('') +
         sectionLabel('🔥 Lead Flow') +
         leadFlowMetrics.map(buildCard).join('') +
@@ -605,7 +607,7 @@
         pipelineMetrics.map(buildCard).join('');
 
       const tableRowsHtml =
-        tableSectionRow('💰 Revenue & Cost', colCount) +
+        tableSectionRow('💰 Leading Metrics', colCount) +
         leadingMetrics.map(buildTableRow).join('') +
         tableSectionRow('🔥 Lead Flow', colCount) +
         leadFlowMetrics.map(buildTableRow).join('') +
