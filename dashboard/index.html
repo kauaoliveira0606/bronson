@@ -517,9 +517,18 @@
         'cash collected - high ticket',
         'cash collected - low ticket',
       ];
-      const isLeading = m => LEADING.includes(m.name.toLowerCase().trim());
-      const leadingMetrics = metrics.filter(isLeading);
-      const pipelineMetrics = metrics.filter(m => !isLeading(m));
+      const LEAD_FLOW = [
+        'vsl views',
+        'dials',
+        'opt ins (leads)',
+        'booked calls (upsells)',
+        'sales - high ticket',
+      ];
+      const isLeading  = m => LEADING.includes(m.name.toLowerCase().trim());
+      const isLeadFlow = m => LEAD_FLOW.includes(m.name.toLowerCase().trim());
+      const leadingMetrics  = metrics.filter(isLeading);
+      const leadFlowMetrics = metrics.filter(m => !isLeading(m) && isLeadFlow(m));
+      const pipelineMetrics = metrics.filter(m => !isLeading(m) && !isLeadFlow(m));
 
       // --- CARD BUILDER ---
       function buildCard({ name, weeklyActual, weeklyGoal }) {
@@ -567,12 +576,16 @@
       const cardsHtml =
         sectionLabel('💰 Revenue & Cost') +
         leadingMetrics.map(buildCard).join('') +
+        sectionLabel('🔥 Lead Flow') +
+        leadFlowMetrics.map(buildCard).join('') +
         sectionLabel('📊 Pipeline Metrics') +
         pipelineMetrics.map(buildCard).join('');
 
       const tableRowsHtml =
         tableSectionRow('💰 Revenue & Cost', colCount) +
         leadingMetrics.map(buildTableRow).join('') +
+        tableSectionRow('🔥 Lead Flow', colCount) +
+        leadFlowMetrics.map(buildTableRow).join('') +
         tableSectionRow('📊 Pipeline Metrics', colCount) +
         pipelineMetrics.map(buildTableRow).join('');
 
