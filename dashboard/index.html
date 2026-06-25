@@ -122,7 +122,8 @@
     .sc-table td:first-child { text-align: left; color: #fff; font-weight: 600; }
     .sc-table tr:last-child td { border-bottom: none; }
     .sc-table tr:hover td { background: rgba(255,255,255,0.03); }
-    .sc-table .col-goal { color: var(--blue); font-weight: 700; }
+    .sc-table .col-goal { color: var(--blue); font-weight: 700; background: rgba(59,130,246,0.08); }
+    .sc-table th.col-goal-th { background: rgba(59,130,246,0.12); color: var(--blue); }
     .sc-table .col-actual-good { color: var(--green);  font-weight: 700; }
     .sc-table .col-actual-warn { color: var(--yellow); font-weight: 700; }
     .sc-table .col-actual-bad  { color: var(--red);    font-weight: 700; }
@@ -673,7 +674,7 @@
       const actCls  = status==='green'?'col-actual-good':status==='yellow'?'col-actual-warn':status==='red'?'col-actual-bad':'col-actual-na';
       const goalCls = status==='green'?'col-actual-good':status==='yellow'?'col-actual-warn':status==='red'?'col-actual-bad':'col-goal';
       const tdDays  = m.days.map((v,i) => `<td class="${highlightIdx.has(i)?'col-highlight':''}">${v||'—'}</td>`).join('');
-      return `<tr><td>${m.name}</td>${tdDays}<td class="${goalCls}">${goal.display}</td><td class="${actCls}">${actual.display}</td></tr>`;
+      return `<tr><td>${m.name}</td>${tdDays}<td class="${goalCls}" style="background:rgba(59,130,246,0.08);">${goal.display}</td><td class="${actCls}">${actual.display}</td></tr>`;
     }
 
     function sectionLabel(text) {
@@ -695,7 +696,7 @@
 
     const tableRowsHtml = metrics.map(buildTableRow).join('');
 
-    const table = `<div class="sc-table-wrap"><table class="sc-table"><thead><tr><th>Metric</th>${thDays}<th>Goal</th><th>Actual</th></tr></thead><tbody>${tableRowsHtml}</tbody></table></div>`;
+    const table = `<div class="sc-table-wrap"><table class="sc-table"><thead><tr><th>Metric</th>${thDays}<th class="col-goal-th">Goal</th><th>Actual</th></tr></thead><tbody>${tableRowsHtml}</tbody></table></div>`;
     document.getElementById('scorecard-wrap').innerHTML = `<div class="scorecard-grid">${cardsHtml||'<div class="loading">No data found</div>'}</div>${table}`;
     generateSummary(metrics);
   }
