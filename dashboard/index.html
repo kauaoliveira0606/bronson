@@ -522,13 +522,22 @@
         'dials',
         'opt ins (leads)',
         'booked calls (upsells)',
-        'sales - high ticket',
       ];
-      const isLeading  = m => LEADING.includes(m.name.toLowerCase().trim());
-      const isLeadFlow = m => LEAD_FLOW.includes(m.name.toLowerCase().trim());
-      const leadingMetrics  = metrics.filter(isLeading);
-      const leadFlowMetrics = metrics.filter(m => !isLeading(m) && isLeadFlow(m));
-      const pipelineMetrics = metrics.filter(m => !isLeading(m) && !isLeadFlow(m));
+      const SALES_CONV = [
+        'show rate- high ticket',
+        'close rate - high ticket',
+        'close rate - low ticket',
+        'sales - high ticket',
+        'sales - low ticket',
+        'total cash collected',
+      ];
+      const isLeading   = m => LEADING.includes(m.name.toLowerCase().trim());
+      const isLeadFlow  = m => LEAD_FLOW.includes(m.name.toLowerCase().trim());
+      const isSalesConv = m => SALES_CONV.includes(m.name.toLowerCase().trim());
+      const leadingMetrics   = metrics.filter(isLeading);
+      const leadFlowMetrics  = metrics.filter(m => !isLeading(m) && isLeadFlow(m));
+      const salesConvMetrics = metrics.filter(m => !isLeading(m) && !isLeadFlow(m) && isSalesConv(m));
+      const pipelineMetrics  = metrics.filter(m => !isLeading(m) && !isLeadFlow(m) && !isSalesConv(m));
 
       // --- CARD BUILDER ---
       function buildCard({ name, weeklyActual, weeklyGoal }) {
@@ -578,6 +587,8 @@
         leadingMetrics.map(buildCard).join('') +
         sectionLabel('🔥 Lead Flow') +
         leadFlowMetrics.map(buildCard).join('') +
+        sectionLabel('🤝 Sales Conversion') +
+        salesConvMetrics.map(buildCard).join('') +
         sectionLabel('📊 Pipeline Metrics') +
         pipelineMetrics.map(buildCard).join('');
 
@@ -586,6 +597,8 @@
         leadingMetrics.map(buildTableRow).join('') +
         tableSectionRow('🔥 Lead Flow', colCount) +
         leadFlowMetrics.map(buildTableRow).join('') +
+        tableSectionRow('🤝 Sales Conversion', colCount) +
+        salesConvMetrics.map(buildTableRow).join('') +
         tableSectionRow('📊 Pipeline Metrics', colCount) +
         pipelineMetrics.map(buildTableRow).join('');
 
