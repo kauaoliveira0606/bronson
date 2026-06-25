@@ -94,6 +94,14 @@
     .loading { color: var(--text2); font-size: .85rem; padding: 40px; text-align: center; }
 
     .scorecard-week { font-size: .72rem; color: var(--text2); margin-bottom: 14px; }
+    .sc-filter-bar { display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
+    .sc-filter-btn { background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text2); font-size:.72rem; font-weight:700; padding:5px 13px; border-radius:6px; cursor:pointer; transition:all .15s; white-space:nowrap; }
+    .sc-filter-btn:hover { border-color:rgba(255,255,255,0.2); color:#fff; }
+    .sc-filter-btn.active { background:#2563eb; border-color:#2563eb; color:#fff; }
+    .sc-filter-sep { width:1px; height:20px; background:var(--border); margin:0 4px; }
+    .sc-date-input { background:rgba(255,255,255,0.05); border:1px solid var(--border); color:#fff; font-size:.72rem; padding:5px 10px; border-radius:6px; outline:none; cursor:pointer; }
+    .sc-date-input:focus { border-color:#2563eb; }
+    .sc-table .col-highlight { background:rgba(37,99,235,0.08); }
     .scorecard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
     .sc-card { background: rgba(255,255,255,0.025); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
     .sc-metric { font-size: .68rem; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
@@ -163,9 +171,19 @@
 <div class="main">
 
   <div class="chart-card">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
       <div class="chart-title" style="margin-bottom:0;">Weekly Scorecard</div>
       <div class="scorecard-week" id="scorecard-week"></div>
+    </div>
+    <div class="sc-filter-bar">
+      <button class="sc-filter-btn active" data-f="week"      onclick="setSCFilter('week')">This Week</button>
+      <button class="sc-filter-btn"        data-f="today"     onclick="setSCFilter('today')">Today</button>
+      <button class="sc-filter-btn"        data-f="yesterday" onclick="setSCFilter('yesterday')">Yesterday</button>
+      <button class="sc-filter-btn"        data-f="alltime"   onclick="setSCFilter('alltime')">All Time</button>
+      <div class="sc-filter-sep"></div>
+      <input class="sc-date-input" type="date" id="sc-from" onchange="setSCFilter('custom')" title="From">
+      <span style="color:var(--text2);font-size:.8rem;">→</span>
+      <input class="sc-date-input" type="date" id="sc-to"   onchange="setSCFilter('custom')" title="To">
     </div>
     <div id="scorecard-wrap"><div class="loading">Loading scorecard...</div></div>
   </div>
@@ -458,23 +476,86 @@
     }
   }
 
+  // --- SCORECARD STATE ---
+  let scData = null; // { dayHeaders, dayDates, metrics }
+  let scFilter = 'week';
+
+  function setSCFilter(f) {
+    scFilter = f;
+    document.querySelectorAll('.sc-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f === f));
+    if (scData) renderScorecard();
+  }
+
+  // Parse "Jun-21" style headers into Date objects
+  function parseDayHeader(label) {
+    if (!label) return null;
+    const clean = label.trim();
+    if (!clean || !/[A-Za-z]/.test(clean)) return null;
+    const now = new Date();
+    const d = new Date(`${clean} ${now.getFullYear()}`);
+    return isNaN(d) ? null : d;
+  }
+
+  // Compute the display value for a metric given the active filter
+  function getFilteredActual(metric) {
+    const { days, weeklyActual } = metric;
+    if (!scData) return weeklyActual;
+    const { dayDates } = scData;
+
+    if (scFilter === 'week' || scFilter === 'alltime') return weeklyActual;
+
+    const now   = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yest  = new Date(today); yest.setDate(today.getDate() - 1);
+
+    let indices = [];
+    if (scFilter === 'today') {
+      indices = dayDates.reduce((a, d, i) => { if (d && d.getTime() === today.getTime()) a.push(i); return a; }, []);
+    } else if (scFilter === 'yesterday') {
+      indices = dayDates.reduce((a, d, i) => { if (d && d.getTime() === yest.getTime()) a.push(i); return a; }, []);
+    } else if (scFilter === 'custom') {
+      const fv = document.getElementById('sc-from').value;
+      const tv = document.getElementById('sc-to').value;
+      if (!fv || !tv) return weeklyActual;
+      const from = new Date(fv + 'T00:00:00');
+      const to   = new Date(tv + 'T23:59:59');
+      indices = dayDates.reduce((a, d, i) => { if (d && d >= from && d <= to) a.push(i); return a; }, []);
+    }
+
+    if (!indices.length) return '';
+    const selected = indices.map(i => days[i] || '');
+    const isPercent = selected.some(v => v.endsWith('%'));
+    const hasDollar = selected.some(v => v.startsWith('$'));
+
+    if (!isPercent) {
+      const sum = selected.reduce((acc, v) => {
+        const n = parseFloat(v.replace(/[^0-9.\-]/g, ''));
+        return acc + (isNaN(n) ? 0 : n);
+      }, 0);
+      if (sum === 0 && selected.every(v => !v)) return '';
+      return hasDollar ? '$' + sum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : String(sum);
+    } else {
+      const vals = selected.filter(v => v.endsWith('%')).map(v => parseFloat(v)).filter(n => !isNaN(n));
+      if (!vals.length) return '';
+      return (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2) + '%';
+    }
+  }
+
   async function loadScorecard() {
     try {
       const res = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Koljpe91Y3rbz0C9cXzIxt9ZFlLk6plrxItZaE0-sQxaNAnGxxV7WSD-9f0qG7-0JVZFI7UySbCF/pub?output=csv&t=' + Date.now());
       const rawText = await res.text();
-      // Collapse newlines inside quoted CSV fields so row indices stay predictable
       const text = rawText.replace(/"([^"]|\n)*"/g, m => m.replace(/\n/g, ' '));
       const lines = text.split('\n').filter(l => l.trim());
       if (lines.length < 4) throw new Error('Sheet empty');
 
-      // Row 2 = dates (Jun-XX), Row 3 = day names, data starts row 4
       const dateRow    = parseCSVLine(lines[1]);
       const dayHeaders = dateRow.slice(1, 8).map(d => d.trim());
+      const dayDates   = dayHeaders.map(parseDayHeader);
       const dateStart  = dayHeaders.find(d => /[A-Za-z]/.test(d)) || '';
       const dateEnd    = [...dayHeaders].reverse().find(d => /[A-Za-z]/.test(d)) || '';
       if (dateStart) document.getElementById('scorecard-week').textContent = dateStart + ' – ' + dateEnd;
 
-      // col 0=name, 1-7=days (B-H), 8=goal (I), 9=weekly actual (J)
       const metrics = [];
       for (let r = 3; r < lines.length; r++) {
         const cols = parseCSVLine(lines[r]);
@@ -484,155 +565,130 @@
         const weeklyGoal = (cols[8] || '').trim();
         let weeklyActual = (cols[9] || '').trim();
 
-        // If weekly actual is empty or an error, fall back to summing or averaging daily values
         const badVal = !weeklyActual || /^#/.test(weeklyActual);
         if (badVal) {
           const isPercent = days.some(v => v.endsWith('%'));
           if (!isPercent) {
-            const sum = days.reduce((acc, v) => {
-              const n = parseFloat(v.replace(/[^0-9.\-]/g, ''));
-              return acc + (isNaN(n) ? 0 : n);
-            }, 0);
+            const sum = days.reduce((acc, v) => { const n = parseFloat(v.replace(/[^0-9.\-]/g, '')); return acc + (isNaN(n) ? 0 : n); }, 0);
             if (sum > 0) weeklyActual = String(sum);
           } else {
-            // Average the non-empty daily % values
             const vals = days.filter(v => v.endsWith('%')).map(v => parseFloat(v)).filter(n => !isNaN(n));
-            if (vals.length > 0) {
-              const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
-              weeklyActual = avg.toFixed(2) + '%';
-            }
+            if (vals.length > 0) weeklyActual = (vals.reduce((a,b) => a+b, 0) / vals.length).toFixed(2) + '%';
           }
         }
-
         metrics.push({ name, days, weeklyActual, weeklyGoal });
       }
 
-      // --- SECTION SPLIT ---
-      const LEADING = [
-        'ad spend meta',
-        'cost per lead (meta)',
-        'roas - low ticket',
-        'roas - total',
-        'cpa - low ticket',
-        'cash collected - high ticket',
-        'cash collected - low ticket',
-        'total cash collected',
-      ];
-      const LEAD_FLOW = [
-        'vsl views',
-        'dials',
-        'opt ins (leads)',
-        'booked calls (upsells)',
-      ];
-      const SALES_CONV = [
-        'show rate- high ticket',
-        'close rate - high ticket',
-        'close rate - low ticket',
-        'sales - high ticket',
-        'sales - low ticket',
-        'connection rate (response rate)',
-      ];
-      const MARKETING = [
-        'landing page connect rate',
-        'vsl play rate',
-        'vsl engagement rate',
-        'confirmation email open rate',
-        'confirmation email ctr',
-        'funnel conversion rate (lt sales/opt ins)',
-        'opt in rate (opt ins vs views)',  // sheet uses "VS" — matched case-insensitively via .toLowerCase()
-      ];
-      const isLeading    = m => LEADING.includes(m.name.toLowerCase().trim());
-      const isLeadFlow   = m => LEAD_FLOW.includes(m.name.toLowerCase().trim());
-      const isSalesConv  = m => SALES_CONV.includes(m.name.toLowerCase().trim());
-      const isMarketing  = m => MARKETING.includes(m.name.toLowerCase().trim());
-      const leadingMetrics   = metrics.filter(isLeading);
-      const leadFlowMetrics  = metrics.filter(m => !isLeading(m) && isLeadFlow(m));
-      const salesConvMetrics = metrics.filter(m => !isLeading(m) && !isLeadFlow(m) && isSalesConv(m));
-      const marketingMetrics = metrics.filter(m => !isLeading(m) && !isLeadFlow(m) && !isSalesConv(m) && isMarketing(m));
-      const pipelineMetrics  = metrics.filter(m => !isLeading(m) && !isLeadFlow(m) && !isSalesConv(m) && !isMarketing(m));
-
-      // --- CARD BUILDER ---
-      function buildCard({ name, weeklyActual, weeklyGoal }) {
-        const actual = parseVal(weeklyActual);
-        const goal   = parseVal(weeklyGoal);
-        const status = trackStatus(actual, weeklyGoal);
-        const valCls = status === 'green' ? 'sc-green' : status === 'yellow' ? 'sc-yellow' : status === 'red' ? 'sc-red' : 'sc-white';
-        let barHtml = '';
-        if (goal.num !== null && actual.num !== null && goal.num > 0) {
-          const pct = Math.min(100, Math.round((actual.num / goal.num) * 100));
-          const fillCls = status === 'green' ? 'sc-fill-green' : status === 'yellow' ? 'sc-fill-yellow' : status === 'red' ? 'sc-fill-red' : 'sc-fill-blue';
-          barHtml = `<div class="sc-bar"><div class="sc-fill ${fillCls}" style="width:${pct}%"></div></div>`;
-        }
-        return `<div class="sc-card">
-          <div class="sc-metric">${name}</div>
-          <div class="sc-value ${valCls}">${actual.display}</div>
-          ${goal.display !== '—' ? `<div class="sc-goal">Goal: ${goal.display}</div>` : '<div class="sc-goal">No goal set</div>'}
-          ${barHtml}
-        </div>`;
-      }
-
-      // --- TABLE ROW BUILDER ---
-      function buildTableRow({ name, days, weeklyActual, weeklyGoal }) {
-        const actual = parseVal(weeklyActual);
-        const goal   = parseVal(weeklyGoal);
-        const status = trackStatus(actual, weeklyGoal);
-        const actualCls = status === 'green' ? 'col-actual-good' : status === 'yellow' ? 'col-actual-warn' : status === 'red' ? 'col-actual-bad' : 'col-actual-na';
-        const tdDays = days.map(v => `<td>${v || '—'}</td>`).join('');
-        return `<tr><td>${name}</td>${tdDays}<td class="col-goal">${goal.display}</td><td class="${actualCls}">${actual.display}</td></tr>`;
-      }
-
-      // --- SECTION LABEL ---
-      function sectionLabel(text) {
-        return `<div style="grid-column:1/-1;margin:18px 0 6px;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;">${text}</div>`;
-      }
-      function tableSectionRow(text, colCount) {
-        return `<tr><td colspan="${colCount + 3}" style="padding:14px 12px 4px;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;border-bottom:1px solid rgba(255,255,255,0.06);">${text}</td></tr>`;
-      }
-
-      // --- RENDER ---
-      const colCount = 7;
-      const dayLabels = dayHeaders.length ? dayHeaders : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-      const thDays = dayLabels.map(d => `<th>${d || '—'}</th>`).join('');
-
-      const cardsHtml =
-        sectionLabel('💰 Leading Metrics') +
-        leadingMetrics.map(buildCard).join('') +
-        sectionLabel('🔥 Lead Flow') +
-        leadFlowMetrics.map(buildCard).join('') +
-        sectionLabel('🤝 Sales Conversion') +
-        salesConvMetrics.map(buildCard).join('') +
-        sectionLabel('📣 Marketing Metrics') +
-        marketingMetrics.map(buildCard).join('') +
-        sectionLabel('📊 Pipeline Metrics') +
-        pipelineMetrics.map(buildCard).join('');
-
-      const tableRowsHtml =
-        tableSectionRow('💰 Leading Metrics', colCount) +
-        leadingMetrics.map(buildTableRow).join('') +
-        tableSectionRow('🔥 Lead Flow', colCount) +
-        leadFlowMetrics.map(buildTableRow).join('') +
-        tableSectionRow('🤝 Sales Conversion', colCount) +
-        salesConvMetrics.map(buildTableRow).join('') +
-        tableSectionRow('📣 Marketing Metrics', colCount) +
-        marketingMetrics.map(buildTableRow).join('') +
-        tableSectionRow('📊 Pipeline Metrics', colCount) +
-        pipelineMetrics.map(buildTableRow).join('');
-
-      const table = `<div class="sc-table-wrap">
-        <table class="sc-table">
-          <thead><tr><th>Metric</th>${thDays}<th>Goal</th><th>Weekly Actual</th></tr></thead>
-          <tbody>${tableRowsHtml}</tbody>
-        </table>
-      </div>`;
-
-      document.getElementById('scorecard-wrap').innerHTML =
-        `<div class="scorecard-grid">${cardsHtml || '<div class="loading">No data found</div>'}</div>${table}`;
-
-      generateSummary(metrics);
+      scData = { dayHeaders, dayDates, metrics };
+      renderScorecard();
     } catch (e) {
       document.getElementById('scorecard-wrap').innerHTML =
         `<div class="loading" style="color:#ef4444;">Scorecard error: ${e.message}</div>`;
     }
+  }
+
+  function renderScorecard() {
+    const { dayHeaders, dayDates, metrics } = scData;
+
+    // --- SECTION SPLIT ---
+    const LEADING = [
+      'ad spend meta','cost per lead (meta)','roas - low ticket','roas - total',
+      'cpa - low ticket','cash collected - high ticket','cash collected - low ticket',
+      'total cash collected','funnel conversion rate (lt sales/opt ins)',
+    ];
+    const LEAD_FLOW  = ['vsl views','dials','opt ins (leads)','booked calls (upsells)'];
+    const SALES_CONV = ['show rate- high ticket','close rate - high ticket','close rate - low ticket','sales - high ticket','sales - low ticket','connection rate (response rate)'];
+    const MARKETING  = ['landing page connect rate','vsl play rate','vsl engagement rate','confirmation email open rate','confirmation email ctr','opt in rate (opt ins vs views)'];
+
+    const isLeading    = m => LEADING.includes(m.name.toLowerCase().trim());
+    const isLeadFlow   = m => LEAD_FLOW.includes(m.name.toLowerCase().trim());
+    const isSalesConv  = m => SALES_CONV.includes(m.name.toLowerCase().trim());
+    const isMarketing  = m => MARKETING.includes(m.name.toLowerCase().trim());
+    const leadingMetrics   = metrics.filter(isLeading);
+    const leadFlowMetrics  = metrics.filter(m => !isLeading(m) && isLeadFlow(m));
+    const salesConvMetrics = metrics.filter(m => !isLeading(m) && !isLeadFlow(m) && isSalesConv(m));
+    const marketingMetrics = metrics.filter(m => !isLeading(m) && !isLeadFlow(m) && !isSalesConv(m) && isMarketing(m));
+    const pipelineMetrics  = metrics.filter(m => !isLeading(m) && !isLeadFlow(m) && !isSalesConv(m) && !isMarketing(m));
+
+    // Determine which column index to highlight in the table
+    const now   = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yest  = new Date(today); yest.setDate(today.getDate() - 1);
+    const highlightIdx = new Set();
+    if (scFilter === 'today')     dayDates.forEach((d,i) => { if (d && d.getTime()===today.getTime()) highlightIdx.add(i); });
+    if (scFilter === 'yesterday') dayDates.forEach((d,i) => { if (d && d.getTime()===yest.getTime())  highlightIdx.add(i); });
+    if (scFilter === 'custom') {
+      const fv = document.getElementById('sc-from').value;
+      const tv = document.getElementById('sc-to').value;
+      if (fv && tv) {
+        const from = new Date(fv+'T00:00:00'), to = new Date(tv+'T23:59:59');
+        dayDates.forEach((d,i) => { if (d && d>=from && d<=to) highlightIdx.add(i); });
+      }
+    }
+
+    // Update date label
+    const filterLabel = {
+      week: (dayHeaders.find(d=>/[A-Za-z]/.test(d))||'') + ' – ' + ([...dayHeaders].reverse().find(d=>/[A-Za-z]/.test(d))||''),
+      today: 'Today',
+      yesterday: 'Yesterday',
+      alltime: 'All Time',
+      custom: (() => { const f=document.getElementById('sc-from').value, t=document.getElementById('sc-to').value; return f&&t ? f+' → '+t : 'Custom Range'; })(),
+    }[scFilter] || '';
+    document.getElementById('scorecard-week').textContent = filterLabel;
+
+    // --- BUILDERS ---
+    function buildCard(m) {
+      const displayActual = getFilteredActual(m);
+      const actual = parseVal(displayActual);
+      const goal   = parseVal(m.weeklyGoal);
+      const status = trackStatus(actual, m.weeklyGoal);
+      const valCls = status==='green'?'sc-green':status==='yellow'?'sc-yellow':status==='red'?'sc-red':'sc-white';
+      let barHtml = '';
+      if (goal.num!==null && actual.num!==null && goal.num>0) {
+        const pct = Math.min(100, Math.round((actual.num/goal.num)*100));
+        const fillCls = status==='green'?'sc-fill-green':status==='yellow'?'sc-fill-yellow':status==='red'?'sc-fill-red':'sc-fill-blue';
+        barHtml = `<div class="sc-bar"><div class="sc-fill ${fillCls}" style="width:${pct}%"></div></div>`;
+      }
+      return `<div class="sc-card"><div class="sc-metric">${m.name}</div><div class="sc-value ${valCls}">${actual.display}</div>${goal.display!=='—'?`<div class="sc-goal">Goal: ${goal.display}</div>`:'<div class="sc-goal">No goal set</div>'}${barHtml}</div>`;
+    }
+
+    function buildTableRow(m) {
+      const displayActual = getFilteredActual(m);
+      const actual  = parseVal(displayActual);
+      const goal    = parseVal(m.weeklyGoal);
+      const status  = trackStatus(actual, m.weeklyGoal);
+      const actCls  = status==='green'?'col-actual-good':status==='yellow'?'col-actual-warn':status==='red'?'col-actual-bad':'col-actual-na';
+      const tdDays  = m.days.map((v,i) => `<td class="${highlightIdx.has(i)?'col-highlight':''}">${v||'—'}</td>`).join('');
+      return `<tr><td>${m.name}</td>${tdDays}<td class="col-goal">${goal.display}</td><td class="${actCls}">${actual.display}</td></tr>`;
+    }
+
+    function sectionLabel(text) {
+      return `<div style="grid-column:1/-1;margin:18px 0 6px;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;">${text}</div>`;
+    }
+    function tableSectionRow(text) {
+      return `<tr><td colspan="11" style="padding:14px 12px 4px;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6b7280;border-bottom:1px solid rgba(255,255,255,0.06);">${text}</td></tr>`;
+    }
+
+    const dayLabels = dayHeaders.length ? dayHeaders : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const thDays = dayLabels.map((d,i) => `<th class="${highlightIdx.has(i)?'col-highlight':''}">${d||'—'}</th>`).join('');
+
+    const cardsHtml =
+      sectionLabel('💰 Leading Metrics') + leadingMetrics.map(buildCard).join('') +
+      sectionLabel('🔥 Lead Flow')        + leadFlowMetrics.map(buildCard).join('') +
+      sectionLabel('🤝 Sales Conversion') + salesConvMetrics.map(buildCard).join('') +
+      sectionLabel('📣 Marketing Metrics')+ marketingMetrics.map(buildCard).join('') +
+      sectionLabel('📊 Pipeline Metrics') + pipelineMetrics.map(buildCard).join('');
+
+    const tableRowsHtml =
+      tableSectionRow('💰 Leading Metrics') + leadingMetrics.map(buildTableRow).join('') +
+      tableSectionRow('🔥 Lead Flow')        + leadFlowMetrics.map(buildTableRow).join('') +
+      tableSectionRow('🤝 Sales Conversion') + salesConvMetrics.map(buildTableRow).join('') +
+      tableSectionRow('📣 Marketing Metrics')+ marketingMetrics.map(buildTableRow).join('') +
+      tableSectionRow('📊 Pipeline Metrics') + pipelineMetrics.map(buildTableRow).join('');
+
+    const table = `<div class="sc-table-wrap"><table class="sc-table"><thead><tr><th>Metric</th>${thDays}<th>Goal</th><th>Actual</th></tr></thead><tbody>${tableRowsHtml}</tbody></table></div>`;
+    document.getElementById('scorecard-wrap').innerHTML = `<div class="scorecard-grid">${cardsHtml||'<div class="loading">No data found</div>'}</div>${table}`;
+    generateSummary(metrics);
   }
 
   const SUMMARY_EXCLUDE = ['vsl engagement', 'vsl'];
