@@ -661,7 +661,8 @@
         const fillCls = status==='green'?'sc-fill-green':status==='yellow'?'sc-fill-yellow':status==='red'?'sc-fill-red':'sc-fill-blue';
         barHtml = `<div class="sc-bar"><div class="sc-fill ${fillCls}" style="width:${pct}%"></div></div>`;
       }
-      return `<div class="sc-card"><div class="sc-metric">${m.name}</div><div class="sc-value ${valCls}">${actual.display}</div>${goal.display!=='—'?`<div class="sc-goal">Goal: ${goal.display}</div>`:'<div class="sc-goal">No goal set</div>'}${barHtml}</div>`;
+      const goalCls = status==='green'?'sc-green':status==='yellow'?'sc-yellow':status==='red'?'sc-red':'';
+      return `<div class="sc-card"><div class="sc-metric">${m.name}</div><div class="sc-value ${valCls}">${actual.display}</div>${goal.display!=='—'?`<div class="sc-goal ${goalCls}">Goal: ${goal.display}</div>`:'<div class="sc-goal">No goal set</div>'}${barHtml}</div>`;
     }
 
     function buildTableRow(m) {
@@ -691,12 +692,7 @@
       sectionLabel('📣 Marketing Metrics')+ marketingMetrics.map(buildCard).join('') +
       sectionLabel('📊 Pipeline Metrics') + pipelineMetrics.map(buildCard).join('');
 
-    const tableRowsHtml =
-      tableSectionRow('💰 Leading Metrics') + leadingMetrics.map(buildTableRow).join('') +
-      tableSectionRow('🔥 Lead Flow')        + leadFlowMetrics.map(buildTableRow).join('') +
-      tableSectionRow('🤝 Sales Conversion') + salesConvMetrics.map(buildTableRow).join('') +
-      tableSectionRow('📣 Marketing Metrics')+ marketingMetrics.map(buildTableRow).join('') +
-      tableSectionRow('📊 Pipeline Metrics') + pipelineMetrics.map(buildTableRow).join('');
+    const tableRowsHtml = metrics.map(buildTableRow).join('');
 
     const table = `<div class="sc-table-wrap"><table class="sc-table"><thead><tr><th>Metric</th>${thDays}<th>Goal</th><th>Actual</th></tr></thead><tbody>${tableRowsHtml}</tbody></table></div>`;
     document.getElementById('scorecard-wrap').innerHTML = `<div class="scorecard-grid">${cardsHtml||'<div class="loading">No data found</div>'}</div>${table}`;
