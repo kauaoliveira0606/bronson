@@ -461,16 +461,17 @@
   async function loadScorecard() {
     try {
       const res = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Koljpe91Y3rbz0C9cXzIxt9ZFlLk6plrxItZaE0-sQxaNAnGxxV7WSD-9f0qG7-0JVZFI7UySbCF/pub?output=csv&t=' + Date.now());
-      const text = await res.text();
+      const rawText = await res.text();
+      // Collapse newlines inside quoted CSV fields so row indices stay predictable
+      const text = rawText.replace(/"([^"]|\n)*"/g, m => m.replace(/\n/g, ' '));
       const lines = text.split('\n').filter(l => l.trim());
       if (lines.length < 4) throw new Error('Sheet empty');
 
-      // Row 1 = day headers (cols 1–7), Row 2 = label row
-      const dateRow  = parseCSVLine(lines[1]);
-      const labelRow = parseCSVLine(lines[2]);
+      // Row 2 = dates (Jun-XX), Row 3 = day names, data starts row 4
+      const dateRow    = parseCSVLine(lines[1]);
       const dayHeaders = dateRow.slice(1, 8).map(d => d.trim());
-      const dateStart = dayHeaders.find(d => d) || '';
-      const dateEnd   = [...dayHeaders].reverse().find(d => d) || '';
+      const dateStart  = dayHeaders.find(d => /[A-Za-z]/.test(d)) || '';
+      const dateEnd    = [...dayHeaders].reverse().find(d => /[A-Za-z]/.test(d)) || '';
       if (dateStart) document.getElementById('scorecard-week').textContent = dateStart + ' – ' + dateEnd;
 
       // col 0=name, 1-7=days (B-H), 8=goal (I), 9=weekly actual (J)
@@ -483,7 +484,7 @@
         const weeklyGoal = (cols[8] || '').trim();
         let weeklyActual = (cols[9] || '').trim();
 
-        // If col J is empty or an error, fall back to summing daily values
+        // If weekly actual is empty or an error, fall back to summing or averaging daily values
         const badVal = !weeklyActual || /^#/.test(weeklyActual);
         if (badVal) {
           const isPercent = days.some(v => v.endsWith('%'));
@@ -493,6 +494,13 @@
               return acc + (isNaN(n) ? 0 : n);
             }, 0);
             if (sum > 0) weeklyActual = String(sum);
+          } else {
+            // Average the non-empty daily % values
+            const vals = days.filter(v => v.endsWith('%')).map(v => parseFloat(v)).filter(n => !isNaN(n));
+            if (vals.length > 0) {
+              const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+              weeklyActual = avg.toFixed(2) + '%';
+            }
           }
         }
 
