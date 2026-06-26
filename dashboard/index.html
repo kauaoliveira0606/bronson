@@ -159,8 +159,46 @@
     .tab-btn:hover { border-color:rgba(255,255,255,0.2); color:#fff; }
     .tab-btn.active { background:#fff; color:#000; border-color:#fff; }
 
-    #view-funnel, #view-ads { display:none; }
-    #view-funnel.active, #view-ads.active { display:block; }
+    #view-funnel, #view-ads, #view-model { display:none; }
+    #view-funnel.active, #view-ads.active, #view-model.active { display:block; }
+
+    /* ── Financial Model ─────────────────────────────────────────────────── */
+    .fm-wrap { padding:28px; }
+    .fm-title { font-size:1.1rem; font-weight:800; margin:0 0 4px; }
+    .fm-sub { font-size:.8rem; color:var(--text2); margin:0 0 24px; }
+    .fm-table-wrap { overflow-x:auto; }
+    .fm-table { width:100%; border-collapse:collapse; font-size:.82rem; }
+    .fm-table th {
+      padding:10px 16px; font-size:.72rem; font-weight:700; letter-spacing:.06em;
+      text-transform:uppercase; color:var(--text2); text-align:left;
+      border-bottom:1px solid var(--border); white-space:nowrap;
+    }
+    .fm-table th.fm-th-d5  { background:rgba(239,68,68,.12); color:rgba(239,68,68,.9); text-align:right; }
+    .fm-table th.fm-th-d10 { background:rgba(239,68,68,.22); color:rgba(239,68,68,1);  text-align:right; }
+    .fm-table th.fm-th-base { text-align:right; }
+    .fm-table td { padding:8px 16px; border-bottom:1px solid rgba(255,255,255,.04); vertical-align:middle; }
+    .fm-section-row td {
+      padding:6px 16px 4px; font-size:.68rem; font-weight:800; letter-spacing:.1em;
+      text-transform:uppercase; color:var(--text2); background:rgba(255,255,255,.025);
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+    .fm-label { font-weight:600; color:var(--text); }
+    .fm-unit  { color:var(--text2); font-size:.75rem; text-align:center; }
+    .fm-input-cell { text-align:right; }
+    .fm-input-cell input {
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+      border-radius:6px; color:#fff; font-family:inherit; font-size:.85rem;
+      font-weight:700; padding:5px 10px; text-align:right; width:110px;
+      transition:border-color .15s;
+    }
+    .fm-input-cell input:focus { outline:none; border-color:rgba(255,255,255,.35); background:rgba(255,255,255,.09); }
+    .fm-calc-cell { text-align:right; color:var(--text2); font-weight:600; font-variant-numeric:tabular-nums; }
+    .fm-d5-cell  { text-align:right; font-weight:700; color:rgba(239,68,68,.85); background:rgba(239,68,68,.05); font-variant-numeric:tabular-nums; }
+    .fm-d10-cell { text-align:right; font-weight:700; color:rgba(239,68,68,1);   background:rgba(239,68,68,.1);  font-variant-numeric:tabular-nums; }
+    .fm-table tr.fm-highlight-row td { background:rgba(255,255,255,.03); }
+    .fm-table tr.fm-highlight-row .fm-label { color:#fff; font-weight:800; }
+    .fm-val-pos { color:#4ade80 !important; }
+    .fm-val-neg { color:rgba(239,68,68,1) !important; }
 
     .meta-connect-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:48px 40px; text-align:center; margin:28px; }
     .meta-connect-icon { font-size:2.2rem; margin-bottom:14px; }
@@ -198,6 +236,7 @@
 <div class="tab-nav">
   <button class="tab-btn active" id="tab-funnel" onclick="switchTab('funnel')">Funnel Dashboard</button>
   <button class="tab-btn" id="tab-ads" onclick="switchTab('ads')">Ads Analysis</button>
+  <button class="tab-btn" id="tab-model" onclick="switchTab('model')">Financial Model</button>
 </div>
 
 <div id="view-funnel" class="active">
@@ -270,6 +309,28 @@
         </div>
         <div id="meta-campaigns-wrap"></div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Financial Model ───────────────────────────────────────────────────── -->
+<div id="view-model">
+  <div class="fm-wrap">
+    <h2 class="fm-title">Financial Model</h2>
+    <p class="fm-sub">Enter your base metrics. All downstream numbers calculate automatically. Downside columns show projected outcomes at -5% and -10% across all performance metrics.</p>
+    <div class="fm-table-wrap">
+      <table class="fm-table" id="fm-table">
+        <thead>
+          <tr>
+            <th style="width:38%;">Metric</th>
+            <th style="width:6%;text-align:center;">Unit</th>
+            <th class="fm-th-base" style="width:18%;">Your Numbers</th>
+            <th class="fm-th-d5"  style="width:19%;">−5% Downside</th>
+            <th class="fm-th-d10" style="width:19%;">−10% Downside</th>
+          </tr>
+        </thead>
+        <tbody id="fm-tbody"></tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -865,8 +926,10 @@
   function switchTab(tab) {
     document.getElementById('view-funnel').classList.toggle('active', tab === 'funnel');
     document.getElementById('view-ads').classList.toggle('active', tab === 'ads');
+    document.getElementById('view-model').classList.toggle('active', tab === 'model');
     document.getElementById('tab-funnel').classList.toggle('active', tab === 'funnel');
     document.getElementById('tab-ads').classList.toggle('active', tab === 'ads');
+    document.getElementById('tab-model').classList.toggle('active', tab === 'model');
     if (tab === 'ads') initMetaView();
   }
 
@@ -1033,6 +1096,134 @@
       document.getElementById('meta-campaigns-card').style.display = 'block';
     } catch(e) { /* silent — campaigns are supplementary */ }
   }
+
+  // ── Financial Model ──────────────────────────────────────────────────────
+  const FM_METRICS = [
+    // section, id, label, unit, inputType: 'input'|'calc', downsideDir: 'none'|'up'|'down'
+    { section: 'Ad Spend' },
+    { id:'invested',        label:'Amount Invested (Paid)',          unit:'$', type:'input', dir:'none' },
+    { id:'cpa',             label:'Cost Per Application (Paid)',     unit:'$', type:'input', dir:'up'   },
+    { section: 'Applications' },
+    { id:'apps_paid',       label:'Applications Submitted (Paid)',   unit:'#', type:'calc' },
+    { id:'apps_organic',    label:'Applications Submitted (Organic)',unit:'#', type:'input', dir:'down' },
+    { id:'apps_total',      label:'Total Applications',              unit:'#', type:'calc' },
+    { section: 'Call Flow' },
+    { id:'connection_rate', label:'Connection Rate',                 unit:'%', type:'input', dir:'down' },
+    { id:'replies',         label:'Amount of Replies',               unit:'#', type:'calc' },
+    { id:'booking_rate',    label:'Booking Rate',                    unit:'%', type:'input', dir:'down' },
+    { id:'calls_booked',    label:'Calls Booked',                    unit:'#', type:'calc' },
+    { id:'showup_rate',     label:'Show Up Rate',                    unit:'%', type:'input', dir:'down' },
+    { id:'showups',         label:'Show Ups',                        unit:'#', type:'calc' },
+    { id:'close_rate',      label:'Close Rate',                      unit:'%', type:'input', dir:'down' },
+    { id:'calls_closed',    label:'Calls Closed',                    unit:'#', type:'calc' },
+    { section: 'Revenue' },
+    { id:'aov',             label:'AOV',                             unit:'$', type:'input', dir:'down' },
+    { id:'revenue',         label:'Total Revenue Generated',         unit:'$', type:'calc', highlight:true },
+    { id:'roas',            label:'ROAS',                            unit:'x', type:'calc', highlight:true },
+    { id:'profit',          label:'Net Profit',                      unit:'$', type:'calc', highlight:true, profit:true },
+  ];
+
+  const FM_DEFAULTS = {
+    invested: 5000, cpa: 45, apps_organic: 10,
+    connection_rate: 60, booking_rate: 40, showup_rate: 70, close_rate: 25, aov: 5000
+  };
+
+  function fmCalc(inputs, pct) {
+    const d = pct / 100;
+    const v = {};
+    v.invested        = inputs.invested;
+    v.cpa             = inputs.cpa        * (1 + d);
+    v.apps_organic    = inputs.apps_organic   * (1 - d);
+    v.connection_rate = inputs.connection_rate * (1 - d);
+    v.booking_rate    = inputs.booking_rate    * (1 - d);
+    v.showup_rate     = inputs.showup_rate     * (1 - d);
+    v.close_rate      = inputs.close_rate      * (1 - d);
+    v.aov             = inputs.aov             * (1 - d);
+    v.apps_paid    = v.cpa > 0 ? v.invested / v.cpa : 0;
+    v.apps_total   = v.apps_paid + v.apps_organic;
+    v.replies      = v.apps_total * (v.connection_rate / 100);
+    v.calls_booked = v.replies    * (v.booking_rate    / 100);
+    v.showups      = v.calls_booked * (v.showup_rate   / 100);
+    v.calls_closed = v.showups    * (v.close_rate      / 100);
+    v.revenue      = v.calls_closed * v.aov;
+    v.roas         = v.invested > 0 ? v.revenue / v.invested : 0;
+    v.profit       = v.revenue - v.invested;
+    return v;
+  }
+
+  function fmFmt(val, unit) {
+    if (unit === '$') return '$' + val.toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0});
+    if (unit === '%') return val.toFixed(1) + '%';
+    if (unit === 'x') return val.toFixed(2) + 'x';
+    return Math.round(val).toLocaleString('en-US');
+  }
+
+  function fmGetInputs() {
+    const v = {};
+    FM_METRICS.filter(m => m.type === 'input').forEach(m => {
+      const el = document.getElementById('fm-inp-' + m.id);
+      v[m.id] = el ? parseFloat(el.value) || 0 : (FM_DEFAULTS[m.id] || 0);
+    });
+    return v;
+  }
+
+  function fmUpdate() {
+    const inputs = fmGetInputs();
+    const base = fmCalc(inputs, 0);
+    const d5   = fmCalc(inputs, 5);
+    const d10  = fmCalc(inputs, 10);
+    FM_METRICS.filter(m => m.id && m.type === 'calc').forEach(m => {
+      const baseEl = document.getElementById('fm-base-' + m.id);
+      const d5El   = document.getElementById('fm-d5-'   + m.id);
+      const d10El  = document.getElementById('fm-d10-'  + m.id);
+      if (baseEl) {
+        baseEl.textContent = fmFmt(base[m.id], m.unit);
+        if (m.profit) baseEl.className = 'fm-calc-cell' + (base[m.id] >= 0 ? ' fm-val-pos' : ' fm-val-neg');
+      }
+      if (d5El)   d5El.textContent   = fmFmt(d5[m.id],   m.unit);
+      if (d10El)  d10El.textContent  = fmFmt(d10[m.id],  m.unit);
+    });
+    FM_METRICS.filter(m => m.id && m.type === 'input').forEach(m => {
+      const d5El  = document.getElementById('fm-d5-'  + m.id);
+      const d10El = document.getElementById('fm-d10-' + m.id);
+      if (d5El)  d5El.textContent  = fmFmt(d5[m.id],  m.unit);
+      if (d10El) d10El.textContent = fmFmt(d10[m.id], m.unit);
+    });
+  }
+
+  function fmBuild() {
+    const tbody = document.getElementById('fm-tbody');
+    if (!tbody) return;
+    let html = '';
+    FM_METRICS.forEach(m => {
+      if (m.section) {
+        html += `<tr class="fm-section-row"><td colspan="5">${m.section}</td></tr>`;
+        return;
+      }
+      const hl = m.highlight ? ' fm-highlight-row' : '';
+      if (m.type === 'input') {
+        html += `<tr class="${hl}">
+          <td class="fm-label">${m.label}</td>
+          <td class="fm-unit">${m.unit}</td>
+          <td class="fm-input-cell"><input id="fm-inp-${m.id}" type="number" value="${FM_DEFAULTS[m.id]||''}" oninput="fmUpdate()"></td>
+          <td class="fm-d5-cell"  id="fm-d5-${m.id}">—</td>
+          <td class="fm-d10-cell" id="fm-d10-${m.id}">—</td>
+        </tr>`;
+      } else {
+        html += `<tr class="${hl}">
+          <td class="fm-label">${m.label}</td>
+          <td class="fm-unit">${m.unit}</td>
+          <td class="fm-calc-cell" id="fm-base-${m.id}">—</td>
+          <td class="fm-d5-cell"   id="fm-d5-${m.id}">—</td>
+          <td class="fm-d10-cell"  id="fm-d10-${m.id}">—</td>
+        </tr>`;
+      }
+    });
+    tbody.innerHTML = html;
+    fmUpdate();
+  }
+
+  fmBuild();
 </script>
 </body>
 </html>
