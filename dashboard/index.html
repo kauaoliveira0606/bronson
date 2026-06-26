@@ -174,7 +174,7 @@
       border-bottom:1px solid var(--border); white-space:nowrap;
     }
     .fm-table th.fm-th-d5  { background:rgba(239,68,68,.12); color:rgba(239,68,68,.9); text-align:right; }
-    .fm-table th.fm-th-d10 { background:rgba(239,68,68,.22); color:rgba(239,68,68,1);  text-align:right; }
+    .fm-table th.fm-th-d10 { background:rgba(239,68,68,.25); color:rgba(239,68,68,1);  text-align:right; }
     .fm-table th.fm-th-base { text-align:right; }
     .fm-table td { padding:8px 16px; border-bottom:1px solid rgba(255,255,255,.04); vertical-align:middle; }
     .fm-section-row td {
@@ -317,7 +317,7 @@
 <div id="view-model">
   <div class="fm-wrap">
     <h2 class="fm-title">Financial Model</h2>
-    <p class="fm-sub">Enter your base metrics. All downstream numbers calculate automatically. Downside columns show projected outcomes at -5% and -10% across all performance metrics.</p>
+    <p class="fm-sub">Enter your base metrics. All downstream numbers calculate automatically. Downside columns show projected outcomes at -15% and -30% across all performance metrics.</p>
     <div class="fm-table-wrap">
       <table class="fm-table" id="fm-table">
         <thead>
@@ -325,8 +325,8 @@
             <th style="width:38%;">Metric</th>
             <th style="width:6%;text-align:center;">Unit</th>
             <th class="fm-th-base" style="width:18%;">Your Numbers</th>
-            <th class="fm-th-d5"  style="width:19%;">−5% Downside</th>
-            <th class="fm-th-d10" style="width:19%;">−10% Downside</th>
+            <th class="fm-th-d5"  style="width:19%;">−15% Downside</th>
+            <th class="fm-th-d10" style="width:19%;">−30% Downside</th>
           </tr>
         </thead>
         <tbody id="fm-tbody"></tbody>
@@ -1183,8 +1183,8 @@
   function fmUpdate() {
     const inputs = fmGetInputs();
     const base = fmCalc(inputs, 0);
-    const d5   = fmCalc(inputs, 5);
-    const d10  = fmCalc(inputs, 10);
+    const d5   = fmCalc(inputs, 15);
+    const d10  = fmCalc(inputs, 30);
     FM_METRICS.filter(m => m.id && m.type === 'calc').forEach(m => {
       const baseEl = document.getElementById('fm-base-' + m.id);
       const d5El   = document.getElementById('fm-d5-'   + m.id);
