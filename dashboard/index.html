@@ -1209,97 +1209,99 @@
     });
   }
 
-  // Derive rates from last 3 days of Close data (yesterday, -2, -3)
-  function fmGetCloseStats() {
-    if (!allLeads || allLeads.length === 0) return null;
-    const days = [1,2,3].map(offset => {
-      const d = new Date(); d.setDate(d.getDate() - offset);
-      return d.toISOString().slice(0,10);
-    });
-    const daily = days.map(day => {
-      const dl = allLeads.filter(l => l.date_created.slice(0,10) === day);
-      const total   = dl.length;
-      const booked  = dl.filter(l => ['VSL Call Booked','Outbound booked call','Upsell Call Booked'].includes(l.status_label)).length;
-      const noshow  = dl.filter(l => ['No show','Canceled'].includes(l.status_label)).length;
-      const closed  = dl.filter(l => ['Closed','Deposit','Affiliate Closed'].includes(l.status_label)).length;
-      const noclose = dl.filter(l => ['No close','Disqualified Close call'].includes(l.status_label)).length;
-      const showups = closed + noshow + noclose;
-      return { total, booked, showups, closed };
-    });
-    const avg = {
-      leads:   daily.reduce((s,d) => s+d.total,   0) / 3,
-      booked:  daily.reduce((s,d) => s+d.booked,  0) / 3,
-      showups: daily.reduce((s,d) => s+d.showups, 0) / 3,
-      closed:  daily.reduce((s,d) => s+d.closed,  0) / 3,
-    };
-    return {
-      daily_apps:      avg.leads,
-      monthly_apps:    avg.leads * 30,
-      ht_booking_rate: avg.leads   > 0 ? (avg.booked  / avg.leads)   * 100 : 0,
-      ht_showup_rate:  avg.booked  > 0 ? (avg.showups / avg.booked)  * 100 : 0,
-      ht_close_rate:   avg.showups > 0 ? (avg.closed  / avg.showups) * 100 : 0,
-    };
+  // Pull last 3 days from scorecard (scData) and average/project monthly
+  function fmGetScorecardStats() {
+    if (!scData) return null;
+    const { dayDates, metrics } = scData;
+    const today = new Date(); today.setHours(0,0,0,0);
+
+    // Find column indices for yesterday, -2, -3
+    const targets = [1,2,3].map(o => { const d=new Date(today); d.setDate(today.getDate()-o); return d.getTime(); });
+    const idxs = targets.map(t => dayDates.findIndex(d => d && d.getTime()===t)).filter(i => i >= 0);
+    if (!idxs.length) {
+      // fallback: use the most recent columns that have any data
+      for (let i = dayDates.length-1; i >= 0 && idxs.length < 3; i--) {
+        if (dayDates[i]) idxs.push(i);
+      }
+    }
+    if (!idxs.length) return null;
+
+    function scNum(raw) {
+      if (!raw || raw.trim()==='' || /^#/.test(raw.trim())) return null;
+      const s = raw.trim();
+      const n = parseFloat(s.replace(/[^0-9.\-]/g,''));
+      if (isNaN(n)) return null;
+      if (s.endsWith('%')) return n;
+      if (n > 0 && n < 1 && !s.includes('.') === false) return n * 100; // raw fraction
+      return n;
+    }
+
+    function scFind(name) {
+      return metrics.find(m => m.name.toLowerCase().trim() === name.toLowerCase().trim());
+    }
+
+    function scAvg(name) {
+      const m = scFind(name); if (!m) return null;
+      const vals = idxs.map(i => scNum(m.days[i])).filter(v => v !== null);
+      return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : null;
+    }
+
+    function scSum(name) {
+      const m = scFind(name); if (!m) return null;
+      return idxs.reduce((s,i) => { const v=scNum(m.days[i]); return s+(v!==null?v:0); }, 0);
+    }
+
+    const n = idxs.length; // days found (1-3)
+    const scale = 30 / n;  // multiply sums by this for monthly projection
+
+    const s = {};
+    // Rate metrics — average (not scaled)
+    s.optin_rate      = scAvg('opt in rate (opt ins vs views)');
+    s.connection_rate = scAvg('connection rate (response rate)');
+    s.lt_close_rate   = scAvg('close rate - low ticket');
+    s.ht_showup_rate  = scAvg('show rate- high ticket');
+    s.ht_close_rate   = scAvg('close rate - high ticket');
+    s.funnel_cvr      = scAvg('funnel conversion rate (lt sales/opt ins)');
+    s.roas            = scAvg('roas - total');
+    // Dollar/count metrics — sum × scale for monthly projection
+    s.ad_spend        = (scSum('ad spend meta')              || 0) * scale;
+    s.cpl             = scAvg('cost per lead (meta)');
+    s.total_apps      = (scSum('opt ins (leads)')             || 0) * scale;
+    s.lt_sales        = (scSum('sales - low ticket')          || 0) * scale;
+    s.lt_revenue      = (scSum('cash collected - low ticket') || 0) * scale;
+    s.ht_calls_booked = (scSum('booked calls (upsells)')      || 0) * scale;
+    s.ht_calls_closed = (scSum('sales - high ticket')         || 0) * scale;
+    s.ht_revenue      = (scSum('cash collected - high ticket')|| 0) * scale;
+    s.revenue         = (scSum('total cash collected')        || 0) * scale;
+    // Derived
+    s.total_leads     = s.cpl && s.cpl > 0 && s.ad_spend ? s.ad_spend / s.cpl : null;
+    s.ht_booking_rate = s.total_apps > 0 ? (s.ht_calls_booked / s.total_apps) * 100 : null;
+    s.connected       = s.connection_rate !== null && s.total_apps ? s.total_apps * (s.connection_rate/100) : null;
+    s.ht_showups      = s.ht_showup_rate !== null && s.ht_calls_booked ? s.ht_calls_booked * (s.ht_showup_rate/100) : null;
+    s.lt_aov          = s.lt_sales > 0 && s.lt_revenue ? s.lt_revenue / s.lt_sales : null;
+    s.ht_aov          = s.ht_calls_closed > 0 && s.ht_revenue ? s.ht_revenue / s.ht_calls_closed : null;
+    s.profit          = s.revenue !== null && s.ad_spend !== null ? s.revenue - s.ad_spend : null;
+    return s;
   }
 
   function fmPopulateCurrentStats() {
-    const stats = fmGetCloseStats();
-    const inputs = fmGetInputs();
-    // Metrics we can derive from Close
-    const closeIds = new Set(['ht_booking_rate','ht_showup_rate','ht_close_rate']);
-
+    const stats = fmGetScorecardStats();
     if (!stats) {
       FM_METRICS.filter(m => m.id).forEach(m => {
         const el = document.getElementById('fm-cur-' + m.id);
-        if (el) { el.textContent = 'No data'; el.className = 'fm-current-na'; }
+        if (el) { el.textContent = scData ? 'No days found' : 'Loading...'; el.className = 'fm-current-na'; }
       });
       return;
     }
 
-    // Build a modified inputs object using Close-derived rates + user inputs for everything else
-    // Scale to monthly using 3-day avg daily lead count × 30
-    const curInputs = Object.assign({}, inputs, {
-      ht_booking_rate: stats.ht_booking_rate,
-      ht_showup_rate:  stats.ht_showup_rate,
-      ht_close_rate:   stats.ht_close_rate,
-    });
-    // Override total_apps via CPL to match monthly pace from Close lead count
-    // We keep ad_spend and cpl as-is but store monthly_apps for display
-    const curCalc = fmCalc(curInputs, 0);
-    // Override calculated apps with Close-derived monthly count
-    const monthly = stats.monthly_apps;
-    curCalc.total_leads = monthly;
-    curCalc.total_apps  = monthly * (curInputs.optin_rate / 100);
-    curCalc.connected   = curCalc.total_apps * (curInputs.connection_rate / 100);
-    curCalc.lt_sales    = curCalc.connected * (curInputs.lt_close_rate / 100);
-    curCalc.lt_revenue  = curCalc.lt_sales * curInputs.lt_aov;
-    curCalc.ht_calls_booked = monthly * (stats.ht_booking_rate / 100);
-    curCalc.ht_showups      = curCalc.ht_calls_booked * (stats.ht_showup_rate / 100);
-    curCalc.ht_calls_closed = curCalc.ht_showups * (stats.ht_close_rate / 100);
-    curCalc.ht_revenue  = curCalc.ht_calls_closed * curInputs.ht_aov;
-    curCalc.revenue     = curCalc.lt_revenue + curCalc.ht_revenue;
-    curCalc.roas        = inputs.ad_spend > 0 ? curCalc.revenue / inputs.ad_spend : 0;
-    curCalc.funnel_cvr  = monthly > 0 ? (curCalc.ht_calls_closed / monthly) * 100 : 0;
-    curCalc.profit      = curCalc.revenue - inputs.ad_spend;
-
-    // Also store rates for display
-    curCalc.ht_booking_rate = stats.ht_booking_rate;
-    curCalc.ht_showup_rate  = stats.ht_showup_rate;
-    curCalc.ht_close_rate   = stats.ht_close_rate;
-
     FM_METRICS.filter(m => m.id).forEach(m => {
       const el = document.getElementById('fm-cur-' + m.id);
       if (!el) return;
-      if (closeIds.has(m.id)) {
-        // Close-derived rate — show it
-        el.textContent = fmFmt(curCalc[m.id], m.unit);
-        el.className = 'fm-current-cell';
-      } else if (m.type === 'input') {
-        // Non-Close input — show as inherited (muted)
-        el.textContent = fmFmt(inputs[m.id] || 0, m.unit);
+      const val = stats[m.id];
+      if (val === null || val === undefined) {
+        el.textContent = '—';
         el.className = 'fm-current-na';
       } else {
-        // Calculated metric — show projected value
-        const val = curCalc[m.id] !== undefined ? curCalc[m.id] : 0;
         el.textContent = fmFmt(val, m.unit);
         el.className = m.profit
           ? ('fm-current-cell' + (val >= 0 ? ' fm-val-pos' : ' fm-val-neg'))
