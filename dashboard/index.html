@@ -1215,13 +1215,19 @@
     const { dayDates, metrics } = scData;
     const today = new Date(); today.setHours(0,0,0,0);
 
-    // Find column indices for yesterday, -2, -3
+    // Find column indices for yesterday, -2, -3 by date match
     const targets = [1,2,3].map(o => { const d=new Date(today); d.setDate(today.getDate()-o); return d.getTime(); });
-    const idxs = targets.map(t => dayDates.findIndex(d => d && d.getTime()===t)).filter(i => i >= 0);
-    if (!idxs.length) {
-      // fallback: use the most recent columns that have any data
-      for (let i = dayDates.length-1; i >= 0 && idxs.length < 3; i--) {
-        if (dayDates[i]) idxs.push(i);
+    let idxs = targets.map(t => dayDates.findIndex(d => d && d.getTime()===t)).filter(i => i >= 0);
+
+    // Fallback: "Jun-21" header format may not parse — use rightmost columns with actual data
+    if (idxs.length < 2) {
+      idxs = [];
+      for (let i = 6; i >= 0 && idxs.length < 3; i--) {
+        const hasData = metrics.some(m => {
+          const v = (m.days[i]||'').trim();
+          return v && v !== '' && !/^#/.test(v) && v !== '0';
+        });
+        if (hasData) idxs.push(i);
       }
     }
     if (!idxs.length) return null;
