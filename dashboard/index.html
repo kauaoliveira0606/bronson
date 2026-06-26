@@ -1099,55 +1099,68 @@
 
   // ── Financial Model ──────────────────────────────────────────────────────
   const FM_METRICS = [
-    // section, id, label, unit, inputType: 'input'|'calc', downsideDir: 'none'|'up'|'down'
     { section: 'Ad Spend' },
-    { id:'invested',        label:'Amount Invested (Paid)',          unit:'$', type:'input', dir:'none' },
-    { id:'cpa',             label:'Cost Per Application (Paid)',     unit:'$', type:'input', dir:'up'   },
-    { section: 'Applications' },
-    { id:'apps_paid',       label:'Applications Submitted (Paid)',   unit:'#', type:'calc' },
-    { id:'apps_organic',    label:'Applications Submitted (Organic)',unit:'#', type:'input', dir:'down' },
-    { id:'apps_total',      label:'Total Applications',              unit:'#', type:'calc' },
-    { section: 'Call Flow' },
-    { id:'connection_rate', label:'Connection Rate',                 unit:'%', type:'input', dir:'down' },
-    { id:'replies',         label:'Amount of Replies',               unit:'#', type:'calc' },
-    { id:'booking_rate',    label:'Booking Rate',                    unit:'%', type:'input', dir:'down' },
-    { id:'calls_booked',    label:'Calls Booked',                    unit:'#', type:'calc' },
-    { id:'showup_rate',     label:'Show Up Rate',                    unit:'%', type:'input', dir:'down' },
-    { id:'showups',         label:'Show Ups',                        unit:'#', type:'calc' },
-    { id:'close_rate',      label:'Close Rate',                      unit:'%', type:'input', dir:'down' },
-    { id:'calls_closed',    label:'Calls Closed',                    unit:'#', type:'calc' },
+    { id:'ad_spend',          label:'Ad Spend',                        unit:'$', type:'input', dir:'none' },
+    { id:'cpl',               label:'Cost Per Lead',                   unit:'$', type:'input', dir:'up'   },
+    { id:'total_leads',       label:'Total Leads',                     unit:'#', type:'calc' },
+    { section: 'Lead Generation' },
+    { id:'optin_rate',        label:'Opt In Rate',                     unit:'%', type:'input', dir:'down' },
+    { id:'total_apps',        label:'Total Amount of Applications',    unit:'#', type:'calc' },
+    { id:'connection_rate',   label:'Connection Rate',                 unit:'%', type:'input', dir:'down' },
+    { id:'connected',         label:'Connected Leads',                 unit:'#', type:'calc' },
+    { section: 'Low Ticket' },
+    { id:'lt_close_rate',     label:'Low Ticket Close Rate',           unit:'%', type:'input', dir:'down' },
+    { id:'lt_sales',          label:'Low Ticket Sales',                unit:'#', type:'calc' },
+    { id:'lt_aov',            label:'Low Ticket AOV',                  unit:'$', type:'input', dir:'down' },
+    { id:'lt_revenue',        label:'Low Ticket Revenue',              unit:'$', type:'calc' },
+    { section: 'High Ticket' },
+    { id:'ht_booking_rate',   label:'Booking Rate to High Ticket',     unit:'%', type:'input', dir:'down' },
+    { id:'ht_calls_booked',   label:'Calls Booked High Ticket',        unit:'#', type:'calc' },
+    { id:'ht_showup_rate',    label:'Show Up Rate High Ticket',        unit:'%', type:'input', dir:'down' },
+    { id:'ht_showups',        label:'Show Ups High Ticket',            unit:'#', type:'calc' },
+    { id:'ht_close_rate',     label:'Close Rate High Ticket',          unit:'%', type:'input', dir:'down' },
+    { id:'ht_calls_closed',   label:'Calls Closed High Ticket',        unit:'#', type:'calc' },
+    { id:'ht_aov',            label:'AOV High Ticket',                 unit:'$', type:'input', dir:'down' },
+    { id:'ht_revenue',        label:'High Ticket Revenue',             unit:'$', type:'calc' },
     { section: 'Revenue' },
-    { id:'aov',             label:'AOV',                             unit:'$', type:'input', dir:'down' },
-    { id:'revenue',         label:'Total Revenue Generated',         unit:'$', type:'calc', highlight:true },
-    { id:'roas',            label:'ROAS',                            unit:'x', type:'calc', highlight:true },
-    { id:'profit',          label:'Net Profit',                      unit:'$', type:'calc', highlight:true, profit:true },
+    { id:'revenue',           label:'Total Revenue Generated',         unit:'$', type:'calc', highlight:true },
+    { id:'roas',              label:'ROAS',                            unit:'x', type:'calc', highlight:true },
+    { id:'funnel_cvr',        label:'Funnel Conversion Rate',          unit:'%', type:'calc', highlight:true },
+    { id:'profit',            label:'Net Profit',                      unit:'$', type:'calc', highlight:true, profit:true },
   ];
 
   const FM_DEFAULTS = {
-    invested: 5000, cpa: 45, apps_organic: 10,
-    connection_rate: 60, booking_rate: 40, showup_rate: 70, close_rate: 25, aov: 5000
+    ad_spend: 5000, cpl: 15, optin_rate: 40, connection_rate: 60,
+    lt_close_rate: 5, lt_aov: 97,
+    ht_booking_rate: 20, ht_showup_rate: 70, ht_close_rate: 25, ht_aov: 5000
   };
 
   function fmCalc(inputs, pct) {
     const d = pct / 100;
     const v = {};
-    v.invested        = inputs.invested;
-    v.cpa             = inputs.cpa        * (1 + d);
-    v.apps_organic    = inputs.apps_organic   * (1 - d);
-    v.connection_rate = inputs.connection_rate * (1 - d);
-    v.booking_rate    = inputs.booking_rate    * (1 - d);
-    v.showup_rate     = inputs.showup_rate     * (1 - d);
-    v.close_rate      = inputs.close_rate      * (1 - d);
-    v.aov             = inputs.aov             * (1 - d);
-    v.apps_paid    = v.cpa > 0 ? v.invested / v.cpa : 0;
-    v.apps_total   = v.apps_paid + v.apps_organic;
-    v.replies      = v.apps_total * (v.connection_rate / 100);
-    v.calls_booked = v.replies    * (v.booking_rate    / 100);
-    v.showups      = v.calls_booked * (v.showup_rate   / 100);
-    v.calls_closed = v.showups    * (v.close_rate      / 100);
-    v.revenue      = v.calls_closed * v.aov;
-    v.roas         = v.invested > 0 ? v.revenue / v.invested : 0;
-    v.profit       = v.revenue - v.invested;
+    v.ad_spend        = inputs.ad_spend;
+    v.cpl             = inputs.cpl           * (1 + d);
+    v.optin_rate      = inputs.optin_rate     * (1 - d);
+    v.connection_rate = inputs.connection_rate* (1 - d);
+    v.lt_close_rate   = inputs.lt_close_rate  * (1 - d);
+    v.lt_aov          = inputs.lt_aov         * (1 - d);
+    v.ht_booking_rate = inputs.ht_booking_rate* (1 - d);
+    v.ht_showup_rate  = inputs.ht_showup_rate * (1 - d);
+    v.ht_close_rate   = inputs.ht_close_rate  * (1 - d);
+    v.ht_aov          = inputs.ht_aov         * (1 - d);
+    v.total_leads     = v.cpl > 0 ? v.ad_spend / v.cpl : 0;
+    v.total_apps      = v.total_leads   * (v.optin_rate      / 100);
+    v.connected       = v.total_apps    * (v.connection_rate / 100);
+    v.lt_sales        = v.connected     * (v.lt_close_rate   / 100);
+    v.lt_revenue      = v.lt_sales      * v.lt_aov;
+    v.ht_calls_booked = v.connected     * (v.ht_booking_rate / 100);
+    v.ht_showups      = v.ht_calls_booked * (v.ht_showup_rate / 100);
+    v.ht_calls_closed = v.ht_showups    * (v.ht_close_rate   / 100);
+    v.ht_revenue      = v.ht_calls_closed * v.ht_aov;
+    v.revenue         = v.lt_revenue + v.ht_revenue;
+    v.roas            = v.ad_spend > 0 ? v.revenue / v.ad_spend : 0;
+    v.funnel_cvr      = v.total_apps > 0 ? (v.ht_calls_closed / v.total_apps) * 100 : 0;
+    v.profit          = v.revenue - v.ad_spend;
     return v;
   }
 
