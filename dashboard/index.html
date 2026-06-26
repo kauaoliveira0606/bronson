@@ -173,6 +173,7 @@
       text-transform:uppercase; color:var(--text2); text-align:left;
       border-bottom:1px solid var(--border); white-space:nowrap;
     }
+    .fm-table th.fm-th-current { background:rgba(34,197,94,.12); color:rgba(34,197,94,.95); text-align:right; }
     .fm-table th.fm-th-d5  { background:rgba(239,68,68,.12); color:rgba(239,68,68,.9); text-align:right; }
     .fm-table th.fm-th-d10 { background:rgba(239,68,68,.25); color:rgba(239,68,68,1);  text-align:right; }
     .fm-table th.fm-th-base { text-align:right; }
@@ -192,7 +193,9 @@
       transition:border-color .15s;
     }
     .fm-input-cell input:focus { outline:none; border-color:rgba(255,255,255,.35); background:rgba(255,255,255,.09); }
-    .fm-calc-cell { text-align:right; color:#fff; font-weight:600; font-variant-numeric:tabular-nums; }
+    .fm-calc-cell    { text-align:right; color:#fff; font-weight:600; font-variant-numeric:tabular-nums; }
+    .fm-current-cell { text-align:right; font-weight:700; color:rgba(74,222,128,1); background:rgba(34,197,94,.06); font-variant-numeric:tabular-nums; }
+    .fm-current-na   { text-align:right; color:rgba(255,255,255,.25); font-size:.75rem; background:rgba(34,197,94,.03); }
     .fm-d5-cell  { text-align:right; font-weight:700; color:rgba(255,120,120,1); background:rgba(239,68,68,.05); font-variant-numeric:tabular-nums; }
     .fm-d10-cell { text-align:right; font-weight:700; color:rgba(255,160,160,1); background:rgba(239,68,68,.1);  font-variant-numeric:tabular-nums; }
     .fm-table tr.fm-highlight-row td { background:rgba(255,255,255,.03); }
@@ -317,16 +320,17 @@
 <div id="view-model">
   <div class="fm-wrap">
     <h2 class="fm-title">Financial Model</h2>
-    <p class="fm-sub">Enter your base metrics. All downstream numbers calculate automatically. Downside columns show projected outcomes at -15% and -30% across all performance metrics.</p>
+    <p class="fm-sub">Enter your base metrics. All downstream numbers calculate automatically. Current Stats pulls the 3-day average from Close (yesterday, day before, day before that) and projects monthly pace. Downside columns apply to Your Numbers.</p>
     <div class="fm-table-wrap">
       <table class="fm-table" id="fm-table">
         <thead>
           <tr>
-            <th style="width:38%;">Metric</th>
-            <th style="width:6%;text-align:center;">Unit</th>
-            <th class="fm-th-base" style="width:18%;">Your Numbers</th>
-            <th class="fm-th-d5"  style="width:19%;">−15% Downside</th>
-            <th class="fm-th-d10" style="width:19%;">−30% Downside</th>
+            <th style="width:30%;">Metric</th>
+            <th style="width:5%;text-align:center;">Unit</th>
+            <th class="fm-th-base" style="width:14%;">Your Numbers</th>
+            <th class="fm-th-current" style="width:17%;">Current Stats (3-Day Avg)</th>
+            <th class="fm-th-d5"  style="width:17%;">−15% Downside</th>
+            <th class="fm-th-d10" style="width:17%;">−30% Downside</th>
           </tr>
         </thead>
         <tbody id="fm-tbody"></tbody>
@@ -931,6 +935,7 @@
     document.getElementById('tab-ads').classList.toggle('active', tab === 'ads');
     document.getElementById('tab-model').classList.toggle('active', tab === 'model');
     if (tab === 'ads') initMetaView();
+    if (tab === 'model') fmPopulateCurrentStats();
   }
 
   // ── Meta Ads ─────────────────────────────────────────────────────────────────
@@ -1204,13 +1209,112 @@
     });
   }
 
+  // Derive rates from last 3 days of Close data (yesterday, -2, -3)
+  function fmGetCloseStats() {
+    if (!allLeads || allLeads.length === 0) return null;
+    const days = [1,2,3].map(offset => {
+      const d = new Date(); d.setDate(d.getDate() - offset);
+      return d.toISOString().slice(0,10);
+    });
+    const daily = days.map(day => {
+      const dl = allLeads.filter(l => l.date_created.slice(0,10) === day);
+      const total   = dl.length;
+      const booked  = dl.filter(l => ['VSL Call Booked','Outbound booked call','Upsell Call Booked'].includes(l.status_label)).length;
+      const noshow  = dl.filter(l => ['No show','Canceled'].includes(l.status_label)).length;
+      const closed  = dl.filter(l => ['Closed','Deposit','Affiliate Closed'].includes(l.status_label)).length;
+      const noclose = dl.filter(l => ['No close','Disqualified Close call'].includes(l.status_label)).length;
+      const showups = closed + noshow + noclose;
+      return { total, booked, showups, closed };
+    });
+    const avg = {
+      leads:   daily.reduce((s,d) => s+d.total,   0) / 3,
+      booked:  daily.reduce((s,d) => s+d.booked,  0) / 3,
+      showups: daily.reduce((s,d) => s+d.showups, 0) / 3,
+      closed:  daily.reduce((s,d) => s+d.closed,  0) / 3,
+    };
+    return {
+      daily_apps:      avg.leads,
+      monthly_apps:    avg.leads * 30,
+      ht_booking_rate: avg.leads   > 0 ? (avg.booked  / avg.leads)   * 100 : 0,
+      ht_showup_rate:  avg.booked  > 0 ? (avg.showups / avg.booked)  * 100 : 0,
+      ht_close_rate:   avg.showups > 0 ? (avg.closed  / avg.showups) * 100 : 0,
+    };
+  }
+
+  function fmPopulateCurrentStats() {
+    const stats = fmGetCloseStats();
+    const inputs = fmGetInputs();
+    // Metrics we can derive from Close
+    const closeIds = new Set(['ht_booking_rate','ht_showup_rate','ht_close_rate']);
+
+    if (!stats) {
+      FM_METRICS.filter(m => m.id).forEach(m => {
+        const el = document.getElementById('fm-cur-' + m.id);
+        if (el) { el.textContent = 'No data'; el.className = 'fm-current-na'; }
+      });
+      return;
+    }
+
+    // Build a modified inputs object using Close-derived rates + user inputs for everything else
+    // Scale to monthly using 3-day avg daily lead count × 30
+    const curInputs = Object.assign({}, inputs, {
+      ht_booking_rate: stats.ht_booking_rate,
+      ht_showup_rate:  stats.ht_showup_rate,
+      ht_close_rate:   stats.ht_close_rate,
+    });
+    // Override total_apps via CPL to match monthly pace from Close lead count
+    // We keep ad_spend and cpl as-is but store monthly_apps for display
+    const curCalc = fmCalc(curInputs, 0);
+    // Override calculated apps with Close-derived monthly count
+    const monthly = stats.monthly_apps;
+    curCalc.total_leads = monthly;
+    curCalc.total_apps  = monthly * (curInputs.optin_rate / 100);
+    curCalc.connected   = curCalc.total_apps * (curInputs.connection_rate / 100);
+    curCalc.lt_sales    = curCalc.connected * (curInputs.lt_close_rate / 100);
+    curCalc.lt_revenue  = curCalc.lt_sales * curInputs.lt_aov;
+    curCalc.ht_calls_booked = monthly * (stats.ht_booking_rate / 100);
+    curCalc.ht_showups      = curCalc.ht_calls_booked * (stats.ht_showup_rate / 100);
+    curCalc.ht_calls_closed = curCalc.ht_showups * (stats.ht_close_rate / 100);
+    curCalc.ht_revenue  = curCalc.ht_calls_closed * curInputs.ht_aov;
+    curCalc.revenue     = curCalc.lt_revenue + curCalc.ht_revenue;
+    curCalc.roas        = inputs.ad_spend > 0 ? curCalc.revenue / inputs.ad_spend : 0;
+    curCalc.funnel_cvr  = monthly > 0 ? (curCalc.ht_calls_closed / monthly) * 100 : 0;
+    curCalc.profit      = curCalc.revenue - inputs.ad_spend;
+
+    // Also store rates for display
+    curCalc.ht_booking_rate = stats.ht_booking_rate;
+    curCalc.ht_showup_rate  = stats.ht_showup_rate;
+    curCalc.ht_close_rate   = stats.ht_close_rate;
+
+    FM_METRICS.filter(m => m.id).forEach(m => {
+      const el = document.getElementById('fm-cur-' + m.id);
+      if (!el) return;
+      if (closeIds.has(m.id)) {
+        // Close-derived rate — show it
+        el.textContent = fmFmt(curCalc[m.id], m.unit);
+        el.className = 'fm-current-cell';
+      } else if (m.type === 'input') {
+        // Non-Close input — show as inherited (muted)
+        el.textContent = fmFmt(inputs[m.id] || 0, m.unit);
+        el.className = 'fm-current-na';
+      } else {
+        // Calculated metric — show projected value
+        const val = curCalc[m.id] !== undefined ? curCalc[m.id] : 0;
+        el.textContent = fmFmt(val, m.unit);
+        el.className = m.profit
+          ? ('fm-current-cell' + (val >= 0 ? ' fm-val-pos' : ' fm-val-neg'))
+          : 'fm-current-cell';
+      }
+    });
+  }
+
   function fmBuild() {
     const tbody = document.getElementById('fm-tbody');
     if (!tbody) return;
     let html = '';
     FM_METRICS.forEach(m => {
       if (m.section) {
-        html += `<tr class="fm-section-row"><td colspan="5">${m.section}</td></tr>`;
+        html += `<tr class="fm-section-row"><td colspan="6">${m.section}</td></tr>`;
         return;
       }
       const hl = m.highlight ? ' fm-highlight-row' : '';
@@ -1219,6 +1323,7 @@
           <td class="fm-label">${m.label}</td>
           <td class="fm-unit">${m.unit}</td>
           <td class="fm-input-cell"><input id="fm-inp-${m.id}" type="number" value="${FM_DEFAULTS[m.id]||''}" oninput="fmUpdate()"></td>
+          <td class="fm-current-na" id="fm-cur-${m.id}">—</td>
           <td class="fm-d5-cell"  id="fm-d5-${m.id}">—</td>
           <td class="fm-d10-cell" id="fm-d10-${m.id}">—</td>
         </tr>`;
@@ -1227,6 +1332,7 @@
           <td class="fm-label">${m.label}</td>
           <td class="fm-unit">${m.unit}</td>
           <td class="fm-calc-cell" id="fm-base-${m.id}">—</td>
+          <td class="fm-current-cell" id="fm-cur-${m.id}">—</td>
           <td class="fm-d5-cell"   id="fm-d5-${m.id}">—</td>
           <td class="fm-d10-cell"  id="fm-d10-${m.id}">—</td>
         </tr>`;
@@ -1234,6 +1340,7 @@
     });
     tbody.innerHTML = html;
     fmUpdate();
+    fmPopulateCurrentStats();
   }
 
   fmBuild();
