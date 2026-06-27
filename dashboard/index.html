@@ -1125,6 +1125,7 @@
     { section: 'Cash' },
     { id:'revenue',           label:'Total Cash Collected',            unit:'$', type:'calc', highlight:true },
     { id:'roas',              label:'ROAS',                            unit:'x', type:'calc', highlight:true },
+    { id:'net_roas',          label:'Net ROAS',                        unit:'x', type:'calc', highlight:true },
     { id:'profit',            label:'Net Profit',                      unit:'$', type:'calc', highlight:true, profit:true },
   ];
 
@@ -1153,6 +1154,7 @@
     { section: 'Cash' },
     { id:'revenue',           label:'Total Cash Collected',            unit:'$', type:'calc', highlight:true },
     { id:'roas',              label:'ROAS',                            unit:'x', type:'calc', highlight:true },
+    { id:'net_roas',          label:'Net ROAS',                        unit:'x', type:'calc', highlight:true },
     { id:'funnel_cvr',        label:'Funnel Conversion Rate',          unit:'%', type:'calc', highlight:true },
     { id:'profit',            label:'Net Profit',                      unit:'$', type:'calc', highlight:true, profit:true },
   ];
@@ -1204,6 +1206,7 @@
     v.roas            = v.ad_spend > 0 ? v.revenue / v.ad_spend : 0;
     v.funnel_cvr      = v.total_leads > 0 ? (v.lt_sales / v.total_leads) * 100 : 0;
     v.profit          = v.revenue - v.ad_spend;
+    v.net_roas        = v.ad_spend > 0 ? v.profit / v.ad_spend : 0;
     return v;
   }
 
