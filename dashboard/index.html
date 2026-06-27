@@ -1294,6 +1294,7 @@
     const stats = fmGetScorecardStats();
     if (!stats) {
       FM_METRICS.filter(m => m.id).forEach(m => {
+        if (m.id === 'ad_spend') return;
         const el = document.getElementById('fm-cur-' + m.id);
         if (el) { el.textContent = scData ? 'No days found' : 'Loading...'; el.className = 'fm-current-na'; }
       });
