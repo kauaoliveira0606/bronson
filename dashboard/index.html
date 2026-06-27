@@ -1301,7 +1301,7 @@
       return;
     }
 
-    FM_METRICS.filter(m => m.id).forEach(m => {
+    FM_METRICS.filter(m => m.id && m.type !== 'calc').forEach(m => {
       if (m.id === 'ad_spend') return;
       const el = document.getElementById('fm-cur-' + m.id);
       if (!el) return;
@@ -1311,10 +1311,42 @@
         el.className = 'fm-current-na';
       } else {
         el.textContent = fmFmt(val, m.unit);
-        el.className = m.profit
-          ? ('fm-current-cell' + (val >= 0 ? ' fm-val-pos' : ' fm-val-neg'))
-          : 'fm-current-cell';
+        el.className = 'fm-current-cell';
       }
+    });
+    fmUpdateCurrentStats();
+  }
+
+  function fmUpdateCurrentStats() {
+    const adSpendEl = document.getElementById('fm-cur-inp-ad_spend');
+    const adSpend = adSpendEl ? parseFloat(adSpendEl.value) : NaN;
+    if (!adSpend || isNaN(adSpend)) return;
+
+    const stats = fmGetScorecardStats() || {};
+    const inputs = {
+      ad_spend:        adSpend,
+      cpl:             stats.cpl             || FM_DEFAULTS.cpl,
+      optin_rate:      stats.optin_rate      || FM_DEFAULTS.optin_rate,
+      connection_rate: stats.connection_rate || FM_DEFAULTS.connection_rate,
+      lt_close_rate:   stats.lt_close_rate   || FM_DEFAULTS.lt_close_rate,
+      lt_aov:          stats.lt_aov          || FM_DEFAULTS.lt_aov,
+      ht_booking_rate: stats.ht_booking_rate || FM_DEFAULTS.ht_booking_rate,
+      ht_showup_rate:  stats.ht_showup_rate  || FM_DEFAULTS.ht_showup_rate,
+      ht_close_rate:   stats.ht_close_rate   || FM_DEFAULTS.ht_close_rate,
+      ht_aov:          stats.ht_aov          || FM_DEFAULTS.ht_aov,
+    };
+
+    const v = fmCalc(inputs, 0);
+
+    FM_METRICS.filter(m => m.id && m.type === 'calc').forEach(m => {
+      const el = document.getElementById('fm-cur-' + m.id);
+      if (!el) return;
+      const val = v[m.id];
+      if (val === undefined || val === null) return;
+      el.textContent = fmFmt(val, m.unit);
+      el.className = m.profit
+        ? ('fm-current-cell' + (val >= 0 ? ' fm-val-pos' : ' fm-val-neg'))
+        : 'fm-current-cell';
     });
   }
 
@@ -1330,7 +1362,7 @@
       const hl = m.highlight ? ' fm-highlight-row' : '';
       if (m.type === 'input') {
         const curCell = m.id === 'ad_spend'
-          ? `<td class="fm-input-cell" id="fm-cur-${m.id}"><input id="fm-cur-inp-${m.id}" type="number" placeholder="—" style="width:110px;background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.25);color:rgba(74,222,128,1);" oninput="fmUpdate()"></td>`
+          ? `<td class="fm-input-cell" id="fm-cur-${m.id}"><input id="fm-cur-inp-${m.id}" type="number" placeholder="—" style="width:110px;background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.25);color:rgba(74,222,128,1);" oninput="fmUpdateCurrentStats()"></td>`
           : `<td class="fm-current-na" id="fm-cur-${m.id}">—</td>`;
         html += `<tr class="${hl}">
           <td class="fm-label">${m.label}</td>
