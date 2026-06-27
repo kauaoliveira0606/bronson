@@ -1171,7 +1171,7 @@
   }
 
   function fmFmt(val, unit) {
-    if (unit === '$') return '$' + val.toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0});
+    if (unit === '$') { const d = val < 100 ? 2 : 0; return '$' + val.toLocaleString('en-US', {minimumFractionDigits:d, maximumFractionDigits:d}); }
     if (unit === '%') return val.toFixed(1) + '%';
     if (unit === 'x') return val.toFixed(2) + 'x';
     return Math.round(val).toLocaleString('en-US');
