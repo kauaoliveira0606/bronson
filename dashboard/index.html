@@ -1125,7 +1125,6 @@
     { section: 'Cash' },
     { id:'revenue',           label:'Total Cash Collected',            unit:'$', type:'calc', highlight:true },
     { id:'roas',              label:'ROAS',                            unit:'x', type:'calc', highlight:true },
-    { id:'funnel_cvr',        label:'Funnel Conversion Rate',          unit:'%', type:'calc', highlight:true },
     { id:'profit',            label:'Net Profit',                      unit:'$', type:'calc', highlight:true, profit:true },
   ];
 
@@ -1181,15 +1180,15 @@
     const LT_PRICE    = 225;
     const d = pct / 100;
     const v = {};
-    v.ad_spend        = inputs.ad_spend;
-    v.cpl             = inputs.cpl            * (1 + d);
-    v.optin_rate      = inputs.optin_rate      * (1 - d);
-    v.connection_rate = inputs.connection_rate * (1 - d);
-    v.lt_close_rate   = inputs.lt_close_rate   * (1 - d);
-    v.ht_booking_rate = inputs.ht_booking_rate * (1 - d);
-    v.ht_showup_rate  = inputs.ht_showup_rate  * (1 - d);
-    v.ht_close_rate   = inputs.ht_close_rate   * (1 - d);
-    v.ht_aov          = inputs.ht_aov          * (1 - d);
+    v.ad_spend        = inputs.ad_spend || 0;
+    v.cpl             = (inputs.cpl            || 0) * (1 + d);
+    v.optin_rate      = (inputs.optin_rate      || 0) * (1 - d);
+    v.connection_rate = (inputs.connection_rate || 0) * (1 - d);
+    v.lt_close_rate   = (inputs.lt_close_rate   || 0) * (1 - d);
+    v.ht_booking_rate = (inputs.ht_booking_rate || 0) * (1 - d);
+    v.ht_showup_rate  = (inputs.ht_showup_rate  || 0) * (1 - d);
+    v.ht_close_rate   = (inputs.ht_close_rate   || 0) * (1 - d);
+    v.ht_aov          = (inputs.ht_aov          || 0) * (1 - d);
     v.total_leads     = v.cpl > 0 ? v.ad_spend / v.cpl : 0;
     v.total_apps      = v.total_leads   * (v.optin_rate      / 100);
     // LT: direct funnel sale (opt-in → buy), no phone chain
@@ -1325,12 +1324,14 @@
       ad_spend:        adSpend,
       cpl:             stats.cpl             || FM_DEFAULTS.cpl,
       optin_rate:      stats.optin_rate      || FM_DEFAULTS.optin_rate,
-      connection_rate: stats.connection_rate || FM_DEFAULTS.connection_rate,
       lt_close_rate:   stats.lt_close_rate   || FM_DEFAULTS.lt_close_rate,
-      ht_booking_rate: stats.ht_booking_rate || FM_DEFAULTS.ht_booking_rate,
-      ht_showup_rate:  stats.ht_showup_rate  || FM_DEFAULTS.ht_showup_rate,
-      ht_close_rate:   stats.ht_close_rate   || FM_DEFAULTS.ht_close_rate,
-      ht_aov:          stats.ht_aov          || FM_DEFAULTS.ht_aov,
+      ...(fmMode === 'full' ? {
+        connection_rate: stats.connection_rate || FM_DEFAULTS.connection_rate,
+        ht_booking_rate: stats.ht_booking_rate || FM_DEFAULTS.ht_booking_rate,
+        ht_showup_rate:  stats.ht_showup_rate  || FM_DEFAULTS.ht_showup_rate,
+        ht_close_rate:   stats.ht_close_rate   || FM_DEFAULTS.ht_close_rate,
+        ht_aov:          stats.ht_aov          || FM_DEFAULTS.ht_aov,
+      } : {}),
     };
 
     const v = fmCalc(inputs, 0);
