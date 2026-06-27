@@ -1110,7 +1110,7 @@
     { id:'total_leads',       label:'Total Leads',                     unit:'#', type:'calc' },
     { section: 'Lead Generation' },
     { id:'optin_rate',        label:'Opt In Rate',                     unit:'%', type:'input', dir:'down' },
-    { id:'total_apps',        label:'Total Amount of Applications',    unit:'#', type:'calc' },
+    { id:'total_apps',        label:'Opt Ins',                         unit:'#', type:'calc' },
     { id:'connection_rate',   label:'Connection Rate',                 unit:'%', type:'input', dir:'down' },
     { id:'connected',         label:'Connected Leads',                 unit:'#', type:'calc' },
     { section: 'Low Ticket' },
@@ -1238,6 +1238,9 @@
     s.ht_close_rate   = wk('close rate - high ticket');
     s.roas            = wk('roas - total');
 
+    // Actual opt-ins from scorecard (weekly summary = daily average from sheet)
+    s.actual_optins = wk('opt ins (leads)');
+
     // HT AOV from weekly totals
     const wHtClosed = wk('sales - high ticket');
     const wHtCash   = wk('cash collected - high ticket');
@@ -1304,6 +1307,13 @@
         ? ('fm-current-cell' + (val >= 0 ? ' fm-val-pos' : ' fm-val-neg'))
         : 'fm-current-cell';
     });
+
+    // Override opt-ins with actual scorecard value (not model projection)
+    const stats2 = fmGetScorecardStats() || {};
+    if (stats2.actual_optins != null) {
+      const el = document.getElementById('fm-cur-total_apps');
+      if (el) { el.textContent = fmFmt(stats2.actual_optins, '#'); el.className = 'fm-current-cell'; }
+    }
   }
 
   function fmBuild() {
