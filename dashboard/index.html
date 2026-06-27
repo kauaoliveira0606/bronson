@@ -165,7 +165,11 @@
     /* ── Financial Model ─────────────────────────────────────────────────── */
     .fm-wrap { padding:28px; }
     .fm-title { font-size:1.1rem; font-weight:800; margin:0 0 4px; }
-    .fm-sub { font-size:.8rem; color:var(--text2); margin:0 0 24px; }
+    .fm-sub { font-size:.8rem; color:var(--text2); margin:0 0 20px; }
+    .fm-subtabs { display:flex; gap:8px; margin-bottom:20px; }
+    .fm-subtab-btn { background:none; border:1px solid var(--border); color:var(--text2); border-radius:6px; padding:5px 14px; font-size:.75rem; font-weight:700; cursor:pointer; font-family:inherit; transition:all .15s; }
+    .fm-subtab-btn:hover { border-color:rgba(255,255,255,.2); color:#fff; }
+    .fm-subtab-btn.active { background:#fff; color:#000; border-color:#fff; }
     .fm-table-wrap { overflow-x:auto; }
     .fm-table { width:100%; border-collapse:collapse; font-size:.82rem; }
     .fm-table th {
@@ -320,7 +324,11 @@
 <div id="view-model">
   <div class="fm-wrap">
     <h2 class="fm-title">Financial Model</h2>
-    <p class="fm-sub">Enter your base metrics. All downstream numbers calculate automatically. Current Stats pulls the 3-day average from Close (yesterday, day before, day before that) and projects monthly pace. Downside columns apply to Your Numbers.</p>
+    <p class="fm-sub">Enter your base metrics. Downstream numbers calculate automatically. Current Stats pulls live scorecard data. Downside columns apply to Your Numbers.</p>
+    <div class="fm-subtabs">
+      <button class="fm-subtab-btn active" id="fmsub-lt" onclick="switchFmTab('lt')">Low Ticket</button>
+      <button class="fm-subtab-btn" id="fmsub-full" onclick="switchFmTab('full')">LT + High Ticket</button>
+    </div>
     <div class="fm-table-wrap">
       <table class="fm-table" id="fm-table">
         <thead>
@@ -1103,7 +1111,25 @@
   }
 
   // ── Financial Model ──────────────────────────────────────────────────────
-  const FM_METRICS = [
+  const FM_METRICS_LT = [
+    { section: 'Ad Spend' },
+    { id:'ad_spend',          label:'Ad Spend',                        unit:'$', type:'input', dir:'none' },
+    { id:'cpl',               label:'Cost Per Lead',                   unit:'$', type:'input', dir:'up'   },
+    { section: 'Lead Generation' },
+    { id:'optin_rate',        label:'Opt In Rate',                     unit:'%', type:'input', dir:'down' },
+    { id:'total_apps',        label:'Opt Ins',                         unit:'#', type:'calc' },
+    { section: 'Low Ticket' },
+    { id:'lt_close_rate',     label:'Low Ticket Funnel CVR',           unit:'%', type:'input', dir:'down' },
+    { id:'lt_sales',          label:'Low Ticket Sales',                unit:'#', type:'calc' },
+    { id:'lt_revenue',        label:'Low Ticket Cash',                 unit:'$', type:'calc' },
+    { section: 'Cash' },
+    { id:'revenue',           label:'Total Cash Collected',            unit:'$', type:'calc', highlight:true },
+    { id:'roas',              label:'ROAS',                            unit:'x', type:'calc', highlight:true },
+    { id:'funnel_cvr',        label:'Funnel Conversion Rate',          unit:'%', type:'calc', highlight:true },
+    { id:'profit',            label:'Net Profit',                      unit:'$', type:'calc', highlight:true, profit:true },
+  ];
+
+  const FM_METRICS_FULL = [
     { section: 'Ad Spend' },
     { id:'ad_spend',          label:'Ad Spend',                        unit:'$', type:'input', dir:'none' },
     { id:'cpl',               label:'Cost Per Lead',                   unit:'$', type:'input', dir:'up'   },
@@ -1131,6 +1157,19 @@
     { id:'funnel_cvr',        label:'Funnel Conversion Rate',          unit:'%', type:'calc', highlight:true },
     { id:'profit',            label:'Net Profit',                      unit:'$', type:'calc', highlight:true, profit:true },
   ];
+
+  let fmMode = 'lt';
+  let FM_METRICS = FM_METRICS_LT;
+
+  function switchFmTab(mode) {
+    fmMode = mode;
+    FM_METRICS = mode === 'lt' ? FM_METRICS_LT : FM_METRICS_FULL;
+    document.getElementById('fmsub-lt').classList.toggle('active', mode === 'lt');
+    document.getElementById('fmsub-full').classList.toggle('active', mode === 'full');
+    fmBuild();
+    fmUpdate();
+    fmPopulateCurrentStats();
+  }
 
   const FM_DEFAULTS = {
     ad_spend: 5000, cpl: 15, optin_rate: 40, connection_rate: 60,
