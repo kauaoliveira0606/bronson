@@ -1117,7 +1117,7 @@
     { id:'lt_close_rate',     label:'Low Ticket Close Rate',           unit:'%', type:'input', dir:'down' },
     { id:'lt_sales',          label:'Low Ticket Sales',                unit:'#', type:'calc' },
     { id:'lt_aov',            label:'Low Ticket AOV',                  unit:'$', type:'input', dir:'down' },
-    { id:'lt_revenue',        label:'Low Ticket Revenue',              unit:'$', type:'calc' },
+    { id:'lt_revenue',        label:'Low Ticket Cash',                 unit:'$', type:'calc' },
     { section: 'High Ticket' },
     { id:'ht_booking_rate',   label:'Booking Rate to High Ticket',     unit:'%', type:'input', dir:'down' },
     { id:'ht_calls_booked',   label:'Calls Booked High Ticket',        unit:'#', type:'calc' },
@@ -1126,9 +1126,9 @@
     { id:'ht_close_rate',     label:'Close Rate High Ticket',          unit:'%', type:'input', dir:'down' },
     { id:'ht_calls_closed',   label:'Calls Closed High Ticket',        unit:'#', type:'calc' },
     { id:'ht_aov',            label:'AOV High Ticket',                 unit:'$', type:'input', dir:'down' },
-    { id:'ht_revenue',        label:'High Ticket Revenue',             unit:'$', type:'calc' },
-    { section: 'Revenue' },
-    { id:'revenue',           label:'Total Revenue Generated',         unit:'$', type:'calc', highlight:true },
+    { id:'ht_revenue',        label:'High Ticket Cash',                unit:'$', type:'calc' },
+    { section: 'Cash' },
+    { id:'revenue',           label:'Total Cash Collected',            unit:'$', type:'calc', highlight:true },
     { id:'roas',              label:'ROAS',                            unit:'x', type:'calc', highlight:true },
     { id:'funnel_cvr',        label:'Funnel Conversion Rate',          unit:'%', type:'calc', highlight:true },
     { id:'profit',            label:'Net Profit',                      unit:'$', type:'calc', highlight:true, profit:true },
@@ -1301,6 +1301,7 @@
     }
 
     FM_METRICS.filter(m => m.id).forEach(m => {
+      if (m.id === 'ad_spend') return;
       const el = document.getElementById('fm-cur-' + m.id);
       if (!el) return;
       const val = stats[m.id];
@@ -1327,11 +1328,14 @@
       }
       const hl = m.highlight ? ' fm-highlight-row' : '';
       if (m.type === 'input') {
+        const curCell = m.id === 'ad_spend'
+          ? `<td class="fm-input-cell" id="fm-cur-${m.id}"><input id="fm-cur-inp-${m.id}" type="number" placeholder="—" style="width:110px;background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.25);color:rgba(74,222,128,1);" oninput="fmUpdate()"></td>`
+          : `<td class="fm-current-na" id="fm-cur-${m.id}">—</td>`;
         html += `<tr class="${hl}">
           <td class="fm-label">${m.label}</td>
           <td class="fm-unit">${m.unit}</td>
           <td class="fm-input-cell"><input id="fm-inp-${m.id}" type="number" value="${FM_DEFAULTS[m.id]||''}" oninput="fmUpdate()"></td>
-          <td class="fm-current-na" id="fm-cur-${m.id}">—</td>
+          ${curCell}
           <td class="fm-d5-cell"  id="fm-d5-${m.id}">—</td>
           <td class="fm-d10-cell" id="fm-d10-${m.id}">—</td>
         </tr>`;
