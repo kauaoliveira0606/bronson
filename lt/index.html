@@ -720,6 +720,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 8px;
       padding: 14px 12px;
       border-radius: 12px;
       border: 1px solid var(--border);
@@ -727,6 +728,13 @@
       font-size: 0.95rem;
       letter-spacing: -0.3px;
       text-align: center;
+    }
+    .partner-badge img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+      border-radius: 4px;
+      flex-shrink: 0;
     }
 
     @media (max-width: 480px) {
@@ -786,18 +794,24 @@
   <p class="ticker-label">Backed by Billion-Dollar Partners</p>
   <div class="ticker-inner">
     <div class="ticker-track">
-      <!-- AutoDS — orange #F96328 -->
-      <span class="partner-badge" style="background:rgba(249,99,40,0.08);color:#F96328;border-color:rgba(249,99,40,0.2);">AutoDS</span>
-      <!-- CapCut — black/white ByteDance app, use stark white on dark -->
-      <span class="partner-badge" style="background:rgba(255,255,255,0.05);color:var(--text);border-color:var(--border);font-style:italic;">CapCut</span>
-      <!-- Base44 — purple #6C47FF -->
-      <span class="partner-badge" style="background:rgba(108,71,255,0.1);color:#6C47FF;border-color:rgba(108,71,255,0.25);">Base44</span>
-      <!-- Wix — blue #116DFF -->
-      <span class="partner-badge" style="background:rgba(17,109,255,0.08);color:#116DFF;border-color:rgba(17,109,255,0.2);">Wix</span>
-      <!-- Snapchat — yellow #FFFC00, darken text for contrast -->
-      <span class="partner-badge" style="background:rgba(255,252,0,0.08);color:#D4C800;border-color:rgba(255,252,0,0.25);">Snapchat</span>
-      <!-- Omnisend — green #0A9E6E -->
-      <span class="partner-badge" style="background:rgba(10,158,110,0.08);color:#0A9E6E;border-color:rgba(10,158,110,0.2);">Omnisend</span>
+      <span class="partner-badge" style="background:rgba(249,99,40,0.08);color:#F96328;border-color:rgba(249,99,40,0.2);">
+        <img src="https://logo.clearbit.com/autods.com" alt="AutoDS" />AutoDS
+      </span>
+      <span class="partner-badge" style="background:rgba(255,255,255,0.05);color:var(--text);border-color:var(--border);">
+        <img src="https://logo.clearbit.com/capcut.com" alt="CapCut" />CapCut
+      </span>
+      <span class="partner-badge" style="background:rgba(108,71,255,0.1);color:#6C47FF;border-color:rgba(108,71,255,0.25);">
+        <img src="https://logo.clearbit.com/base44.com" alt="Base44" />Base44
+      </span>
+      <span class="partner-badge" style="background:rgba(17,109,255,0.08);color:#116DFF;border-color:rgba(17,109,255,0.2);">
+        <img src="https://logo.clearbit.com/wix.com" alt="Wix" />Wix
+      </span>
+      <span class="partner-badge" style="background:rgba(255,252,0,0.08);color:#D4C800;border-color:rgba(255,252,0,0.25);">
+        <img src="https://logo.clearbit.com/snapchat.com" alt="Snapchat" />Snapchat
+      </span>
+      <span class="partner-badge" style="background:rgba(10,158,110,0.08);color:#0A9E6E;border-color:rgba(10,158,110,0.2);">
+        <img src="https://logo.clearbit.com/omnisend.com" alt="Omnisend" />Omnisend
+      </span>
     </div>
   </div>
 </div>
