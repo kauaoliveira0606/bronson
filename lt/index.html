@@ -1363,8 +1363,8 @@
     var fired = false;
     var ready = false;
 
-    // Only arm after 4 seconds so it doesn't fire on accidental immediate exits
-    setTimeout(function () { ready = true; }, 4000);
+    // Only arm after 20 seconds so it doesn't fire on accidental immediate exits
+    setTimeout(function () { ready = true; }, 20000);
 
     function triggerExit() {
       if (fired || !ready) return;
