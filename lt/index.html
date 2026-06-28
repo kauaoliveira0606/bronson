@@ -326,8 +326,11 @@
     /* ── HOW IT WORKS ── */
     .steps-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
+    }
+    @media (max-width: 600px) {
+      .steps-grid { grid-template-columns: 1fr; }
     }
 
     .step-card {
@@ -832,19 +835,11 @@
   <p class="section-desc">Not a pump-and-dump Shopify store. A real branded e-commerce business built to scale - and eventually Exit for 2x-3x multiple of it's monthly profit.</p>
 
   <div class="steps-grid">
-    <div class="step-card">
+    <div class="step-card" style="background:rgba(108,71,255,0.07);border-color:rgba(108,71,255,0.2);">
       <div class="step-num" style="background:var(--green);color:#000;">0</div>
       <div class="step-title">Unlock The Full Master Class Instantly</div>
-      <ul style="margin:12px 0 12px 18px;padding:0;color:var(--text2);font-size:0.92rem;line-height:1.9;">
-        <li>50+ lessons with playbooks</li>
-        <li>Product research</li>
-        <li>Ad frameworks</li>
-        <li>Scaling systems</li>
-        <li>Supplier connections</li>
-        <li>Step-by-step on building your store using Wix and Base44 guides</li>
-        <li>Organic sales</li>
-      </ul>
-      <p class="step-desc">Every module is by real brand founders who are actively doing it now. They are in the trenches with you.</p>
+      <p class="step-desc" style="margin-top:12px;">50+ lessons with playbooks, product research, ad frameworks, scaling systems, supplier connections, step-by-step on building your store using Wix and Base44 guides, organic sales.</p>
+      <p class="step-desc" style="margin-top:10px;">Every module is by real brand founders who are actively doing it now. They are in the trenches with you.</p>
     </div>
     <div class="step-card">
       <div class="step-num">1</div>
