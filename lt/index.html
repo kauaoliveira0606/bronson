@@ -1457,7 +1457,7 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, phone: country + phone })
     }).finally(() => {
-      window.location.href = '/receiveaccess';
+      window.location.href = '/receiveaccess?name=' + encodeURIComponent(name);
     });
   }
 </script>
