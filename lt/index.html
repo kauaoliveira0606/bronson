@@ -1351,6 +1351,39 @@
 </footer>
 
 <script>
+  // Exit intent
+  (function () {
+    var fired = false;
+    var ready = false;
+
+    // Only arm after 4 seconds so it doesn't fire on accidental immediate exits
+    setTimeout(function () { ready = true; }, 4000);
+
+    function triggerExit() {
+      if (fired || !ready) return;
+      fired = true;
+      openModal();
+    }
+
+    // Desktop: mouse leaves toward top of browser
+    document.addEventListener('mouseleave', function (e) {
+      if (e.clientY < 10) triggerExit();
+    });
+
+    // Mobile: fast scroll upward after scrolling down at least 300px
+    var lastScrollY = 0;
+    var lastScrollTime = 0;
+    window.addEventListener('scroll', function () {
+      var now = Date.now();
+      var y = window.scrollY;
+      if (y > 300 && y < lastScrollY && (now - lastScrollTime) < 300) {
+        triggerExit();
+      }
+      lastScrollY = y;
+      lastScrollTime = now;
+    }, { passive: true });
+  })();
+
   function toggleFaq(btn) {
     const item = btn.closest('.faq-item');
     const isOpen = item.classList.contains('open');
