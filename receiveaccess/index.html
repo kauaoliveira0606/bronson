@@ -273,7 +273,7 @@
 </head>
 <body>
 <div style="position:sticky;top:0;z-index:999;background:#fff;border-bottom:2px solid #e5e7eb;padding:12px 20px;text-align:center;font-size:0.9rem;font-weight:600;color:#111;">
-  <span style="color:#dc2626;font-weight:800;">Wait</span> — your spot isn't locked in yet. Finish the steps below before your free access expires.
+  <span style="color:#dc2626;font-weight:800;">Wait</span><span id="sticky-name"></span> — your spot isn't locked in yet. Finish the steps below before your free access expires.
 </div>
 
 <!-- HERO -->
@@ -765,6 +765,8 @@
       const first = name.trim().split(' ')[0];
       const el = document.getElementById('main-headline');
       if (el) el.innerHTML = first + ', Your Activation Is Live For The Next 24 Hours. We\'re Calling In The Next <span>1-10 Minutes.</span>';
+      const sticky = document.getElementById('sticky-name');
+      if (sticky) sticky.textContent = ' ' + first + ',';
     }
   })();
 </script>
