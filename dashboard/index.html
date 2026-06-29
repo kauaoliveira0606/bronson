@@ -608,11 +608,13 @@
     const g = goalRaw.trim();
     if (!g || g === '' || g === '#DIV/0!') return null;
     const lessThan = /^[<]/.test(g) || /[<]$/.test(g);
-    const gNum = parseFloat(g.replace(/[%$<>, ]/g, ''));
-    if (isNaN(gNum) || gNum === 0) return null;
+    // Parse goal through parseVal so it's on the same scale as actual
+    // (e.g. raw 0.8 → num 80 for %, matching actual 0.93 → num 93)
+    const goalParsed = parseVal(g.replace(/[<>]/g, '').trim());
+    if (goalParsed.num === null || goalParsed.num === 0) return null;
+    const gNum = goalParsed.num;
     const aNum = actual.num;
     if (lessThan) {
-      // goal is "stay below gNum"
       if (aNum < gNum) return 'green';
       if (aNum < gNum * 1.2) return 'yellow';
       return 'red';
