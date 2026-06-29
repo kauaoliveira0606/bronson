@@ -572,7 +572,6 @@
     document.getElementById('last-updated').textContent = 'Refreshing...';
     try {
       allLeads = await fetchAllLeads();
-      renderSTL();
       render();
       document.getElementById('last-updated').textContent = 'Updated ' + new Date().toLocaleTimeString();
     } catch(e) {
@@ -973,7 +972,8 @@
     document.getElementById('ai-summary-card').style.display = 'block';
   }
 
-  loadAll().catch(()=>{}).then(() => loadSTL());
+  loadAll();
+  loadSTL();
   loadScorecard();
   setInterval(loadAll, 5 * 60 * 1000);
   setInterval(loadScorecard, 10 * 60 * 1000);
@@ -981,6 +981,7 @@
 
   // ── Speed to Lead ────────────────────────────────────────────────────────────
   let stlFilter  = 'today';
+  let stlLeads   = [];
   let stlCallMap = {};
 
   function setSTLFilter(f) {
@@ -999,7 +1000,7 @@
     } else {
       start = new Date(now); start.setDate(now.getDate() - 6); start.setHours(0,0,0,0);
     }
-    return allLeads.filter(l => new Date(l.date_created) >= start);
+    return stlLeads.filter(l => new Date(l.date_created) >= start);
   }
 
   function fmtDuration(ms) {
@@ -1014,6 +1015,41 @@
     return hr + 'h' + (m > 0 ? ' ' + m + 'm' : '');
   }
 
+  async function fetchSTLLeads(cutoff) {
+    let leads = [], cursor = null, pages = 0;
+    while (pages < 5) {
+      let url = '/api/close-leads?since=' + encodeURIComponent(cutoff.toISOString());
+      if (cursor) url += '&cursor=' + encodeURIComponent(cursor);
+      const res  = await fetch(url);
+      const data = await res.json();
+      leads = leads.concat(data.data || []);
+      if (!data.has_more || !data.cursor) break;
+      cursor = data.cursor;
+      pages++;
+    }
+    return leads;
+  }
+
+  async function fetchSTLCalls(cutoff) {
+    let calls = [], cursor = null, pages = 0;
+    while (pages < 8) {
+      let url = '/api/close-calls?since=' + encodeURIComponent(cutoff.toISOString());
+      if (cursor) url += '&cursor=' + encodeURIComponent(cursor);
+      const res  = await fetch(url);
+      const data = await res.json();
+      const batch = data.data || [];
+      let done = false;
+      for (const c of batch) {
+        if (new Date(c.date_created) < cutoff) { done = true; break; }
+        if (c.direction === 'outbound') calls.push(c);
+      }
+      if (done || !data.has_more || !data.cursor) break;
+      cursor = data.cursor;
+      pages++;
+    }
+    return calls;
+  }
+
   async function loadSTL() {
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - 7);
@@ -1023,24 +1059,12 @@
     if (kpiEl) kpiEl.innerHTML = '<div class="loading">Loading speed to lead data...</div>';
 
     try {
-      let cursor = null, pages = 0;
-      const calls = [];
-      while (pages < 8) {
-        let url = '/api/close-calls?since=' + encodeURIComponent(cutoff.toISOString());
-        if (cursor) url += '&cursor=' + encodeURIComponent(cursor);
-        const res  = await fetch(url);
-        const data = await res.json();
-        const batch = data.data || [];
-        let done = false;
-        for (const c of batch) {
-          if (new Date(c.date_created) < cutoff) { done = true; break; }
-          if (c.direction === 'outbound') calls.push(c);
-        }
-        if (done || !data.has_more || !data.cursor) break;
-        cursor = data.cursor;
-        pages++;
-      }
+      const [leads, calls] = await Promise.all([
+        fetchSTLLeads(cutoff),
+        fetchSTLCalls(cutoff)
+      ]);
 
+      stlLeads   = leads;
       stlCallMap = {};
       calls.forEach(c => {
         if (!stlCallMap[c.lead_id] || c.date_created < stlCallMap[c.lead_id]) {
