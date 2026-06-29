@@ -650,7 +650,8 @@
     if (!scData) return weeklyActual;
     const { dayDates } = scData;
 
-    if (scFilter === 'week' || scFilter === '7d') return weeklyActual;
+    if (scFilter === 'week') return weeklyActual;
+    if (scFilter === '7d') return metric.last7Actual || weeklyActual;
     if (scFilter === '30d') return metric.last30Actual || weeklyActual;
     if (scFilter === 'alltime') return metric.allTimeActual || weeklyActual;
 
@@ -730,8 +731,18 @@
         const days       = cols.slice(1, 8).map(v => (v || '').trim());
         const weeklyGoal = (cols[8] || '').trim();
         let weeklyActual = (cols[9] || '').trim(); // This Week → column J
+        // Last 7 Days → sum B-H of current tab
+        const isPercent7 = days.some(v => v.endsWith('%'));
+        let last7Actual = '';
+        if (!isPercent7) {
+          const sum = days.reduce((acc, v) => { const n = parseFloat(v.replace(/[^0-9.\-]/g, '')); return acc + (isNaN(n) ? 0 : n); }, 0);
+          if (sum > 0) last7Actual = String(sum);
+        } else {
+          const vals = days.filter(v => v.endsWith('%')).map(v => parseFloat(v)).filter(n => !isNaN(n));
+          if (vals.length) last7Actual = (vals.reduce((a,b) => a+b, 0) / vals.length).toFixed(2) + '%';
+        }
         const key = name.toLowerCase();
-        metrics.push({ name, days, weeklyActual, weeklyGoal,
+        metrics.push({ name, days, weeklyActual, weeklyGoal, last7Actual,
           allTimeActual: allTimeMap[key] || weeklyActual,
           last30Actual:  last30Map[key]  || weeklyActual });
       }
