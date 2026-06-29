@@ -705,7 +705,14 @@
       const lines = text.split('\n').filter(l => l.trim());
       if (lines.length < 4) throw new Error('Sheet empty');
 
-      const dateRow    = parseCSVLine(lines[1]);
+      // Find the date row dynamically — it's the first row whose columns contain month names
+      const MONTHS = /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/i;
+      let dateRowIdx = 1;
+      for (let i = 1; i < Math.min(lines.length, 6); i++) {
+        const cols = parseCSVLine(lines[i]);
+        if (cols.slice(1, 8).some(c => MONTHS.test(c.trim()))) { dateRowIdx = i; break; }
+      }
+      const dateRow    = parseCSVLine(lines[dateRowIdx]);
       const dayHeaders = dateRow.slice(1, 8).map(d => d.trim());
       const dayDates   = dayHeaders.map(parseDayHeader);
       const dateStart  = dayHeaders.find(d => /[A-Za-z]/.test(d)) || '';
