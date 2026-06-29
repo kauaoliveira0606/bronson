@@ -729,18 +729,15 @@
         if (!name) continue;
         const days       = cols.slice(1, 8).map(v => (v || '').trim());
         const weeklyGoal = (cols[8] || '').trim();
-        let weeklyActual = (cols[9] || '').trim();
-
-        const badVal = !weeklyActual || /^#/.test(weeklyActual);
-        if (badVal) {
-          const isPercent = days.some(v => v.endsWith('%'));
-          if (!isPercent) {
-            const sum = days.reduce((acc, v) => { const n = parseFloat(v.replace(/[^0-9.\-]/g, '')); return acc + (isNaN(n) ? 0 : n); }, 0);
-            if (sum > 0) weeklyActual = String(sum);
-          } else {
-            const vals = days.filter(v => v.endsWith('%')).map(v => parseFloat(v)).filter(n => !isNaN(n));
-            if (vals.length > 0) weeklyActual = (vals.reduce((a,b) => a+b, 0) / vals.length).toFixed(2) + '%';
-          }
+        // Always derive weeklyActual from B–H (daily columns only)
+        let weeklyActual = '';
+        const isPercent = days.some(v => v.endsWith('%'));
+        if (!isPercent) {
+          const sum = days.reduce((acc, v) => { const n = parseFloat(v.replace(/[^0-9.\-]/g, '')); return acc + (isNaN(n) ? 0 : n); }, 0);
+          if (sum > 0) weeklyActual = String(sum);
+        } else {
+          const vals = days.filter(v => v.endsWith('%')).map(v => parseFloat(v)).filter(n => !isNaN(n));
+          if (vals.length > 0) weeklyActual = (vals.reduce((a,b) => a+b, 0) / vals.length).toFixed(2) + '%';
         }
         const key = name.toLowerCase();
         metrics.push({ name, days, weeklyActual, weeklyGoal,
