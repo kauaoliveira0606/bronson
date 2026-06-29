@@ -562,7 +562,7 @@
   }
 
   // ── Scorecard ──────────────────────────────────────────────────────────────
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5mzCMMbhf5mRuI2mpdJIZ1XhzJNucJo98U4Zi0C_e5TrPE3oMpmBlQp2aJ4pP8jqFnQ/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyja-O-Ay0A-yAcJre4ZyNY3b-2HnSyfAK4ChY8U5QE-lYG1Or8zguTwr8-2gRdnXVu7Q/exec';
   const SHEET_URL = APPS_SCRIPT_URL + '?t=' + Date.now();
 
   // Minimal CSV parser (handles quoted fields with commas)
@@ -650,7 +650,9 @@
     if (!scData) return weeklyActual;
     const { dayDates } = scData;
 
-    if (scFilter === 'week' || scFilter === '7d' || scFilter === '30d' || scFilter === 'alltime') return weeklyActual;
+    if (scFilter === 'week' || scFilter === '7d') return weeklyActual;
+    if (scFilter === '30d') return metric.last30Actual || weeklyActual;
+    if (scFilter === 'alltime') return metric.allTimeActual || weeklyActual;
 
     let indices = [];
     if (scFilter === 'custom') {
@@ -703,8 +705,25 @@
       const dateEnd    = [...dayHeaders].reverse().find(d => /[A-Za-z]/.test(d)) || '';
       if (dateStart) document.getElementById('scorecard-week').textContent = dateStart + ' – ' + dateEnd;
 
+      // Split out __ALLTIME__ and __LAST30__ sections
+      const atIdx   = lines.findIndex(l => l.trim() === '__ALLTIME__');
+      const l30Idx  = lines.findIndex(l => l.trim() === '__LAST30__');
+      const mainEnd = atIdx > -1 ? atIdx : lines.length;
+
+      function parseSection(startIdx, endIdx) {
+        const map = {};
+        for (let r = startIdx + 1; r < endIdx; r++) {
+          const cols = parseCSVLine(lines[r]);
+          const n = (cols[0] || '').trim();
+          if (n) map[n.toLowerCase()] = (cols[1] || '').trim();
+        }
+        return map;
+      }
+      const allTimeMap = atIdx  > -1 ? parseSection(atIdx,  l30Idx > -1 ? l30Idx : lines.length) : {};
+      const last30Map  = l30Idx > -1 ? parseSection(l30Idx, lines.length) : {};
+
       const metrics = [];
-      for (let r = 3; r < lines.length; r++) {
+      for (let r = 3; r < mainEnd; r++) {
         const cols = parseCSVLine(lines[r]);
         const name = cols[0] ? cols[0].trim() : '';
         if (!name) continue;
@@ -723,7 +742,10 @@
             if (vals.length > 0) weeklyActual = (vals.reduce((a,b) => a+b, 0) / vals.length).toFixed(2) + '%';
           }
         }
-        metrics.push({ name, days, weeklyActual, weeklyGoal });
+        const key = name.toLowerCase();
+        metrics.push({ name, days, weeklyActual, weeklyGoal,
+          allTimeActual: allTimeMap[key] || weeklyActual,
+          last30Actual:  last30Map[key]  || weeklyActual });
       }
 
       scData = { dayHeaders, dayDates, metrics };
