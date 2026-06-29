@@ -578,8 +578,13 @@
     return cols;
   }
 
+  // Metrics that are ratios/dollar values and must never be shown as a percentage
+  const NEVER_PERCENT = new Set([
+    'roas - total','roas - low ticket','cost per lead (meta)','cpa - low ticket',
+  ]);
+
   // Parse a value like "$1,234.56" or "45.00%" or "0.4567" into a display string + numeric
-  function parseVal(raw) {
+  function parseVal(raw, noPct = false) {
     if (!raw || raw.trim() === '' || raw === '#DIV/0!') return { display: '—', num: null };
     const s = raw.trim();
     if (s.startsWith('$')) {
@@ -592,9 +597,8 @@
     }
     const n = parseFloat(s);
     if (!isNaN(n)) {
-      // if between 0 and 1, likely a raw fraction → show as %
-      if (n > 0 && n < 1) return { display: (n * 100).toFixed(1) + '%', num: n * 100 };
-      return { display: s, num: n };
+      if (!noPct && n > 0 && n < 1) return { display: (n * 100).toFixed(1) + '%', num: n * 100 };
+      return { display: noPct ? parseFloat(n.toFixed(2)).toString() : s, num: n };
     }
     return { display: s, num: null };
   }
@@ -645,31 +649,16 @@
   }
 
   // Compute the display value for a metric given the active filter
-  const RATE_METRICS = new Set([
-    'cost per lead (meta)','funnel conversion rate (lt sales/opt ins)',
-    'connection rate (response rate)','vsl engagement rate','vsl play rate',
-    'landing page connect rate','opt in rate (opt ins vs views)',
-    'close rate - low ticket','close rate - high ticket','show rate- high ticket',
-    'roas - total','roas - low ticket','cpa - low ticket',
-    'confirmation email open rate','confirmation email ctr',
-  ]);
-
-  function avgRate(raw, days) {
-    const n = parseFloat(raw);
-    if (isNaN(n) || days <= 0) return raw;
-    return parseFloat((n / days).toFixed(2)).toString();
-  }
-
   function getFilteredActual(metric) {
     const { days, weeklyActual } = metric;
     if (!scData) return weeklyActual;
-    const { dayDates, estimatedTotalDays } = scData;
-    const isRate = RATE_METRICS.has(metric.name.toLowerCase().trim());
+    const { dayDates } = scData;
 
-    if (scFilter === 'week') return weeklyActual;
-    if (scFilter === '7d')      return isRate ? avgRate(metric.last7Actual, 7)                 : (metric.last7Actual   || weeklyActual);
-    if (scFilter === '30d')     return isRate ? avgRate(metric.last30Actual, 30)               : (metric.last30Actual  || weeklyActual);
-    if (scFilter === 'alltime') return isRate ? avgRate(metric.allTimeActual, estimatedTotalDays) : (metric.allTimeActual || weeklyActual);
+    // The Apps Script pre-computes correct sums (count metrics) and averages (rate metrics)
+    if (scFilter === 'week')    return weeklyActual;
+    if (scFilter === '7d')      return metric.last7Actual   || weeklyActual;
+    if (scFilter === '30d')     return metric.last30Actual  || weeklyActual;
+    if (scFilter === 'alltime') return metric.allTimeActual || weeklyActual;
 
     let indices = [];
     if (scFilter === 'custom') {
@@ -766,17 +755,7 @@
           last30Actual:  last30Map[key]  || weeklyActual });
       }
 
-      // Estimate total historical days for All Time rate averaging
-      const anchorMetric = metrics.find(m => m.name.toLowerCase().includes('opt ins (leads)'))
-                        || metrics.find(m => m.name.toLowerCase().includes('ad spend'));
-      let estimatedTotalDays = 7;
-      if (anchorMetric) {
-        const weeklyN  = parseFloat(anchorMetric.weeklyActual) || 0;
-        const allTimeN = parseFloat(allTimeMap[anchorMetric.name.toLowerCase()] || anchorMetric.allTimeActual) || weeklyN;
-        if (weeklyN > 0) estimatedTotalDays = Math.max(7, Math.round((allTimeN / weeklyN) * 7));
-      }
-
-      scData = { dayHeaders, dayDates, metrics, estimatedTotalDays };
+      scData = { dayHeaders, dayDates, metrics };
       renderScorecard();
     } catch (e) {
       document.getElementById('scorecard-wrap').innerHTML =
@@ -839,8 +818,9 @@
     // --- BUILDERS ---
     function buildCard(m) {
       const displayActual = getFilteredActual(m);
-      const actual = parseVal(displayActual);
-      const goal   = parseVal(m.weeklyGoal);
+      const noPct  = NEVER_PERCENT.has(m.name.toLowerCase().trim());
+      const actual = parseVal(displayActual, noPct);
+      const goal   = parseVal(m.weeklyGoal, noPct);
       const status = trackStatus(actual, m.weeklyGoal);
       const valCls = status==='green'?'sc-green':status==='yellow'?'sc-yellow':status==='red'?'sc-red':'sc-white';
       let barHtml = '';
@@ -855,8 +835,9 @@
 
     function buildTableRow(m) {
       const displayActual = getFilteredActual(m);
-      const actual  = parseVal(displayActual);
-      const goal    = parseVal(m.weeklyGoal);
+      const noPct   = NEVER_PERCENT.has(m.name.toLowerCase().trim());
+      const actual  = parseVal(displayActual, noPct);
+      const goal    = parseVal(m.weeklyGoal, noPct);
       const status  = trackStatus(actual, m.weeklyGoal);
       const actCls  = status==='green'?'col-actual-good':status==='yellow'?'col-actual-warn':status==='red'?'col-actual-bad':'col-actual-na';
       const goalCls = status==='green'?'col-actual-good':status==='yellow'?'col-actual-warn':status==='red'?'col-actual-bad':'col-goal';
