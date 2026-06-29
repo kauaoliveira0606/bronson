@@ -645,15 +645,27 @@
   }
 
   // Compute the display value for a metric given the active filter
+  const RATE_METRICS = new Set([
+    'cost per lead (meta)','funnel conversion rate (lt sales/opt ins)',
+    'connection rate (response rate)','vsl engagement rate','vsl play rate',
+    'landing page connect rate','opt in rate (opt ins vs views)',
+    'close rate - low ticket','close rate - high ticket','show rate- high ticket',
+    'roas - total','roas - low ticket','cpa - low ticket',
+    'confirmation email open rate','confirmation email ctr',
+  ]);
+
   function getFilteredActual(metric) {
     const { days, weeklyActual } = metric;
     if (!scData) return weeklyActual;
     const { dayDates } = scData;
+    const isRate = RATE_METRICS.has(metric.name.toLowerCase().trim());
 
     if (scFilter === 'week') return weeklyActual;
-    if (scFilter === '7d') return metric.last7Actual || weeklyActual;
-    if (scFilter === '30d') return metric.last30Actual || weeklyActual;
-    if (scFilter === 'alltime') return metric.allTimeActual || weeklyActual;
+    // Rate metrics: always use current week's value (averaging across raw daily sums is meaningless)
+    // Count metrics: use aggregated cross-tab sums
+    if (scFilter === '7d')      return isRate ? weeklyActual : (metric.last7Actual   || weeklyActual);
+    if (scFilter === '30d')     return isRate ? weeklyActual : (metric.last30Actual  || weeklyActual);
+    if (scFilter === 'alltime') return isRate ? weeklyActual : (metric.allTimeActual || weeklyActual);
 
     let indices = [];
     if (scFilter === 'custom') {
