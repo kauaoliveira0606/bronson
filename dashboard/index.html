@@ -252,7 +252,10 @@
   <div class="chart-card">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
       <div class="chart-title" style="margin-bottom:0;">Weekly Scorecard</div>
-      <div class="scorecard-week" id="scorecard-week"></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="scorecard-week" id="scorecard-week"></div>
+        <button class="meta-config-btn" onclick="promptSheetGID()" title="Update sheet tab">⚙ Update Tab</button>
+      </div>
     </div>
     <div class="sc-filter-bar">
       <button class="sc-filter-btn active" data-f="week"      onclick="setSCFilter('week')">This Week</button>
@@ -564,7 +567,23 @@
   }
 
   // ── Scorecard ──────────────────────────────────────────────────────────────
-  const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Koljpe91Y3rbz0C9cXzIxt9ZFlLk6plrxItZaE0-sQxaNAnGxxV7WSD-9f0qG7-0JVZFI7UySbCF/pub?output=csv&cachebust=' + Date.now();
+  function getSheetURL() {
+    const gid = localStorage.getItem('scorecard_gid');
+    const base = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Koljpe91Y3rbz0C9cXzIxt9ZFlLk6plrxItZaE0-sQxaNAnGxxV7WSD-9f0qG7-0JVZFI7UySbCF/pub?output=csv';
+    return base + (gid ? '&gid=' + gid : '') + '&t=' + Date.now();
+  }
+
+  function promptSheetGID() {
+    const current = localStorage.getItem('scorecard_gid') || '';
+    const val = prompt('Paste the sheet tab GID (the number after gid= in the Google Sheets URL when on the new tab):', current);
+    if (val === null) return;
+    const clean = val.trim().replace(/[^0-9]/g, '');
+    if (clean) { localStorage.setItem('scorecard_gid', clean); }
+    else { localStorage.removeItem('scorecard_gid'); }
+    loadScorecard();
+  }
+
+  const SHEET_URL = getSheetURL();
 
   // Minimal CSV parser (handles quoted fields with commas)
   function parseCSVLine(line) {
@@ -695,7 +714,7 @@
 
   async function loadScorecard() {
     try {
-      const res = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Koljpe91Y3rbz0C9cXzIxt9ZFlLk6plrxItZaE0-sQxaNAnGxxV7WSD-9f0qG7-0JVZFI7UySbCF/pub?output=csv&t=' + Date.now());
+      const res = await fetch(getSheetURL());
       const rawText = await res.text();
       const text = rawText.replace(/"([^"]|\n)*"/g, m => m.replace(/\n/g, ' '));
       const lines = text.split('\n').filter(l => l.trim());
