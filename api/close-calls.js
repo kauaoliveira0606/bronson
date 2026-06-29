@@ -8,7 +8,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') { res.status(200).end(); return; }
 
   const { since, cursor } = req.query;
-  let url = 'https://api.close.com/api/v1/activity/call/?_limit=100&_fields=lead_id,date_created,direction';
+  let url = 'https://api.close.com/api/v1/activity/call/?_limit=100&_fields=lead_id,date_created,direction,user_name';
   if (since)  url += '&date_created__gt=' + encodeURIComponent(since);
   if (cursor) url += '&_cursor='          + encodeURIComponent(cursor);
 

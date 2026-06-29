@@ -1067,8 +1067,8 @@
       stlLeads   = leads;
       stlCallMap = {};
       calls.forEach(c => {
-        if (!stlCallMap[c.lead_id] || c.date_created < stlCallMap[c.lead_id]) {
-          stlCallMap[c.lead_id] = c.date_created;
+        if (!stlCallMap[c.lead_id] || c.date_created < stlCallMap[c.lead_id].date) {
+          stlCallMap[c.lead_id] = { date: c.date_created, rep: c.user_name || '—' };
         }
       });
 
@@ -1092,9 +1092,11 @@
 
     const rows = leads.map(l => {
       const created  = new Date(l.date_created);
-      const callTime = stlCallMap[l.id] ? new Date(stlCallMap[l.id]) : null;
+      const entry    = stlCallMap[l.id] || null;
+      const callTime = entry ? new Date(entry.date) : null;
       const delta    = callTime ? callTime - created : null;
-      return { lead: l, created, callTime, delta };
+      const rep      = entry ? entry.rep : null;
+      return { lead: l, created, callTime, delta, rep };
     });
 
     const total       = leads.length;
@@ -1147,6 +1149,7 @@
             <th>Lead</th>
             <th>Lead Status</th>
             <th>Created</th>
+            <th>Called By</th>
             <th>First Call</th>
             <th>Response Time</th>
           </tr>
@@ -1174,6 +1177,7 @@
               '<td style="font-weight:600;">' + (r.lead.display_name||'—') + '</td>' +
               '<td>' + leadStatusPill + '</td>' +
               '<td style="color:var(--text2);font-size:.75rem;">' + createdStr + '</td>' +
+              '<td style="font-size:.78rem;font-weight:600;">' + (r.rep || '<span style="color:rgba(255,255,255,0.25);">—</span>') + '</td>' +
               '<td style="color:var(--text2);font-size:.75rem;">' + callStr + '</td>' +
               '<td>' + contactPill + '&nbsp;' + respCell + '</td>' +
               '</tr>';
