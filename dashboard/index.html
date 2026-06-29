@@ -562,7 +562,7 @@
   }
 
   // ── Scorecard ──────────────────────────────────────────────────────────────
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyja-O-Ay0A-yAcJre4ZyNY3b-2HnSyfAK4ChY8U5QE-lYG1Or8zguTwr8-2gRdnXVu7Q/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzNeyBYdI5JJ28O493LlnBZVXUKFmb8IYVi6DA812GVmY8tyHndqKuQApCPg2SdrTN4sg/exec';
   const SHEET_URL = APPS_SCRIPT_URL + '?t=' + Date.now();
 
   // Minimal CSV parser (handles quoted fields with commas)
@@ -707,21 +707,23 @@
       if (dateStart) document.getElementById('scorecard-week').textContent = dateStart + ' – ' + dateEnd;
 
       // Split out __ALLTIME__ and __LAST30__ sections
-      const atIdx   = lines.findIndex(l => l.trim() === '__ALLTIME__');
+      const l7Idx   = lines.findIndex(l => l.trim() === '__LAST7__');
       const l30Idx  = lines.findIndex(l => l.trim() === '__LAST30__');
-      const mainEnd = atIdx > -1 ? atIdx : lines.length;
+      const atIdx   = lines.findIndex(l => l.trim() === '__ALLTIME__');
+      const mainEnd = l7Idx > -1 ? l7Idx : l30Idx > -1 ? l30Idx : atIdx > -1 ? atIdx : lines.length;
 
       function parseSection(startIdx, endIdx) {
         const map = {};
-        for (let r = startIdx + 1; r < endIdx; r++) {
+        for (let r = startIdx + 1; r < (endIdx > -1 ? endIdx : lines.length); r++) {
           const cols = parseCSVLine(lines[r]);
           const n = (cols[0] || '').trim();
           if (n) map[n.toLowerCase()] = (cols[1] || '').trim();
         }
         return map;
       }
-      const allTimeMap = atIdx  > -1 ? parseSection(atIdx,  l30Idx > -1 ? l30Idx : lines.length) : {};
-      const last30Map  = l30Idx > -1 ? parseSection(l30Idx, lines.length) : {};
+      const last7Map   = l7Idx  > -1 ? parseSection(l7Idx,  l30Idx) : {};
+      const last30Map  = l30Idx > -1 ? parseSection(l30Idx, atIdx)  : {};
+      const allTimeMap = atIdx  > -1 ? parseSection(atIdx,  -1)     : {};
 
       const metrics = [];
       for (let r = 3; r < mainEnd; r++) {
@@ -742,7 +744,8 @@
           if (vals.length) last7Actual = (vals.reduce((a,b) => a+b, 0) / vals.length).toFixed(2) + '%';
         }
         const key = name.toLowerCase();
-        metrics.push({ name, days, weeklyActual, weeklyGoal, last7Actual,
+        metrics.push({ name, days, weeklyActual, weeklyGoal,
+          last7Actual:   last7Map[key]   || last7Actual,
           allTimeActual: allTimeMap[key] || weeklyActual,
           last30Actual:  last30Map[key]  || weeklyActual });
       }
