@@ -1141,6 +1141,58 @@
         <div class="kpi-sub">${notContacted.length} leads with no outbound call</div>
       </div>`;
 
+    // ── Setter breakdown ──────────────────────────────────────────────────────
+    const repMap = {};
+    rows.forEach(r => {
+      if (!r.rep) return;
+      if (!repMap[r.rep]) repMap[r.rep] = { called: [], totalLeads: 0 };
+      repMap[r.rep].totalLeads++;
+      if (r.delta !== null && r.delta >= 0) repMap[r.rep].called.push(r.delta);
+    });
+    // Count uncalled leads per rep isn't possible from call data alone,
+    // so totalLeads here = leads they called first. Show their speed metrics.
+    const repRows = Object.entries(repMap)
+      .map(([name, d]) => {
+        const n      = d.called.length;
+        const avg    = n ? d.called.reduce((s, v) => s + v, 0) / n : null;
+        const sub5   = d.called.filter(v => v < 5 * 60 * 1000).length;
+        const sub1h  = d.called.filter(v => v < 60 * 60 * 1000).length;
+        const sub5p  = n ? Math.round((sub5  / n) * 100) : 0;
+        const sub1hp = n ? Math.round((sub1h / n) * 100) : 0;
+        return { name, n, avg, sub5p, sub1hp };
+      })
+      .sort((a, b) => (a.avg ?? Infinity) - (b.avg ?? Infinity));
+
+    const repTableHtml = repRows.length ? `
+      <div style="margin-top:28px;">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6b7280;margin-bottom:12px;">Setter Breakdown</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Setter</th>
+              <th style="text-align:center;">Leads Called</th>
+              <th style="text-align:center;">Avg Response</th>
+              <th style="text-align:center;">Under 5 Min</th>
+              <th style="text-align:center;">Under 1 Hr</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${repRows.map(r => {
+              const avgColor = r.avg === null ? 'rgba(255,255,255,0.3)' : r.avg < 5*60*1000 ? 'var(--green)' : r.avg < 3600*1000 ? 'var(--yellow)' : 'var(--red)';
+              const s5Color  = r.sub5p  >= 70 ? 'var(--green)' : r.sub5p  >= 40 ? 'var(--yellow)' : 'var(--red)';
+              const s1hColor = r.sub1hp >= 85 ? 'var(--green)' : r.sub1hp >= 55 ? 'var(--yellow)' : 'var(--red)';
+              return '<tr>' +
+                '<td style="font-weight:700;">' + r.name + '</td>' +
+                '<td style="text-align:center;color:rgba(255,255,255,0.6);">' + r.n + '</td>' +
+                '<td style="text-align:center;font-weight:700;color:' + avgColor + ';">' + (r.avg !== null ? fmtDuration(r.avg) : '—') + '</td>' +
+                '<td style="text-align:center;font-weight:700;color:' + s5Color  + ';">' + r.sub5p  + '%</td>' +
+                '<td style="text-align:center;font-weight:700;color:' + s1hColor + ';">' + r.sub1hp + '%</td>' +
+              '</tr>';
+            }).join('')}
+          </tbody>
+        </table>
+      </div>` : '';
+
     const sorted = [...rows].sort((a, b) => b.created - a.created).slice(0, 40);
     tableEl.innerHTML = `
       <table>
@@ -1183,7 +1235,7 @@
               '</tr>';
           }).join('')}
         </tbody>
-      </table>`;
+      </table>` + repTableHtml;
   }
 
   // ── Tab switching ────────────────────────────────────────────────────────────
