@@ -1026,9 +1026,9 @@
       let cursor = null, pages = 0;
       const calls = [];
       while (pages < 8) {
-        let url = 'https://api.close.com/api/v1/activity/call/?_limit=100&_fields=lead_id,date_created,direction&_order_by=-date_created';
-        if (cursor) url += '&_cursor=' + encodeURIComponent(cursor);
-        const res  = await fetch(url, { headers: { 'Authorization': AUTH } });
+        let url = '/api/close-calls?since=' + encodeURIComponent(cutoff.toISOString());
+        if (cursor) url += '&cursor=' + encodeURIComponent(cursor);
+        const res  = await fetch(url);
         const data = await res.json();
         const batch = data.data || [];
         let done = false;
