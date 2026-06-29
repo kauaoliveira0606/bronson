@@ -256,8 +256,6 @@
     </div>
     <div class="sc-filter-bar">
       <button class="sc-filter-btn active" data-f="week"      onclick="setSCFilter('week')">This Week</button>
-      <button class="sc-filter-btn"        data-f="today"     onclick="setSCFilter('today')">Today</button>
-      <button class="sc-filter-btn"        data-f="yesterday" onclick="setSCFilter('yesterday')">Yesterday</button>
       <button class="sc-filter-btn"        data-f="7d"        onclick="setSCFilter('7d')">Last 7 Days</button>
       <button class="sc-filter-btn"        data-f="30d"       onclick="setSCFilter('30d')">Last 30 Days</button>
       <button class="sc-filter-btn"        data-f="alltime"   onclick="setSCFilter('alltime')">All Time</button>
@@ -652,24 +650,10 @@
     if (!scData) return weeklyActual;
     const { dayDates } = scData;
 
-    if (scFilter === 'week' || scFilter === 'alltime') return weeklyActual;
-
-    const now   = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const yest  = new Date(today); yest.setDate(today.getDate() - 1);
+    if (scFilter === 'week' || scFilter === '7d' || scFilter === '30d' || scFilter === 'alltime') return weeklyActual;
 
     let indices = [];
-    if (scFilter === 'today') {
-      indices = dayDates.reduce((a, d, i) => { if (d && d.getTime() === today.getTime()) a.push(i); return a; }, []);
-    } else if (scFilter === 'yesterday') {
-      indices = dayDates.reduce((a, d, i) => { if (d && d.getTime() === yest.getTime()) a.push(i); return a; }, []);
-    } else if (scFilter === '7d') {
-      const from7 = new Date(today); from7.setDate(today.getDate() - 6);
-      indices = dayDates.reduce((a, d, i) => { if (d && d >= from7 && d <= today) a.push(i); return a; }, []);
-    } else if (scFilter === '30d') {
-      const from30 = new Date(today); from30.setDate(today.getDate() - 29);
-      indices = dayDates.reduce((a, d, i) => { if (d && d >= from30 && d <= today) a.push(i); return a; }, []);
-    } else if (scFilter === 'custom') {
+    if (scFilter === 'custom') {
       const fv = document.getElementById('sc-from').value;
       const tv = document.getElementById('sc-to').value;
       if (!fv || !tv) return weeklyActual;
@@ -795,7 +779,6 @@
     const filterLabel = {
       week: (dayHeaders.find(d=>/[A-Za-z]/.test(d))||'') + ' – ' + ([...dayHeaders].reverse().find(d=>/[A-Za-z]/.test(d))||''),
       today: 'Today',
-      yesterday: 'Yesterday',
       '7d': 'Last 7 Days',
       '30d': 'Last 30 Days',
       alltime: 'All Time',
