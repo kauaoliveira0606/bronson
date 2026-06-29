@@ -43,14 +43,22 @@
       justify-content: space-between;
     }
 
-    .nav-logo {
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.5px;
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .nav-logo span { color: var(--green); }
+    .nav-link {
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 9px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .nav-link:hover { background: rgba(255,255,255,0.1); }
 
     .nav-cta {
       background: var(--green);
@@ -59,10 +67,8 @@
       font-size: 0.85rem;
       padding: 9px 20px;
       border-radius: 8px;
-      cursor: pointer;
-      border: none;
-      transition: opacity .15s;
       text-decoration: none;
+      transition: opacity .15s;
     }
     .nav-cta:hover { opacity: 0.85; }
 
@@ -145,6 +151,15 @@
       color: var(--text2);
       border-top: 1px solid var(--border);
     }
+    footer a { color: var(--text2); margin: 0 8px; text-decoration: none; }
+    footer a:hover { color: var(--text); }
+    .footer-disclaimer {
+      max-width: 660px;
+      margin: 14px auto 0;
+      font-size: 0.7rem;
+      color: #4b5563;
+      line-height: 1.6;
+    }
 
     @media (max-width: 600px) {
       .hero { padding: 32px 16px 28px; }
@@ -160,8 +175,11 @@
 <body>
 
 <nav>
-  <span class="nav-logo">AI <span>Dropshipping</span> Store</span>
-  <a class="nav-cta" href="/lt">Get Free Access →</a>
+  <a href="/lt"><img src="/logo.png" alt="AI Dropshipping Store" style="height:36px;display:block;" /></a>
+  <div class="nav-links">
+    <a class="nav-link" href="https://aiadvertiserreviews.com/about" target="_blank" rel="noopener">About</a>
+    <a class="nav-cta" href="https://www.ad-ventur.com" target="_blank" rel="noopener">Apply</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -320,7 +338,14 @@
 </div>
 
 <footer>
-  <p>&copy; 2025 AI Dropshipping Store. All rights reserved.</p>
+  <div>
+    <a href="https://www.ad-ventur.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+    <a href="https://www.ad-ventur.com/terms" target="_blank" rel="noopener">Terms of Service</a>
+  </div>
+  <p class="footer-disclaimer">
+    INCOME DISCLAIMER: Results mentioned are not typical. Individual results will vary based on effort, experience, background, and market conditions. This is an educational program. We make no guarantees of income or business outcomes.
+  </p>
+  <p style="margin-top:12px;">&copy; 2025 AI Dropshipping Store. All rights reserved.</p>
 </footer>
 
 </body>
