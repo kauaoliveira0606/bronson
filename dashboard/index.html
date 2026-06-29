@@ -564,7 +564,8 @@
   }
 
   // ── Scorecard ──────────────────────────────────────────────────────────────
-  const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Koljpe91Y3rbz0C9cXzIxt9ZFlLk6plrxItZaE0-sQxaNAnGxxV7WSD-9f0qG7-0JVZFI7UySbCF/pub?output=csv&cachebust=' + Date.now();
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKwqsy-AB9mx8oX--8uCt8xr-c5Zy0ZNOMASv-aWY_ZoyeH_lCW91KGfyqs5jnnYSCgQ/exec';
+  const SHEET_URL = APPS_SCRIPT_URL + '?t=' + Date.now();
 
   // Minimal CSV parser (handles quoted fields with commas)
   function parseCSVLine(line) {
@@ -695,7 +696,7 @@
 
   async function loadScorecard() {
     try {
-      const res = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Koljpe91Y3rbz0C9cXzIxt9ZFlLk6plrxItZaE0-sQxaNAnGxxV7WSD-9f0qG7-0JVZFI7UySbCF/pub?output=csv&t=' + Date.now());
+      const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now());
       const rawText = await res.text();
       const text = rawText.replace(/"([^"]|\n)*"/g, m => m.replace(/\n/g, ' '));
       const lines = text.split('\n').filter(l => l.trim());
