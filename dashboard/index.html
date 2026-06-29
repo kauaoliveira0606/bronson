@@ -278,6 +278,24 @@
     <div id="ai-summary-body"></div>
   </div>
 
+  <!-- ── Speed to Lead ─────────────────────────────────────────────────────── -->
+  <div class="chart-card" id="stl-card">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+      <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;">⚡</div>
+      <div>
+        <div class="chart-title" style="margin-bottom:0;">Speed to Lead</div>
+        <div style="font-size:.68rem;color:var(--text2);margin-top:2px;">Time from lead creation to first outbound call · Close.com</div>
+      </div>
+    </div>
+    <div class="sc-filter-bar" style="margin-bottom:16px;">
+      <button class="sc-filter-btn active" data-stl="today" onclick="setSTLFilter('today')">Today</button>
+      <button class="sc-filter-btn" data-stl="week" onclick="setSTLFilter('week')">This Week</button>
+      <button class="sc-filter-btn" data-stl="7d" onclick="setSTLFilter('7d')">Last 7 Days</button>
+    </div>
+    <div id="stl-kpi-grid" class="kpi-grid" style="margin-bottom:20px;"></div>
+    <div id="stl-table-wrap"></div>
+  </div>
+
 </div>
 </div>
 
@@ -346,7 +364,7 @@
 </div>
 
 <script>
-  const CLOSE_KEY = 'api_3fknhFUCEFucJkQCbLa1OO.57qB50ijdey6IK0l2nZXik';
+  const CLOSE_KEY = 'api_3xHOjxlKYnGOvHz5YEcXdL.1Bnd9EgXsYa05oQloxvuAH';
   const AUTH      = 'Basic ' + btoa(CLOSE_KEY + ':');
   let allLeads    = [];
   let currentRange = 'today';
@@ -554,6 +572,7 @@
     document.getElementById('last-updated').textContent = 'Refreshing...';
     try {
       allLeads = await fetchAllLeads();
+      renderSTL();
       render();
       document.getElementById('last-updated').textContent = 'Updated ' + new Date().toLocaleTimeString();
     } catch(e) {
@@ -954,10 +973,190 @@
     document.getElementById('ai-summary-card').style.display = 'block';
   }
 
-  loadAll();
+  loadAll().catch(()=>{}).then(() => loadSTL());
   loadScorecard();
   setInterval(loadAll, 5 * 60 * 1000);
   setInterval(loadScorecard, 10 * 60 * 1000);
+  setInterval(loadSTL, 10 * 60 * 1000);
+
+  // ── Speed to Lead ────────────────────────────────────────────────────────────
+  let stlFilter  = 'today';
+  let stlCallMap = {};
+
+  function setSTLFilter(f) {
+    stlFilter = f;
+    document.querySelectorAll('[data-stl]').forEach(b => b.classList.toggle('active', b.dataset.stl === f));
+    renderSTL();
+  }
+
+  function stlGetLeads() {
+    const now = new Date();
+    let start;
+    if (stlFilter === 'today') {
+      start = new Date(now); start.setHours(0,0,0,0);
+    } else if (stlFilter === 'week') {
+      start = new Date(now); start.setDate(now.getDate() - now.getDay()); start.setHours(0,0,0,0);
+    } else {
+      start = new Date(now); start.setDate(now.getDate() - 6); start.setHours(0,0,0,0);
+    }
+    return allLeads.filter(l => new Date(l.date_created) >= start);
+  }
+
+  function fmtDuration(ms) {
+    if (ms < 0) return '—';
+    const sec = Math.round(ms / 1000);
+    if (sec < 60) return sec + 's';
+    const min = Math.floor(sec / 60);
+    const s   = sec % 60;
+    if (min < 60) return min + 'm' + (s > 0 ? ' ' + s + 's' : '');
+    const hr = Math.floor(min / 60);
+    const m  = min % 60;
+    return hr + 'h' + (m > 0 ? ' ' + m + 'm' : '');
+  }
+
+  async function loadSTL() {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 7);
+    cutoff.setHours(0, 0, 0, 0);
+
+    const kpiEl = document.getElementById('stl-kpi-grid');
+    if (kpiEl) kpiEl.innerHTML = '<div class="loading">Loading speed to lead data...</div>';
+
+    try {
+      let cursor = null, pages = 0;
+      const calls = [];
+      while (pages < 8) {
+        let url = 'https://api.close.com/api/v1/activity/call/?_limit=100&_fields=lead_id,date_created,direction&_order_by=-date_created';
+        if (cursor) url += '&_cursor=' + encodeURIComponent(cursor);
+        const res  = await fetch(url, { headers: { 'Authorization': AUTH } });
+        const data = await res.json();
+        const batch = data.data || [];
+        let done = false;
+        for (const c of batch) {
+          if (new Date(c.date_created) < cutoff) { done = true; break; }
+          if (c.direction === 'outbound') calls.push(c);
+        }
+        if (done || !data.has_more || !data.cursor) break;
+        cursor = data.cursor;
+        pages++;
+      }
+
+      stlCallMap = {};
+      calls.forEach(c => {
+        if (!stlCallMap[c.lead_id] || c.date_created < stlCallMap[c.lead_id]) {
+          stlCallMap[c.lead_id] = c.date_created;
+        }
+      });
+
+      renderSTL();
+    } catch (e) {
+      if (kpiEl) kpiEl.innerHTML = '<div class="loading" style="color:var(--red);">Error: ' + e.message + '</div>';
+    }
+  }
+
+  function renderSTL() {
+    const kpiEl   = document.getElementById('stl-kpi-grid');
+    const tableEl = document.getElementById('stl-table-wrap');
+    if (!kpiEl || !tableEl) return;
+
+    const leads = stlGetLeads();
+    if (!leads.length) {
+      kpiEl.innerHTML   = '<div class="loading">No leads found for selected period.</div>';
+      tableEl.innerHTML = '';
+      return;
+    }
+
+    const rows = leads.map(l => {
+      const created  = new Date(l.date_created);
+      const callTime = stlCallMap[l.id] ? new Date(stlCallMap[l.id]) : null;
+      const delta    = callTime ? callTime - created : null;
+      return { lead: l, created, callTime, delta };
+    });
+
+    const total       = leads.length;
+    const contacted   = rows.filter(r => r.delta !== null && r.delta >= 0);
+    const notContacted= rows.filter(r => r.delta === null);
+    const sub5        = contacted.filter(r => r.delta < 5 * 60 * 1000);
+    const sub1h       = contacted.filter(r => r.delta < 60 * 60 * 1000);
+    const avgMs       = contacted.length ? contacted.reduce((s, r) => s + r.delta, 0) / contacted.length : null;
+    const pct         = (n, d) => d > 0 ? Math.round((n / d) * 100) : 0;
+
+    const avgColor  = avgMs === null ? '' : avgMs < 5*60*1000 ? 'green' : avgMs < 3600*1000 ? 'yellow' : 'red';
+    const sub5r     = sub5.length / Math.max(total,1);
+    const sub1hr    = sub1h.length / Math.max(total,1);
+    const ncr       = notContacted.length / Math.max(total,1);
+    const sub5Color = sub5r  >= 0.7  ? 'green' : sub5r  >= 0.4  ? 'yellow' : 'red';
+    const sub1hColor= sub1hr >= 0.85 ? 'green' : sub1hr >= 0.55 ? 'yellow' : 'red';
+    const ncColor   = ncr    <= 0.1  ? 'green' : ncr    <= 0.3  ? 'yellow' : 'red';
+
+    kpiEl.innerHTML = `
+      <div class="kpi-card ${avgColor}">
+        <div class="kpi-accent"></div>
+        <div class="kpi-label">Avg Response Time</div>
+        <div class="kpi-value" style="font-size:1.7rem;">${avgMs !== null ? fmtDuration(avgMs) : '—'}</div>
+        <div class="kpi-sub">${contacted.length} of ${total} leads called</div>
+      </div>
+      <div class="kpi-card ${sub5Color}">
+        <div class="kpi-accent"></div>
+        <div class="kpi-label">Under 5 Minutes</div>
+        <div class="kpi-value" style="font-size:1.7rem;">${pct(sub5.length, total)}%</div>
+        <div class="kpi-sub">${sub5.length} leads reached in &lt; 5 min</div>
+      </div>
+      <div class="kpi-card ${sub1hColor}">
+        <div class="kpi-accent"></div>
+        <div class="kpi-label">Under 1 Hour</div>
+        <div class="kpi-value" style="font-size:1.7rem;">${pct(sub1h.length, total)}%</div>
+        <div class="kpi-sub">${sub1h.length} leads reached in &lt; 1 hr</div>
+      </div>
+      <div class="kpi-card ${ncColor}">
+        <div class="kpi-accent"></div>
+        <div class="kpi-label">Not Yet Called</div>
+        <div class="kpi-value" style="font-size:1.7rem;">${pct(notContacted.length, total)}%</div>
+        <div class="kpi-sub">${notContacted.length} leads with no outbound call</div>
+      </div>`;
+
+    const sorted = [...rows].sort((a, b) => b.created - a.created).slice(0, 40);
+    tableEl.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Lead</th>
+            <th>Lead Status</th>
+            <th>Created</th>
+            <th>First Call</th>
+            <th>Response Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${sorted.map(r => {
+            const createdStr = r.created.toLocaleDateString('en-US', { month:'short', day:'numeric' }) + ' · ' + r.created.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' });
+            const callStr    = r.callTime ? r.callTime.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' }) : '—';
+            let respCell, contactPill;
+            if (r.delta === null) {
+              respCell    = '<span style="color:rgba(255,255,255,0.3);">—</span>';
+              contactPill = '<span class="status-pill pill-gray">No Call</span>';
+            } else if (r.delta < 5 * 60 * 1000) {
+              respCell    = '<span style="color:var(--green);font-weight:700;">' + fmtDuration(r.delta) + '</span>';
+              contactPill = '<span class="status-pill pill-green">Fast</span>';
+            } else if (r.delta < 60 * 60 * 1000) {
+              respCell    = '<span style="color:var(--yellow);font-weight:700;">' + fmtDuration(r.delta) + '</span>';
+              contactPill = '<span class="status-pill pill-yellow">OK</span>';
+            } else {
+              respCell    = '<span style="color:var(--red);font-weight:700;">' + fmtDuration(r.delta) + '</span>';
+              contactPill = '<span class="status-pill pill-red">Slow</span>';
+            }
+            const leadStatusPill = '<span class="status-pill ' + (PILL[r.lead.status_label]||'pill-gray') + '">' + (r.lead.status_label||'—') + '</span>';
+            return '<tr>' +
+              '<td style="font-weight:600;">' + (r.lead.display_name||'—') + '</td>' +
+              '<td>' + leadStatusPill + '</td>' +
+              '<td style="color:var(--text2);font-size:.75rem;">' + createdStr + '</td>' +
+              '<td style="color:var(--text2);font-size:.75rem;">' + callStr + '</td>' +
+              '<td>' + contactPill + '&nbsp;' + respCell + '</td>' +
+              '</tr>';
+          }).join('')}
+        </tbody>
+      </table>`;
+  }
 
   // ── Tab switching ────────────────────────────────────────────────────────────
   function switchTab(tab) {
