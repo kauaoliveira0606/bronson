@@ -564,11 +564,7 @@
   }
 
   // ── Scorecard ──────────────────────────────────────────────────────────────
-  function getSheetURL() {
-    return 'https://script.google.com/macros/s/AKfycbwb-hz_EWy5VVvvgJwMU7FMim1pNTXttSZ5Nws-iqE4iSmFHvF0TscBiMmiVcw1FZm6yw/exec?t=' + Date.now();
-  }
-
-  const SHEET_URL = getSheetURL();
+  const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Koljpe91Y3rbz0C9cXzIxt9ZFlLk6plrxItZaE0-sQxaNAnGxxV7WSD-9f0qG7-0JVZFI7UySbCF/pub?output=csv&cachebust=' + Date.now();
 
   // Minimal CSV parser (handles quoted fields with commas)
   function parseCSVLine(line) {
@@ -636,23 +632,14 @@
     if (scData) renderScorecard();
   }
 
-  // Parse date headers — handles "Jun-21", "Jun 21", or full timestamps from Apps Script
+  // Parse "Jun-21" style headers into Date objects
   function parseDayHeader(label) {
     if (!label) return null;
     const clean = label.trim();
     if (!clean || !/[A-Za-z]/.test(clean)) return null;
-    // Full timestamp (from Apps Script): "Sun Jun 21 2026 00:00:00 GMT-0400 ..."
-    const d1 = new Date(clean);
-    if (!isNaN(d1)) return d1;
-    // Short format: "Jun-21" or "Jun 21"
-    const d2 = new Date(`${clean.replace('-', ' ')} ${new Date().getFullYear()}`);
-    return isNaN(d2) ? null : d2;
-  }
-
-  // Format a Date as "Jun-21" for display
-  function fmtDayHeader(d) {
-    if (!d) return '';
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).replace(' ', '-');
+    const now = new Date();
+    const d = new Date(`${clean} ${now.getFullYear()}`);
+    return isNaN(d) ? null : d;
   }
 
   // Compute the display value for a metric given the active filter
@@ -708,7 +695,7 @@
 
   async function loadScorecard() {
     try {
-      const res = await fetch(getSheetURL());
+      const res = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vR2Koljpe91Y3rbz0C9cXzIxt9ZFlLk6plrxItZaE0-sQxaNAnGxxV7WSD-9f0qG7-0JVZFI7UySbCF/pub?output=csv&t=' + Date.now());
       const rawText = await res.text();
       const text = rawText.replace(/"([^"]|\n)*"/g, m => m.replace(/\n/g, ' '));
       const lines = text.split('\n').filter(l => l.trim());
@@ -717,9 +704,9 @@
       const dateRow    = parseCSVLine(lines[1]);
       const dayHeaders = dateRow.slice(1, 8).map(d => d.trim());
       const dayDates   = dayHeaders.map(parseDayHeader);
-      const dateStart  = dayDates.find(d => d) || null;
-      const dateEnd    = [...dayDates].reverse().find(d => d) || null;
-      if (dateStart) document.getElementById('scorecard-week').textContent = fmtDayHeader(dateStart) + ' – ' + fmtDayHeader(dateEnd);
+      const dateStart  = dayHeaders.find(d => /[A-Za-z]/.test(d)) || '';
+      const dateEnd    = [...dayHeaders].reverse().find(d => /[A-Za-z]/.test(d)) || '';
+      if (dateStart) document.getElementById('scorecard-week').textContent = dateStart + ' – ' + dateEnd;
 
       const metrics = [];
       for (let r = 3; r < lines.length; r++) {
