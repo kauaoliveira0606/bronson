@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meta Ads Analysis</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f0f0f; color: #e0e0e0; font-family: 'Inter', system-ui, sans-serif; min-height: 100vh; padding: 40px 20px; }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 22px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+  .subtitle { color: #666; font-size: 14px; margin-bottom: 40px; }
+
+  .upload-zone {
+    border: 2px dashed #333;
+    border-radius: 12px;
+    padding: 60px 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    background: #141414;
+  }
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: #555;
+    background: #1a1a1a;
+  }
+  .upload-zone input { display: none; }
+  .upload-icon { font-size: 36px; margin-bottom: 12px; }
+  .upload-zone h2 { font-size: 16px; font-weight: 500; color: #ccc; margin-bottom: 6px; }
+  .upload-zone p { font-size: 13px; color: #555; }
+
+  .file-selected {
+    background: #141414;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+  .file-info { font-size: 14px; color: #ccc; }
+  .file-info span { color: #666; font-size: 12px; display: block; margin-top: 2px; }
+
+  .btn {
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-run { margin-top: 24px; width: 100%; padding: 14px; font-size: 15px; }
+
+  .status {
+    margin-top: 24px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+  }
+  .status.loading { background: #1a1a1a; border: 1px solid #2a2a2a; color: #888; display: block; }
+  .status.error { background: #1a0000; border: 1px solid #3a0000; color: #ff6b6b; display: block; }
+
+  .spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid #333;
+    border-top-color: #888;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .result {
+    margin-top: 32px;
+    background: #141414;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+    display: none;
+  }
+  .result.visible { display: block; }
+  .result-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid #1f1f1f;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .result-header h3 { font-size: 14px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.05em; }
+  .copy-btn {
+    background: #222;
+    color: #ccc;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .copy-btn:hover { background: #2a2a2a; }
+  .result-body {
+    padding: 28px 32px;
+    white-space: pre-wrap;
+    font-family: 'Menlo', 'Monaco', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    color: #d0d0d0;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .result-body::-webkit-scrollbar { width: 6px; }
+  .result-body::-webkit-scrollbar-track { background: #1a1a1a; }
+  .result-body::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Meta Ads Weekly Analysis</h1>
+  <p class="subtitle">Upload your CSV export from Ads Manager to get an AI-powered analysis.</p>
+
+  <div class="upload-zone" id="uploadZone">
+    <input type="file" id="csvFile" accept=".csv">
+    <div class="upload-icon">📂</div>
+    <h2>Drop your CSV here or click to upload</h2>
+    <p>Export from Ads Manager → Customize columns → Export</p>
+  </div>
+
+  <div class="file-selected" id="fileSelected" style="display:none;">
+    <div class="file-info">
+      <strong id="fileName"></strong>
+      <span id="fileSize"></span>
+    </div>
+    <button class="btn" onclick="resetFile()">Change</button>
+  </div>
+
+  <button class="btn btn-run" id="runBtn" onclick="runAnalysis()" disabled>Run Analysis</button>
+
+  <div class="status" id="status">
+    <span class="spinner"></span> Analyzing your ads — this takes ~30 seconds…
+  </div>
+
+  <div class="result" id="result">
+    <div class="result-header">
+      <h3>Weekly Report</h3>
+      <button class="copy-btn" onclick="copyResult()">Copy</button>
+    </div>
+    <div class="result-body" id="resultBody"></div>
+  </div>
+</div>
+
+<script>
+const PROXY_URL = '/api/claude-proxy';
+
+const KPI = {
+  cpl: 15, outboundCtr: 1.0, cpm: 25, frequency7d: 3.0,
+  winnerMinSpend: 100, loserMinSpend: 50, loserCpaMultiple: 1.5, sleeperMinCtr: 1.0,
+};
+
+let csvData = null;
+
+// ── DRAG & DROP ───────────────────────────────────────────────────
+const zone = document.getElementById('uploadZone');
+const input = document.getElementById('csvFile');
+
+zone.addEventListener('click', () => input.click());
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+zone.addEventListener('drop', e => {
+  e.preventDefault();
+  zone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) handleFile(file);
+});
+input.addEventListener('change', () => { if (input.files[0]) handleFile(input.files[0]); });
+
+function handleFile(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    csvData = e.target.result;
+    document.getElementById('fileName').textContent = file.name;
+    document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
+    document.getElementById('uploadZone').style.display = 'none';
+    document.getElementById('fileSelected').style.display = 'flex';
+    document.getElementById('runBtn').disabled = false;
+  };
+  reader.readAsText(file);
+}
+
+function resetFile() {
+  csvData = null;
+  input.value = '';
+  document.getElementById('uploadZone').style.display = 'block';
+  document.getElementById('fileSelected').style.display = 'none';
+  document.getElementById('runBtn').disabled = true;
+  document.getElementById('result').classList.remove('visible');
+  document.getElementById('status').className = 'status';
+}
+
+// ── CSV PARSE ─────────────────────────────────────────────────────
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim().toLowerCase());
+
+  const col = name => headers.findIndex(h => h.includes(name));
+  const idx = {
+    adName:      col('ad name'),
+    delivery:    col('ad delivery'),
+    results:     col('results'),
+    cpl:         col('cost per result'),
+    spend:       col('amount spent'),
+    impressions: col('impressions'),
+    cpm:         col('cpm'),
+    ctr:         col('outbound ctr'),
+    frequency:   col('frequency'),
+    hookRate:    col('hook rate'),
+    lpCvr:       col('landing page connect'),
+  };
+
+  const ads = [];
+  for (let i = 1; i < lines.length; i++) {
+    const cols = splitCSVLine(lines[i]);
+    if (!cols.length) continue;
+    const get = (j) => j >= 0 ? cols[j]?.replace(/"/g, '').trim() : '';
+
+    const name     = get(idx.adName);
+    if (!name) continue;
+
+    const spend    = parseFloat(get(idx.spend))    || 0;
+    const impr     = parseInt(get(idx.impressions)) || 0;
+    const cpl      = parseFloat(get(idx.cpl))      || 0;
+    const ctr      = parseFloat(get(idx.ctr))      || 0;
+    const freq     = parseFloat(get(idx.frequency)) || 0;
+    const cpm      = parseFloat(get(idx.cpm))      || 0;
+    const hookRate = parseFloat(get(idx.hookRate))  || null;
+    const lpCvr   = parseFloat(get(idx.lpCvr))    || null;
+    const results  = parseFloat(get(idx.results))  || 0;
+    const delivery = get(idx.delivery) || '';
+
+    let health = 'NEUTRAL';
+    if (spend >= KPI.winnerMinSpend && cpl > 0 && cpl <= KPI.cpl) health = 'WINNER';
+    else if (spend >= KPI.loserMinSpend && cpl > 0 && cpl > KPI.cpl * KPI.loserCpaMultiple) health = 'LOSER';
+    else if (ctr >= KPI.sleeperMinCtr && spend < KPI.winnerMinSpend) health = 'SLEEPER';
+
+    const flags = [];
+    if (freq > KPI.frequency7d) flags.push(`Frequency ${freq.toFixed(1)} — saturation risk`);
+    if (hookRate !== null && hookRate > 30 && ctr < 1.0) flags.push('High hook rate + low CTR — hook attracts but creative doesn\'t convert');
+    if (hookRate !== null && lpCvr !== null && hookRate > 20 && lpCvr < 50) flags.push('High hook rate + low LP CVR — page isn\'t selling');
+
+    ads.push({ name, delivery, spend, impressions: impr, cpl, ctr, freq, cpm, hookRate, lpCvr, results, health, flags });
+  }
+  return ads;
+}
+
+function splitCSVLine(line) {
+  const result = [];
+  let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQ = !inQ; }
+    else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+    else { cur += c; }
+  }
+  result.push(cur);
+  return result;
+}
+
+// ── BUILD PROMPT ──────────────────────────────────────────────────
+function buildPrompt(ads) {
+  const $ = n => '$' + (n || 0).toFixed(2);
+  const active = ads.filter(a => a.spend > 0);
+  const totalSpend = active.reduce((s, a) => s + a.spend, 0);
+  const totalLeads = active.reduce((s, a) => s + a.results, 0);
+  const blendedCpl = totalLeads > 0 ? totalSpend / totalLeads : 0;
+  const cpmArr = active.filter(a => a.cpm > 0);
+  const avgCpm = cpmArr.length ? cpmArr.reduce((s, a) => s + a.cpm, 0) / cpmArr.length : 0;
+  const ctrArr = active.filter(a => a.ctr > 0);
+  const avgCtr = ctrArr.length ? ctrArr.reduce((s, a) => s + a.ctr, 0) / ctrArr.length : 0;
+  const freqArr = active.filter(a => a.freq > 0);
+  const avgFreq = freqArr.length ? freqArr.reduce((s, a) => s + a.freq, 0) / freqArr.length : 0;
+
+  const acctBlock = `ACCOUNT SUMMARY
+Total Spend:       ${$(totalSpend)}
+Total Leads:       ${totalLeads}
+Blended CPL:       ${$(blendedCpl)}
+Avg CPM:           ${$(avgCpm)}
+Avg Outbound CTR:  ${avgCtr.toFixed(2)}%
+Avg Frequency:     ${avgFreq.toFixed(2)}
+
+KPI STATUS
+CPL target ${$(KPI.cpl)} → current ${$(blendedCpl)} ${blendedCpl > 0 && blendedCpl <= KPI.cpl ? '✅' : '❌'}
+CTR target ${KPI.outboundCtr}% → current ${avgCtr.toFixed(2)}% ${avgCtr >= KPI.outboundCtr ? '✅' : '❌'}
+CPM ceiling ${$(KPI.cpm)} → current ${$(avgCpm)} ${avgCpm <= KPI.cpm ? '✅' : '❌'}
+Frequency cap ${KPI.frequency7d} → current ${avgFreq.toFixed(2)} ${avgFreq <= KPI.frequency7d ? '✅' : '❌'}`;
+
+  const adBlock = ads
+    .filter(a => a.spend > 0 || a.impressions > 0)
+    .sort((a, b) => b.spend - a.spend)
+    .map(a => {
+      const hook = a.hookRate !== null ? a.hookRate.toFixed(1) + '%' : 'N/A';
+      const lp   = a.lpCvr   !== null ? a.lpCvr.toFixed(1)   + '%' : 'N/A';
+      const flagStr = a.flags.length ? '\n  ⚠️  ' + a.flags.join(' | ') : '';
+      return `  [${a.health}] ${a.name} (${a.delivery})
+  Spend ${$(a.spend)} | Leads ${a.results} | CPL ${a.cpl > 0 ? $(a.cpl) : 'N/A'} | CTR ${a.ctr.toFixed(2)}% | CPM ${$(a.cpm)} | Freq ${a.freq.toFixed(1)} | Hook ${hook} | LP CVR ${lp}${flagStr}`;
+    }).join('\n\n');
+
+  return `You are an elite Meta Ads media buyer. Analyze this ad account and write a sharp, data-driven weekly report. Use real numbers. Name specific ads. Be direct and opinionated. No filler.
+
+${acctBlock}
+
+AD-LEVEL DATA (sorted by spend):
+WINNER = CPL ≤ $${KPI.cpl} with $${KPI.winnerMinSpend}+ spend | SLEEPER = CTR ≥ ${KPI.sleeperMinCtr}% under-spent | LOSER = CPL > ${KPI.loserCpaMultiple}x target with $${KPI.loserMinSpend}+ spend | NEUTRAL = not enough data
+
+${adBlock}
+
+Write the report in this exact format:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 META ADS WEEKLY REPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚨 ANOMALY DETECTION
+[CPM spikes, CTR drops, frequency issues. Specific numbers and ad names.]
+
+✅ TOP 3 WINS
+1.
+2.
+3.
+
+⚠️ TOP 3 CONCERNS
+1.
+2.
+3.
+
+🎨 CREATIVE FATIGUE SIGNALS
+[Specific ads. Hook rate vs CTR vs LP CVR mismatches. High-frequency ads.]
+
+💰 BUDGET RECOMMENDATIONS
+[Specific $ amounts. What to scale, cut, redistribute. Be decisive.]
+
+🎯 3 ACTION ITEMS THIS WEEK
+1.
+2.
+3.
+
+🏆 CREATIVE HEALTH AUDIT
+WINNERS — scale these:
+
+SLEEPERS — test with real budget:
+
+LOSERS — kill immediately:
+
+FLAGS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+}
+
+// ── RUN ───────────────────────────────────────────────────────────
+async function runAnalysis() {
+  if (!csvData) return;
+
+  const statusEl = document.getElementById('status');
+  const resultEl = document.getElementById('result');
+  const runBtn   = document.getElementById('runBtn');
+
+  statusEl.className = 'status loading';
+  statusEl.innerHTML = '<span class="spinner"></span> Analyzing your ads — this takes ~30 seconds…';
+  resultEl.classList.remove('visible');
+  runBtn.disabled = true;
+
+  try {
+    const ads = parseCSV(csvData);
+    if (!ads.length) throw new Error('No ad data found. Make sure the CSV includes an "Ad name" column.');
+
+    const prompt = buildPrompt(ads);
+
+    const res = await fetch(PROXY_URL, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        model:      'claude-sonnet-4-6',
+        max_tokens: 2048,
+        messages:   [{ role: 'user', content: prompt }],
+      }),
+    });
+
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+
+    const analysis = data.content[0].text;
+    document.getElementById('resultBody').textContent = analysis;
+    resultEl.classList.add('visible');
+    statusEl.className = 'status';
+  } catch (err) {
+    statusEl.className = 'status error';
+    statusEl.textContent = '⚠️ ' + (err.message || 'Something went wrong.');
+  } finally {
+    runBtn.disabled = false;
+  }
+}
+
+function copyResult() {
+  const text = document.getElementById('resultBody').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+</script>
+</body>
+</html>
