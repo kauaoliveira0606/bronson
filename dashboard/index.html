@@ -1293,6 +1293,11 @@
     zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag-over'); if (e.dataTransfer.files[0]) adsHandleFile(e.dataTransfer.files[0]); });
     input.addEventListener('change', () => { if (input.files[0]) adsHandleFile(input.files[0]); });
     adsRenderHistory();
+    const lastAnalysis = localStorage.getItem('ads_last_analysis');
+    if (lastAnalysis) {
+      document.getElementById('adsResultBody').textContent = lastAnalysis;
+      document.getElementById('adsResult').classList.add('visible');
+    }
   })();
 
   function adsHandleFile(file) {
@@ -1316,6 +1321,7 @@
     document.getElementById('adsRunBtn').disabled = true;
     document.getElementById('adsResult').classList.remove('visible');
     document.getElementById('adsStatus').className = 'ads-status';
+    localStorage.removeItem('ads_last_analysis');
   }
 
   function adsSplitCSVLine(line) {
@@ -1484,6 +1490,7 @@
       document.getElementById('adsResultBody').textContent = analysis;
       resultEl.classList.add('visible');
       statusEl.className = 'ads-status';
+      localStorage.setItem('ads_last_analysis', analysis);
       adsSaveToHistory(ads, document.getElementById('adsFileName').textContent, analysis);
     } catch(e) {
       statusEl.className = 'ads-status error';
