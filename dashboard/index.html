@@ -236,6 +236,20 @@
     .ads-result-body::-webkit-scrollbar-track { background:transparent; }
     .ads-result-body::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.1); border-radius:3px; }
     .ads-change-btn { background:rgba(255,255,255,0.06); border:1px solid var(--border); color:var(--text2); border-radius:6px; padding:5px 13px; font-size:.72rem; font-weight:700; cursor:pointer; font-family:inherit; }
+    .ads-history-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+    .ads-history-header { display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:1px solid var(--border); }
+    .ads-history-title { font-size:.72rem; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:.07em; }
+    .ads-history-clear { background:none; border:none; color:rgba(239,68,68,0.6); font-size:.7rem; font-weight:700; cursor:pointer; font-family:inherit; }
+    .ads-history-clear:hover { color:var(--red); }
+    .ads-history-list { display:flex; flex-direction:column; }
+    .ads-history-row { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; border-bottom:1px solid rgba(255,255,255,0.04); }
+    .ads-history-row:last-child { border-bottom:none; }
+    .ads-history-date { font-size:.75rem; font-weight:700; color:#ccc; }
+    .ads-history-meta { font-size:.7rem; color:var(--text2); margin-top:2px; }
+    .ads-history-kpis { display:flex; gap:16px; }
+    .ads-history-kpi { text-align:right; }
+    .ads-history-kpi-val { font-size:.82rem; font-weight:700; color:#fff; }
+    .ads-history-kpi-lbl { font-size:.65rem; color:var(--text2); }
   </style>
 </head>
 <body>
@@ -338,6 +352,13 @@
         <button class="ads-copy-btn" onclick="adsCopyResult()">Copy</button>
       </div>
       <div class="ads-result-body" id="adsResultBody"></div>
+    </div>
+    <div class="ads-history-card" id="adsHistoryCard" style="display:none;">
+      <div class="ads-history-header">
+        <div class="ads-history-title">Upload History</div>
+        <button class="ads-history-clear" onclick="adsClearHistory()">Clear All</button>
+      </div>
+      <div class="ads-history-list" id="adsHistoryList"></div>
     </div>
   </div>
 </div>
@@ -1271,6 +1292,7 @@
     zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
     zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag-over'); if (e.dataTransfer.files[0]) adsHandleFile(e.dataTransfer.files[0]); });
     input.addEventListener('change', () => { if (input.files[0]) adsHandleFile(input.files[0]); });
+    adsRenderHistory();
   })();
 
   function adsHandleFile(file) {
@@ -1342,6 +1364,77 @@
     return ads;
   }
 
+  // ── History ───────────────────────────────────────────────────────────────
+  function adsGetHistory() {
+    try { return JSON.parse(localStorage.getItem('ads_history') || '[]'); } catch { return []; }
+  }
+
+  function adsSaveToHistory(ads, filename, analysis) {
+    const active = ads.filter(a => a.spend > 0);
+    const totalSpend = active.reduce((s,a) => s+a.spend, 0);
+    const totalLeads = active.reduce((s,a) => s+a.results, 0);
+    const blendedCpl = totalLeads > 0 ? totalSpend/totalLeads : 0;
+    const cpmArr = active.filter(a => a.cpm > 0);
+    const avgCpm = cpmArr.length ? cpmArr.reduce((s,a) => s+a.cpm,0)/cpmArr.length : 0;
+    const actionMatch = analysis.match(/🎯 3 ACTION ITEMS THIS WEEK\n([\s\S]*?)(?=\n🏆|$)/);
+    const entry = {
+      date: new Date().toISOString(),
+      filename,
+      summary: { totalSpend, totalLeads, blendedCpl, avgCpm },
+      ads: ads.filter(a => a.spend > 0).map(a => ({ name:a.name, spend:a.spend, cpl:a.cpl, ctr:a.ctr, freq:a.freq, results:a.results, health:a.health })),
+      actionItems: actionMatch ? actionMatch[1].trim() : '',
+    };
+    const history = adsGetHistory();
+    history.unshift(entry);
+    if (history.length > 12) history.splice(12); // keep up to 12 weeks
+    localStorage.setItem('ads_history', JSON.stringify(history));
+    adsRenderHistory();
+  }
+
+  function adsRenderHistory() {
+    const history = adsGetHistory();
+    const card = document.getElementById('adsHistoryCard');
+    const list  = document.getElementById('adsHistoryList');
+    if (!history.length) { card.style.display = 'none'; return; }
+    card.style.display = 'block';
+    const $ = n => '$' + (n||0).toFixed(2);
+    list.innerHTML = history.map(e => {
+      const d = new Date(e.date);
+      const dateStr = d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+      return `<div class="ads-history-row">
+        <div>
+          <div class="ads-history-date">${dateStr}</div>
+          <div class="ads-history-meta">${e.filename} · ${e.ads.length} ads</div>
+        </div>
+        <div class="ads-history-kpis">
+          <div class="ads-history-kpi"><div class="ads-history-kpi-val">${$(e.summary.blendedCpl)}</div><div class="ads-history-kpi-lbl">Blended CPL</div></div>
+          <div class="ads-history-kpi"><div class="ads-history-kpi-val">${e.summary.totalLeads}</div><div class="ads-history-kpi-lbl">Leads</div></div>
+          <div class="ads-history-kpi"><div class="ads-history-kpi-val">${$(e.summary.totalSpend)}</div><div class="ads-history-kpi-lbl">Spend</div></div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function adsClearHistory() {
+    if (!confirm('Clear all upload history?')) return;
+    localStorage.removeItem('ads_history');
+    adsRenderHistory();
+  }
+
+  function adsBuildHistoryBlock() {
+    const history = adsGetHistory();
+    if (!history.length) return '';
+    const $ = n => '$' + (n||0).toFixed(2);
+    const lines = history.slice(0, 4).map((e, i) => {
+      const d = new Date(e.date);
+      const dateStr = d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+      const adLines = e.ads.slice(0,8).map(a => `    ${a.name}: CPL ${$(a.cpl)} | Spend ${$(a.spend)} | Leads ${a.results} | CTR ${(a.ctr||0).toFixed(2)}% [${a.health}]`).join('\n');
+      const actions = e.actionItems ? `  Action items from that week:\n${e.actionItems.split('\n').map(l => '    '+l).join('\n')}` : '';
+      return `  Period ${i+1} — uploaded ${dateStr}\n  Summary: CPL ${$(e.summary.blendedCpl)} | Leads ${e.summary.totalLeads} | Spend ${$(e.summary.totalSpend)} | CPM ${$(e.summary.avgCpm)}\n${adLines}\n${actions}`;
+    }).join('\n\n');
+    return `\nHISTORICAL DATA (most recent first — use for trend analysis and cross-period comparison):\n${lines}\nFor each ad that appears in both current and historical data, call out whether its CPL, CTR, or spend IMPROVED, DECLINED, or is NEW. Flag any creative that was a WINNER before but is now a LOSER (fatigue). Flag any SLEEPER that has been under-budgeted for multiple periods.\n`;
+  }
+
   function adsBuildPrompt(ads) {
     const $ = n => '$' + (n||0).toFixed(2);
     const active = ads.filter(a => a.spend > 0);
@@ -1364,7 +1457,9 @@
       return `  [${a.health}] ${a.name} (${a.delivery})\n  Spend ${$(a.spend)} | Leads ${a.results} | CPL ${a.cpl > 0 ? $(a.cpl) : 'N/A'} | CTR ${a.ctr.toFixed(2)}% | CPM ${$(a.cpm)} | Freq ${a.freq.toFixed(1)} | Hook ${hook} | LP CVR ${lp}${fl}`;
     }).join('\n\n');
 
-    return `You are an elite Meta Ads media buyer. Analyze this ad account and write a sharp, data-driven weekly report. Use real numbers. Name specific ads. Be direct and opinionated. No filler.\n\n${acctBlock}\n\nAD-LEVEL DATA (sorted by spend):\nWINNER = CPL ≤ $${ADS_KPI.cpl} with $${ADS_KPI.winnerMinSpend}+ spend | SLEEPER = CTR ≥ ${ADS_KPI.sleeperMinCtr}% under-spent | LOSER = CPL > ${ADS_KPI.loserCpaMultiple}x target with $${ADS_KPI.loserMinSpend}+ spend | NEUTRAL = not enough data\n\n${adBlock}\n\nWrite the report in this exact format:\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 META ADS WEEKLY REPORT\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n🚨 ANOMALY DETECTION\n[CPM spikes, CTR drops, frequency issues. Specific numbers and ad names.]\n\n✅ TOP 3 WINS\n1.\n2.\n3.\n\n⚠️ TOP 3 CONCERNS\n1.\n2.\n3.\n\n🎨 CREATIVE FATIGUE SIGNALS\n[Specific ads. Hook rate vs CTR vs LP CVR mismatches. High-frequency ads.]\n\n💰 BUDGET RECOMMENDATIONS\n[Specific $ amounts. What to scale, cut, redistribute. Be decisive.]\n\n🎯 3 ACTION ITEMS THIS WEEK\n1.\n2.\n3.\n\n🏆 CREATIVE HEALTH AUDIT\nWINNERS — scale these:\n\nSLEEPERS — test with real budget:\n\nLOSERS — kill immediately:\n\nFLAGS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+    const historyBlock = adsBuildHistoryBlock();
+
+    return `You are an elite Meta Ads media buyer. Analyze this ad account and write a sharp, data-driven weekly report. Use real numbers. Name specific ads. Be direct and opinionated. No filler.\n\n${acctBlock}\n\nAD-LEVEL DATA (sorted by spend):\nWINNER = CPL ≤ $${ADS_KPI.cpl} with $${ADS_KPI.winnerMinSpend}+ spend | SLEEPER = CTR ≥ ${ADS_KPI.sleeperMinCtr}% under-spent | LOSER = CPL > ${ADS_KPI.loserCpaMultiple}x target with $${ADS_KPI.loserMinSpend}+ spend | NEUTRAL = not enough data\n\n${adBlock}\n${historyBlock}\nWrite the report in this exact format:\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 META ADS WEEKLY REPORT\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n🚨 ANOMALY DETECTION\n[CPM spikes, CTR drops, frequency issues. Specific numbers and ad names.]\n\n✅ TOP 3 WINS\n1.\n2.\n3.\n\n⚠️ TOP 3 CONCERNS\n1.\n2.\n3.\n\n🎨 CREATIVE FATIGUE SIGNALS\n[Specific ads. Hook rate vs CTR vs LP CVR mismatches. High-frequency ads.]\n\n💰 BUDGET RECOMMENDATIONS\n[Specific $ amounts. What to scale, cut, redistribute. Be decisive.]\n\n🎯 3 ACTION ITEMS THIS WEEK\n1.\n2.\n3.\n\n🏆 CREATIVE HEALTH AUDIT\nWINNERS — scale these:\n\nSLEEPERS — test with real budget:\n\nLOSERS — kill immediately:\n\nFLAGS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
   }
 
   async function adsRunAnalysis() {
@@ -1385,9 +1480,11 @@
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error.message);
-      document.getElementById('adsResultBody').textContent = data.content[0].text;
+      const analysis = data.content[0].text;
+      document.getElementById('adsResultBody').textContent = analysis;
       resultEl.classList.add('visible');
       statusEl.className = 'ads-status';
+      adsSaveToHistory(ads, document.getElementById('adsFileName').textContent, analysis);
     } catch(e) {
       statusEl.className = 'ads-status error';
       statusEl.textContent = '⚠️ ' + (e.message || 'Something went wrong.');
