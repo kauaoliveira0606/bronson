@@ -207,24 +207,35 @@
     .fm-val-pos { color:#4ade80 !important; }
     .fm-val-neg { color:rgba(239,68,68,1) !important; }
 
-    .meta-connect-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:48px 40px; text-align:center; margin:28px; }
-    .meta-connect-icon { font-size:2.2rem; margin-bottom:14px; }
-    .meta-connect-title { font-size:1.1rem; font-weight:800; margin-bottom:8px; }
-    .meta-connect-sub { font-size:.82rem; color:var(--text2); margin-bottom:28px; line-height:1.6; max-width:420px; margin-left:auto; margin-right:auto; }
-    .meta-field-group { display:flex; flex-direction:column; gap:10px; max-width:460px; margin:0 auto 20px; }
-    .meta-input { background:rgba(255,255,255,0.05); border:1px solid var(--border); color:#fff; font-family:inherit; font-size:.82rem; padding:11px 14px; border-radius:8px; outline:none; transition:border-color .15s; }
-    .meta-input:focus { border-color:rgba(255,255,255,0.3); }
-    .meta-input::placeholder { color:rgba(255,255,255,0.3); }
-    .meta-connect-btn { background:#fff; color:#000; font-family:inherit; font-size:.82rem; font-weight:700; padding:11px 28px; border-radius:8px; border:none; cursor:pointer; transition:opacity .15s; }
-    .meta-connect-btn:hover { opacity:.85; }
-    .meta-connect-btn:disabled { opacity:.5; cursor:default; }
-    .meta-error { color:var(--red); font-size:.78rem; margin-top:12px; min-height:1em; }
-
     .ads-main { padding:24px 28px; display:flex; flex-direction:column; gap:20px; }
-    .ads-topbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
-    .ads-filter-bar { display:flex; gap:6px; flex-wrap:wrap; }
-    .meta-config-btn { background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text2); border-radius:8px; padding:6px 13px; font-size:.73rem; font-weight:600; cursor:pointer; font-family:inherit; transition:all .15s; }
-    .meta-config-btn:hover { color:#fff; border-color:rgba(255,255,255,0.2); }
+    .ads-upload-zone { border:2px dashed rgba(255,255,255,0.12); border-radius:12px; padding:48px 40px; text-align:center; cursor:pointer; transition:border-color .2s, background .2s; background:var(--surface); }
+    .ads-upload-zone:hover, .ads-upload-zone.drag-over { border-color:rgba(255,255,255,0.3); background:rgba(255,255,255,0.03); }
+    .ads-upload-zone input { display:none; }
+    .ads-upload-icon { font-size:2rem; margin-bottom:10px; }
+    .ads-upload-zone h2 { font-size:.95rem; font-weight:700; color:#ccc; margin-bottom:6px; }
+    .ads-upload-zone p  { font-size:.78rem; color:var(--text2); }
+    .ads-file-row { display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:13px 18px; }
+    .ads-file-name { font-size:.85rem; font-weight:600; color:#ccc; }
+    .ads-file-size { font-size:.72rem; color:var(--text2); margin-top:2px; }
+    .ads-run-btn { background:#fff; color:#000; border:none; border-radius:8px; padding:11px 0; font-size:.85rem; font-weight:700; cursor:pointer; font-family:inherit; transition:opacity .15s; width:100%; }
+    .ads-run-btn:hover { opacity:.85; }
+    .ads-run-btn:disabled { opacity:.35; cursor:not-allowed; }
+    .ads-status { padding:13px 16px; border-radius:8px; font-size:.82rem; display:none; }
+    .ads-status.loading { background:rgba(255,255,255,0.04); border:1px solid var(--border); color:var(--text2); display:flex; align-items:center; gap:10px; }
+    .ads-status.error   { background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.25); color:var(--red); display:block; }
+    .ads-spinner { width:14px; height:14px; border:2px solid rgba(255,255,255,0.1); border-top-color:rgba(255,255,255,0.5); border-radius:50%; animation:spin .8s linear infinite; flex-shrink:0; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .ads-result-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; display:none; }
+    .ads-result-card.visible { display:block; }
+    .ads-result-header { display:flex; align-items:center; justify-content:space-between; padding:16px 22px; border-bottom:1px solid var(--border); }
+    .ads-result-title { font-size:.72rem; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:.07em; }
+    .ads-copy-btn { background:rgba(255,255,255,0.06); border:1px solid var(--border); color:var(--text2); border-radius:6px; padding:5px 13px; font-size:.72rem; font-weight:700; cursor:pointer; font-family:inherit; transition:background .15s; }
+    .ads-copy-btn:hover { background:rgba(255,255,255,0.1); }
+    .ads-result-body { padding:24px 28px; white-space:pre-wrap; font-family:'Menlo','Monaco',monospace; font-size:.78rem; line-height:1.85; color:#d0d0d0; max-height:72vh; overflow-y:auto; }
+    .ads-result-body::-webkit-scrollbar { width:5px; }
+    .ads-result-body::-webkit-scrollbar-track { background:transparent; }
+    .ads-result-body::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.1); border-radius:3px; }
+    .ads-change-btn { background:rgba(255,255,255,0.06); border:1px solid var(--border); color:var(--text2); border-radius:6px; padding:5px 13px; font-size:.72rem; font-weight:700; cursor:pointer; font-family:inherit; }
   </style>
 </head>
 <body>
@@ -300,38 +311,33 @@
 </div>
 
 <div id="view-ads">
-  <div id="meta-connect-section">
-    <div class="meta-connect-card">
-      <div class="meta-connect-icon">⬡</div>
-      <div class="meta-connect-title">Connect Meta Ads</div>
-      <div class="meta-connect-sub">Enter your Meta Ad Account ID and Access Token to pull live campaign data into this dashboard.</div>
-      <div class="meta-field-group">
-        <input class="meta-input" id="meta-account-id" type="text" placeholder="Ad Account ID (e.g. act_123456789)">
-        <input class="meta-input" id="meta-token" type="password" placeholder="Access Token">
+  <div class="ads-main">
+    <div id="ads-upload-section">
+      <div class="ads-upload-zone" id="adsUploadZone">
+        <input type="file" id="adsCsvFile" accept=".csv">
+        <div class="ads-upload-icon">📂</div>
+        <h2>Drop your Meta Ads CSV here or click to upload</h2>
+        <p>Export from Ads Manager → Customize columns → Export as CSV</p>
       </div>
-      <button class="meta-connect-btn" id="meta-connect-btn" onclick="connectMeta()">Connect</button>
-      <div class="meta-error" id="meta-error"></div>
     </div>
-  </div>
-  <div id="meta-data-section" style="display:none;">
-    <div class="ads-main">
-      <div class="ads-topbar">
-        <div class="ads-filter-bar">
-          <button class="range-btn active" data-mp="last_7d"    onclick="setMetaPeriod('last_7d',this)">Last 7 Days</button>
-          <button class="range-btn"        data-mp="last_14d"   onclick="setMetaPeriod('last_14d',this)">Last 14 Days</button>
-          <button class="range-btn"        data-mp="last_30d"   onclick="setMetaPeriod('last_30d',this)">Last 30 Days</button>
-          <button class="range-btn"        data-mp="this_month" onclick="setMetaPeriod('this_month',this)">This Month</button>
-          <button class="range-btn"        data-mp="last_month" onclick="setMetaPeriod('last_month',this)">Last Month</button>
-        </div>
-        <button class="meta-config-btn" onclick="resetMeta()">⚙ Reconnect</button>
+    <div class="ads-file-row" id="adsFileRow" style="display:none;">
+      <div>
+        <div class="ads-file-name" id="adsFileName"></div>
+        <div class="ads-file-size" id="adsFileSize"></div>
       </div>
-      <div id="meta-kpi-grid" class="kpi-grid"><div class="loading">Loading ad data...</div></div>
-      <div id="meta-campaigns-card" class="table-card" style="display:none;">
-        <div class="table-header">
-          <div class="table-title">Campaigns</div>
-        </div>
-        <div id="meta-campaigns-wrap"></div>
+      <button class="ads-change-btn" onclick="adsResetFile()">Change</button>
+    </div>
+    <button class="ads-run-btn" id="adsRunBtn" onclick="adsRunAnalysis()" disabled>Run AI Analysis</button>
+    <div class="ads-status" id="adsStatus">
+      <div class="ads-spinner"></div>
+      Analyzing your ads — this takes ~30 seconds…
+    </div>
+    <div class="ads-result-card" id="adsResult">
+      <div class="ads-result-header">
+        <div class="ads-result-title">Weekly Report</div>
+        <button class="ads-copy-btn" onclick="adsCopyResult()">Copy</button>
       </div>
+      <div class="ads-result-body" id="adsResultBody"></div>
     </div>
   </div>
 </div>
@@ -1246,172 +1252,157 @@
     document.getElementById('tab-funnel').classList.toggle('active', tab === 'funnel');
     document.getElementById('tab-ads').classList.toggle('active', tab === 'ads');
     document.getElementById('tab-model').classList.toggle('active', tab === 'model');
-    if (tab === 'ads') initMetaView();
     if (tab === 'model') fmPopulateCurrentStats();
   }
 
-  // ── Meta Ads ─────────────────────────────────────────────────────────────────
-  let metaPeriod = 'last_7d';
-  const META_VER = 'v21.0';
+  // ── Ads Analysis (CSV upload) ─────────────────────────────────────────────
+  const ADS_KPI = {
+    cpl:15, outboundCtr:1.0, cpm:25, frequency7d:3.0,
+    winnerMinSpend:100, loserMinSpend:50, loserCpaMultiple:1.5, sleeperMinCtr:1.0,
+  };
+  let adsCsvData = null;
 
-  function initMetaView() {
-    const accountId = localStorage.getItem('meta_account_id');
-    const token     = localStorage.getItem('meta_token');
-    if (!accountId || !token) {
-      document.getElementById('meta-connect-section').style.display = 'block';
-      document.getElementById('meta-data-section').style.display = 'none';
-    } else {
-      document.getElementById('meta-connect-section').style.display = 'none';
-      document.getElementById('meta-data-section').style.display = 'block';
-      loadMetaData();
-    }
+  (function adsInit() {
+    const zone  = document.getElementById('adsUploadZone');
+    const input = document.getElementById('adsCsvFile');
+    if (!zone || !input) return;
+    zone.addEventListener('click', () => input.click());
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag-over'); if (e.dataTransfer.files[0]) adsHandleFile(e.dataTransfer.files[0]); });
+    input.addEventListener('change', () => { if (input.files[0]) adsHandleFile(input.files[0]); });
+  })();
+
+  function adsHandleFile(file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      adsCsvData = e.target.result;
+      document.getElementById('adsFileName').textContent = file.name;
+      document.getElementById('adsFileSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
+      document.getElementById('adsUploadZone').style.display = 'none';
+      document.getElementById('adsFileRow').style.display = 'flex';
+      document.getElementById('adsRunBtn').disabled = false;
+    };
+    reader.readAsText(file);
   }
 
-  async function connectMeta() {
-    const rawId  = document.getElementById('meta-account-id').value.trim();
-    const token  = document.getElementById('meta-token').value.trim();
-    const errEl  = document.getElementById('meta-error');
-    const btn    = document.getElementById('meta-connect-btn');
-    errEl.textContent = '';
-    if (!rawId || !token) { errEl.textContent = 'Both fields are required.'; return; }
-    const accountId = rawId.startsWith('act_') ? rawId : 'act_' + rawId;
-    btn.disabled = true; btn.textContent = 'Connecting...';
+  function adsResetFile() {
+    adsCsvData = null;
+    document.getElementById('adsCsvFile').value = '';
+    document.getElementById('adsUploadZone').style.display = 'block';
+    document.getElementById('adsFileRow').style.display = 'none';
+    document.getElementById('adsRunBtn').disabled = true;
+    document.getElementById('adsResult').classList.remove('visible');
+    document.getElementById('adsStatus').className = 'ads-status';
+  }
+
+  function adsSplitCSVLine(line) {
+    const result = []; let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+      else { cur += c; }
+    }
+    result.push(cur);
+    return result;
+  }
+
+  function adsParseCSV(text) {
+    const lines = text.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim().toLowerCase());
+    const col = name => headers.findIndex(h => h.includes(name));
+    const idx = {
+      adName: col('ad name'), delivery: col('ad delivery'), results: col('results'),
+      cpl: col('cost per result'), spend: col('amount spent'), impressions: col('impressions'),
+      cpm: col('cpm'), ctr: col('outbound ctr'), frequency: col('frequency'),
+      hookRate: col('hook rate'), lpCvr: col('landing page connect'),
+    };
+    const ads = [];
+    for (let i = 1; i < lines.length; i++) {
+      const cols = adsSplitCSVLine(lines[i]);
+      if (!cols.length) continue;
+      const get = j => j >= 0 ? (cols[j]||'').replace(/"/g,'').trim() : '';
+      const name = get(idx.adName); if (!name) continue;
+      const spend = parseFloat(get(idx.spend))||0, impr = parseInt(get(idx.impressions))||0;
+      const cpl = parseFloat(get(idx.cpl))||0, ctr = parseFloat(get(idx.ctr))||0;
+      const freq = parseFloat(get(idx.frequency))||0, cpm = parseFloat(get(idx.cpm))||0;
+      const hookRate = parseFloat(get(idx.hookRate))||null, lpCvr = parseFloat(get(idx.lpCvr))||null;
+      const results = parseFloat(get(idx.results))||0, delivery = get(idx.delivery)||'';
+      let health = 'NEUTRAL';
+      if (spend >= ADS_KPI.winnerMinSpend && cpl > 0 && cpl <= ADS_KPI.cpl) health = 'WINNER';
+      else if (spend >= ADS_KPI.loserMinSpend && cpl > 0 && cpl > ADS_KPI.cpl * ADS_KPI.loserCpaMultiple) health = 'LOSER';
+      else if (ctr >= ADS_KPI.sleeperMinCtr && spend < ADS_KPI.winnerMinSpend) health = 'SLEEPER';
+      const flags = [];
+      if (freq > ADS_KPI.frequency7d) flags.push(`Frequency ${freq.toFixed(1)} — saturation risk`);
+      if (hookRate !== null && hookRate > 30 && ctr < 1.0) flags.push('High hook + low CTR');
+      if (hookRate !== null && lpCvr !== null && hookRate > 20 && lpCvr < 50) flags.push('High hook + low LP CVR');
+      ads.push({ name, delivery, spend, impressions:impr, cpl, ctr, freq, cpm, hookRate, lpCvr, results, health, flags });
+    }
+    return ads;
+  }
+
+  function adsBuildPrompt(ads) {
+    const $ = n => '$' + (n||0).toFixed(2);
+    const active = ads.filter(a => a.spend > 0);
+    const totalSpend = active.reduce((s,a) => s+a.spend, 0);
+    const totalLeads = active.reduce((s,a) => s+a.results, 0);
+    const blendedCpl = totalLeads > 0 ? totalSpend/totalLeads : 0;
+    const cpmArr = active.filter(a => a.cpm > 0);
+    const avgCpm = cpmArr.length ? cpmArr.reduce((s,a) => s+a.cpm,0)/cpmArr.length : 0;
+    const ctrArr = active.filter(a => a.ctr > 0);
+    const avgCtr = ctrArr.length ? ctrArr.reduce((s,a) => s+a.ctr,0)/ctrArr.length : 0;
+    const freqArr = active.filter(a => a.freq > 0);
+    const avgFreq = freqArr.length ? freqArr.reduce((s,a) => s+a.freq,0)/freqArr.length : 0;
+
+    const acctBlock = `ACCOUNT SUMMARY\nTotal Spend: ${$(totalSpend)}\nTotal Leads: ${totalLeads}\nBlended CPL: ${$(blendedCpl)}\nAvg CPM: ${$(avgCpm)}\nAvg Outbound CTR: ${avgCtr.toFixed(2)}%\nAvg Frequency: ${avgFreq.toFixed(2)}\n\nKPI STATUS\nCPL target ${$(ADS_KPI.cpl)} → current ${$(blendedCpl)} ${blendedCpl > 0 && blendedCpl <= ADS_KPI.cpl ? '✅' : '❌'}\nCTR target ${ADS_KPI.outboundCtr}% → current ${avgCtr.toFixed(2)}% ${avgCtr >= ADS_KPI.outboundCtr ? '✅' : '❌'}\nCPM ceiling ${$(ADS_KPI.cpm)} → current ${$(avgCpm)} ${avgCpm <= ADS_KPI.cpm ? '✅' : '❌'}\nFrequency cap ${ADS_KPI.frequency7d} → current ${avgFreq.toFixed(2)} ${avgFreq <= ADS_KPI.frequency7d ? '✅' : '❌'}`;
+
+    const adBlock = ads.filter(a => a.spend > 0 || a.impressions > 0).sort((a,b) => b.spend-a.spend).map(a => {
+      const hook = a.hookRate !== null ? a.hookRate.toFixed(1)+'%' : 'N/A';
+      const lp   = a.lpCvr   !== null ? a.lpCvr.toFixed(1)+'%'   : 'N/A';
+      const fl   = a.flags.length ? '\n  ⚠️  '+a.flags.join(' | ') : '';
+      return `  [${a.health}] ${a.name} (${a.delivery})\n  Spend ${$(a.spend)} | Leads ${a.results} | CPL ${a.cpl > 0 ? $(a.cpl) : 'N/A'} | CTR ${a.ctr.toFixed(2)}% | CPM ${$(a.cpm)} | Freq ${a.freq.toFixed(1)} | Hook ${hook} | LP CVR ${lp}${fl}`;
+    }).join('\n\n');
+
+    return `You are an elite Meta Ads media buyer. Analyze this ad account and write a sharp, data-driven weekly report. Use real numbers. Name specific ads. Be direct and opinionated. No filler.\n\n${acctBlock}\n\nAD-LEVEL DATA (sorted by spend):\nWINNER = CPL ≤ $${ADS_KPI.cpl} with $${ADS_KPI.winnerMinSpend}+ spend | SLEEPER = CTR ≥ ${ADS_KPI.sleeperMinCtr}% under-spent | LOSER = CPL > ${ADS_KPI.loserCpaMultiple}x target with $${ADS_KPI.loserMinSpend}+ spend | NEUTRAL = not enough data\n\n${adBlock}\n\nWrite the report in this exact format:\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 META ADS WEEKLY REPORT\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n🚨 ANOMALY DETECTION\n[CPM spikes, CTR drops, frequency issues. Specific numbers and ad names.]\n\n✅ TOP 3 WINS\n1.\n2.\n3.\n\n⚠️ TOP 3 CONCERNS\n1.\n2.\n3.\n\n🎨 CREATIVE FATIGUE SIGNALS\n[Specific ads. Hook rate vs CTR vs LP CVR mismatches. High-frequency ads.]\n\n💰 BUDGET RECOMMENDATIONS\n[Specific $ amounts. What to scale, cut, redistribute. Be decisive.]\n\n🎯 3 ACTION ITEMS THIS WEEK\n1.\n2.\n3.\n\n🏆 CREATIVE HEALTH AUDIT\nWINNERS — scale these:\n\nSLEEPERS — test with real budget:\n\nLOSERS — kill immediately:\n\nFLAGS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+  }
+
+  async function adsRunAnalysis() {
+    if (!adsCsvData) return;
+    const statusEl = document.getElementById('adsStatus');
+    const resultEl = document.getElementById('adsResult');
+    const runBtn   = document.getElementById('adsRunBtn');
+    statusEl.className = 'ads-status loading';
+    resultEl.classList.remove('visible');
+    runBtn.disabled = true;
     try {
-      const res  = await fetch(`https://graph.facebook.com/${META_VER}/${accountId}/insights?fields=spend&date_preset=last_7d&access_token=${encodeURIComponent(token)}`);
+      const ads = adsParseCSV(adsCsvData);
+      if (!ads.length) throw new Error('No ad data found. Make sure the CSV includes an "Ad name" column.');
+      const res = await fetch('/api/claude-proxy', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:2048, messages:[{ role:'user', content:adsBuildPrompt(ads) }] }),
+      });
       const data = await res.json();
       if (data.error) throw new Error(data.error.message);
-      localStorage.setItem('meta_account_id', accountId);
-      localStorage.setItem('meta_token', token);
-      document.getElementById('meta-connect-section').style.display = 'none';
-      document.getElementById('meta-data-section').style.display = 'block';
-      loadMetaData();
+      document.getElementById('adsResultBody').textContent = data.content[0].text;
+      resultEl.classList.add('visible');
+      statusEl.className = 'ads-status';
     } catch(e) {
-      errEl.textContent = e.message;
-    }
-    btn.disabled = false; btn.textContent = 'Connect';
-  }
-
-  function resetMeta() {
-    localStorage.removeItem('meta_account_id');
-    localStorage.removeItem('meta_token');
-    document.getElementById('meta-account-id').value = '';
-    document.getElementById('meta-token').value = '';
-    document.getElementById('meta-data-section').style.display = 'none';
-    document.getElementById('meta-connect-section').style.display = 'block';
-  }
-
-  function setMetaPeriod(period, btn) {
-    metaPeriod = period;
-    document.querySelectorAll('.ads-filter-bar .range-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    loadMetaData();
-  }
-
-  async function loadMetaData() {
-    const accountId = localStorage.getItem('meta_account_id');
-    const token     = localStorage.getItem('meta_token');
-    if (!accountId || !token) return;
-    document.getElementById('meta-kpi-grid').innerHTML = '<div class="loading">Loading ad data...</div>';
-    document.getElementById('meta-campaigns-card').style.display = 'none';
-    try {
-      const res  = await fetch(`https://graph.facebook.com/${META_VER}/${accountId}/insights?fields=spend,impressions,clicks,ctr,cpm,cpc,reach,actions,action_values,purchase_roas&date_preset=${metaPeriod}&access_token=${encodeURIComponent(token)}`);
-      const json = await res.json();
-      if (json.error) throw new Error(json.error.message);
-      const d = (json.data && json.data[0]) ? json.data[0] : {};
-
-      const spend  = parseFloat(d.spend || 0);
-      const impr   = parseInt(d.impressions || 0);
-      const clicks = parseInt(d.clicks || 0);
-      const ctr    = parseFloat(d.ctr || 0);
-      const cpm    = parseFloat(d.cpm || 0);
-      const cpc    = parseFloat(d.cpc || 0);
-      const reach  = parseInt(d.reach || 0);
-
-      const findAction = (arr, types) => {
-        if (!arr) return 0;
-        for (const t of types) { const a = arr.find(x => x.action_type === t); if (a) return parseFloat(a.value); }
-        return 0;
-      };
-      const purchases = findAction(d.actions, ['omni_purchase','purchase']);
-      const revenue   = findAction(d.action_values, ['omni_purchase','purchase']);
-      const roas      = d.purchase_roas && d.purchase_roas[0] ? parseFloat(d.purchase_roas[0].value) : (spend > 0 ? revenue / spend : 0);
-
-      const usd  = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      const fmtK = n => n >= 1000 ? (n / 1000).toFixed(1) + 'k' : n.toLocaleString();
-
-      document.getElementById('meta-kpi-grid').innerHTML = `
-        <div class="kpi-card red"><div class="kpi-accent"></div>
-          <div class="kpi-label">Ad Spend</div>
-          <div class="kpi-value" style="font-size:1.7rem;">${usd(spend)}</div>
-          <div class="kpi-sub">Total spend</div></div>
-        <div class="kpi-card green"><div class="kpi-accent"></div>
-          <div class="kpi-label">Revenue</div>
-          <div class="kpi-value" style="font-size:1.7rem;">${usd(revenue)}</div>
-          <div class="kpi-sub">Purchase value</div></div>
-        <div class="kpi-card blue"><div class="kpi-accent"></div>
-          <div class="kpi-label">ROAS</div>
-          <div class="kpi-value" style="font-size:1.7rem;">${roas.toFixed(2)}x</div>
-          <div class="kpi-sub">Return on ad spend</div></div>
-        <div class="kpi-card purple"><div class="kpi-accent"></div>
-          <div class="kpi-label">Purchases</div>
-          <div class="kpi-value" style="font-size:1.7rem;">${Math.round(purchases)}</div>
-          <div class="kpi-sub">Conversions</div></div>
-        <div class="kpi-card yellow"><div class="kpi-accent"></div>
-          <div class="kpi-label">CPM</div>
-          <div class="kpi-value" style="font-size:1.7rem;">${usd(cpm)}</div>
-          <div class="kpi-sub">Cost per 1k impressions</div></div>
-        <div class="kpi-card yellow"><div class="kpi-accent"></div>
-          <div class="kpi-label">CTR</div>
-          <div class="kpi-value" style="font-size:1.7rem;">${ctr.toFixed(2)}%</div>
-          <div class="kpi-sub">Link click-through rate</div></div>
-        <div class="kpi-card blue"><div class="kpi-accent"></div>
-          <div class="kpi-label">CPC</div>
-          <div class="kpi-value" style="font-size:1.7rem;">${usd(cpc)}</div>
-          <div class="kpi-sub">Cost per click</div></div>
-        <div class="kpi-card green"><div class="kpi-accent"></div>
-          <div class="kpi-label">Reach</div>
-          <div class="kpi-value" style="font-size:1.7rem;">${fmtK(reach)}</div>
-          <div class="kpi-sub">Unique accounts</div></div>`;
-
-      loadMetaCampaigns(accountId, token);
-    } catch(e) {
-      document.getElementById('meta-kpi-grid').innerHTML = `<div class="loading" style="color:var(--red);">Error: ${e.message}</div>`;
+      statusEl.className = 'ads-status error';
+      statusEl.textContent = '⚠️ ' + (e.message || 'Something went wrong.');
+    } finally {
+      runBtn.disabled = false;
     }
   }
 
-  async function loadMetaCampaigns(accountId, token) {
-    try {
-      const res  = await fetch(`https://graph.facebook.com/${META_VER}/${accountId}/campaigns?fields=name,status,insights.date_preset(${metaPeriod}){spend,impressions,clicks,ctr,cpm,purchase_roas,actions,action_values}&access_token=${encodeURIComponent(token)}&limit=25`);
-      const json = await res.json();
-      if (json.error) return;
-      const campaigns = (json.data || []).filter(c => c.insights && c.insights.data && c.insights.data[0]);
-      if (!campaigns.length) return;
-
-      const usd = n => '$' + parseFloat(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      const rows = campaigns.map(c => {
-        const ins   = c.insights.data[0];
-        const spend = parseFloat(ins.spend || 0);
-        const roas  = ins.purchase_roas && ins.purchase_roas[0] ? parseFloat(ins.purchase_roas[0].value).toFixed(2) + 'x' : '—';
-        const ctr   = parseFloat(ins.ctr || 0).toFixed(2) + '%';
-        const cpm   = usd(ins.cpm || 0);
-        const pill  = c.status === 'ACTIVE' ? '<span class="status-pill pill-green">Active</span>' : `<span class="status-pill pill-gray">${c.status}</span>`;
-        return `<tr>
-          <td style="font-weight:600;">${c.name}</td>
-          <td>${pill}</td>
-          <td>${usd(spend)}</td>
-          <td>${roas}</td>
-          <td>${ctr}</td>
-          <td>${cpm}</td>
-        </tr>`;
-      }).join('');
-
-      document.getElementById('meta-campaigns-wrap').innerHTML = `
-        <table>
-          <thead><tr><th>Campaign</th><th>Status</th><th>Spend</th><th>ROAS</th><th>CTR</th><th>CPM</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>`;
-      document.getElementById('meta-campaigns-card').style.display = 'block';
-    } catch(e) { /* silent — campaigns are supplementary */ }
+  function adsCopyResult() {
+    const text = document.getElementById('adsResultBody').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.ads-copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 2000);
+    });
   }
 
   // ── Financial Model ──────────────────────────────────────────────────────
