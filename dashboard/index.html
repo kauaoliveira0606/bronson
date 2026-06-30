@@ -1354,31 +1354,71 @@
       hookRate: col('hook rate'), lpCvr: col('landing page connect'),
       dateStart: col('reporting starts'), dateEnd: col('reporting ends'),
     };
-    const ads = [];
+    // First pass: accumulate raw rows per ad name
+    const adMap = {};
     let minDate = null, maxDate = null;
+
     for (let i = 1; i < lines.length; i++) {
       const cols = adsSplitCSVLine(lines[i]);
       if (!cols.length) continue;
       const get = j => j >= 0 ? (cols[j]||'').replace(/"/g,'').trim() : '';
       const name = get(idx.adName); if (!name) continue;
-      const spend = parseFloat(get(idx.spend))||0, impr = parseInt(get(idx.impressions))||0;
-      const cpl = parseFloat(get(idx.cpl))||0, ctr = parseFloat(get(idx.ctr))||0;
-      const freq = parseFloat(get(idx.frequency))||0, cpm = parseFloat(get(idx.cpm))||0;
-      const hookRate = parseFloat(get(idx.hookRate))||null, lpCvr = parseFloat(get(idx.lpCvr))||null;
-      const results = parseFloat(get(idx.results))||0, delivery = get(idx.delivery)||'';
+
+      const spend    = parseFloat(get(idx.spend))       || 0;
+      const impr     = parseInt(get(idx.impressions))    || 0;
+      const results  = parseFloat(get(idx.results))      || 0;
+      const ctr      = parseFloat(get(idx.ctr))          || 0;
+      const cpm      = parseFloat(get(idx.cpm))          || 0;
+      const freq     = parseFloat(get(idx.frequency))    || 0;
+      const hookRate = parseFloat(get(idx.hookRate))     || 0;
+      const lpCvr   = parseFloat(get(idx.lpCvr))        || 0;
+      const delivery = get(idx.delivery) || '';
       const ds = get(idx.dateStart), de = get(idx.dateEnd);
-      if (ds) { const d = new Date(ds); if (!minDate || d < minDate) minDate = d; }
-      if (de) { const d = new Date(de); if (!maxDate || d > maxDate) maxDate = d; }
+      if (ds) { const d = new Date(ds); if (!isNaN(d) && (!minDate || d < minDate)) minDate = d; }
+      if (de) { const d = new Date(de); if (!isNaN(d) && (!maxDate || d > maxDate)) maxDate = d; }
+
+      if (!adMap[name]) {
+        adMap[name] = { name, delivery, spend:0, impressions:0, results:0,
+          ctrSum:0, cpmSum:0, freqSum:0, hookSum:0, lpSum:0,
+          ctrRows:0, cpmRows:0, freqRows:0, hookRows:0, lpRows:0, rows:0 };
+      }
+      const a = adMap[name];
+      a.spend      += spend;
+      a.impressions+= impr;
+      a.results    += results;
+      a.rows++;
+      if (delivery === 'active') a.delivery = 'active';
+      // Rate metrics: accumulate for weighted average by spend (or row count)
+      if (ctr  > 0) { a.ctrSum  += ctr  * spend; a.ctrRows  += spend; }
+      if (cpm  > 0) { a.cpmSum  += cpm  * spend; a.cpmRows  += spend; }
+      if (freq > 0) { a.freqSum += freq * spend; a.freqRows += spend; }
+      if (hookRate > 0) { a.hookSum += hookRate * spend; a.hookRows += spend; }
+      if (lpCvr > 0)   { a.lpSum  += lpCvr    * spend; a.lpRows   += spend; }
+    }
+
+    // Second pass: compute aggregated metrics and classify
+    const ads = Object.values(adMap).map(a => {
+      const cpl      = a.results > 0 ? a.spend / a.results : 0;
+      const ctr      = a.ctrRows  > 0 ? a.ctrSum  / a.ctrRows  : 0;
+      const cpm      = a.cpmRows  > 0 ? a.cpmSum  / a.cpmRows  : 0;
+      const freq     = a.freqRows > 0 ? a.freqSum / a.freqRows : 0;
+      const hookRate = a.hookRows > 0 ? a.hookSum / a.hookRows : null;
+      const lpCvr   = a.lpRows   > 0 ? a.lpSum   / a.lpRows   : null;
+
       let health = 'NEUTRAL';
-      if (spend >= ADS_KPI.winnerMinSpend && cpl > 0 && cpl <= ADS_KPI.cpl) health = 'WINNER';
-      else if (spend >= ADS_KPI.loserMinSpend && ((cpl > 0 && cpl > ADS_KPI.cpl * ADS_KPI.loserCpaMultiple) || (ctr > 0 && ctr < ADS_KPI.ctr && spend >= ADS_KPI.loserMinSpend))) health = 'LOSER';
-      else if (ctr >= ADS_KPI.ctr && spend < ADS_KPI.winnerMinSpend) health = 'SLEEPER';
+      if (a.spend >= ADS_KPI.winnerMinSpend && cpl > 0 && cpl <= ADS_KPI.cpl) health = 'WINNER';
+      else if (a.spend >= ADS_KPI.loserMinSpend && ((cpl > 0 && cpl > ADS_KPI.cpl * ADS_KPI.loserCpaMultiple) || (ctr > 0 && ctr < ADS_KPI.ctr))) health = 'LOSER';
+      else if (ctr >= ADS_KPI.ctr && a.spend < ADS_KPI.winnerMinSpend) health = 'SLEEPER';
+
       const flags = [];
       if (freq > ADS_KPI.frequency7d) flags.push(`Frequency ${freq.toFixed(1)} — saturation`);
       if (hookRate !== null && hookRate > 30 && ctr < ADS_KPI.ctr) flags.push('High hook + low CTR — attracts but doesn\'t convert');
       if (hookRate !== null && lpCvr !== null && hookRate > 20 && lpCvr < 50) flags.push('High hook + low LP CVR — page isn\'t selling');
-      ads.push({ name, delivery, spend, impressions:impr, cpl, ctr, freq, cpm, hookRate, lpCvr, results, health, flags });
-    }
+
+      return { name:a.name, delivery:a.delivery, spend:a.spend, impressions:a.impressions,
+               results:a.results, cpl, ctr, cpm, freq, hookRate, lpCvr, health, flags };
+    });
+
     const fmt = d => d ? d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : null;
     const days = (minDate && maxDate) ? Math.round((maxDate - minDate) / 86400000) + 1 : null;
     ads._dateRange = { start: fmt(minDate), end: fmt(maxDate), days };
