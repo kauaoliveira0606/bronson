@@ -1405,6 +1405,7 @@
       summary: { totalSpend, totalLeads, blendedCpl, avgCpm },
       ads: ads.filter(a => a.spend > 0).map(a => ({ name:a.name, spend:a.spend, cpl:a.cpl, ctr:a.ctr, freq:a.freq, results:a.results, health:a.health })),
       actionItems: actionMatch ? actionMatch[1].trim() : '',
+      fullReport: analysis,
     };
     const history = adsGetHistory();
     history.unshift(entry);
@@ -1425,15 +1426,17 @@
       const periodStr = e.dateRange && e.dateRange.start
         ? `${e.dateRange.start}${e.dateRange.end && e.dateRange.end !== e.dateRange.start ? ' → ' + e.dateRange.end : ''} (${e.dateRange.days || '?'}d)`
         : uploaded;
+      const idx = history.indexOf(e);
       return `<div class="ads-history-row">
         <div>
           <div class="ads-history-date">${periodStr}</div>
           <div class="ads-history-meta">Uploaded ${uploaded} · ${e.ads.length} ads</div>
         </div>
         <div class="ads-history-kpis">
-          <div class="ads-history-kpi"><div class="ads-history-kpi-val">${$(e.summary.blendedCpl)}</div><div class="ads-history-kpi-lbl">Blended CPL</div></div>
+          <div class="ads-history-kpi"><div class="ads-history-kpi-val">${$(e.summary.blendedCpl)}</div><div class="ads-history-kpi-lbl">CPL</div></div>
           <div class="ads-history-kpi"><div class="ads-history-kpi-val">${e.summary.totalLeads}</div><div class="ads-history-kpi-lbl">Leads</div></div>
           <div class="ads-history-kpi"><div class="ads-history-kpi-val">${$(e.summary.totalSpend)}</div><div class="ads-history-kpi-lbl">Spend</div></div>
+          ${e.fullReport ? `<button class="ads-copy-btn" onclick="adsViewReport(${idx})" style="margin-left:8px;">View</button>` : ''}
         </div>
       </div>`;
     }).join('');
@@ -1442,7 +1445,18 @@
   function adsClearHistory() {
     if (!confirm('Clear all upload history?')) return;
     localStorage.removeItem('ads_history');
+    localStorage.removeItem('ads_last_analysis');
+    document.getElementById('adsResult').classList.remove('visible');
     adsRenderHistory();
+  }
+
+  function adsViewReport(idx) {
+    const history = adsGetHistory();
+    const entry = history[idx];
+    if (!entry || !entry.fullReport) return;
+    document.getElementById('adsResultBody').textContent = entry.fullReport;
+    document.getElementById('adsResult').classList.add('visible');
+    document.getElementById('adsResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function adsBuildHistoryBlock() {
