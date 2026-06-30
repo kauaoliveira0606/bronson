@@ -1,15 +1,12 @@
-// All scorecard computation lives here. Apps Script is a dumb data pipe.
-// To fix any metric: edit this file and push. Never touch Apps Script again.
-//
-// Apps Script just dumps raw sheet data in __SHEET__ sections.
-// This function does: date filtering, accumulation, rate averaging, derived metrics.
+// Reads Google Sheet directly — no Apps Script dependency.
+// New weekly tabs are picked up automatically based on date.
 
-// UPDATE THIS when the user deploys the new minimal Apps Script:
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHAMESpD4IeLxksOWpt6WuYkT-hZZPUSb0oZENNvSadYnWRRrZ8X-pyKwZt0OzXIAClw/exec';
+const SHEET_ID = '1li-TafeNH-7v6B4lDCDF9jB52vtYh_6w3UE1v0V3f4A';
 
-const r2 = v => parseFloat(v.toFixed(2));
+const MONTHS_ARR = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS_IDX = Object.fromEntries(MONTHS_ARR.map((m, i) => [m, i]));
 
-// Metrics that should be averaged (not summed) across periods
+// Rate metrics: average across periods, not sum
 const RATE_METRICS = new Set([
   'cost per lead (meta)', 'landing page connect rate',
   'opt in rate (opt ins vs views)', 'opt in rate',
@@ -19,176 +16,114 @@ const RATE_METRICS = new Set([
   'funnel conversion rate (lt sales/opt ins)', 'funnel conversion rate',
 ]);
 
-// Metrics derived post-accumulation — skip in regular loop
+// Derived post-accumulation — skip in daily/col9 loops
 const SKIP = new Set([
   'roas - total', 'roas - low ticket', 'total cash collected',
   'cpa - low ticket', 'close rate - high ticket', 'show rate- high ticket',
 ]);
 
-function parseRawDump(text) {
-  const sheets = [];
-  for (const chunk of text.split('__SHEET__\n')) {
-    const lines = chunk.trim().split('\n').filter(Boolean);
-    if (lines.length >= 4) sheets.push(lines);
-  }
-  return sheets;
+const r2 = v => parseFloat(v.toFixed(2));
+
+function getTabName(sunday) {
+  const sat = new Date(sunday);
+  sat.setDate(sat.getDate() + 6);
+  const sm = MONTHS_ARR[sunday.getMonth()];
+  const em = MONTHS_ARR[sat.getMonth()];
+  return sm === em
+    ? `${sm} ${sunday.getDate()}-${sat.getDate()}`
+    : `${sm} ${sunday.getDate()}-${em} ${sat.getDate()}`;
 }
 
-function processSheets(sheets) {
-  const today = new Date(); today.setHours(0, 0, 0, 0);
-  const cut7  = new Date(today); cut7.setDate(today.getDate() - 6);
-  const cut30 = new Date(today); cut30.setDate(today.getDate() - 29);
-
-  const sum7 = {}, sum30 = {}, sumAll = {};
-  const cnt7 = {}, cnt30 = {}, cntAll = {};
-
-  // Show rate: weighted by booked calls per week (uses weekly summary col 9)
-  const sw7   = { num: 0, den: 0 };
-  const sw30  = { num: 0, den: 0 };
-  const swAll = { num: 0, den: 0 };
-
-  // Track "most recent" sheet for the current-week CSV output
-  let currentSheetLines = sheets[sheets.length - 1];
-
-  for (const lines of sheets) {
-    // Find date header row (cols 1-7 have yyyy-MM-dd strings)
-    let dateRow = -1;
-    const dateMap = {}; // col index → Date
-    for (let r = 0; r < Math.min(lines.length, 6); r++) {
-      const cols = lines[r].split(',');
-      let found = 0;
-      for (let c = 1; c <= 7; c++) {
-        if (/^\d{4}-\d{2}-\d{2}$/.test((cols[c] || '').trim())) {
-          dateMap[c] = new Date(cols[c].trim());
-          found++;
-        }
+function parseCsv(text) {
+  const rows = [];
+  for (const line of text.split('\n')) {
+    const row = [];
+    let inQ = false, cur = '';
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') {
+        if (inQ && line[i + 1] === '"') { cur += '"'; i++; }
+        else inQ = !inQ;
+      } else if (c === ',' && !inQ) {
+        row.push(cur); cur = '';
+      } else {
+        cur += c;
       }
-      if (found > 0) { dateRow = r; break; }
     }
-    if (dateRow < 0) continue;
+    row.push(cur);
+    rows.push(row);
+  }
+  return rows;
+}
 
-    const cols7 = [], cols30 = [], colsAll = [];
-    for (const [c, d] of Object.entries(dateMap)) {
-      const ci = +c;
-      colsAll.push(ci);
-      if (d >= cut30) cols30.push(ci);
-      if (d >= cut7)  cols7.push(ci);
+// Parse "Jun-21" → Date object using tab's reference year
+function parseSheetDate(s, refYear) {
+  const m = (s || '').trim().match(/^([A-Za-z]+)-(\d+)$/);
+  if (!m) return null;
+  const mo = MONTHS_IDX[m[1]];
+  if (mo === undefined) return null;
+  return new Date(refYear, mo, parseInt(m[2], 10));
+}
+
+// Parse a spreadsheet cell value to a JS number (handles $, %, commas, errors)
+function parseVal(s) {
+  if (!s || typeof s !== 'string') return NaN;
+  const t = s.trim();
+  if (!t || t.startsWith('#') || t === '-%' || t === '-') return NaN;
+  const clean = t.replace(/[$,]/g, '');
+  if (clean.endsWith('%')) {
+    const n = parseFloat(clean);
+    return isNaN(n) ? NaN : n / 100;
+  }
+  return parseFloat(clean);
+}
+
+async function fetchTabCsv(name) {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
+  try {
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 10000);
+    const r = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(tid);
+    if (!r.ok) return null;
+    const text = await r.text();
+    // gviz returns error JSON when sheet doesn't exist
+    if (text.trim().startsWith('google.visualization')) return null;
+    return text;
+  } catch { return null; }
+}
+
+function parseTabData(csvText, sunday) {
+  const rows = parseCsv(csvText);
+  const refYear = sunday.getFullYear();
+
+  // Find date header row: row where >=3 of cols 1-7 look like "Jun-21"
+  let dateRowIdx = -1;
+  const dateMap = {}; // col index → Date
+  for (let r = 0; r < Math.min(rows.length, 6); r++) {
+    const row = rows[r];
+    let found = 0;
+    for (let c = 1; c <= 7; c++) {
+      const d = parseSheetDate(row[c], refYear);
+      if (d) { dateMap[c] = d; found++; }
     }
-    if (!colsAll.length) continue;
+    if (found >= 3) { dateRowIdx = r; break; }
+  }
+  if (dateRowIdx < 0) return null;
 
-    // Index metric rows and accumulate
-    const rowOf = {};
-    for (let r = dateRow + 1; r < lines.length; r++) {
-      const cols = lines[r].split(',');
-      const name = cols[0].trim();
-      if (!name) continue;
-      if (!rowOf[name]) rowOf[name] = r;
-      if (SKIP.has(name.toLowerCase())) continue;
-
-      const accum = (sb, cb, idxs) => {
-        for (const c of idxs) {
-          const v = parseFloat(cols[c]);
-          if (isNaN(v) || v === 0) continue;
-          sb[name] = (sb[name] || 0) + v;
-          cb[name] = (cb[name] || 0) + 1;
-        }
-      };
-      accum(sumAll, cntAll, colsAll);
-      if (cols30.length) accum(sum30, cnt30, cols30);
-      if (cols7.length)  accum(sum7,  cnt7,  cols7);
-    }
-
-    // Weekly summary (col 9) for show rate + booked HT
-    const getCol9 = metricName => {
-      const r = rowOf[metricName];
-      if (r === undefined) return 0;
-      const v = parseFloat(lines[r].split(',')[9]);
-      return isNaN(v) ? 0 : v;
-    };
-
-    const wBooked = getCol9('Booked calls (high ticket)');
-    const wShow   = getCol9('Show rate- High ticket');
-    if (wBooked > 0) {
-      swAll.num += wShow * wBooked; swAll.den += wBooked;
-      if (cols30.length) { sw30.num += wShow * wBooked; sw30.den += wBooked; }
-      if (cols7.length)  { sw7.num  += wShow * wBooked; sw7.den  += wBooked; }
-    }
+  // Index metric rows by name
+  const metrics = {}; // name → row array
+  for (let r = dateRowIdx + 1; r < rows.length; r++) {
+    const row = rows[r];
+    const name = (row[0] || '').trim();
+    if (name && !metrics[name]) metrics[name] = row;
   }
 
-  return { sum7, sum30, sumAll, cnt7, cnt30, cntAll, sw7, sw30, swAll, currentSheetLines };
-}
+  // Fingerprint for formula-linked duplicate detection (Ad Spend daily values)
+  const adRow = metrics['Ad Spend Meta'] || [];
+  const fingerprint = [1, 2, 3, 4, 5, 6, 7].map(c => (adRow[c] || '').replace(/[$,]/g, '').trim()).join('|');
 
-function deriveMetrics(sums, cnts, sw) {
-  const g = k => sums[k] || 0;
-  const adSpend   = g('Ad Spend Meta');
-  const cashLT    = g('Cash Collected - Low ticket');
-  const cashHT    = g('Cash Collected - High Ticket');
-  const salesLT   = g('Sales - Low Ticket');
-  const salesHT   = g('Sales - High Ticket');
-  // Use weekly-summary-based booked count (more complete) if available
-  const bookedHT  = sw.den > 0 ? sw.den : g('Booked calls (high ticket)');
-  const totalCash = cashLT + cashHT;
-
-  if (cashLT || cashHT)             sums['Total Cash Collected']    = r2(totalCash);
-  if (adSpend > 0 && salesLT > 0)   sums['CPA - Low ticket']        = r2(adSpend / salesLT);
-  if (adSpend > 0 && totalCash > 0) sums['Roas - Total']            = r2(totalCash / adSpend);
-  if (adSpend > 0 && cashLT > 0)    sums['Roas - Low ticket']       = r2(cashLT / adSpend);
-  if (bookedHT > 0)                 sums['Close Rate - High Ticket'] = r2(salesHT / bookedHT);
-  if (sw.den > 0)                   sums['Show rate- High ticket']   = r2(sw.num / sw.den);
-}
-
-function buildSection(sums, cnts) {
-  return Object.entries(sums).map(([name, total]) => {
-    const isRate = RATE_METRICS.has(name.toLowerCase());
-    const count  = cnts[name] || 1;
-    const val    = isRate ? total / count : total;
-    return `${name},${r2(val)}`;
-  }).join('\n');
-}
-
-// ── Fallback: old-format Apps Script (returns __LAST7__ sections, not __SHEET__ dump) ──
-function parseSection(lines, start, end) {
-  const pairs = [], map = {};
-  const limit = end > -1 ? end : lines.length;
-  for (let i = start + 1; i < limit; i++) {
-    const line = lines[i].trim();
-    if (!line) continue;
-    const comma = line.indexOf(',');
-    if (comma < 0) continue;
-    const name = line.slice(0, comma).trim();
-    const val  = parseFloat(line.slice(comma + 1));
-    if (name && !isNaN(val)) { pairs.push([name, val]); map[name.toLowerCase()] = val; }
-  }
-  return { pairs, map };
-}
-
-const DERIVED_LOWER = new Set([
-  'cpa - low ticket', 'roas - total', 'roas - low ticket',
-  'total cash collected', 'close rate - high ticket', 'show rate- high ticket',
-]);
-
-function patchDerivedInSection(section) {
-  const g = k => section.map[k] || 0;
-  const adSpend   = g('ad spend meta');
-  const cashLT    = g('cash collected - low ticket');
-  const cashHT    = g('cash collected - high ticket');
-  const salesLT   = g('sales - low ticket');
-  const salesHT   = g('sales - high ticket');
-  const bookedHT  = g('booked calls (high ticket)');
-  const showRate  = g('show rate- high ticket');
-  const totalCash = cashLT + cashHT;
-
-  const patch = {};
-  if (cashLT || cashHT)             patch['Total Cash Collected']    = r2(totalCash);
-  if (adSpend > 0 && salesLT > 0)   patch['CPA - Low ticket']        = r2(adSpend / salesLT);
-  if (adSpend > 0 && totalCash > 0) patch['Roas - Total']            = r2(totalCash / adSpend);
-  if (adSpend > 0 && cashLT > 0)    patch['Roas - Low ticket']       = r2(cashLT / adSpend);
-  if (bookedHT > 0)                 patch['Close Rate - High Ticket'] = r2(salesHT / bookedHT);
-  if (showRate > 0)                 patch['Show rate- High ticket']   = r2(showRate);
-
-  const base  = section.pairs.filter(([n]) => !DERIVED_LOWER.has(n.toLowerCase()));
-  const extra = Object.entries(patch);
-  return [...base, ...extra].map(([n, v]) => `${n},${v}`).join('\n');
+  return { dateMap, metrics, fingerprint };
 }
 
 module.exports = async function handler(req, res) {
@@ -197,47 +132,168 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') { res.status(200).end(); return; }
 
   try {
-    const raw   = await fetch(SCRIPT_URL + '?t=' + Date.now()).then(r => r.text());
-    const lines = raw.split('\n');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const cut7  = new Date(today); cut7.setDate(today.getDate() - 6);
+    const cut30 = new Date(today); cut30.setDate(today.getDate() - 29);
 
-    // Detect format: new (has __SHEET__ markers) vs old (__LAST7__ sections)
-    if (raw.includes('__SHEET__')) {
-      // New format: full raw dump — do all computation here
-      const sheets = parseRawDump(raw);
-      const { sum7, sum30, sumAll, cnt7, cnt30, cntAll, sw7, sw30, swAll, currentSheetLines } = processSheets(sheets);
+    // Current Sunday (start of current week)
+    const curSunday = new Date(today);
+    curSunday.setDate(today.getDate() - today.getDay());
 
-      deriveMetrics(sum7,   cnt7,   sw7);
-      deriveMetrics(sum30,  cnt30,  sw30);
-      deriveMetrics(sumAll, cntAll, swAll);
+    // Generate tab definitions for past 26 weeks (newest first)
+    const tabDefs = Array.from({ length: 26 }, (_, i) => {
+      const sun = new Date(curSunday);
+      sun.setDate(curSunday.getDate() - i * 7);
+      const sat = new Date(sun);
+      sat.setDate(sun.getDate() + 6);
+      return { name: getTabName(sun), sunday: sun, saturday: sat };
+    });
 
-      const mainCsv = currentSheetLines.join('\n');
-      const out = mainCsv
-        + '\n__LAST7__\n'   + buildSection(sum7,   cnt7)
-        + '\n__LAST30__\n'  + buildSection(sum30,  cnt30)
-        + '\n__ALLTIME__\n' + buildSection(sumAll, cntAll);
+    // Fetch all tabs in parallel
+    const csvList = await Promise.all(tabDefs.map(t => fetchTabCsv(t.name)));
 
-      res.setHeader('Content-Type', 'text/plain');
-      return res.status(200).send(out);
+    // Parse and filter valid tabs
+    const tabs = tabDefs
+      .map((def, i) => {
+        const csv  = csvList[i];
+        if (!csv) return null;
+        const data = parseTabData(csv, def.sunday);
+        if (!data) return null;
+        return { ...def, csv, ...data };
+      })
+      .filter(Boolean);
+
+    // Split current week from completed weeks FIRST (before fingerprinting)
+    // Current week tab has formula-linked cells → same fingerprint as previous real week
+    const currentTab = tabs.find(t => t.saturday >= today) || null;
+    const pastTabs   = tabs.filter(t => t.saturday < today);
+
+    // De-duplicate completed tabs: skip formula-linked copies (same Ad Spend fingerprint)
+    const seenFp = new Set();
+    const completedTabs = pastTabs.filter(t => {
+      const fp = t.fingerprint;
+      if (!fp || fp.replace(/\|/g, '') === '') return true; // no ad spend — keep
+      if (seenFp.has(fp)) return false;
+      seenFp.add(fp);
+      return true;
+    });
+
+    // Per-period accumulators
+    const mk = () => ({ sums: {}, cnts: {}, sw: { num: 0, den: 0 }, cw: { num: 0, den: 0 } });
+    const L7 = mk(), L30 = mk(), ALL = mk();
+    // L7 also tracks raw daily booked/sales for HT close rate derivation
+    let l7BookedHT = 0, l7SalesHT = 0;
+
+    function addToAccum(accum, name, v) {
+      if (isNaN(v) || v === 0) return;
+      accum.sums[name] = (accum.sums[name] || 0) + v;
+      accum.cnts[name] = (accum.cnts[name] || 0) + 1;
     }
 
-    // Old format fallback: re-derive what we can from accumulated sections
-    const l7Idx  = lines.findIndex(l => l.trim() === '__LAST7__');
-    const l30Idx = lines.findIndex(l => l.trim() === '__LAST30__');
-    const atIdx  = lines.findIndex(l => l.trim() === '__ALLTIME__');
-    const mainEnd = l7Idx > -1 ? l7Idx : l30Idx > -1 ? l30Idx : atIdx > -1 ? atIdx : lines.length;
-    const mainCsv = lines.slice(0, mainEnd).join('\n');
+    for (const tab of completedTabs) {
+      const { dateMap, metrics } = tab;
 
-    const s7   = parseSection(lines, l7Idx,  l30Idx);
-    const s30  = parseSection(lines, l30Idx, atIdx);
-    const sAll = parseSection(lines, atIdx,  -1);
+      // ── LAST7: daily columns filtered by date ──
+      const l7Cols = Object.entries(dateMap)
+        .filter(([, d]) => d >= cut7 && d <= today)
+        .map(([c]) => +c);
+
+      if (l7Cols.length > 0) {
+        for (const [name, row] of Object.entries(metrics)) {
+          if (SKIP.has(name.toLowerCase())) continue;
+          for (const c of l7Cols) {
+            addToAccum(L7, name, parseVal(row[c]));
+          }
+        }
+        // Track HT booked/sales separately for close rate
+        const bookedRow = metrics['Booked calls (high ticket)'] || [];
+        const salesRow  = metrics['Sales - High Ticket']        || [];
+        for (const c of l7Cols) {
+          const b = parseVal(bookedRow[c]); if (!isNaN(b)) l7BookedHT += b;
+          const s = parseVal(salesRow[c]);  if (!isNaN(s)) l7SalesHT  += s;
+        }
+        // Show rate HT for L7: weighted by col9 booked
+        const wb9 = parseVal((metrics['Booked calls (high ticket)'] || [])[9]) || 0;
+        const ws9 = parseVal((metrics['Show rate- High ticket']      || [])[9]) || 0;
+        if (wb9 > 0 && !isNaN(ws9)) { L7.sw.num += ws9 * wb9; L7.sw.den += wb9; }
+      }
+
+      // ── LAST30 and ALLTIME: use col9 weekly summaries ──
+      const col9 = name => parseVal((metrics[name] || [])[9]);
+
+      const addCol9ToAccum = (accum) => {
+        for (const [name, row] of Object.entries(metrics)) {
+          if (SKIP.has(name.toLowerCase())) continue;
+          addToAccum(accum, name, col9(name));
+        }
+        // Show rate HT: weighted by col9 booked
+        const wb9 = col9('Booked calls (high ticket)') || 0;
+        const ws9 = col9('Show rate- High ticket')     || 0;
+        const wc9 = col9('Close Rate - High Ticket')   || 0;
+        if (wb9 > 0) {
+          if (!isNaN(ws9)) { accum.sw.num += ws9 * wb9; accum.sw.den += wb9; }
+          if (!isNaN(wc9)) { accum.cw.num += wc9 * wb9; accum.cw.den += wb9; }
+        }
+      };
+
+      if (tab.saturday >= cut30) addCol9ToAccum(L30);
+      addCol9ToAccum(ALL);
+    }
+
+    // ── Derive computed metrics ──
+    function derive(accum, period) {
+      const g = k => accum.sums[k] || 0;
+      const adSpend   = g('Ad Spend Meta');
+      const cashLT    = g('Cash Collected - Low ticket');
+      const cashHT    = g('Cash Collected - High Ticket');
+      const salesLT   = g('Sales - Low Ticket');
+      const salesHT   = g('Sales - High Ticket');
+      const totalCash = cashLT + cashHT;
+
+      if (cashLT || cashHT)             accum.sums['Total Cash Collected']    = r2(totalCash);
+      if (adSpend > 0 && salesLT > 0)   accum.sums['CPA - Low ticket']        = r2(adSpend / salesLT);
+      if (adSpend > 0 && totalCash > 0) accum.sums['Roas - Total']            = r2(totalCash / adSpend);
+      if (adSpend > 0 && cashLT > 0)    accum.sums['Roas - Low ticket']       = r2(cashLT / adSpend);
+
+      // Close Rate HT: daily for L7 (preserves 50% behavior), col9-weighted for L30/ALL
+      if (period === 'L7') {
+        if (l7BookedHT > 0) accum.sums['Close Rate - High Ticket'] = r2(l7SalesHT / l7BookedHT);
+      } else {
+        if (accum.cw.den > 0) accum.sums['Close Rate - High Ticket'] = r2(accum.cw.num / accum.cw.den);
+        else if (salesHT > 0 && g('Booked calls (high ticket)') > 0)
+          accum.sums['Close Rate - High Ticket'] = r2(salesHT / g('Booked calls (high ticket)'));
+      }
+
+      // Show Rate HT: weighted col9 average for all periods
+      if (accum.sw.den > 0) accum.sums['Show rate- High ticket'] = r2(accum.sw.num / accum.sw.den);
+    }
+
+    derive(L7,  'L7');
+    derive(L30, 'L30');
+    derive(ALL, 'ALL');
+
+    // ── Build output section ──
+    function buildSection(accum) {
+      return Object.entries(accum.sums).map(([name, total]) => {
+        const isRate = RATE_METRICS.has(name.toLowerCase());
+        const count  = accum.cnts[name] || 1;
+        const val    = isRate ? total / count : total;
+        return `${name},${r2(val)}`;
+      }).join('\n');
+    }
+
+    // Main CSV: current week's raw tab (for dashboard's daily view)
+    const mainCsv = (currentTab || completedTabs[0])?.csv?.trim() || '';
 
     const out = mainCsv
-      + '\n__LAST7__\n'   + patchDerivedInSection(s7)
-      + '\n__LAST30__\n'  + patchDerivedInSection(s30)
-      + '\n__ALLTIME__\n' + patchDerivedInSection(sAll);
+      + '\n__LAST7__\n'   + buildSection(L7)
+      + '\n__LAST30__\n'  + buildSection(L30)
+      + '\n__ALLTIME__\n' + buildSection(ALL);
 
     res.setHeader('Content-Type', 'text/plain');
-    res.status(200).send(out);
+    return res.status(200).send(out);
+
   } catch (e) {
     res.status(500).send('Error: ' + e.message);
   }
