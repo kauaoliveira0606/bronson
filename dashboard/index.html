@@ -1352,8 +1352,10 @@
       cpl: col('cost per result'), spend: col('amount spent'), impressions: col('impressions'),
       cpm: col('cpm'), ctr: col('outbound ctr'), frequency: col('frequency'),
       hookRate: col('hook rate'), lpCvr: col('landing page connect'),
+      dateStart: col('reporting starts'), dateEnd: col('reporting ends'),
     };
     const ads = [];
+    let minDate = null, maxDate = null;
     for (let i = 1; i < lines.length; i++) {
       const cols = adsSplitCSVLine(lines[i]);
       if (!cols.length) continue;
@@ -1364,6 +1366,9 @@
       const freq = parseFloat(get(idx.frequency))||0, cpm = parseFloat(get(idx.cpm))||0;
       const hookRate = parseFloat(get(idx.hookRate))||null, lpCvr = parseFloat(get(idx.lpCvr))||null;
       const results = parseFloat(get(idx.results))||0, delivery = get(idx.delivery)||'';
+      const ds = get(idx.dateStart), de = get(idx.dateEnd);
+      if (ds) { const d = new Date(ds); if (!minDate || d < minDate) minDate = d; }
+      if (de) { const d = new Date(de); if (!maxDate || d > maxDate) maxDate = d; }
       let health = 'NEUTRAL';
       if (spend >= ADS_KPI.winnerMinSpend && cpl > 0 && cpl <= ADS_KPI.cpl) health = 'WINNER';
       else if (spend >= ADS_KPI.loserMinSpend && ((cpl > 0 && cpl > ADS_KPI.cpl * ADS_KPI.loserCpaMultiple) || (ctr > 0 && ctr < ADS_KPI.ctr && spend >= ADS_KPI.loserMinSpend))) health = 'LOSER';
@@ -1374,6 +1379,9 @@
       if (hookRate !== null && lpCvr !== null && hookRate > 20 && lpCvr < 50) flags.push('High hook + low LP CVR — page isn\'t selling');
       ads.push({ name, delivery, spend, impressions:impr, cpl, ctr, freq, cpm, hookRate, lpCvr, results, health, flags });
     }
+    const fmt = d => d ? d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : null;
+    const days = (minDate && maxDate) ? Math.round((maxDate - minDate) / 86400000) + 1 : null;
+    ads._dateRange = { start: fmt(minDate), end: fmt(maxDate), days };
     return ads;
   }
 
@@ -1389,10 +1397,11 @@
     const blendedCpl = totalLeads > 0 ? totalSpend/totalLeads : 0;
     const cpmArr = active.filter(a => a.cpm > 0);
     const avgCpm = cpmArr.length ? cpmArr.reduce((s,a) => s+a.cpm,0)/cpmArr.length : 0;
-    const actionMatch = analysis.match(/🎯 3 ACTION ITEMS THIS WEEK\n([\s\S]*?)(?=\n🏆|$)/);
+    const actionMatch = analysis.match(/🎯 3 ACTION ITEMS THIS WEEK\n([\s\S]*?)(?=\n🏆|[\n]━|$)/);
     const entry = {
       date: new Date().toISOString(),
       filename,
+      dateRange: ads._dateRange || null,
       summary: { totalSpend, totalLeads, blendedCpl, avgCpm },
       ads: ads.filter(a => a.spend > 0).map(a => ({ name:a.name, spend:a.spend, cpl:a.cpl, ctr:a.ctr, freq:a.freq, results:a.results, health:a.health })),
       actionItems: actionMatch ? actionMatch[1].trim() : '',
@@ -1412,12 +1421,14 @@
     card.style.display = 'block';
     const $ = n => '$' + (n||0).toFixed(2);
     list.innerHTML = history.map(e => {
-      const d = new Date(e.date);
-      const dateStr = d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+      const uploaded = new Date(e.date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+      const periodStr = e.dateRange && e.dateRange.start
+        ? `${e.dateRange.start}${e.dateRange.end && e.dateRange.end !== e.dateRange.start ? ' → ' + e.dateRange.end : ''} (${e.dateRange.days || '?'}d)`
+        : uploaded;
       return `<div class="ads-history-row">
         <div>
-          <div class="ads-history-date">${dateStr}</div>
-          <div class="ads-history-meta">${e.filename} · ${e.ads.length} ads</div>
+          <div class="ads-history-date">${periodStr}</div>
+          <div class="ads-history-meta">Uploaded ${uploaded} · ${e.ads.length} ads</div>
         </div>
         <div class="ads-history-kpis">
           <div class="ads-history-kpi"><div class="ads-history-kpi-val">${$(e.summary.blendedCpl)}</div><div class="ads-history-kpi-lbl">Blended CPL</div></div>
@@ -1439,11 +1450,14 @@
     if (!history.length) return 'NO PRIOR PERIOD DATA AVAILABLE — skip WoW comparison sections.';
     const $ = n => '$' + (n||0).toFixed(2);
 
-    // Most recent history entry = previous period for WoW comparison
+    // Most recent history entry = previous period for comparison
     const prev = history[0];
-    const prevDate = new Date(prev.date).toLocaleDateString('en-US', { month:'short', day:'numeric' });
+    const prevUploaded = new Date(prev.date).toLocaleDateString('en-US', { month:'short', day:'numeric' });
+    const prevPeriodLabel = prev.dateRange && prev.dateRange.start
+      ? `${prev.dateRange.start}${prev.dateRange.end && prev.dateRange.end !== prev.dateRange.start ? ' → ' + prev.dateRange.end : ''} (${prev.dateRange.days || '?'} days)`
+      : `uploaded ${prevUploaded}`;
 
-    const prevSummary = `PREVIOUS PERIOD (uploaded ${prevDate}):\nSpend: ${$(prev.summary.totalSpend)} | Leads: ${prev.summary.totalLeads} | Blended CPL: ${$(prev.summary.blendedCpl)} | Avg CPM: ${$(prev.summary.avgCpm)}`;
+    const prevSummary = `PREVIOUS PERIOD (${prevPeriodLabel}):\nSpend: ${$(prev.summary.totalSpend)} | Leads: ${prev.summary.totalLeads} | Blended CPL: ${$(prev.summary.blendedCpl)} | Avg CPM: ${$(prev.summary.avgCpm)}`;
 
     const prevAds = prev.ads.map(a => `  ${a.name}: CPL ${$(a.cpl)} | CTR ${(a.ctr||0).toFixed(2)}% | Spend ${$(a.spend)} | Leads ${a.results} [${a.health}]`).join('\n');
 
@@ -1468,12 +1482,13 @@ ${prevActions}
 
 ${olderLines ? 'TREND DATA (older periods):\n' + olderLines : ''}
 
-WoW COMPARISON INSTRUCTIONS:
-- For account-level metrics (CPL, CTR, CPM, spend, leads): show this week vs last week with $ or % delta and direction arrow (↑/↓)
+PERIOD COMPARISON INSTRUCTIONS:
+- If the current and previous periods are different lengths (e.g. 3 days vs 7 days), note this and compare on a per-day average basis where useful (daily spend, daily leads)
+- For account-level metrics: show current vs previous with delta and direction arrow (↑/↓)
 - For each ad appearing in both periods: call out IMPROVED / DECLINED / NO CHANGE with the actual delta
-- Flag any ad that was WINNER last week but is now LOSER (fatigue signal)
-- Flag any SLEEPER that has appeared in 2+ periods without getting real budget
-- If prior action items exist, grade each one: IMPROVED / NO CHANGE / DECLINED with data to back it up\n`;
+- Flag any ad that was WINNER previously but is now LOSER (fatigue signal)
+- Flag any SLEEPER appearing in 2+ periods without getting real budget
+- If prior action items exist, grade each: IMPROVED / NO CHANGE / DECLINED with data\n`;
   }
 
   function adsBuildPrompt(ads) {
@@ -1500,13 +1515,20 @@ WoW COMPARISON INSTRUCTIONS:
 
     const historyBlock = adsBuildHistoryBlock();
     const today = new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+    const dr = ads._dateRange;
+    const periodLabel = dr && dr.start
+      ? `${dr.start}${dr.end && dr.end !== dr.start ? ' → ' + dr.end : ''} (${dr.days} day${dr.days === 1 ? '' : 's'})`
+      : today;
 
-    return `You are an elite Meta Ads strategist writing a client-ready weekly performance report. Be specific, data-driven, and direct. Name actual ads. Use real numbers. No filler, no vague statements.
+    return `You are an elite Meta Ads strategist writing a client-ready performance report. Be specific, data-driven, and direct. Name actual ads. Use real numbers. No filler, no vague statements.
 
 REPORT DATE: ${today}
+DATA PERIOD: ${periodLabel}
+
+Note: This report covers ${dr && dr.days ? dr.days + ' day(s)' : 'an unspecified period'}. Adjust benchmarks and language accordingly — do NOT assume this is a 7-day report unless the data says so. If it's a 1-day or 3-day snapshot, say so in the report and note that patterns may be preliminary.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CURRENT PERIOD — THIS WEEK
+CURRENT PERIOD — ${periodLabel}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ${acctBlock}
 
@@ -1537,7 +1559,7 @@ PATTERN DETECTION INSTRUCTIONS — analyze and report on all four:
 Write the full report as a client-ready email in this exact format:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Subject: Meta Ads Weekly Report — ${today}
+Subject: Meta Ads Report — ${periodLabel}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Here's your Meta Ads performance breakdown for this week.
