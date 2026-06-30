@@ -1278,8 +1278,15 @@
 
   // ── Ads Analysis (CSV upload) ─────────────────────────────────────────────
   const ADS_KPI = {
-    cpl:15, outboundCtr:1.0, cpm:25, frequency7d:3.0,
-    winnerMinSpend:100, loserMinSpend:50, loserCpaMultiple:1.5, sleeperMinCtr:1.0,
+    cpl: 5,           // CPL target
+    cpc: 1,           // CPC target
+    ctr: 2.0,         // CTR minimum %
+    cpm: 25,          // CPM ceiling
+    frequency7d: 3.0, // frequency saturation threshold
+    winnerMinSpend: 100,
+    loserMinSpend: 50,
+    loserCpaMultiple: 1.5,
+    fatigeDays: 21,
   };
   let adsCsvData = null;
 
@@ -1359,12 +1366,12 @@
       const results = parseFloat(get(idx.results))||0, delivery = get(idx.delivery)||'';
       let health = 'NEUTRAL';
       if (spend >= ADS_KPI.winnerMinSpend && cpl > 0 && cpl <= ADS_KPI.cpl) health = 'WINNER';
-      else if (spend >= ADS_KPI.loserMinSpend && cpl > 0 && cpl > ADS_KPI.cpl * ADS_KPI.loserCpaMultiple) health = 'LOSER';
-      else if (ctr >= ADS_KPI.sleeperMinCtr && spend < ADS_KPI.winnerMinSpend) health = 'SLEEPER';
+      else if (spend >= ADS_KPI.loserMinSpend && ((cpl > 0 && cpl > ADS_KPI.cpl * ADS_KPI.loserCpaMultiple) || (ctr > 0 && ctr < ADS_KPI.ctr && spend >= ADS_KPI.loserMinSpend))) health = 'LOSER';
+      else if (ctr >= ADS_KPI.ctr && spend < ADS_KPI.winnerMinSpend) health = 'SLEEPER';
       const flags = [];
-      if (freq > ADS_KPI.frequency7d) flags.push(`Frequency ${freq.toFixed(1)} — saturation risk`);
-      if (hookRate !== null && hookRate > 30 && ctr < 1.0) flags.push('High hook + low CTR');
-      if (hookRate !== null && lpCvr !== null && hookRate > 20 && lpCvr < 50) flags.push('High hook + low LP CVR');
+      if (freq > ADS_KPI.frequency7d) flags.push(`Frequency ${freq.toFixed(1)} — saturation`);
+      if (hookRate !== null && hookRate > 30 && ctr < ADS_KPI.ctr) flags.push('High hook + low CTR — attracts but doesn\'t convert');
+      if (hookRate !== null && lpCvr !== null && hookRate > 20 && lpCvr < 50) flags.push('High hook + low LP CVR — page isn\'t selling');
       ads.push({ name, delivery, spend, impressions:impr, cpl, ctr, freq, cpm, hookRate, lpCvr, results, health, flags });
     }
     return ads;
@@ -1429,16 +1436,44 @@
 
   function adsBuildHistoryBlock() {
     const history = adsGetHistory();
-    if (!history.length) return '';
+    if (!history.length) return 'NO PRIOR PERIOD DATA AVAILABLE — skip WoW comparison sections.';
     const $ = n => '$' + (n||0).toFixed(2);
-    const lines = history.slice(0, 4).map((e, i) => {
-      const d = new Date(e.date);
-      const dateStr = d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
-      const adLines = e.ads.slice(0,8).map(a => `    ${a.name}: CPL ${$(a.cpl)} | Spend ${$(a.spend)} | Leads ${a.results} | CTR ${(a.ctr||0).toFixed(2)}% [${a.health}]`).join('\n');
-      const actions = e.actionItems ? `  Action items from that week:\n${e.actionItems.split('\n').map(l => '    '+l).join('\n')}` : '';
-      return `  Period ${i+1} — uploaded ${dateStr}\n  Summary: CPL ${$(e.summary.blendedCpl)} | Leads ${e.summary.totalLeads} | Spend ${$(e.summary.totalSpend)} | CPM ${$(e.summary.avgCpm)}\n${adLines}\n${actions}`;
-    }).join('\n\n');
-    return `\nHISTORICAL DATA (most recent first — use for trend analysis and cross-period comparison):\n${lines}\nFor each ad that appears in both current and historical data, call out whether its CPL, CTR, or spend IMPROVED, DECLINED, or is NEW. Flag any creative that was a WINNER before but is now a LOSER (fatigue). Flag any SLEEPER that has been under-budgeted for multiple periods.\n`;
+
+    // Most recent history entry = previous period for WoW comparison
+    const prev = history[0];
+    const prevDate = new Date(prev.date).toLocaleDateString('en-US', { month:'short', day:'numeric' });
+
+    const prevSummary = `PREVIOUS PERIOD (uploaded ${prevDate}):\nSpend: ${$(prev.summary.totalSpend)} | Leads: ${prev.summary.totalLeads} | Blended CPL: ${$(prev.summary.blendedCpl)} | Avg CPM: ${$(prev.summary.avgCpm)}`;
+
+    const prevAds = prev.ads.map(a => `  ${a.name}: CPL ${$(a.cpl)} | CTR ${(a.ctr||0).toFixed(2)}% | Spend ${$(a.spend)} | Leads ${a.results} [${a.health}]`).join('\n');
+
+    const prevActions = prev.actionItems
+      ? `\nPREVIOUS ACTION ITEMS (assess each — IMPROVED / NO CHANGE / DECLINED):\n${prev.actionItems}`
+      : '';
+
+    // Older history for trend detection
+    const olderLines = history.slice(1, 4).map((e, i) => {
+      const d = new Date(e.date).toLocaleDateString('en-US', { month:'short', day:'numeric' });
+      return `  Period -${i+2} (${d}): CPL ${$(e.summary.blendedCpl)} | Leads ${e.summary.totalLeads} | Spend ${$(e.summary.totalSpend)}`;
+    }).join('\n');
+
+    return `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PRIOR PERIOD DATA (for WoW comparison)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${prevSummary}
+
+Previous period ad breakdown:
+${prevAds}
+${prevActions}
+
+${olderLines ? 'TREND DATA (older periods):\n' + olderLines : ''}
+
+WoW COMPARISON INSTRUCTIONS:
+- For account-level metrics (CPL, CTR, CPM, spend, leads): show this week vs last week with $ or % delta and direction arrow (↑/↓)
+- For each ad appearing in both periods: call out IMPROVED / DECLINED / NO CHANGE with the actual delta
+- Flag any ad that was WINNER last week but is now LOSER (fatigue signal)
+- Flag any SLEEPER that has appeared in 2+ periods without getting real budget
+- If prior action items exist, grade each one: IMPROVED / NO CHANGE / DECLINED with data to back it up\n`;
   }
 
   function adsBuildPrompt(ads) {
@@ -1464,8 +1499,95 @@
     }).join('\n\n');
 
     const historyBlock = adsBuildHistoryBlock();
+    const today = new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
 
-    return `You are an elite Meta Ads media buyer. Analyze this ad account and write a sharp, data-driven weekly report. Use real numbers. Name specific ads. Be direct and opinionated. No filler.\n\n${acctBlock}\n\nAD-LEVEL DATA (sorted by spend):\nWINNER = CPL ≤ $${ADS_KPI.cpl} with $${ADS_KPI.winnerMinSpend}+ spend | SLEEPER = CTR ≥ ${ADS_KPI.sleeperMinCtr}% under-spent | LOSER = CPL > ${ADS_KPI.loserCpaMultiple}x target with $${ADS_KPI.loserMinSpend}+ spend | NEUTRAL = not enough data\n\n${adBlock}\n${historyBlock}\nWrite the report in this exact format:\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📊 META ADS WEEKLY REPORT\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n🚨 ANOMALY DETECTION\n[CPM spikes, CTR drops, frequency issues. Specific numbers and ad names.]\n\n✅ TOP 3 WINS\n1.\n2.\n3.\n\n⚠️ TOP 3 CONCERNS\n1.\n2.\n3.\n\n🎨 CREATIVE FATIGUE SIGNALS\n[Specific ads. Hook rate vs CTR vs LP CVR mismatches. High-frequency ads.]\n\n💰 BUDGET RECOMMENDATIONS\n[Specific $ amounts. What to scale, cut, redistribute. Be decisive.]\n\n🎯 3 ACTION ITEMS THIS WEEK\n1.\n2.\n3.\n\n🏆 CREATIVE HEALTH AUDIT\nWINNERS — scale these:\n\nSLEEPERS — test with real budget:\n\nLOSERS — kill immediately:\n\nFLAGS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+    return `You are an elite Meta Ads strategist writing a client-ready weekly performance report. Be specific, data-driven, and direct. Name actual ads. Use real numbers. No filler, no vague statements.
+
+REPORT DATE: ${today}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CURRENT PERIOD — THIS WEEK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${acctBlock}
+
+KPI BENCHMARKS:
+- CTR target: ${ADS_KPI.ctr}% minimum
+- CPC target: $${ADS_KPI.cpc}
+- CPL target: $${ADS_KPI.cpl}
+- CPM ceiling: $${ADS_KPI.cpm}
+- Frequency cap: ${ADS_KPI.frequency7d} (7-day window)
+
+CREATIVE CLASSIFICATIONS:
+WINNER = CPL ≤ $${ADS_KPI.cpl} with $${ADS_KPI.winnerMinSpend}+ spend → scale budget
+SLEEPER = CTR ≥ ${ADS_KPI.ctr}% but spend < $${ADS_KPI.winnerMinSpend} → give fair chance
+LOSER = CPL >${ADS_KPI.loserCpaMultiple}x target OR CTR below benchmark with $${ADS_KPI.loserMinSpend}+ spend → kill
+FLAG = <3 active ads per ad set | running 21+ days with declining performance | high hook rate + low CVR | frequency >3.0
+
+AD-LEVEL DATA (sorted by spend):
+${adBlock}
+
+${historyBlock}
+
+PATTERN DETECTION INSTRUCTIONS — analyze and report on all four:
+1. CREATIVE FATIGUE: For each ad, is CPM climbing while CTR is dropping vs prior period? If yes, flag it for replacement.
+2. AUDIENCE OVERLAP/CANNIBALIZATION: Are multiple ad sets showing correlated performance dips at the same time? If yes, flag potential overlap.
+3. DAY-OF-WEEK PATTERNS: Based on any day-level data or historical patterns, identify which days convert better and recommend dayparting if relevant.
+4. CROSS-CAMPAIGN: Is there a relationship between prospecting spend levels and retargeting CPA? Call it out if visible.
+
+Write the full report as a client-ready email in this exact format:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Subject: Meta Ads Weekly Report — ${today}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Here's your Meta Ads performance breakdown for this week.
+
+📊 ACCOUNT OVERVIEW
+[Total spend, leads, blended CPL, CPM, CTR, frequency. Include WoW comparison if prior period data is available — show $ and % deltas. Flag any metric that missed its target with ❌ and anything on target with ✅.]
+
+🚨 ANOMALY DETECTION
+[Flag CPM spikes, CTR drops, frequency jumps. Specific numbers and ad names. Compare to prior period.]
+
+✅ TOP 3 WINS
+1.
+2.
+3.
+
+⚠️ TOP 3 CONCERNS
+1.
+2.
+3.
+
+🎨 CREATIVE FATIGUE SIGNALS
+[Name specific ads. Hook rate vs CTR vs LP CVR breakdown. Frequency saturation. Ads running 21+ days.]
+
+💰 BUDGET RECOMMENDATIONS
+[Specific dollar amounts. What to scale, what to cut, how to redistribute. Be decisive.]
+
+🎯 3 ACTION ITEMS THIS WEEK
+1. [Specific, measurable, assigned to this week]
+2. [Specific, measurable, assigned to this week]
+3. [Specific, measurable, assigned to this week]
+
+🏆 CREATIVE HEALTH AUDIT
+
+WINNERS — increase budget immediately:
+[Ad name | CPL | CTR | Spend | recommendation]
+
+SLEEPERS — allocate fair test budget:
+[Ad name | CTR | Current spend | why it deserves a chance]
+
+LOSERS — kill immediately:
+[Ad name | CPL | CTR | Spend | reason for cut]
+
+FLAGS — needs attention:
+[Any saturation, hook/CVR mismatches, aging creatives, thin ad sets]
+
+📈 PATTERN ANALYSIS
+Day-of-week: [best/worst days, dayparting recommendation if applicable]
+Audience overlap: [any cannibalization signals]
+Cross-campaign: [prospecting vs retargeting relationship if visible]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
   }
 
   async function adsRunAnalysis() {
@@ -1482,7 +1604,7 @@
       const res = await fetch('/api/claude-proxy', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:2048, messages:[{ role:'user', content:adsBuildPrompt(ads) }] }),
+        body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:3000, messages:[{ role:'user', content:adsBuildPrompt(ads) }] }),
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error.message);
