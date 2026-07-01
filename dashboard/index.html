@@ -98,6 +98,7 @@
     .sc-filter-btn { background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text2); font-size:.72rem; font-weight:700; padding:5px 13px; border-radius:6px; cursor:pointer; transition:all .15s; white-space:nowrap; }
     .sc-filter-btn:hover { border-color:rgba(255,255,255,0.2); color:#fff; }
     .sc-filter-btn.active { background:#2563eb; border-color:#2563eb; color:#fff; }
+    .sc-filter-btn:disabled { opacity:.35; cursor:not-allowed; pointer-events:none; }
     .sc-filter-sep { width:1px; height:20px; background:var(--border); margin:0 4px; }
     .sc-date-input { background:rgba(255,255,255,0.05); border:1px solid var(--border); color:#fff; font-size:.72rem; padding:5px 10px; border-radius:6px; outline:none; cursor:pointer; }
     .sc-date-input:focus { border-color:#2563eb; }
@@ -279,15 +280,22 @@
       <div class="chart-title" style="margin-bottom:0;">Weekly Scorecard</div>
       <div class="scorecard-week" id="scorecard-week"></div>
     </div>
-    <div class="sc-filter-bar">
-      <button class="sc-filter-btn active" data-f="week"      onclick="setSCFilter('week')">This Week</button>
-      <button class="sc-filter-btn"        data-f="7d"        onclick="setSCFilter('7d')">Last 7 Days</button>
-      <button class="sc-filter-btn"        data-f="30d"       onclick="setSCFilter('30d')">Last 30 Days</button>
-      <button class="sc-filter-btn"        data-f="alltime"   onclick="setSCFilter('alltime')">All Time</button>
-      <div class="sc-filter-sep"></div>
-      <input class="sc-date-input" type="date" id="sc-from" onchange="setSCFilter('custom')" title="From">
-      <span style="color:var(--text2);font-size:.8rem;">→</span>
-      <input class="sc-date-input" type="date" id="sc-to"   onchange="setSCFilter('custom')" title="To">
+    <div class="sc-filter-bar" style="justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+        <button class="sc-filter-btn active" data-f="week"    onclick="setSCFilter('week')">This Week</button>
+        <button class="sc-filter-btn"        data-f="7d"      onclick="setSCFilter('7d')">Last 7 Days</button>
+        <button class="sc-filter-btn"        data-f="30d"     onclick="setSCFilter('30d')">Last 30 Days</button>
+        <button class="sc-filter-btn"        data-f="alltime" onclick="setSCFilter('alltime')">All Time</button>
+        <div class="sc-filter-sep"></div>
+        <input class="sc-date-input" type="date" id="sc-from" onchange="setSCFilter('custom')" title="From">
+        <span style="color:var(--text2);font-size:.8rem;">→</span>
+        <input class="sc-date-input" type="date" id="sc-to"   onchange="setSCFilter('custom')" title="To">
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <button class="sc-filter-btn" id="sc-week-prev" onclick="shiftWeek(1)" title="Previous week">← Prev</button>
+        <span id="sc-week-label" style="font-size:.75rem;color:var(--text2);min-width:120px;text-align:center;"></span>
+        <button class="sc-filter-btn" id="sc-week-next" onclick="shiftWeek(-1)" title="Next week">Next →</button>
+      </div>
     </div>
     <div id="scorecard-wrap"><div class="loading">Loading scorecard...</div></div>
   </div>
@@ -675,6 +683,23 @@
   // --- SCORECARD STATE ---
   let scData = null; // { dayHeaders, dayDates, metrics }
   let scFilter = 'week';
+  let scWeekOffset = 0; // 0 = current week, 1 = last week, 2 = 2 weeks ago, etc.
+
+  function shiftWeek(delta) {
+    const next = scWeekOffset + delta;
+    if (next < 0) return; // can't go into the future
+    scWeekOffset = next;
+    scData = null;
+    document.getElementById('scorecard-wrap').innerHTML = '<div class="loading">Loading scorecard...</div>';
+    loadScorecard();
+  }
+
+  function updateWeekNav() {
+    const nextBtn = document.getElementById('sc-week-next');
+    if (nextBtn) nextBtn.disabled = scWeekOffset === 0;
+    const label = document.getElementById('sc-week-label');
+    if (label) label.textContent = scWeekOffset === 0 ? 'Current Week' : `${scWeekOffset}w ago`;
+  }
 
   function setSCFilter(f) {
     scFilter = f;
@@ -735,8 +760,9 @@
   }
 
   async function loadScorecard() {
+    updateWeekNav();
     try {
-      const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now());
+      const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now() + '&week=' + scWeekOffset);
       const rawText = await res.text();
       const text = rawText.replace(/"([^"]|\n)*"/g, m => m.replace(/\n/g, ' '));
       const lines = text.split('\n').filter(l => l.trim());

@@ -137,14 +137,21 @@ module.exports = async function handler(req, res) {
     const cut7  = new Date(today); cut7.setDate(today.getDate() - 6);
     const cut30 = new Date(today); cut30.setDate(today.getDate() - 29);
 
+    // week=0 → current, week=1 → last week, week=2 → 2 weeks ago, etc.
+    const weekOffset = Math.max(0, Math.min(25, parseInt(req.query?.week || '0', 10) || 0));
+
     // Current Sunday (start of current week)
     const curSunday = new Date(today);
     curSunday.setDate(today.getDate() - today.getDay());
 
-    // Generate tab definitions for past 26 weeks (newest first)
+    // Shift the "current" week by offset
+    const targetSunday = new Date(curSunday);
+    targetSunday.setDate(curSunday.getDate() - weekOffset * 7);
+
+    // Generate tab definitions for past 26 weeks (newest first), anchored to target
     const tabDefs = Array.from({ length: 26 }, (_, i) => {
-      const sun = new Date(curSunday);
-      sun.setDate(curSunday.getDate() - i * 7);
+      const sun = new Date(targetSunday);
+      sun.setDate(targetSunday.getDate() - i * 7);
       const sat = new Date(sun);
       sat.setDate(sun.getDate() + 6);
       return { name: getTabName(sun), sunday: sun, saturday: sat };
@@ -164,10 +171,10 @@ module.exports = async function handler(req, res) {
       })
       .filter(Boolean);
 
-    // Split current week from completed weeks FIRST (before fingerprinting)
-    // Current week tab has formula-linked cells → same fingerprint as previous real week
-    const currentTab = tabs.find(t => t.saturday >= today) || null;
-    const pastTabs   = tabs.filter(t => t.saturday < today);
+    // Split current/target week from older weeks
+    const targetSat = new Date(targetSunday); targetSat.setDate(targetSunday.getDate() + 6);
+    const currentTab = tabs.find(t => t.sunday.getTime() === targetSunday.getTime()) || tabs[0] || null;
+    const pastTabs   = tabs.filter(t => t.sunday.getTime() !== targetSunday.getTime());
 
     // De-duplicate completed tabs: skip formula-linked copies (same Ad Spend fingerprint)
     const seenFp = new Set();
