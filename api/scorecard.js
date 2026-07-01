@@ -76,7 +76,7 @@ function parseVal(s) {
 }
 
 async function fetchTabCsv(name) {
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}&t=${Date.now()}`;
   try {
     const ctrl = new AbortController();
     const tid = setTimeout(() => ctrl.abort(), 10000);
