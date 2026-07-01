@@ -75,8 +75,38 @@ function parseVal(s) {
   return parseFloat(clean);
 }
 
-async function fetchTabCsv(name) {
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}&t=${Date.now()}`;
+// Discover sheet GIDs from the spreadsheet HTML view.
+// gviz drops cells that contain < or > (it types columns as number and rejects non-numeric text).
+// The export API reads raw text values correctly, but requires a numeric GID, not a sheet name.
+async function discoverGidMap() {
+  try {
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 10000);
+    const r = await fetch(
+      `https://docs.google.com/spreadsheets/d/${SHEET_ID}/htmlview`,
+      { signal: ctrl.signal }
+    );
+    clearTimeout(tid);
+    if (!r.ok) return {};
+    const html = await r.text();
+    // Pattern: name: "6\/28-7\/04" ... gid: "1621000812"
+    const re = /name:\s*"((?:[^"\\]|\\.)*)"\s*,\s*pageUrl[^}]*gid:\s*"(\d+)"/g;
+    const map = {};
+    let m;
+    while ((m = re.exec(html)) !== null) {
+      const name = m[1].replace(/\\\//g, '/').replace(/\\x3d/gi, '=');
+      map[name] = m[2];
+    }
+    return map;
+  } catch { return {}; }
+}
+
+async function fetchTabCsv(name, gid) {
+  // Prefer export API (reads raw cell text, preserves < > + in goal cells).
+  // Fall back to gviz when no GID is known.
+  const url = gid
+    ? `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}&t=${Date.now()}`
+    : `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}&t=${Date.now()}`;
   try {
     const ctrl = new AbortController();
     const tid = setTimeout(() => ctrl.abort(), 10000);
@@ -84,8 +114,8 @@ async function fetchTabCsv(name) {
     clearTimeout(tid);
     if (!r.ok) return null;
     const text = await r.text();
-    // gviz returns error JSON when sheet doesn't exist
     if (text.trim().startsWith('google.visualization')) return null;
+    if (text.trim().startsWith('<!DOCTYPE')) return null;
     return text;
   } catch { return null; }
 }
@@ -155,8 +185,11 @@ module.exports = async function handler(req, res) {
       return { name: getTabName(sun), sunday: sun, saturday: sat };
     });
 
+    // Discover GIDs so the export API can be used (preserves < > + in goal cells)
+    const gidMap = await discoverGidMap();
+
     // Fetch all tabs in parallel
-    const csvList = await Promise.all(tabDefs.map(t => fetchTabCsv(t.name)));
+    const csvList = await Promise.all(tabDefs.map(t => fetchTabCsv(t.name, gidMap[t.name])));
 
     // Parse and filter valid tabs
     const tabs = tabDefs
