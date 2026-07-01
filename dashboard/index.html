@@ -843,9 +843,10 @@
 
     // --- SECTION SPLIT ---
     const LEADING = [
-      'ad spend meta','cost per lead (meta)','roas - low ticket','roas - total',
-      'cpa - low ticket','cash collected - high ticket','cash collected - low ticket',
-      'lt + ht cash collected','total cash collected','funnel conversion rate (lt sales/opt ins)',
+      'ad spend meta','cost per lead (meta)','funnel conversion rate (lt sales/opt ins)',
+      'cpa - low ticket','roas - low ticket','roas - total',
+      'cash collected - low ticket','cash collected - high ticket',
+      'lt + ht cash collected','total cash collected',
       'backend sales (wix & email)',
     ];
     const LEAD_FLOW  = ['vsl views','opt ins (leads)'];
@@ -860,7 +861,7 @@
     const isLeadFlow   = m => LEAD_FLOW.includes(m.name.toLowerCase().trim());
     const isSalesConv  = m => SALES_CONV.includes(m.name.toLowerCase().trim());
     const isMarketing  = m => MARKETING.includes(m.name.toLowerCase().trim());
-    const leadingMetrics   = metrics.filter(isLeading);
+    const leadingMetrics   = metrics.filter(isLeading).sort((a, b) => LEADING.indexOf(a.name.toLowerCase().trim()) - LEADING.indexOf(b.name.toLowerCase().trim()));
     const leadFlowMetrics  = metrics.filter(m => !isLeading(m) && isLeadFlow(m));
     const salesConvMetrics = metrics.filter(m => !isLeading(m) && !isLeadFlow(m) && isSalesConv(m));
     const marketingMetrics = metrics.filter(m => !isLeading(m) && !isLeadFlow(m) && !isSalesConv(m) && isMarketing(m));
