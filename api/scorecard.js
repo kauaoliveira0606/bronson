@@ -281,6 +281,52 @@ module.exports = async function handler(req, res) {
       addCol9ToAccum(ALL);
     }
 
+    // ── Include current (in-progress) week in all accumulators ──
+    if (currentTab) {
+      const { dateMap, metrics } = currentTab;
+
+      // L7: daily columns from this week that have already passed
+      const l7Cols = Object.entries(dateMap)
+        .filter(([, d]) => d >= cut7 && d <= today)
+        .map(([c]) => +c);
+
+      if (l7Cols.length > 0) {
+        for (const [name, row] of Object.entries(metrics)) {
+          if (SKIP.has(name.toLowerCase())) continue;
+          for (const c of l7Cols) {
+            addToAccum(L7, name, parseVal(row[c]));
+          }
+        }
+        const bookedRow = metrics['Booked calls (high ticket)'] || [];
+        const salesRow  = metrics['Sales - High Ticket']        || [];
+        for (const c of l7Cols) {
+          const b = parseVal(bookedRow[c]); if (!isNaN(b)) l7BookedHT += b;
+          const s = parseVal(salesRow[c]);  if (!isNaN(s)) l7SalesHT  += s;
+        }
+        const wb9 = parseVal((metrics['Booked calls (high ticket)'] || [])[9]) || 0;
+        const ws9 = parseVal((metrics['Show rate- High ticket']      || [])[9]) || 0;
+        if (wb9 > 0 && !isNaN(ws9)) { L7.sw.num += ws9 * wb9; L7.sw.den += wb9; }
+      }
+
+      // L30 / ALL: use col9 running weekly summaries from the current tab
+      const col9cur = name => parseVal((metrics[name] || [])[9]);
+      const addCurCol9 = (accum) => {
+        for (const [name] of Object.entries(metrics)) {
+          if (SKIP.has(name.toLowerCase())) continue;
+          addToAccum(accum, name, col9cur(name));
+        }
+        const wb9 = col9cur('Booked calls (high ticket)') || 0;
+        const ws9 = col9cur('Show rate- High ticket')     || 0;
+        const wc9 = col9cur('Close Rate - High Ticket')   || 0;
+        if (wb9 > 0) {
+          if (!isNaN(ws9)) { accum.sw.num += ws9 * wb9; accum.sw.den += wb9; }
+          if (!isNaN(wc9)) { accum.cw.num += wc9 * wb9; accum.cw.den += wb9; }
+        }
+      };
+      if (currentTab.sunday >= cut30) addCurCol9(L30);
+      addCurCol9(ALL);
+    }
+
     // ── Derive computed metrics ──
     function derive(accum, period) {
       const g = k => accum.sums[k] || 0;
