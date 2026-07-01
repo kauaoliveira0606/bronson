@@ -687,7 +687,7 @@
 
   function shiftWeek(delta) {
     const next = scWeekOffset + delta;
-    if (next < 0) return; // can't go into the future
+    if (next < 0) return;
     scWeekOffset = next;
     scData = null;
     document.getElementById('scorecard-wrap').innerHTML = '<div class="loading">Loading scorecard...</div>';
