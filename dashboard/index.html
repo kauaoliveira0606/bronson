@@ -852,8 +852,8 @@
     const LEAD_FLOW  = ['vsl views','opt ins (leads)'];
     const SALES_CONV = [
       'dials','booked calls (high ticket)','booked calls (upsells)',
-      'show rate- high ticket','close rate - high ticket','close rate - low ticket',
-      'sales - high ticket','sales - low ticket','connection rate (response rate)',
+      'sales - high ticket','show rate- high ticket','close rate - high ticket',
+      'sales - low ticket','close rate - low ticket','connection rate (response rate)',
     ];
     const MARKETING  = ['landing page connect rate','vsl play rate','vsl engagement rate','confirmation email open rate','confirmation email ctr','opt in rate (opt ins vs views)'];
 
@@ -863,7 +863,7 @@
     const isMarketing  = m => MARKETING.includes(m.name.toLowerCase().trim());
     const leadingMetrics   = metrics.filter(isLeading).sort((a, b) => LEADING.indexOf(a.name.toLowerCase().trim()) - LEADING.indexOf(b.name.toLowerCase().trim()));
     const leadFlowMetrics  = metrics.filter(m => !isLeading(m) && isLeadFlow(m));
-    const salesConvMetrics = metrics.filter(m => !isLeading(m) && !isLeadFlow(m) && isSalesConv(m));
+    const salesConvMetrics = metrics.filter(m => !isLeading(m) && !isLeadFlow(m) && isSalesConv(m)).sort((a, b) => SALES_CONV.indexOf(a.name.toLowerCase().trim()) - SALES_CONV.indexOf(b.name.toLowerCase().trim()));
     const marketingMetrics = metrics.filter(m => !isLeading(m) && !isLeadFlow(m) && !isSalesConv(m) && isMarketing(m));
     const pipelineMetrics  = metrics.filter(m => !isLeading(m) && !isLeadFlow(m) && !isSalesConv(m) && !isMarketing(m));
 
