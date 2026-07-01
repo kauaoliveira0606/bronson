@@ -845,10 +845,15 @@
     const LEADING = [
       'ad spend meta','cost per lead (meta)','roas - low ticket','roas - total',
       'cpa - low ticket','cash collected - high ticket','cash collected - low ticket',
-      'total cash collected','funnel conversion rate (lt sales/opt ins)',
+      'lt + ht cash collected','total cash collected','funnel conversion rate (lt sales/opt ins)',
+      'backend sales (wix & email)','backend cash collected',
     ];
-    const LEAD_FLOW  = ['vsl views','dials','opt ins (leads)','booked calls (upsells)'];
-    const SALES_CONV = ['show rate- high ticket','close rate - high ticket','close rate - low ticket','sales - high ticket','sales - low ticket','connection rate (response rate)'];
+    const LEAD_FLOW  = ['vsl views','opt ins (leads)'];
+    const SALES_CONV = [
+      'dials','booked calls (high ticket)','booked calls (upsells)',
+      'show rate- high ticket','close rate - high ticket','close rate - low ticket',
+      'sales - high ticket','sales - low ticket','connection rate (response rate)',
+    ];
     const MARKETING  = ['landing page connect rate','vsl play rate','vsl engagement rate','confirmation email open rate','confirmation email ctr','opt in rate (opt ins vs views)'];
 
     const isLeading    = m => LEADING.includes(m.name.toLowerCase().trim());
