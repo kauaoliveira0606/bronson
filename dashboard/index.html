@@ -801,14 +801,24 @@
       const last30Map  = l30Idx > -1 ? parseSection(l30Idx, atIdx)  : {};
       const allTimeMap = atIdx  > -1 ? parseSection(atIdx,  -1)     : {};
 
+      // Find goal and weekly-actual column indices from header row (row 0)
+      const headerCols = parseCSVLine(lines[0]);
+      let goalColIdx   = 8; // default: column I
+      let actualColIdx = 9; // default: column J
+      for (let c = 1; c < headerCols.length; c++) {
+        const h = (headerCols[c] || '').trim().toLowerCase();
+        if (h.includes('goal') && !h.includes('actual')) goalColIdx = c;
+        else if (h === 'this week' || h === 'weekly actual' || h === 'actual') actualColIdx = c;
+      }
+
       const metrics = [];
       for (let r = 3; r < mainEnd; r++) {
         const cols = parseCSVLine(lines[r]);
         const name = cols[0] ? cols[0].trim() : '';
         if (!name) continue;
         const days       = cols.slice(1, 8).map(v => (v || '').trim());
-        const weeklyGoal = (cols[8] || '').trim();
-        let weeklyActual = (cols[9] || '').trim(); // This Week → column J
+        const weeklyGoal = (cols[goalColIdx]   || '').trim();
+        let weeklyActual = (cols[actualColIdx] || '').trim(); // This Week → column J
         // Last 7 Days → sum B-H of current tab
         const isPercent7 = days.some(v => v.endsWith('%'));
         let last7Actual = '';
