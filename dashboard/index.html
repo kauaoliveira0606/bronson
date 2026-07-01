@@ -846,7 +846,7 @@
       'ad spend meta','cost per lead (meta)','roas - low ticket','roas - total',
       'cpa - low ticket','cash collected - high ticket','cash collected - low ticket',
       'lt + ht cash collected','total cash collected','funnel conversion rate (lt sales/opt ins)',
-      'backend sales (wix & email)','backend cash collected',
+      'backend sales (wix & email)',
     ];
     const LEAD_FLOW  = ['vsl views','opt ins (leads)'];
     const SALES_CONV = [
@@ -940,7 +940,7 @@
       sectionLabel('🔥 Lead Flow')        + leadFlowMetrics.map(buildCard).join('') +
       sectionLabel('🤝 Sales Conversion') + salesConvMetrics.map(buildCard).join('') +
       sectionLabel('📣 Marketing Metrics')+ marketingMetrics.map(buildCard).join('') +
-      sectionLabel('📊 Pipeline Metrics') + pipelineMetrics.map(buildCard).join('');
+      sectionLabel('📊 Backend') + pipelineMetrics.map(buildCard).join('');
 
     const tableRowsHtml = metrics.map(buildTableRow).join('');
 
