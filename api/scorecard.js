@@ -172,10 +172,12 @@ module.exports = async function handler(req, res) {
       })
       .filter(Boolean);
 
-    // Split current/target week from older weeks
-    const targetSat = new Date(targetSunday); targetSat.setDate(targetSunday.getDate() + 6);
-    const currentTab = tabs.find(t => t.sunday.getTime() === targetSunday.getTime()) || tabs[0] || null;
-    const pastTabs   = tabs.filter(t => t.sunday.getTime() !== targetSunday.getTime());
+    // Target tab: the selected week (exact Sunday match)
+    const targetTab = tabs.find(t => t.sunday.getTime() === targetSunday.getTime()) || null;
+
+    // For L7/L30/ALL accumulation, always use actual completed weeks relative to today
+    const currentTab = tabs.find(t => t.saturday >= today) || null;
+    const pastTabs   = tabs.filter(t => t.saturday < today);
 
     // De-duplicate completed tabs: skip formula-linked copies (same Ad Spend fingerprint)
     const seenFp = new Set();
@@ -291,8 +293,8 @@ module.exports = async function handler(req, res) {
       }).join('\n');
     }
 
-    // Main CSV: current week's raw tab (for dashboard's daily view)
-    const mainCsv = (currentTab || completedTabs[0])?.csv?.trim() || '';
+    // Main CSV: the selected week's tab (falls back to most recent completed)
+    const mainCsv = (targetTab || currentTab || completedTabs[0])?.csv?.trim() || '';
 
     const out = mainCsv
       + '\n__LAST7__\n'   + buildSection(L7)
