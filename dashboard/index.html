@@ -801,14 +801,17 @@
       const last30Map  = l30Idx > -1 ? parseSection(l30Idx, atIdx)  : {};
       const allTimeMap = atIdx  > -1 ? parseSection(atIdx,  -1)     : {};
 
-      // Find goal and weekly-actual column indices from header row (row 0)
-      const headerCols = parseCSVLine(lines[0]);
+      // Find goal column index — scan header rows, but only look at columns 8+ to avoid
+      // false matches in day-column labels or metric names in column A.
       let goalColIdx   = 8; // default: column I
       let actualColIdx = 9; // default: column J
-      for (let c = 1; c < headerCols.length; c++) {
-        const h = (headerCols[c] || '').trim().toLowerCase();
-        if (h.includes('goal') && !h.includes('actual')) goalColIdx = c;
-        else if (h === 'this week' || h === 'weekly actual' || h === 'actual') actualColIdx = c;
+      for (let r = 0; r < Math.min(dateRowIdx, 4); r++) {
+        const hCols = parseCSVLine(lines[r]);
+        for (let c = 8; c < hCols.length; c++) {
+          const h = (hCols[c] || '').trim().toLowerCase();
+          if (h.includes('goal') && !h.includes('actual')) { goalColIdx = c; }
+          if (h === 'this week' || h === 'weekly actual' || h === 'actual') { actualColIdx = c; }
+        }
       }
 
       const metrics = [];
