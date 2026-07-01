@@ -27,11 +27,8 @@ const r2 = v => parseFloat(v.toFixed(2));
 function getTabName(sunday) {
   const sat = new Date(sunday);
   sat.setDate(sat.getDate() + 6);
-  const sm = MONTHS_ARR[sunday.getMonth()];
-  const em = MONTHS_ARR[sat.getMonth()];
-  return sm === em
-    ? `${sm} ${sunday.getDate()}-${sat.getDate()}`
-    : `${sm} ${sunday.getDate()}-${em} ${sat.getDate()}`;
+  const pad = n => String(n).padStart(2, '0');
+  return `${sunday.getMonth()+1}/${pad(sunday.getDate())}-${sat.getMonth()+1}/${pad(sat.getDate())}`;
 }
 
 function parseCsv(text) {
