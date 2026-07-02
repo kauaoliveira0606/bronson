@@ -402,7 +402,8 @@
       <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--border);">
         <p class="section-label" style="margin-bottom:8px;">Common questions</p>
         <h3 style="font-size:1.2rem;font-weight:800;color:var(--text);margin-bottom:16px;">Got questions?</h3>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
+        <style>@media(max-width:600px){.faq-video-grid{grid-template-columns:1fr!important;}.faq-video-last{grid-column:1!important;max-width:100%!important;}}</style>
+        <div class="faq-video-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
 
           <div>
             <p style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:10px;">Is dropshipping saturated?</p>
@@ -452,7 +453,7 @@
             <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a46b171768dd475fe0ef4a8/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
           </div>
 
-          <div style="grid-column:1/-1;max-width:calc(50% - 10px);">
+          <div class="faq-video-last" style="grid-column:1/-1;max-width:calc(50% - 10px);">
             <p style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:10px;">I'm not tech savvy. Can I still do this?</p>
             <vturb-smartplayer id="vid-6a46b1786438a022d10025bd" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer>
             <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a46b1786438a022d10025bd/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
