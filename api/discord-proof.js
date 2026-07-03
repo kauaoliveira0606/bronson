@@ -11,7 +11,21 @@ module.exports = async function handler(req, res) {
   try {
     const { email, tab, action, fileName, fileType, fileBase64 } = req.body;
 
-    if (!email || !fileBase64) return res.status(400).json({ error: 'Missing required fields' });
+    if (!email) return res.status(400).json({ error: 'Missing email' });
+
+    // Text-only message (e.g. access requests with no file)
+    if (!fileBase64) {
+      const content = tab === 'access-request'
+        ? `🔔 **New Portal Access Request**\n**Email:** ${email}\nGo to the admin panel to approve.`
+        : `📋 **New Submission**\n**Email:** ${email}\n**Tab:** ${tab}\n**Action:** ${action}`;
+      const response = await fetch(DISCORD_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content }),
+      });
+      if (!response.ok) console.error('Discord error:', await response.text());
+      return res.status(200).json({ ok: true });
+    }
 
     const fileBuffer = Buffer.from(fileBase64, 'base64');
     const boundary = '----DiscordBoundary' + Date.now().toString(36);

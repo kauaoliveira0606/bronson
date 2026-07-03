@@ -1857,6 +1857,11 @@
       }
     } else {
       await sbInsert('profiles', { email, approved: false });
+      fetch('/api/discord-proof', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, tab: 'access-request', action: 'new-user', fileName: null, fileType: null, fileBase64: null }),
+      }).catch(() => {});
       document.getElementById('email-gate').style.display = 'none';
       document.getElementById('pending-screen').style.display = 'flex';
     }
