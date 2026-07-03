@@ -1854,8 +1854,11 @@
     if (email === ADMIN_EMAIL) {
       hideGate(email);
       document.getElementById('nav-admin').style.display = '';
+      document.getElementById('nav-coaching').style.display = '';
       const mAdmin = document.getElementById('mnav-admin');
       if (mAdmin) mAdmin.style.display = '';
+      const mCoaching = document.getElementById('mnav-coaching');
+      if (mCoaching) mCoaching.style.display = '';
       initPortal();
       return;
     }
@@ -1898,8 +1901,11 @@
     if (saved === ADMIN_EMAIL) {
       hideGate(saved);
       document.getElementById('nav-admin').style.display = '';
+      document.getElementById('nav-coaching').style.display = '';
       const mAdmin = document.getElementById('mnav-admin');
       if (mAdmin) mAdmin.style.display = '';
+      const mCoaching = document.getElementById('mnav-coaching');
+      if (mCoaching) mCoaching.style.display = '';
       initPortal();
       return;
     }
