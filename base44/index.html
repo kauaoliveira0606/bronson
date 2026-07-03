@@ -1763,24 +1763,39 @@
 
   <!-- ── Coaching Settings (admin only) ── -->
   <div class="view padded" id="view-coaching-settings">
-    <h1 class="page-title" style="margin-bottom:24px;">Coaching Calls Settings</h1>
-    <div style="max-width:560px;display:flex;flex-direction:column;gap:14px;">
-      <div>
-        <label style="font-size:.72rem;font-weight:700;color:#374151;display:block;margin-bottom:4px;">Zoom Link</label>
-        <input id="admin-zoom-link" type="url" placeholder="https://zoom.us/j/..." style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 11px;font-size:.8rem;font-family:inherit;outline:none;">
+    <h1 class="page-title" style="margin-bottom:6px;">Coaching Call</h1>
+    <p style="font-size:.85rem;color:#6b7280;margin-bottom:28px;">Set the details below and hit Publish. It'll appear instantly in the Calls tab for all eligible members.</p>
+    <div style="max-width:580px;">
+      <div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;gap:18px;">
+        <div>
+          <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Call Title</label>
+          <input id="admin-call-title" type="text" placeholder="e.g. Monthly Founder Q&A — July" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;color:#111;transition:border-color .15s;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+        </div>
+        <div>
+          <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Date &amp; Time</label>
+          <input id="admin-call-datetime" type="text" placeholder="e.g. Thursday July 10 @ 7:00 PM EST" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;color:#111;transition:border-color .15s;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+        </div>
+        <div>
+          <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Zoom Link</label>
+          <input id="admin-zoom-link" type="url" placeholder="https://zoom.us/j/..." style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;color:#111;transition:border-color .15s;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+        </div>
+        <div>
+          <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Description</label>
+          <textarea id="admin-coaching-details" placeholder="What will be covered, what to prepare, how to get the most out of the call..." rows="4" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;resize:vertical;outline:none;color:#111;transition:border-color .15s;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'"></textarea>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button onclick="adminSaveCoaching(this)" style="background:#111;color:#fff;border:none;border-radius:10px;padding:11px 24px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .15s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Publish Call</button>
+          <span id="admin-coaching-status" style="font-size:.78rem;color:#16a34a;display:none;">✓ Published</span>
+        </div>
       </div>
-      <div>
-        <label style="font-size:.72rem;font-weight:700;color:#374151;display:block;margin-bottom:4px;">Details / Instructions</label>
-        <textarea id="admin-coaching-details" placeholder="Call schedule, what to prepare, etc." rows="5" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 11px;font-size:.8rem;font-family:inherit;resize:vertical;outline:none;"></textarea>
-      </div>
-      <button onclick="adminSaveCoaching(this)" style="align-self:flex-start;background:#111;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;">Save Settings</button>
     </div>
   </div>
 
-  <!-- ── Coaching Calls ── -->
+  <!-- ── Coaching Calls (user-facing) ── -->
   <div class="view padded" id="view-coaching">
-    <h1 class="page-title">📞 Coaching Calls</h1>
-    <div id="coaching-content" style="margin-top:20px;">
+    <h1 class="page-title" style="margin-bottom:6px;">Coaching Calls</h1>
+    <p style="font-size:.85rem;color:#6b7280;margin-bottom:28px;">Live calls with Bronson — exclusive to Elite members.</p>
+    <div id="coaching-content">
       <p style="color:#6b7280;font-size:.88rem;">Loading...</p>
     </div>
   </div>
@@ -3457,18 +3472,37 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     el.innerHTML = '<p style="color:#6b7280;font-size:.88rem;">Loading...</p>';
     try {
       const rows = await sbSelect('coaching_settings', 'id=eq.1');
-      const s = Array.isArray(rows) && rows[0] ? rows[0] : { zoom_link: '', details: '' };
+      const row  = Array.isArray(rows) && rows[0] ? rows[0] : {};
+      const d    = row.details ? (() => { try { return JSON.parse(row.details); } catch { return {}; } })() : {};
+      const zoom = row.zoom_link || '';
+
+      if (!zoom && !d.title) {
+        el.innerHTML = '<p style="color:#9ca3af;font-size:.88rem;">No call scheduled yet. Check back soon.</p>';
+        return;
+      }
+
       el.innerHTML = `
-        <div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:16px;padding:28px 24px;max-width:560px;">
-          <div style="font-size:1rem;font-weight:800;color:#111;margin-bottom:6px;">Join the Coaching Call</div>
-          ${s.details ? `<p style="font-size:.88rem;color:#4b5563;line-height:1.7;margin-bottom:20px;white-space:pre-wrap;">${s.details}</p>` : ''}
-          ${s.zoom_link
-            ? `<a href="${s.zoom_link}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;text-decoration:none;border-radius:10px;padding:12px 24px;font-size:.88rem;font-weight:700;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 10l4.553-2.069A1 1 0 0121 8.845v6.31a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
-                Join Zoom Call
-              </a>`
-            : `<p style="font-size:.85rem;color:#9ca3af;">No Zoom link has been set yet. Check back soon.</p>`
-          }
+        <div style="max-width:560px;">
+          <div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:20px;overflow:hidden;">
+            <div style="background:#111;padding:28px 28px 24px;">
+              <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.5);margin-bottom:8px;">Live Coaching Call</div>
+              <div style="font-size:1.3rem;font-weight:800;color:#fff;line-height:1.3;margin-bottom:${d.datetime ? '12px' : '0'};">${d.title || 'Coaching Call'}</div>
+              ${d.datetime ? `<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border-radius:6px;padding:5px 10px;font-size:.78rem;color:rgba(255,255,255,.8);font-weight:600;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                ${d.datetime}
+              </div>` : ''}
+            </div>
+            <div style="padding:24px 28px 28px;display:flex;flex-direction:column;gap:20px;">
+              ${d.desc ? `<p style="font-size:.875rem;color:#4b5563;line-height:1.75;margin:0;white-space:pre-wrap;">${d.desc}</p>` : ''}
+              ${zoom
+                ? `<a href="${zoom}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;text-decoration:none;border-radius:10px;padding:13px 24px;font-size:.88rem;font-weight:700;align-self:flex-start;transition:opacity .15s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 10l4.553-2.069A1 1 0 0121 8.845v6.31a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
+                    Join Zoom Call
+                  </a>`
+                : `<p style="font-size:.82rem;color:#9ca3af;margin:0;">Zoom link coming soon.</p>`
+              }
+            </div>
+          </div>
         </div>`;
     } catch(e) {
       el.innerHTML = '<p style="color:#dc2626;font-size:.85rem;">Could not load coaching info. Try refreshing.</p>';
@@ -3558,21 +3592,32 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     try {
       const cs = await sbSelect('coaching_settings', 'id=eq.1');
       const s = Array.isArray(cs) && cs[0] ? cs[0] : {};
+      const details = s.details ? JSON.parse(s.details) : {};
+      const t  = document.getElementById('admin-call-title');
+      const dt = document.getElementById('admin-call-datetime');
       const zl = document.getElementById('admin-zoom-link');
       const cd = document.getElementById('admin-coaching-details');
-      if (zl) zl.value = s.zoom_link || '';
-      if (cd) cd.value = s.details || '';
+      if (t)  t.value  = details.title    || '';
+      if (dt) dt.value = details.datetime || '';
+      if (zl) zl.value = s.zoom_link      || '';
+      if (cd) cd.value = details.desc     || '';
     } catch(e) {}
   }
 
   async function adminSaveCoaching(btn) {
-    btn.disabled = true; btn.textContent = 'Saving...';
+    btn.disabled = true; btn.textContent = 'Publishing...';
     const zoom_link = document.getElementById('admin-zoom-link').value.trim();
-    const details   = document.getElementById('admin-coaching-details').value.trim();
+    const details   = JSON.stringify({
+      title:    document.getElementById('admin-call-title').value.trim(),
+      datetime: document.getElementById('admin-call-datetime').value.trim(),
+      desc:     document.getElementById('admin-coaching-details').value.trim(),
+    });
     try {
       await sbUpdate('coaching_settings', 'id=eq.1', { zoom_link, details });
-      btn.textContent = 'Saved!';
-      setTimeout(() => { btn.textContent = 'Save Settings'; btn.disabled = false; }, 1500);
+      btn.textContent = 'Publish Call';
+      btn.disabled = false;
+      const status = document.getElementById('admin-coaching-status');
+      if (status) { status.style.display = ''; setTimeout(() => status.style.display = 'none', 3000); }
     } catch(e) {
       btn.textContent = 'Error — retry';
       btn.disabled = false;
