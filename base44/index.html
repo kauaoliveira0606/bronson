@@ -3438,7 +3438,7 @@ After implementing, add clear comments in the code showing where the Pixel ID is
         }
       }
       if (changed) localStorage.setItem(RW_PENDING_KEY, JSON.stringify(pending));
-      const hasApproval = rows.some(r => r.status === 'approved');
+      const hasApproval = rows.some(r => r.tab === 'elite' && r.status === 'approved');
       if (hasApproval) {
         const nc = document.getElementById('nav-coaching');
         const mc = document.getElementById('mnav-coaching');
