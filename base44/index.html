@@ -794,13 +794,30 @@
 
 <!-- ═══ Admin panel ═══ -->
 <div id="admin-panel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;align-items:center;justify-content:center;">
-  <div style="background:#fff;border-radius:16px;padding:32px;max-width:560px;width:94%;box-shadow:0 8px 40px rgba(0,0,0,.18);max-height:88vh;overflow-y:auto;">
+  <div style="background:#fff;border-radius:16px;padding:32px;max-width:640px;width:94%;box-shadow:0 8px 40px rgba(0,0,0,.18);max-height:88vh;overflow-y:auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <div style="font-size:1rem;font-weight:800;color:#111;">Admin — User Approvals</div>
+      <div style="font-size:1rem;font-weight:800;color:#111;">Admin Panel</div>
       <button onclick="document.getElementById('admin-panel').style.display='none'" style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:#6b7280;">×</button>
     </div>
-    <div id="admin-user-list" style="display:flex;flex-direction:column;gap:10px;">
+    <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:8px;">User Approvals</div>
+    <div id="admin-user-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
       <p style="color:#6b7280;font-size:.85rem;">Loading...</p>
+    </div>
+    <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:8px;">Proof Submissions</div>
+    <div id="admin-proof-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
+      <p style="color:#6b7280;font-size:.85rem;">Loading...</p>
+    </div>
+    <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:10px;">Coaching Calls Settings</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div>
+        <label style="font-size:.72rem;font-weight:700;color:#374151;display:block;margin-bottom:4px;">Zoom Link</label>
+        <input id="admin-zoom-link" type="url" placeholder="https://zoom.us/j/..." style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 11px;font-size:.8rem;font-family:inherit;outline:none;">
+      </div>
+      <div>
+        <label style="font-size:.72rem;font-weight:700;color:#374151;display:block;margin-bottom:4px;">Details / Instructions</label>
+        <textarea id="admin-coaching-details" placeholder="Call schedule, what to prepare, etc." rows="4" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 11px;font-size:.8rem;font-family:inherit;resize:vertical;outline:none;"></textarea>
+      </div>
+      <button onclick="adminSaveCoaching(this)" style="align-self:flex-start;background:#111;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;">Save Settings</button>
     </div>
   </div>
 </div>
@@ -846,6 +863,10 @@
     <div class="nav-item" onclick="showView('leaderboard',this); fetchLeaderboard();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       <span class="nav-label">Leaderboard</span>
+    </div>
+    <div class="nav-item" id="nav-coaching" style="display:none;" onclick="showView('coaching',this); loadCoachingTab();">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.069A1 1 0 0121 8.845v6.31a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
+      <span class="nav-label">Calls</span>
     </div>
     <div class="nav-item" id="nav-admin" style="display:none;" onclick="openAdminPanel()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><circle cx="18" cy="6" r="3" fill="currentColor" stroke="none"/><path d="M17 6h2M18 5v2" stroke="#fff" stroke-width="1.5"/></svg>
@@ -896,6 +917,10 @@
     <button class="mob-nav-item" id="mnav-leaderboard" onclick="showView('leaderboard', null); fetchLeaderboard();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       Rank
+    </button>
+    <button class="mob-nav-item" id="mnav-coaching" style="display:none;" onclick="showView('coaching', null); loadCoachingTab();">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.069A1 1 0 0121 8.845v6.31a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
+      Calls
     </button>
     <button class="mob-nav-item" id="mnav-admin" style="display:none;" onclick="openAdminPanel()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
@@ -1737,6 +1762,14 @@
     </div>
   </div>
 
+  <!-- ── Coaching Calls ── -->
+  <div class="view padded" id="view-coaching">
+    <h1 class="page-title">📞 Coaching Calls</h1>
+    <div id="coaching-content" style="margin-top:20px;">
+      <p style="color:#6b7280;font-size:.88rem;">Loading...</p>
+    </div>
+  </div>
+
 </main>
 
 <script>
@@ -1817,6 +1850,7 @@
       if (existing.approved) {
         hideGate(email);
         initPortal();
+        syncProofStatus();
       } else {
         document.getElementById('email-gate').style.display = 'none';
         document.getElementById('pending-screen').style.display = 'flex';
@@ -1851,6 +1885,7 @@
     if (profile && profile.approved) {
       hideGate(saved);
       initPortal();
+      syncProofStatus();
     } else if (profile) {
       document.getElementById('email-gate').style.display = 'none';
       document.getElementById('pending-screen').style.display = 'flex';
@@ -2908,7 +2943,6 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   const RW_DAILY_KEY     = storageKey('rw_daily');
   const RW_PENDING_KEY   = storageKey('rw_pending');
   const RW_QUALIFY       = 50;
-  const RW_AUTO_MS       = 2 * 60 * 60 * 1000; // auto-approve after 2 hours
   const RW_ENTRY_MAP     = {
     'wix-30-days': 50, 'first-sale': 50,
     'wix-domain': 10, 'wix-email': 10, 'payments': 10, 'fb-ads': 10,
@@ -2935,21 +2969,13 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     updateRewardsUI();
   }
 
-  function rwCheckPending() {
-    const pending = rwGetPending();
-    const actions = rwGetActions();
-    const now = Date.now();
-    let changed = false;
-    for (const [key, ts] of Object.entries(pending)) {
-      if (now - ts >= RW_AUTO_MS && !actions[key]) {
-        rwSetAction(key);
-        rwAddEntries(RW_ENTRY_MAP[key] || 0);
-        delete pending[key];
-        changed = true;
-        rwShowToast('✓ Proof approved! +' + (RW_ENTRY_MAP[key] || 0) + ' entries added.');
-      }
-    }
-    if (changed) localStorage.setItem(RW_PENDING_KEY, JSON.stringify(pending));
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   }
 
   function rwUpload(actionKey) {
@@ -2958,21 +2984,33 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     input.click();
   }
 
-  function rwOnFileSelected(input) {
+  async function rwOnFileSelected(input) {
     if (!input.files || !input.files.length) return;
     const actionKey = input.dataset.action;
     const actions = rwGetActions();
     const pending = rwGetPending();
     if (actions[actionKey] || pending[actionKey]) { input.value = ''; return; }
-    pending[actionKey] = Date.now();
-    localStorage.setItem(RW_PENDING_KEY, JSON.stringify(pending));
+    const file = input.files[0];
     input.value = '';
-    rwShowToast('📸 Proof received! Entries will be added within 2 hours.');
+    pending[actionKey] = 1;
+    localStorage.setItem(RW_PENDING_KEY, JSON.stringify(pending));
+    rwShowToast('📸 Uploading proof...');
     updateRewardsUI();
+    try {
+      const base64 = await fileToBase64(file);
+      await fetch('/api/discord-proof', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: getStoredEmail(), tab: 'rewards', action: actionKey, fileName: file.name, fileType: file.type, fileBase64: base64 }),
+      });
+      await sbInsert('proof_submissions', { email: getStoredEmail(), tab: 'rewards', action_key: actionKey, status: 'pending' });
+      rwShowToast('📸 Proof submitted! You\'ll be notified when approved.');
+    } catch(e) {
+      rwShowToast('📸 Proof submitted! Entries will be added after review.');
+    }
   }
 
   function updateRewardsUI() {
-    rwCheckPending();
     const entries  = rwGetEntries();
     const needed   = Math.max(0, RW_QUALIFY - entries);
     const pct      = Math.min(100, Math.round(entries / RW_QUALIFY * 100));
@@ -3125,7 +3163,6 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   // ── Elite Status ──────────────────────────────────────
   const ES_PENDING_KEY  = storageKey('es_pending');
   const ES_UNLOCKED_KEY = storageKey('es_unlocked');
-  const ES_AUTO_MS = 2 * 60 * 60 * 1000;
 
   function esIsUnlocked() { return !!localStorage.getItem(ES_UNLOCKED_KEY); }
   function esIsPending()  { return !!localStorage.getItem(ES_PENDING_KEY); }
@@ -3135,27 +3172,28 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     document.getElementById('es-file-input').click();
   }
 
-  function esOnFileSelected(input) {
+  async function esOnFileSelected(input) {
     if (!input.files || !input.files.length) return;
     if (esIsUnlocked() || esIsPending()) { input.value = ''; return; }
-    localStorage.setItem(ES_PENDING_KEY, Date.now());
+    const file = input.files[0];
     input.value = '';
-    rwShowToast('📸 Proof submitted! Elite Status will activate within 2 hours.');
+    localStorage.setItem(ES_PENDING_KEY, '1');
     updateEliteUI();
-  }
-
-  function esCheckPending() {
-    const ts = localStorage.getItem(ES_PENDING_KEY);
-    if (ts && !esIsUnlocked() && Date.now() - parseInt(ts) >= ES_AUTO_MS) {
-      localStorage.setItem(ES_UNLOCKED_KEY, '1');
-      localStorage.removeItem(ES_PENDING_KEY);
-      rwShowToast('🌟 Elite Status activated! All perks are now unlocked.');
-      updateEliteUI();
+    try {
+      const base64 = await fileToBase64(file);
+      await fetch('/api/discord-proof', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: getStoredEmail(), tab: 'elite', action: 'elite-yearly', fileName: file.name, fileType: file.type, fileBase64: base64 }),
+      });
+      await sbInsert('proof_submissions', { email: getStoredEmail(), tab: 'elite', action_key: 'elite-yearly', status: 'pending' });
+      rwShowToast('📸 Proof submitted! Elite Status pending admin review.');
+    } catch(e) {
+      rwShowToast('📸 Proof submitted! Elite Status will activate after review.');
     }
   }
 
   function updateEliteUI() {
-    esCheckPending();
     const unlocked = esIsUnlocked();
     const pending  = esIsPending();
 
@@ -3337,47 +3375,182 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     }
   }
 
+  // ── Proof submission sync (replaces fake timers) ──
+  async function syncProofStatus() {
+    const email = getStoredEmail();
+    if (!email) return;
+    try {
+      const rows = await sbSelect('proof_submissions', `email=eq.${encodeURIComponent(email)}`);
+      if (!Array.isArray(rows)) return;
+      const actions = rwGetActions();
+      const pending = rwGetPending();
+      let changed = false;
+      for (const row of rows) {
+        const key = row.action_key;
+        if (row.tab === 'rewards') {
+          if (row.status === 'approved' && !actions[key]) {
+            rwSetAction(key);
+            rwAddEntries(RW_ENTRY_MAP[key] || 0);
+            delete pending[key];
+            changed = true;
+          } else if (row.status === 'rejected') {
+            delete pending[key];
+            changed = true;
+          } else if (row.status === 'pending' && !actions[key] && !pending[key]) {
+            pending[key] = 1;
+            changed = true;
+          }
+        } else if (row.tab === 'elite') {
+          if (row.status === 'approved' && !esIsUnlocked()) {
+            localStorage.setItem(ES_UNLOCKED_KEY, '1');
+            localStorage.removeItem(ES_PENDING_KEY);
+          } else if (row.status === 'rejected') {
+            localStorage.removeItem(ES_PENDING_KEY);
+          } else if (row.status === 'pending' && !esIsUnlocked() && !esIsPending()) {
+            localStorage.setItem(ES_PENDING_KEY, '1');
+          }
+        }
+      }
+      if (changed) localStorage.setItem(RW_PENDING_KEY, JSON.stringify(pending));
+      const hasApproval = rows.some(r => r.status === 'approved');
+      if (hasApproval) {
+        const nc = document.getElementById('nav-coaching');
+        const mc = document.getElementById('mnav-coaching');
+        if (nc) nc.style.display = '';
+        if (mc) mc.style.display = '';
+      }
+      updateRewardsUI();
+      updateEliteUI();
+    } catch(e) { console.warn('syncProofStatus:', e); }
+  }
+
+  // ── Coaching Calls tab ──
+  async function loadCoachingTab() {
+    const el = document.getElementById('coaching-content');
+    if (!el) return;
+    el.innerHTML = '<p style="color:#6b7280;font-size:.88rem;">Loading...</p>';
+    try {
+      const rows = await sbSelect('coaching_settings', 'id=eq.1');
+      const s = Array.isArray(rows) && rows[0] ? rows[0] : { zoom_link: '', details: '' };
+      el.innerHTML = `
+        <div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:16px;padding:28px 24px;max-width:560px;">
+          <div style="font-size:1rem;font-weight:800;color:#111;margin-bottom:6px;">Join the Coaching Call</div>
+          ${s.details ? `<p style="font-size:.88rem;color:#4b5563;line-height:1.7;margin-bottom:20px;white-space:pre-wrap;">${s.details}</p>` : ''}
+          ${s.zoom_link
+            ? `<a href="${s.zoom_link}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;text-decoration:none;border-radius:10px;padding:12px 24px;font-size:.88rem;font-weight:700;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 10l4.553-2.069A1 1 0 0121 8.845v6.31a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
+                Join Zoom Call
+              </a>`
+            : `<p style="font-size:.85rem;color:#9ca3af;">No Zoom link has been set yet. Check back soon.</p>`
+          }
+        </div>`;
+    } catch(e) {
+      el.innerHTML = '<p style="color:#dc2626;font-size:.85rem;">Could not load coaching info. Try refreshing.</p>';
+    }
+  }
+
+  // ── Admin panel ──
   async function openAdminPanel() {
     const panel = document.getElementById('admin-panel');
-    const list  = document.getElementById('admin-user-list');
     panel.style.display = 'flex';
-    list.innerHTML = '<p style="color:#6b7280;font-size:.85rem;">Loading...</p>';
+    const list  = document.getElementById('admin-user-list');
+    const proof = document.getElementById('admin-proof-list');
+    list.innerHTML  = '<p style="color:#6b7280;font-size:.85rem;">Loading...</p>';
+    proof.innerHTML = '<p style="color:#6b7280;font-size:.85rem;">Loading...</p>';
+
+    // User approvals
     try {
       const data = await sbSelect('profiles', 'order=created_at.desc');
       if (!Array.isArray(data) || data.length === 0) {
         list.innerHTML = '<p style="color:#6b7280;font-size:.85rem;">No users yet.</p>';
-        return;
+      } else {
+        list.innerHTML = data.map(u => `
+          <div style="display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border-radius:10px;padding:12px 14px;gap:10px;">
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:.88rem;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${u.email}</div>
+              <div style="font-size:.75rem;color:#9ca3af;margin-top:2px;">${new Date(u.created_at).toLocaleDateString()}</div>
+            </div>
+            <div style="display:flex;gap:6px;flex-shrink:0;">
+              ${u.approved
+                ? `<span style="font-size:.75rem;color:#16a34a;font-weight:700;background:#dcfce7;border-radius:6px;padding:4px 10px;">Approved</span>
+                   <button onclick="adminSetApproval('${u.email}',false,this)" style="font-size:.75rem;background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Revoke</button>`
+                : `<span style="font-size:.75rem;color:#d97706;font-weight:700;background:#fef3c7;border-radius:6px;padding:4px 10px;">Pending</span>
+                   <button onclick="adminSetApproval('${u.email}',true,this)" style="font-size:.75rem;background:#dcfce7;color:#16a34a;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Approve</button>
+                   <button onclick="adminSetApproval('${u.email}','delete',this)" style="font-size:.75rem;background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Reject</button>`
+              }
+            </div>
+          </div>`).join('');
       }
-      list.innerHTML = data.map(u => `
-        <div style="display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border-radius:10px;padding:12px 14px;gap:10px;">
-          <div style="flex:1;min-width:0;">
-            <div style="font-size:.88rem;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${u.email}</div>
-            <div style="font-size:.75rem;color:#9ca3af;margin-top:2px;">${new Date(u.created_at).toLocaleDateString()}</div>
-          </div>
-          <div style="display:flex;gap:6px;flex-shrink:0;">
-            ${u.approved
-              ? `<span style="font-size:.75rem;color:#16a34a;font-weight:700;background:#dcfce7;border-radius:6px;padding:4px 10px;">Approved</span>
-                 <button onclick="adminSetApproval('${u.email}',false,this)" style="font-size:.75rem;background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Revoke</button>`
-              : `<span style="font-size:.75rem;color:#d97706;font-weight:700;background:#fef3c7;border-radius:6px;padding:4px 10px;">Pending</span>
-                 <button onclick="adminSetApproval('${u.email}',true,this)" style="font-size:.75rem;background:#dcfce7;color:#16a34a;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Approve</button>
-                 <button onclick="adminSetApproval('${u.email}','delete',this)" style="font-size:.75rem;background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Reject</button>`
-            }
-          </div>
-        </div>`).join('');
     } catch(e) {
-      list.innerHTML = `<p style="color:#dc2626;font-size:.85rem;">Error loading users. Try again.</p>`;
+      list.innerHTML = '<p style="color:#dc2626;font-size:.85rem;">Error loading users.</p>';
     }
+
+    // Proof submissions
+    try {
+      const subs = await sbSelect('proof_submissions', 'order=created_at.desc');
+      if (!Array.isArray(subs) || subs.length === 0) {
+        proof.innerHTML = '<p style="color:#6b7280;font-size:.85rem;">No submissions yet.</p>';
+      } else {
+        proof.innerHTML = subs.map(s => `
+          <div style="display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border-radius:10px;padding:12px 14px;gap:10px;">
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:.85rem;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${s.email}</div>
+              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">${s.tab} / ${s.action_key} &middot; ${new Date(s.created_at).toLocaleDateString()}</div>
+            </div>
+            <div style="display:flex;gap:6px;flex-shrink:0;align-items:center;">
+              ${s.status === 'approved'
+                ? `<span style="font-size:.72rem;color:#16a34a;font-weight:700;background:#dcfce7;border-radius:6px;padding:3px 8px;">Approved</span>`
+                : s.status === 'rejected'
+                ? `<span style="font-size:.72rem;color:#dc2626;font-weight:700;background:#fee2e2;border-radius:6px;padding:3px 8px;">Rejected</span>`
+                : `<button onclick="adminReviewProof(${s.id},'approved',this)" style="font-size:.72rem;background:#dcfce7;color:#16a34a;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Approve</button>
+                   <button onclick="adminReviewProof(${s.id},'rejected',this)" style="font-size:.72rem;background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Reject</button>`
+              }
+            </div>
+          </div>`).join('');
+      }
+    } catch(e) {
+      proof.innerHTML = '<p style="color:#dc2626;font-size:.85rem;">Error loading submissions.</p>';
+    }
+
+    // Load coaching settings
+    try {
+      const cs = await sbSelect('coaching_settings', 'id=eq.1');
+      const s = Array.isArray(cs) && cs[0] ? cs[0] : {};
+      const zl = document.getElementById('admin-zoom-link');
+      const cd = document.getElementById('admin-coaching-details');
+      if (zl) zl.value = s.zoom_link || '';
+      if (cd) cd.value = s.details || '';
+    } catch(e) {}
   }
 
   async function adminSetApproval(email, value, btn) {
-    btn.disabled = true;
-    btn.textContent = '...';
+    btn.disabled = true; btn.textContent = '...';
     if (value === 'delete') {
       await sbDelete('profiles', `email=eq.${encodeURIComponent(email)}`);
     } else {
       await sbUpdate('profiles', `email=eq.${encodeURIComponent(email)}`, { approved: value });
     }
     openAdminPanel();
+  }
+
+  async function adminReviewProof(id, status, btn) {
+    btn.disabled = true; btn.textContent = '...';
+    await sbUpdate('proof_submissions', `id=eq.${id}`, { status, reviewed_at: new Date().toISOString() });
+    openAdminPanel();
+  }
+
+  async function adminSaveCoaching(btn) {
+    btn.disabled = true; btn.textContent = 'Saving...';
+    const zoom_link = document.getElementById('admin-zoom-link').value.trim();
+    const details   = document.getElementById('admin-coaching-details').value.trim();
+    try {
+      await sbUpdate('coaching_settings', 'id=eq.1', { zoom_link, details });
+      btn.textContent = 'Saved!';
+      setTimeout(() => { btn.textContent = 'Save Settings'; btn.disabled = false; }, 1500);
+    } catch(e) {
+      btn.textContent = 'Error — retry';
+      btn.disabled = false;
+    }
   }
 </script>
 

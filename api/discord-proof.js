@@ -1,0 +1,49 @@
+const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK_URL;
+
+module.exports = async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  if (req.method === 'OPTIONS') { res.status(200).end(); return; }
+  if (req.method !== 'POST') return res.status(405).end();
+
+  if (!DISCORD_WEBHOOK) return res.status(500).json({ error: 'DISCORD_WEBHOOK_URL env var not set' });
+
+  try {
+    const { email, tab, action, fileName, fileType, fileBase64 } = req.body;
+
+    if (!email || !fileBase64) return res.status(400).json({ error: 'Missing required fields' });
+
+    const fileBuffer = Buffer.from(fileBase64, 'base64');
+    const boundary = '----DiscordBoundary' + Date.now().toString(36);
+    const content = `📸 **New Proof Submission**\n**Email:** ${email}\n**Tab:** ${tab}\n**Action:** ${action}`;
+
+    const preamble = Buffer.from(
+      `--${boundary}\r\n` +
+      `Content-Disposition: form-data; name="content"\r\n\r\n` +
+      content +
+      `\r\n--${boundary}\r\n` +
+      `Content-Disposition: form-data; name="file"; filename="${fileName || 'proof.png'}"\r\n` +
+      `Content-Type: ${fileType || 'image/png'}\r\n\r\n`,
+      'utf-8'
+    );
+    const epilogue = Buffer.from(`\r\n--${boundary}--\r\n`, 'utf-8');
+    const body = Buffer.concat([preamble, fileBuffer, epilogue]);
+
+    const response = await fetch(DISCORD_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}` },
+      body,
+    });
+
+    if (!response.ok) {
+      const err = await response.text();
+      console.error('Discord error:', err);
+      return res.status(502).json({ error: 'Discord delivery failed' });
+    }
+
+    res.status(200).json({ ok: true });
+  } catch (e) {
+    console.error('discord-proof error:', e);
+    res.status(500).json({ error: e.message });
+  }
+};
