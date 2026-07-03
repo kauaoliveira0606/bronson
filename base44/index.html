@@ -844,10 +844,6 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><circle cx="18" cy="6" r="3" fill="currentColor" stroke="none"/><path d="M17 6h2M18 5v2" stroke="#fff" stroke-width="1.5"/></svg>
       <span class="nav-label">Admin</span>
     </div>
-    <div class="nav-item" id="nav-coaching-settings" style="display:none;" onclick="showView('coaching-settings',this); loadCoachingSettings();">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.069A1 1 0 0121 8.845v6.31a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
-      <span class="nav-label">Calls</span>
-    </div>
   </nav>
   <div class="sidebar-user">
     <div class="user-avatar" id="u-avatar">S</div>
@@ -895,10 +891,6 @@
       Rank
     </button>
     <button class="mob-nav-item" id="mnav-coaching" style="display:none;" onclick="showView('coaching', null); loadCoachingTab();">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.069A1 1 0 0121 8.845v6.31a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
-      Calls
-    </button>
-    <button class="mob-nav-item" id="mnav-coaching-settings" style="display:none;" onclick="showView('coaching-settings', null); loadCoachingSettings();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.069A1 1 0 0121 8.845v6.31a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
       Calls
     </button>
@@ -1758,39 +1750,35 @@
           <p style="color:#6b7280;font-size:.85rem;">Loading...</p>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- ── Coaching Settings (admin only) ── -->
-  <div class="view padded" id="view-coaching-settings">
-    <h1 class="page-title" style="margin-bottom:6px;">Coaching Call</h1>
-    <p style="font-size:.85rem;color:#6b7280;margin-bottom:28px;">Set the details below and hit Publish. It'll appear instantly in the Calls tab for all eligible members.</p>
-    <div style="max-width:580px;">
-      <div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;gap:18px;">
-        <div>
-          <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Call Title</label>
-          <input id="admin-call-title" type="text" placeholder="e.g. Monthly Founder Q&A — July" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;color:#111;transition:border-color .15s;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
-        </div>
-        <div>
-          <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Date &amp; Time</label>
-          <input id="admin-call-datetime" type="text" placeholder="e.g. Thursday July 10 @ 7:00 PM EST" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;color:#111;transition:border-color .15s;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
-        </div>
-        <div>
-          <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Zoom Link</label>
-          <input id="admin-zoom-link" type="url" placeholder="https://zoom.us/j/..." style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;color:#111;transition:border-color .15s;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
-        </div>
-        <div>
-          <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Description</label>
-          <textarea id="admin-coaching-details" placeholder="What will be covered, what to prepare, how to get the most out of the call..." rows="4" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;resize:vertical;outline:none;color:#111;transition:border-color .15s;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'"></textarea>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;">
-          <button onclick="adminSaveCoaching(this)" style="background:#111;color:#fff;border:none;border-radius:10px;padding:11px 24px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .15s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Publish Call</button>
-          <span id="admin-coaching-status" style="font-size:.78rem;color:#16a34a;display:none;">✓ Published</span>
+      <div>
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:10px;">Coaching Call</div>
+        <div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px;">
+          <div>
+            <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Call Title</label>
+            <input id="admin-call-title" type="text" placeholder="e.g. Monthly Founder Q&A — July" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+          </div>
+          <div>
+            <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Date &amp; Time</label>
+            <input id="admin-call-datetime" type="text" placeholder="e.g. Thursday July 10 @ 7:00 PM EST" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+          </div>
+          <div>
+            <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Zoom Link</label>
+            <input id="admin-zoom-link" type="url" placeholder="https://zoom.us/j/..." style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+          </div>
+          <div>
+            <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Description</label>
+            <textarea id="admin-coaching-details" placeholder="What will be covered, what to prepare..." rows="4" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;resize:vertical;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'"></textarea>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <button onclick="adminSaveCoaching(this)" style="background:#111;color:#fff;border:none;border-radius:10px;padding:10px 22px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;">Publish Call</button>
+            <span id="admin-coaching-status" style="font-size:.78rem;color:#16a34a;display:none;">✓ Published</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ── Coaching Settings (admin only) ── -->
   <!-- ── Coaching Calls (user-facing) ── -->
   <div class="view padded" id="view-coaching">
     <h1 class="page-title" style="margin-bottom:6px;">Coaching Calls</h1>
@@ -1866,11 +1854,8 @@
     if (email === ADMIN_EMAIL) {
       hideGate(email);
       document.getElementById('nav-admin').style.display = '';
-      document.getElementById('nav-coaching-settings').style.display = '';
       const mAdmin = document.getElementById('mnav-admin');
       if (mAdmin) mAdmin.style.display = '';
-      const mCS = document.getElementById('mnav-coaching-settings');
-      if (mCS) mCS.style.display = '';
       initPortal();
       return;
     }
@@ -1913,11 +1898,8 @@
     if (saved === ADMIN_EMAIL) {
       hideGate(saved);
       document.getElementById('nav-admin').style.display = '';
-      document.getElementById('nav-coaching-settings').style.display = '';
       const mAdmin = document.getElementById('mnav-admin');
       if (mAdmin) mAdmin.style.display = '';
-      const mCS = document.getElementById('mnav-coaching-settings');
-      if (mCS) mCS.style.display = '';
       initPortal();
       return;
     }
@@ -3515,6 +3497,7 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     const proof = document.getElementById('admin-proof-list');
     list.innerHTML  = '<p style="color:#6b7280;font-size:.85rem;">Loading...</p>';
     proof.innerHTML = '<p style="color:#6b7280;font-size:.85rem;">Loading...</p>';
+    loadCoachingSettings();
 
     // User approvals
     try {
