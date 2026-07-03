@@ -792,35 +792,7 @@
   </div>
 </div>
 
-<!-- ═══ Admin panel ═══ -->
-<div id="admin-panel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;align-items:center;justify-content:center;">
-  <div style="background:#fff;border-radius:16px;padding:32px;max-width:640px;width:94%;box-shadow:0 8px 40px rgba(0,0,0,.18);max-height:88vh;overflow-y:auto;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <div style="font-size:1rem;font-weight:800;color:#111;">Admin Panel</div>
-      <button onclick="document.getElementById('admin-panel').style.display='none'" style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:#6b7280;">×</button>
-    </div>
-    <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:8px;">User Approvals</div>
-    <div id="admin-user-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
-      <p style="color:#6b7280;font-size:.85rem;">Loading...</p>
-    </div>
-    <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:8px;">Proof Submissions</div>
-    <div id="admin-proof-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
-      <p style="color:#6b7280;font-size:.85rem;">Loading...</p>
-    </div>
-    <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:10px;">Coaching Calls Settings</div>
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <div>
-        <label style="font-size:.72rem;font-weight:700;color:#374151;display:block;margin-bottom:4px;">Zoom Link</label>
-        <input id="admin-zoom-link" type="url" placeholder="https://zoom.us/j/..." style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 11px;font-size:.8rem;font-family:inherit;outline:none;">
-      </div>
-      <div>
-        <label style="font-size:.72rem;font-weight:700;color:#374151;display:block;margin-bottom:4px;">Details / Instructions</label>
-        <textarea id="admin-coaching-details" placeholder="Call schedule, what to prepare, etc." rows="4" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 11px;font-size:.8rem;font-family:inherit;resize:vertical;outline:none;"></textarea>
-      </div>
-      <button onclick="adminSaveCoaching(this)" style="align-self:flex-start;background:#111;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;">Save Settings</button>
-    </div>
-  </div>
-</div>
+<!-- ═══ Admin panel (rendered as a view, not a popup) ═══ -->
 
 <!-- ═══ Sidebar ═══ -->
 <aside class="sidebar">
@@ -868,7 +840,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.069A1 1 0 0121 8.845v6.31a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
       <span class="nav-label">Calls</span>
     </div>
-    <div class="nav-item" id="nav-admin" style="display:none;" onclick="openAdminPanel()">
+    <div class="nav-item" id="nav-admin" style="display:none;" onclick="showView('admin',this); openAdminPanel();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><circle cx="18" cy="6" r="3" fill="currentColor" stroke="none"/><path d="M17 6h2M18 5v2" stroke="#fff" stroke-width="1.5"/></svg>
       <span class="nav-label">Admin</span>
     </div>
@@ -922,7 +894,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.069A1 1 0 0121 8.845v6.31a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
       Calls
     </button>
-    <button class="mob-nav-item" id="mnav-admin" style="display:none;" onclick="openAdminPanel()">
+    <button class="mob-nav-item" id="mnav-admin" style="display:none;" onclick="showView('admin', null); openAdminPanel();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       Admin
     </button>
@@ -1759,6 +1731,39 @@
         <a href="https://re.aistorebuilder.com/base44-pricing?subid=ad-ventur" target="_blank" class="es-btn outline" style="flex:1;">Get Base44 Builder</a>
       </div>
       <div class="rw-proof-note" style="margin-top:12px;">📸 Screenshot both dashboards showing your yearly plan — Wix &amp; Base44</div>
+    </div>
+  </div>
+
+  <!-- ── Admin ── -->
+  <div class="view padded" id="view-admin">
+    <h1 class="page-title" style="margin-bottom:24px;">Admin Panel</h1>
+    <div style="max-width:640px;display:flex;flex-direction:column;gap:32px;">
+      <div>
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:10px;">User Approvals</div>
+        <div id="admin-user-list" style="display:flex;flex-direction:column;gap:10px;">
+          <p style="color:#6b7280;font-size:.85rem;">Loading...</p>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:10px;">Proof Submissions</div>
+        <div id="admin-proof-list" style="display:flex;flex-direction:column;gap:10px;">
+          <p style="color:#6b7280;font-size:.85rem;">Loading...</p>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:10px;">Coaching Calls Settings</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div>
+            <label style="font-size:.72rem;font-weight:700;color:#374151;display:block;margin-bottom:4px;">Zoom Link</label>
+            <input id="admin-zoom-link" type="url" placeholder="https://zoom.us/j/..." style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 11px;font-size:.8rem;font-family:inherit;outline:none;">
+          </div>
+          <div>
+            <label style="font-size:.72rem;font-weight:700;color:#374151;display:block;margin-bottom:4px;">Details / Instructions</label>
+            <textarea id="admin-coaching-details" placeholder="Call schedule, what to prepare, etc." rows="4" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 11px;font-size:.8rem;font-family:inherit;resize:vertical;outline:none;"></textarea>
+          </div>
+          <button onclick="adminSaveCoaching(this)" style="align-self:flex-start;background:#111;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;">Save Settings</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -3456,8 +3461,6 @@ After implementing, add clear comments in the code showing where the Pixel ID is
 
   // ── Admin panel ──
   async function openAdminPanel() {
-    const panel = document.getElementById('admin-panel');
-    panel.style.display = 'flex';
     const list  = document.getElementById('admin-user-list');
     const proof = document.getElementById('admin-proof-list');
     list.innerHTML  = '<p style="color:#6b7280;font-size:.85rem;">Loading...</p>';
