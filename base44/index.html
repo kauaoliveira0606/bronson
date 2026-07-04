@@ -3730,6 +3730,8 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   <div class="sup-body" id="sup-form-wrap">
     <label class="sup-label">Your Name</label>
     <input class="sup-input" id="sup-name" type="text" placeholder="e.g. John Smith">
+    <label class="sup-label">Your Email</label>
+    <input class="sup-input" id="sup-email" type="email" placeholder="e.g. john@email.com">
     <label class="sup-label">Category</label>
     <select class="sup-select" id="sup-category">
       <option value="">Select a category…</option>
@@ -3759,6 +3761,7 @@ After implementing, add clear comments in the code showing where the Pixel ID is
         document.getElementById('sup-form-wrap').style.display = '';
         document.getElementById('sup-success').style.display = 'none';
         document.getElementById('sup-name').value = '';
+        document.getElementById('sup-email').value = '';
         document.getElementById('sup-category').value = '';
         document.getElementById('sup-message').value = '';
         document.getElementById('sup-submit-btn').disabled = false;
@@ -3769,16 +3772,17 @@ After implementing, add clear comments in the code showing where the Pixel ID is
 
   async function submitSupport() {
     const name = document.getElementById('sup-name').value.trim();
+    const email = document.getElementById('sup-email').value.trim();
     const category = document.getElementById('sup-category').value;
     const message = document.getElementById('sup-message').value.trim();
-    if (!name || !category || !message) { alert('Please fill in all fields.'); return; }
+    if (!name || !email || !category || !message) { alert('Please fill in all fields.'); return; }
     const btn = document.getElementById('sup-submit-btn');
     btn.disabled = true;
     btn.textContent = 'Sending…';
     try {
       await fetch('https://hooks.zapier.com/hooks/catch/22609617/4259x7h/', {
         method: 'POST',
-        body: JSON.stringify({ name, category, message }),
+        body: JSON.stringify({ name, email, category, message }),
       });
       document.getElementById('sup-form-wrap').style.display = 'none';
       document.getElementById('sup-success').style.display = 'block';
