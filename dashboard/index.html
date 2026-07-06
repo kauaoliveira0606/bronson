@@ -160,8 +160,36 @@
     .tab-btn:hover { border-color:rgba(255,255,255,0.2); color:#fff; }
     .tab-btn.active { background:#fff; color:#000; border-color:#fff; }
 
-    #view-funnel, #view-ads, #view-model { display:none; }
-    #view-funnel.active, #view-ads.active, #view-model.active { display:block; }
+    #view-funnel, #view-ads, #view-model, #view-eod { display:none; }
+    #view-funnel.active, #view-ads.active, #view-model.active, #view-eod.active { display:block; }
+
+    /* ── EOD ─────────────────────────────────────────────────────────────── */
+    .eod-wrap { padding:28px; display:flex; flex-direction:column; gap:24px; }
+    .eod-form-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:28px; }
+    .eod-form-title { font-size:1rem; font-weight:800; color:#fff; margin-bottom:6px; }
+    .eod-form-sub { font-size:.75rem; color:var(--text2); margin-bottom:24px; }
+    .eod-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .eod-field { display:flex; flex-direction:column; gap:6px; }
+    .eod-field.full { grid-column:1/-1; }
+    .eod-label { font-size:.68rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--text2); }
+    .eod-input { background:rgba(255,255,255,0.06); border:1px solid var(--border); border-radius:8px; padding:10px 13px; font-size:.85rem; color:#fff; font-family:inherit; outline:none; transition:border-color .15s; }
+    .eod-input:focus { border-color:rgba(255,255,255,0.3); }
+    .eod-submit { margin-top:20px; background:#fff; color:#000; border:none; border-radius:10px; padding:12px 28px; font-size:.82rem; font-weight:800; cursor:pointer; font-family:inherit; transition:opacity .15s; }
+    .eod-submit:hover { opacity:.85; }
+    .eod-submit:disabled { opacity:.4; cursor:default; }
+    .eod-table-card { background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+    .eod-table-head { padding:18px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+    .eod-table-title { font-size:.88rem; font-weight:800; color:#fff; }
+    .eod-filter-bar { display:flex; gap:6px; }
+    .eod-filter-btn { background:none; border:1px solid var(--border); color:var(--text2); border-radius:6px; padding:5px 12px; font-size:.72rem; font-weight:700; cursor:pointer; font-family:inherit; transition:all .15s; }
+    .eod-filter-btn.active, .eod-filter-btn:hover { background:#fff; color:#000; border-color:#fff; }
+    .eod-tbl { width:100%; border-collapse:collapse; font-size:.8rem; }
+    .eod-tbl th { text-align:left; font-size:.65rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text2); padding:10px 16px; border-bottom:1px solid var(--border); }
+    .eod-tbl td { padding:12px 16px; border-bottom:1px solid rgba(255,255,255,0.04); color:var(--text1); font-variant-numeric:tabular-nums; }
+    .eod-tbl tr:last-child td { border-bottom:none; }
+    .eod-tbl tr:hover td { background:rgba(255,255,255,0.03); }
+    .eod-rate { font-size:.72rem; color:var(--text2); margin-left:4px; }
+    .eod-empty { padding:40px 24px; text-align:center; color:var(--text2); font-size:.82rem; }
 
     /* ── Financial Model ─────────────────────────────────────────────────── */
     .fm-wrap { padding:28px; }
@@ -270,6 +298,7 @@
   <button class="tab-btn active" id="tab-funnel" onclick="switchTab('funnel')">Funnel Dashboard</button>
   <button class="tab-btn" id="tab-ads" onclick="switchTab('ads')">Ads Analysis</button>
   <button class="tab-btn" id="tab-model" onclick="switchTab('model')">Financial Model</button>
+  <button class="tab-btn" id="tab-eod" onclick="switchTab('eod')">EOD Reports</button>
 </div>
 
 <div id="view-funnel" class="active">
@@ -395,6 +424,72 @@
         <tbody id="fm-tbody"></tbody>
       </table>
     </div>
+  </div>
+</div>
+
+<!-- ── EOD Reports ──────────────────────────────────────────────────────── -->
+<div id="view-eod">
+  <div class="eod-wrap">
+
+    <div class="eod-form-card">
+      <div class="eod-form-title">Submit EOD Report</div>
+      <div class="eod-form-sub">Fill in your numbers for the day and hit Submit.</div>
+      <div class="eod-grid">
+        <div class="eod-field full">
+          <label class="eod-label">Your Name</label>
+          <input class="eod-input" id="eod-name" type="text" placeholder="e.g. Alex R.">
+        </div>
+        <div class="eod-field full">
+          <label class="eod-label">Date</label>
+          <input class="eod-input" id="eod-date" type="date">
+        </div>
+        <div class="eod-field">
+          <label class="eod-label">Outbound Dials</label>
+          <input class="eod-input" id="eod-dials" type="number" min="0" placeholder="0">
+        </div>
+        <div class="eod-field">
+          <label class="eod-label">Pickups</label>
+          <input class="eod-input" id="eod-pickups" type="number" min="0" placeholder="0">
+        </div>
+        <div class="eod-field">
+          <label class="eod-label">Software Pitched</label>
+          <input class="eod-input" id="eod-pitched" type="number" min="0" placeholder="0">
+        </div>
+        <div class="eod-field">
+          <label class="eod-label">Software Closed</label>
+          <input class="eod-input" id="eod-closed" type="number" min="0" placeholder="0">
+        </div>
+      </div>
+      <button class="eod-submit" id="eod-submit-btn" onclick="submitEOD()">Submit EOD →</button>
+    </div>
+
+    <div class="eod-table-card">
+      <div class="eod-table-head">
+        <div class="eod-table-title">Submissions</div>
+        <div class="eod-filter-bar">
+          <button class="eod-filter-btn active" id="eod-f-today"   onclick="setEODFilter('today')">Today</button>
+          <button class="eod-filter-btn"         id="eod-f-week"   onclick="setEODFilter('week')">This Week</button>
+          <button class="eod-filter-btn"         id="eod-f-all"    onclick="setEODFilter('all')">All Time</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="eod-tbl">
+          <thead>
+            <tr>
+              <th>Rep</th>
+              <th>Date</th>
+              <th>Dials</th>
+              <th>Pickups</th>
+              <th>Pitched</th>
+              <th>Closed</th>
+              <th>Close %</th>
+            </tr>
+          </thead>
+          <tbody id="eod-tbody"><tr><td colspan="7" class="eod-empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -1303,13 +1398,93 @@
 
   // ── Tab switching ────────────────────────────────────────────────────────────
   function switchTab(tab) {
-    document.getElementById('view-funnel').classList.toggle('active', tab === 'funnel');
-    document.getElementById('view-ads').classList.toggle('active', tab === 'ads');
-    document.getElementById('view-model').classList.toggle('active', tab === 'model');
-    document.getElementById('tab-funnel').classList.toggle('active', tab === 'funnel');
-    document.getElementById('tab-ads').classList.toggle('active', tab === 'ads');
-    document.getElementById('tab-model').classList.toggle('active', tab === 'model');
+    ['funnel','ads','model','eod'].forEach(t => {
+      document.getElementById('view-' + t).classList.toggle('active', tab === t);
+      document.getElementById('tab-'  + t).classList.toggle('active', tab === t);
+    });
     if (tab === 'model') fmPopulateCurrentStats();
+    if (tab === 'eod')   loadEOD();
+  }
+
+  // ── EOD ──────────────────────────────────────────────────────────────────
+  let eodFilter = 'today';
+
+  // Set today's date as default
+  document.getElementById('eod-date').value = new Date().toISOString().slice(0, 10);
+
+  function setEODFilter(f) {
+    eodFilter = f;
+    ['today','week','all'].forEach(k => {
+      document.getElementById('eod-f-' + k).classList.toggle('active', k === f);
+    });
+    loadEOD();
+  }
+
+  async function loadEOD() {
+    const tbody = document.getElementById('eod-tbody');
+    tbody.innerHTML = '<tr><td colspan="7" class="eod-empty">Loading...</td></tr>';
+    try {
+      const r = await fetch('/api/eod-fetch?filter=' + eodFilter);
+      const rows = await r.json();
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="eod-empty">No submissions yet.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map(row => {
+        const f = row.fields || {};
+        const dials   = f['Outbound Dials']   || 0;
+        const pickups = f['Pickups']           || 0;
+        const pitched = f['Software Pitched']  || 0;
+        const closed  = f['Software Closed']   || 0;
+        const closeRate = pitched > 0 ? ((closed / pitched) * 100).toFixed(0) + '%' : '—';
+        const pickupRate = dials > 0 ? ((pickups / dials) * 100).toFixed(0) + '%' : '—';
+        return `<tr>
+          <td>${f['Rep Name'] || '—'}</td>
+          <td>${f['Date'] || '—'}</td>
+          <td>${dials}</td>
+          <td>${pickups} <span class="eod-rate">${pickupRate}</span></td>
+          <td>${pitched}</td>
+          <td>${closed}</td>
+          <td>${closeRate}</td>
+        </tr>`;
+      }).join('');
+    } catch(e) {
+      tbody.innerHTML = '<tr><td colspan="7" class="eod-empty">Error loading data.</td></tr>';
+    }
+  }
+
+  async function submitEOD() {
+    const name    = document.getElementById('eod-name').value.trim();
+    const date    = document.getElementById('eod-date').value;
+    const dials   = parseInt(document.getElementById('eod-dials').value)   || 0;
+    const pickups = parseInt(document.getElementById('eod-pickups').value) || 0;
+    const pitched = parseInt(document.getElementById('eod-pitched').value) || 0;
+    const closed  = parseInt(document.getElementById('eod-closed').value)  || 0;
+    if (!name || !date) { alert('Please enter your name and date.'); return; }
+    const btn = document.getElementById('eod-submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+    try {
+      await fetch('/api/eod-report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rep_name: name, report_date: date, dials, pickups, pitched, closed }),
+      });
+      // Reset form
+      document.getElementById('eod-name').value    = '';
+      document.getElementById('eod-dials').value   = '';
+      document.getElementById('eod-pickups').value = '';
+      document.getElementById('eod-pitched').value = '';
+      document.getElementById('eod-closed').value  = '';
+      document.getElementById('eod-date').value    = new Date().toISOString().slice(0, 10);
+      btn.textContent = '✓ Submitted!';
+      setTimeout(() => { btn.disabled = false; btn.textContent = 'Submit EOD →'; }, 2500);
+      loadEOD();
+    } catch(e) {
+      btn.disabled = false;
+      btn.textContent = 'Submit EOD →';
+      alert('Something went wrong. Try again.');
+    }
   }
 
   // ── Ads Analysis (CSV upload) ─────────────────────────────────────────────
