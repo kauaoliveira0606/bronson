@@ -1433,13 +1433,13 @@
       tbody.innerHTML = rows.map(row => {
         const f = row.fields || {};
         const dials   = f['Outbound Dials']   || 0;
-        const pickups = f['Pickups']           || 0;
+        const pickups = f['Pick ups']           || 0;
         const pitched = f['Software Pitched']  || 0;
         const closed  = f['Software Closed']   || 0;
         const closeRate = pitched > 0 ? ((closed / pitched) * 100).toFixed(0) + '%' : '—';
         const pickupRate = dials > 0 ? ((pickups / dials) * 100).toFixed(0) + '%' : '—';
         return `<tr>
-          <td>${f['Rep Name'] || '—'}</td>
+          <td>${f['Your name'] || '—'}</td>
           <td>${f['Date'] || '—'}</td>
           <td>${dials}</td>
           <td>${pickups} <span class="eod-rate">${pickupRate}</span></td>

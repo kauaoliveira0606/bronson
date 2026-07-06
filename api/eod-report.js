@@ -22,10 +22,10 @@ module.exports = async function handler(req, res) {
       },
       body: JSON.stringify({
         fields: {
-          'Rep Name':        rep_name,
+          'Your name':        rep_name,
           'Date':            report_date,
           'Outbound Dials':  Number(dials)   || 0,
-          'Pickups':         Number(pickups) || 0,
+          'Pick ups':         Number(pickups) || 0,
           'Software Pitched': Number(pitched) || 0,
           'Software Closed':  Number(closed)  || 0,
         },
