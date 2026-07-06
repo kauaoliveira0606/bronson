@@ -150,7 +150,7 @@ function parseTabData(csvText, sunday) {
       const d = parseSheetDate(row[c], refYear);
       if (d) { dateMap[c] = d; found++; }
     }
-    if (found >= 3) { dateRowIdx = r; break; }
+    if (found >= 1) { dateRowIdx = r; break; }
   }
   if (dateRowIdx < 0) return null;
 
@@ -226,6 +226,9 @@ module.exports = async function handler(req, res) {
 
     // Target tab: the selected week (exact Sunday match)
     const targetTab = tabs.find(t => t.sunday.getTime() === targetSunday.getTime()) || null;
+
+    // Raw CSV for target week — used as mainCsv even when parseTabData fails (new tab, sparse data)
+    const targetCsvRaw = csvList[tabDefs.findIndex(t => t.sunday.getTime() === targetSunday.getTime())] || null;
 
     // For L7/L30/ALL accumulation, always use actual completed weeks relative to today
     const currentTab = tabs.find(t => t.saturday >= today) || null;
@@ -391,8 +394,8 @@ module.exports = async function handler(req, res) {
       }).join('\n');
     }
 
-    // Main CSV: the selected week's tab (falls back to most recent completed)
-    const mainCsv = (targetTab || currentTab || completedTabs[0])?.csv?.trim() || '';
+    // Main CSV: prefer raw target-week CSV (works even when parse fails), then fall back
+    const mainCsv = (targetCsvRaw || targetTab?.csv || currentTab?.csv || completedTabs[0]?.csv || '').trim();
 
     const out = mainCsv
       + '\n__LAST7__\n'   + buildSection(L7)
