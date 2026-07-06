@@ -431,38 +431,6 @@
 <div id="view-eod">
   <div class="eod-wrap">
 
-    <div class="eod-form-card">
-      <div class="eod-form-title">Submit EOD Report</div>
-      <div class="eod-form-sub">Fill in your numbers for the day and hit Submit.</div>
-      <div class="eod-grid">
-        <div class="eod-field full">
-          <label class="eod-label">Your Name</label>
-          <input class="eod-input" id="eod-name" type="text" placeholder="e.g. Alex R.">
-        </div>
-        <div class="eod-field full">
-          <label class="eod-label">Date</label>
-          <input class="eod-input" id="eod-date" type="date">
-        </div>
-        <div class="eod-field">
-          <label class="eod-label">Outbound Dials</label>
-          <input class="eod-input" id="eod-dials" type="number" min="0" placeholder="0">
-        </div>
-        <div class="eod-field">
-          <label class="eod-label">Pickups</label>
-          <input class="eod-input" id="eod-pickups" type="number" min="0" placeholder="0">
-        </div>
-        <div class="eod-field">
-          <label class="eod-label">Software Pitched</label>
-          <input class="eod-input" id="eod-pitched" type="number" min="0" placeholder="0">
-        </div>
-        <div class="eod-field">
-          <label class="eod-label">Software Closed</label>
-          <input class="eod-input" id="eod-closed" type="number" min="0" placeholder="0">
-        </div>
-      </div>
-      <button class="eod-submit" id="eod-submit-btn" onclick="submitEOD()">Submit EOD →</button>
-    </div>
-
     <div class="eod-table-card">
       <div class="eod-table-head">
         <div class="eod-table-title">Submissions</div>
@@ -1409,9 +1377,6 @@
   // ── EOD ──────────────────────────────────────────────────────────────────
   let eodFilter = 'today';
 
-  // Set today's date as default
-  document.getElementById('eod-date').value = new Date().toISOString().slice(0, 10);
-
   function setEODFilter(f) {
     eodFilter = f;
     ['today','week','all'].forEach(k => {
@@ -1453,39 +1418,6 @@
     }
   }
 
-  async function submitEOD() {
-    const name    = document.getElementById('eod-name').value.trim();
-    const date    = document.getElementById('eod-date').value;
-    const dials   = parseInt(document.getElementById('eod-dials').value)   || 0;
-    const pickups = parseInt(document.getElementById('eod-pickups').value) || 0;
-    const pitched = parseInt(document.getElementById('eod-pitched').value) || 0;
-    const closed  = parseInt(document.getElementById('eod-closed').value)  || 0;
-    if (!name || !date) { alert('Please enter your name and date.'); return; }
-    const btn = document.getElementById('eod-submit-btn');
-    btn.disabled = true;
-    btn.textContent = 'Submitting…';
-    try {
-      await fetch('/api/eod-report', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rep_name: name, report_date: date, dials, pickups, pitched, closed }),
-      });
-      // Reset form
-      document.getElementById('eod-name').value    = '';
-      document.getElementById('eod-dials').value   = '';
-      document.getElementById('eod-pickups').value = '';
-      document.getElementById('eod-pitched').value = '';
-      document.getElementById('eod-closed').value  = '';
-      document.getElementById('eod-date').value    = new Date().toISOString().slice(0, 10);
-      btn.textContent = '✓ Submitted!';
-      setTimeout(() => { btn.disabled = false; btn.textContent = 'Submit EOD →'; }, 2500);
-      loadEOD();
-    } catch(e) {
-      btn.disabled = false;
-      btn.textContent = 'Submit EOD →';
-      alert('Something went wrong. Try again.');
-    }
-  }
 
   // ── Ads Analysis (CSV upload) ─────────────────────────────────────────────
   const ADS_KPI = {
