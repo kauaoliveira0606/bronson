@@ -31,6 +31,22 @@ function getTabName(sunday) {
   return `${sunday.getMonth()+1}/${pad(sunday.getDate())}-${sat.getMonth()+1}/${pad(sat.getDate())}`;
 }
 
+// Returns all plausible name variants for a week (padded, unpadded, space vs slash)
+function getTabNameVariants(sunday) {
+  const sat = new Date(sunday);
+  sat.setDate(sat.getDate() + 6);
+  const pad = n => String(n).padStart(2, '0');
+  const sm = sunday.getMonth() + 1, sd = sunday.getDate();
+  const em = sat.getMonth() + 1,   ed = sat.getDate();
+  return [
+    `${sm}/${pad(sd)}-${em}/${pad(ed)}`,   // 7/06-7/12  (original)
+    `${sm}/${sd}-${em}/${ed}`,              // 7/6-7/12   (no leading zero)
+    `${pad(sm)}/${pad(sd)}-${pad(em)}/${pad(ed)}`, // 07/06-07/12
+    `${sm}/${pad(sd)} - ${em}/${pad(ed)}`, // 7/06 - 7/12 (with spaces)
+    `${sm}/${sd} - ${em}/${ed}`,           // 7/6 - 7/12
+  ];
+}
+
 function parseCsv(text) {
   const rows = [];
   for (const line of text.split('\n')) {
@@ -182,14 +198,20 @@ module.exports = async function handler(req, res) {
       sun.setDate(targetSunday.getDate() - i * 7);
       const sat = new Date(sun);
       sat.setDate(sun.getDate() + 6);
-      return { name: getTabName(sun), sunday: sun, saturday: sat };
+      return { variants: getTabNameVariants(sun), name: getTabName(sun), sunday: sun, saturday: sat };
     });
 
     // Discover GIDs so the export API can be used (preserves < > + in goal cells)
     const gidMap = await discoverGidMap();
 
-    // Fetch all tabs in parallel
-    const csvList = await Promise.all(tabDefs.map(t => fetchTabCsv(t.name, gidMap[t.name])));
+    // Fetch all tabs in parallel — try each name variant until one succeeds
+    const csvList = await Promise.all(tabDefs.map(async t => {
+      for (const v of t.variants) {
+        const csv = await fetchTabCsv(v, gidMap[v]);
+        if (csv) return csv;
+      }
+      return null;
+    }));
 
     // Parse and filter valid tabs
     const tabs = tabDefs
