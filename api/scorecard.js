@@ -118,11 +118,9 @@ async function discoverGidMap() {
 }
 
 async function fetchTabCsv(name, gid) {
-  // Prefer export API (reads raw cell text, preserves < > + in goal cells).
-  // Fall back to gviz when no GID is known.
-  const url = gid
-    ? `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}&t=${Date.now()}`
-    : `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}&t=${Date.now()}`;
+  // Require a GID — gviz without one silently returns the first sheet regardless of name.
+  if (!gid) return null;
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}&t=${Date.now()}`;
   try {
     const ctrl = new AbortController();
     const tid = setTimeout(() => ctrl.abort(), 10000);
