@@ -1,4 +1,5 @@
-const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK_URL;
+const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN;
+const AIRTABLE_BASE  = 'appiMw8gpaLv2WITA';
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -6,14 +7,11 @@ module.exports = async function handler(req, res) {
 
   const body = req.body || {};
 
-  // Log raw payload to Discord so we can see exactly what GHL sends
-  if (DISCORD_WEBHOOK) {
-    await fetch(DISCORD_WEBHOOK, {
+  if (AIRTABLE_TOKEN) {
+    await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent('GHL Webhook Log')}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        content: '🔍 **GHL Webhook Raw Payload:**\n```json\n' + JSON.stringify(body, null, 2).slice(0, 1800) + '\n```'
-      }),
+      headers: { 'Authorization': `Bearer ${AIRTABLE_TOKEN}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields: { 'Payload': JSON.stringify(body), 'Received At': new Date().toISOString() } }),
     }).catch(() => {});
   }
 
