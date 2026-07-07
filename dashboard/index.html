@@ -482,6 +482,22 @@
 <div id="view-activity">
   <div class="act-wrap">
 
+    <!-- Total Dials Summary -->
+    <div class="act-card" id="dials-summary" style="display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
+      <div>
+        <div class="act-card-title" style="margin-bottom:6px;">Total Outbound Dials Today</div>
+        <div style="font-size:2.2rem;font-weight:800;color:#fff;" id="dials-total">—</div>
+      </div>
+      <div>
+        <div class="act-card-title" style="margin-bottom:6px;">Double Dialed</div>
+        <div style="font-size:2.2rem;font-weight:800;color:#22c55e;" id="dials-double">—</div>
+      </div>
+      <div>
+        <div class="act-card-title" style="margin-bottom:6px;">Reps Active</div>
+        <div style="font-size:2.2rem;font-weight:800;color:#3b82f6;" id="dials-reps">—</div>
+      </div>
+    </div>
+
     <!-- Dials Per Rep -->
     <div class="act-card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
@@ -1481,6 +1497,9 @@
       const r = await fetch('/api/ghl-dials-fetch?t=' + Date.now());
       const data = await r.json();
       const rows = data.reps || [];
+      document.getElementById('dials-total').textContent  = data.totalDials  ?? '0';
+      document.getElementById('dials-double').textContent = data.doubleDials ?? '0';
+      document.getElementById('dials-reps').textContent   = rows.length;
       if (!rows.length) {
         dialsTbody.innerHTML = '<tr><td colspan="3" class="act-empty">No dials yet today.</td></tr>';
       } else {
@@ -1493,12 +1512,6 @@
             <td><span class="act-dials">${row.dials}</span></td>
             <td>${row.uniqueContacts}</td>
           </tr>`).join('');
-        // Show double dial summary
-        if (data.doubleDials > 0) {
-          dialsTbody.innerHTML += `<tr><td colspan="3" style="padding:10px 12px;font-size:.75rem;color:#22c55e;border-top:1px solid var(--border);">
-            Double-dialed contacts today: <strong>${data.doubleDials}</strong>
-          </td></tr>`;
-        }
       }
     } catch(e) {
       dialsTbody.innerHTML = '<tr><td colspan="3" class="act-empty">Error loading dials.</td></tr>';

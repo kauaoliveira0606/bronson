@@ -13,7 +13,7 @@ module.exports = async function handler(req, res) {
     const startTs = todayStart.getTime();
 
     // Fetch users so we can map userId → name
-    const usersRes = await fetch(`${GHL_BASE}/users/search?locationId=${LOCATION_ID}&limit=100`, { headers: GHL_HEADERS });
+    const usersRes = await fetch(`${GHL_BASE}/users/?locationId=${LOCATION_ID}`, { headers: GHL_HEADERS });
     const usersData = await usersRes.json();
     const userMap = {};
     for (const u of usersData.users || []) userMap[u.id] = u.name || u.firstName || u.email || u.id;
