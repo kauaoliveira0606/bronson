@@ -33,30 +33,25 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
   const body = req.body || {};
-  const type = body.type || body.event || '';
+  // GHL sends contact_id for ContactCreated, no type field
+  const isContactCreated = body.contact_id && (body.full_name || body.first_name) && !body.duration && !body.call_status && !body.direction;
+  const isCall = body.direction || body.call_status || body.duration != null || body.type === 'OutboundCall' || body.type === 'CallStatusUpdated';
 
   // New lead came in — log to Speed to Lead
-  if (type === 'ContactCreated' || type === 'contact.created') {
-    const c = body.contact || body;
-    const name = [c.firstName, c.lastName].filter(Boolean).join(' ') || 'Unknown';
+  if (isContactCreated) {
+    const name = body.full_name || body.first_name || 'Unknown';
     await airtablePost('Speed to Lead', {
-      'Contact ID': String(c.id || c.contactId || ''),
+      'Contact ID': String(body.contact_id || ''),
       'Name':       name,
-      'Phone':      c.phone || '',
-      'Created At': new Date().toISOString(),
+      'Phone':      body.phone || '',
+      'Created At': body.date_created || new Date().toISOString(),
       'Status':     'Pending',
     });
   }
 
-  // Outbound call made — log dial + update speed to lead
-  const isCall = [
-    'OutboundCall', 'outbound_call', 'CallStatusUpdated',
-    'call_status_updated', 'NoteAdded', 'OutboundCallConnected',
-  ].includes(type);
-
   if (isCall) {
-    const contactId = String(body.contactId || body.contact?.id || '');
-    const repName   = body.userName || body.user?.name || body.assignedTo || 'Unknown';
+    const contactId = String(body.contact_id || body.contactId || body.contact?.id || '');
+    const repName   = body.userName || body.user?.name || body.userId || 'Unknown';
     const repId     = body.userId   || body.user?.id   || '';
     const duration  = Number(body.duration) || 0;
     const now       = new Date();
