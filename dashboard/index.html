@@ -1479,18 +1479,29 @@
     // Dials per rep
     try {
       const r = await fetch('/api/ghl-dials-fetch?t=' + Date.now());
-      const rows = await r.json();
+      const data = await r.json();
+      const rows = data.reps || [];
       if (!rows.length) {
-        dialsTbody.innerHTML = '<tr><td colspan="2" class="act-empty">No dials logged yet today.</td></tr>';
+        dialsTbody.innerHTML = '<tr><td colspan="3" class="act-empty">No dials yet today.</td></tr>';
       } else {
+        // Update header
+        document.querySelector('#dials-tbody').closest('table').querySelector('thead tr').innerHTML =
+          '<th>Rep</th><th>Dials Today</th><th>Unique Contacts</th>';
         dialsTbody.innerHTML = rows.map(row => `
           <tr>
             <td>${row.rep}</td>
             <td><span class="act-dials">${row.dials}</span></td>
+            <td>${row.uniqueContacts}</td>
           </tr>`).join('');
+        // Show double dial summary
+        if (data.doubleDials > 0) {
+          dialsTbody.innerHTML += `<tr><td colspan="3" style="padding:10px 12px;font-size:.75rem;color:#22c55e;border-top:1px solid var(--border);">
+            Double-dialed contacts today: <strong>${data.doubleDials}</strong>
+          </td></tr>`;
+        }
       }
     } catch(e) {
-      dialsTbody.innerHTML = '<tr><td colspan="2" class="act-empty">Error loading dials.</td></tr>';
+      dialsTbody.innerHTML = '<tr><td colspan="3" class="act-empty">Error loading dials.</td></tr>';
     }
 
     // Speed to lead
