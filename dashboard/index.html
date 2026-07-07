@@ -514,7 +514,40 @@
 
     <!-- Speed to Lead -->
     <div class="act-card">
-      <div class="act-card-title">Speed to Lead — Today</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div class="act-card-title">Speed to Lead</div>
+        <div style="display:flex;gap:6px;">
+          <button class="act-refresh active" id="stl-f-today"  onclick="setSTLPeriod('today')"  style="background:#fff;color:#000;border-color:#fff;">Today</button>
+          <button class="act-refresh"        id="stl-f-3days"  onclick="setSTLPeriod('3days')">Last 3 Days</button>
+          <button class="act-refresh"        id="stl-f-7days"  onclick="setSTLPeriod('7days')">Last 7 Days</button>
+        </div>
+      </div>
+
+      <!-- Summary metrics -->
+      <div id="stl-summary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px;">
+        <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:14px;">
+          <div class="act-card-title" style="margin-bottom:4px;">Avg Response</div>
+          <div style="font-size:1.5rem;font-weight:800;color:#fff;" id="stl-avg">—</div>
+        </div>
+        <div style="background:rgba(34,197,94,0.08);border-radius:10px;padding:14px;">
+          <div class="act-card-title" style="margin-bottom:4px;">Under 5 Min</div>
+          <div style="font-size:1.5rem;font-weight:800;color:#22c55e;" id="stl-u5">—</div>
+        </div>
+        <div style="background:rgba(59,130,246,0.08);border-radius:10px;padding:14px;">
+          <div class="act-card-title" style="margin-bottom:4px;">Under 1 Hour</div>
+          <div style="font-size:1.5rem;font-weight:800;color:#3b82f6;" id="stl-u60">—</div>
+        </div>
+        <div style="background:rgba(245,158,11,0.08);border-radius:10px;padding:14px;">
+          <div class="act-card-title" style="margin-bottom:4px;">Over 1 Hour</div>
+          <div style="font-size:1.5rem;font-weight:800;color:#f59e0b;" id="stl-o60">—</div>
+        </div>
+        <div style="background:rgba(239,68,68,0.08);border-radius:10px;padding:14px;">
+          <div class="act-card-title" style="margin-bottom:4px;">Not Called</div>
+          <div style="font-size:1.5rem;font-weight:800;color:#ef4444;" id="stl-nc">—</div>
+        </div>
+      </div>
+
+      <!-- Lead table -->
       <div style="overflow-x:auto;">
         <table class="act-tbl">
           <thead><tr><th>Name</th><th>Phone</th><th>Lead In</th><th>First Call</th><th>Time to Call</th><th>Status</th></tr></thead>
@@ -1486,6 +1519,18 @@
 
 
   // ── Sales Activity ────────────────────────────────────────────────────────
+  let stlPeriod = 'today';
+
+  function setSTLPeriod(p) {
+    stlPeriod = p;
+    ['today','3days','7days'].forEach(k => {
+      const btn = document.getElementById('stl-f-' + k);
+      if (k === p) { btn.style.background='#fff'; btn.style.color='#000'; btn.style.borderColor='#fff'; }
+      else { btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; }
+    });
+    loadSTL();
+  }
+
   async function loadActivity() {
     const dialsTbody = document.getElementById('dials-tbody');
     const stlTbody   = document.getElementById('stl-tbody');
@@ -1517,33 +1562,47 @@
       dialsTbody.innerHTML = '<tr><td colspan="3" class="act-empty">Error loading dials.</td></tr>';
     }
 
-    // Speed to lead
+    loadSTL();
+  }
+
+  async function loadSTL() {
+    const stlTbody = document.getElementById('stl-tbody');
+    stlTbody.innerHTML = '<tr><td colspan="6" class="act-empty">Loading...</td></tr>';
     try {
-      const r = await fetch('/api/ghl-speed-lead-fetch?t=' + Date.now());
-      const records = await r.json();
+      const r    = await fetch('/api/ghl-speed-lead-fetch?filter=' + stlPeriod + '&t=' + Date.now());
+      const data = await r.json();
+
+      // Format avg response time
+      const avgMins = data.avgMinutes;
+      let avgStr = '—';
+      if (avgMins !== null && avgMins !== undefined) {
+        if (avgMins < 60) avgStr = avgMins + ' min';
+        else avgStr = (avgMins / 60).toFixed(1) + ' hr';
+      }
+
+      document.getElementById('stl-avg').textContent  = avgStr;
+      document.getElementById('stl-u5').textContent   = data.under5?.pct  + '%' + (data.under5?.count  ? ` (${data.under5.count})`  : '');
+      document.getElementById('stl-u60').textContent  = data.under60?.pct + '%' + (data.under60?.count ? ` (${data.under60.count})` : '');
+      document.getElementById('stl-o60').textContent  = data.over60?.pct  + '%' + (data.over60?.count  ? ` (${data.over60.count})`  : '');
+      document.getElementById('stl-nc').textContent   = data.notCalled?.pct + '%' + (data.notCalled?.count ? ` (${data.notCalled.count})` : '');
+
+      const records = data.records || [];
       if (!records.length) {
-        stlTbody.innerHTML = '<tr><td colspan="6" class="act-empty">No leads today yet.</td></tr>';
+        stlTbody.innerHTML = '<tr><td colspan="6" class="act-empty">No leads for this period.</td></tr>';
       } else {
-        stlTbody.innerHTML = records.map(rec => {
-          const f = rec.fields || {};
-          const createdAt  = f['Created At']    ? new Date(f['Created At'])    : null;
-          const calledAt   = f['First Call At'] ? new Date(f['First Call At']) : null;
-          const mins       = f['Minutes to Call'];
-          const status     = f['Status'] || 'Pending';
-          const pillClass  = status === 'Under 5 min' ? 'stl-pill-green' : status === 'Over 5 min' ? 'stl-pill-red' : 'stl-pill-gray';
-          const fmt = d => d ? d.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' }) : '—';
-          return `<tr>
-            <td>${f['Name'] || '—'}</td>
-            <td>${f['Phone'] || '—'}</td>
-            <td>${fmt(createdAt)}</td>
-            <td>${fmt(calledAt)}</td>
-            <td>${mins != null ? mins + ' min' : '—'}</td>
-            <td><span class="${pillClass}">${status}</span></td>
-          </tr>`;
-        }).join('');
+        const fmt = s => s ? new Date(s).toLocaleTimeString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }) : '—';
+        const pillClass = s => s === 'Under 5 min' ? 'stl-pill-green' : s === 'Over 5 min' || s === 'Over 1 Hour' ? 'stl-pill-red' : s === 'Pending' ? 'stl-pill-gray' : 'stl-pill-green';
+        stlTbody.innerHTML = records.map(rec => `<tr>
+          <td>${rec.name}</td>
+          <td>${rec.phone}</td>
+          <td>${fmt(rec.createdAt)}</td>
+          <td>${fmt(rec.firstCallAt)}</td>
+          <td>${rec.minutes != null ? rec.minutes + ' min' : '—'}</td>
+          <td><span class="${pillClass(rec.status)}">${rec.status}</span></td>
+        </tr>`).join('');
       }
     } catch(e) {
-      stlTbody.innerHTML = '<tr><td colspan="6" class="act-empty">Error loading speed to lead.</td></tr>';
+      document.getElementById('stl-tbody').innerHTML = '<tr><td colspan="6" class="act-empty">Error loading data.</td></tr>';
     }
   }
 
