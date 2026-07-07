@@ -80,5 +80,13 @@ module.exports = async function handler(req, res) {
     }
   }
 
+  // Log anything unrecognized so we can inspect the payload
+  if (!isContactCreated && !isCall) {
+    await airtablePost('GHL Webhook Log', {
+      'Payload':     JSON.stringify(body),
+      'Received At': new Date().toISOString(),
+    }).catch(() => {});
+  }
+
   res.status(200).json({ ok: true });
 };
