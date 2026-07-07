@@ -8,7 +8,7 @@ const GHL_HEADERS    = { 'Authorization': `Bearer ${GHL_KEY}`, 'Version': '2021-
 // Get the earliest outbound call timestamp for a contact from GHL
 async function getFirstCallAt(contactId, createdAt) {
   try {
-    const r = await fetch(`${GHL_BASE}/contacts/${contactId}/conversations`, { headers: GHL_HEADERS });
+    const r = await fetch(`${GHL_BASE}/conversations/search?locationId=${LOCATION_ID}&contactId=${contactId}`, { headers: GHL_HEADERS });
     const d = await r.json();
     const convId = d.conversations?.[0]?.id;
     if (!convId) return null;
