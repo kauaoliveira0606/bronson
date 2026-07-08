@@ -18,14 +18,14 @@ module.exports = async function handler(req, res) {
     const userMap = {};
     for (const u of usersData.users || []) userMap[u.id] = u.name || u.firstName || u.email || u.id;
 
-    // Fetch all TYPE_CALL conversations updated today
+    // Fetch all conversations updated today (don't filter by lastMessageType — a
+    // rep may have called then sent a text, making lastMessageType no longer TYPE_CALL)
     let allConvs = [];
     let nextUrl = `${GHL_BASE}/conversations/search?locationId=${LOCATION_ID}&limit=100&startDate=${startTs}`;
     while (nextUrl) {
       const r = await fetch(nextUrl, { headers: GHL_HEADERS });
       const d = await r.json();
-      const convs = (d.conversations || []).filter(c => c.lastMessageType === 'TYPE_CALL');
-      allConvs = allConvs.concat(convs);
+      allConvs = allConvs.concat(d.conversations || []);
       nextUrl = d.meta?.nextPageUrl || null;
       if (allConvs.length >= 500) break;
     }
