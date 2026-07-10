@@ -1023,6 +1023,70 @@
 
 <hr class="divider" />
 
+<!-- SLOT MACHINE TOOLS -->
+<div class="section" style="text-align:center;">
+  <h2 class="section-title">All The Built-In Tools</h2>
+
+  <div style="position:relative;height:220px;overflow:hidden;margin-top:28px;" id="slot-machine">
+    <div id="slot-track" style="display:flex;flex-direction:column;align-items:center;gap:28px;transition:transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94);">
+      <div class="slot-item">Product Scorecard</div>
+      <div class="slot-item">ROAS Calculator</div>
+      <div class="slot-item">Breakeven Calculator</div>
+      <div class="slot-item">Profit Margin Calculator</div>
+      <div class="slot-item">Product Research Software</div>
+      <!-- duplicates for seamless loop -->
+      <div class="slot-item">Product Scorecard</div>
+      <div class="slot-item">ROAS Calculator</div>
+      <div class="slot-item">Breakeven Calculator</div>
+      <div class="slot-item">Profit Margin Calculator</div>
+      <div class="slot-item">Product Research Software</div>
+    </div>
+    <!-- fade masks top and bottom -->
+    <div style="position:absolute;top:0;left:0;right:0;height:70px;background:linear-gradient(to bottom,var(--bg),transparent);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:0;left:0;right:0;height:70px;background:linear-gradient(to top,var(--bg),transparent);pointer-events:none;"></div>
+  </div>
+</div>
+
+<style>
+  .slot-item {
+    font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+    font-weight: 700;
+    color: #d1d5db;
+    transition: color 0.3s, font-size 0.3s;
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .slot-item.active {
+    color: #3b82f6;
+    font-size: clamp(1.3rem, 4vw, 1.75rem);
+  }
+</style>
+
+<script>
+(function() {
+  const ITEMS = 5;
+  const ITEM_HEIGHT = 56; // px per slot item (font + gap)
+  let current = 0;
+  const track = document.getElementById('slot-track');
+  const items = track ? track.querySelectorAll('.slot-item') : [];
+
+  function update() {
+    const offset = current * ITEM_HEIGHT;
+    // center the active item in the 220px container: (220/2) - (item/2) ≈ 110 - 28 = 82
+    track.style.transform = `translateY(${82 - offset}px)`;
+    items.forEach((el, i) => {
+      el.classList.toggle('active', i === current || i === current + ITEMS);
+    });
+    current = (current + 1) % ITEMS;
+  }
+
+  update();
+  setInterval(update, 1800);
+})();
+</script>
+
+<hr class="divider" />
+
 <!-- WHAT YOU GET -->
 <div class="section">
   <p class="section-label">What's included</p>
