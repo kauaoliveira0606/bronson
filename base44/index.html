@@ -1807,27 +1807,49 @@
         </div>
       </div>
       <div>
-        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:10px;">Coaching Call</div>
-        <div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px;">
-          <div>
-            <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Call Title</label>
-            <input id="admin-call-title" type="text" placeholder="e.g. Monthly Founder Q&A — July" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:10px;">Weekly Call Schedule</div>
+        <div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:20px;">
+          <p style="font-size:.8rem;color:#6b7280;margin:0;">Update the links each week. Leave blank if a call isn't scheduled. Changes go live instantly.</p>
+
+          <!-- Call 1: Wix Monthly -->
+          <div style="border:1px solid #f3f4f6;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;">
+            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6366f1;">Call 1 — Wix Monthly (wix-monthly + wix-yearly + diamond)</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <input id="cs-time-0" type="text" placeholder="e.g. Monday 10 AM EST" style="flex:1;min-width:160px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+              <input id="cs-link-0" type="url" placeholder="Zoom or Meet link" style="flex:2;min-width:200px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+            </div>
           </div>
-          <div>
-            <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Date &amp; Time</label>
-            <input id="admin-call-datetime" type="text" placeholder="e.g. Thursday July 10 @ 7:00 PM EST" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+
+          <!-- Call 2: Wix Yearly Bonus -->
+          <div style="border:1px solid #f3f4f6;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;">
+            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6366f1;">Call 2 — Wix Yearly Bonus (wix-yearly + diamond)</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <input id="cs-time-1" type="text" placeholder="e.g. Thursday 2 PM EST" style="flex:1;min-width:160px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+              <input id="cs-link-1" type="url" placeholder="Zoom or Meet link" style="flex:2;min-width:200px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+            </div>
           </div>
-          <div>
-            <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Zoom Link</label>
-            <input id="admin-zoom-link" type="url" placeholder="https://zoom.us/j/..." style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+
+          <!-- Call 3: Constant Contact -->
+          <div style="border:1px solid #f3f4f6;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;">
+            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6366f1;">Call 3 — Constant Contact (constant-contact + diamond)</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <input id="cs-time-2" type="text" placeholder="e.g. Wednesday 10 AM EST" style="flex:1;min-width:160px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+              <input id="cs-link-2" type="url" placeholder="Zoom or Meet link" style="flex:2;min-width:200px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+            </div>
           </div>
-          <div>
-            <label style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;display:block;margin-bottom:6px;">Description</label>
-            <textarea id="admin-coaching-details" placeholder="What will be covered, what to prepare..." rows="4" style="width:100%;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:.88rem;font-family:inherit;resize:vertical;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'"></textarea>
+
+          <!-- Call 4: Diamond Bonus -->
+          <div style="border:1px solid #f3f4f6;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;">
+            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6366f1;">Call 4 — 💎 Diamond Bonus (diamond only)</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <input id="cs-time-3" type="text" placeholder="e.g. Friday 12 PM EST" style="flex:1;min-width:160px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+              <input id="cs-link-3" type="url" placeholder="Zoom or Meet link" style="flex:2;min-width:200px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+            </div>
           </div>
+
           <div style="display:flex;align-items:center;gap:12px;">
-            <button onclick="adminSaveCoaching(this)" style="background:#111;color:#fff;border:none;border-radius:10px;padding:10px 22px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;">Publish Call</button>
-            <span id="admin-coaching-status" style="font-size:.78rem;color:#16a34a;display:none;">✓ Published</span>
+            <button onclick="adminSaveCoaching(this)" style="background:#111;color:#fff;border:none;border-radius:10px;padding:10px 22px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;">Save Schedule</button>
+            <span id="admin-coaching-status" style="font-size:.78rem;color:#16a34a;display:none;">✓ Saved</span>
           </div>
         </div>
       </div>
@@ -4042,60 +4064,29 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     injectWithScripts('wixguide-content', WIXGUIDE_HTML);
   }
 
-  const COACH_CALL_DATA = {
-    'wix-monthly': {
-      name: 'Wix Monthly Coaching Call',
-      details: '',
-      directLink: '',
-      calendarLink: ''
-    },
-    'wix-yearly': {
-      name: 'Wix Yearly Coaching Call',
-      details: '2 PM EST — Tuesday & Thursday',
-      directLink: 'https://us06web.zoom.us/j/84183088197?pwd=f4k7wPGVOhh4bDltKTNs9tN7oDDMlC.1',
-      calendarLink: 'https://calendar.google.com/calendar/u/0/r/eventedit?text=Julia+-+Q%26A+Call&dates=20260707T180000Z/20260707T190000Z&location=https://us06web.zoom.us/j/84183088197?pwd%3Df4k7wPGVOhh4bDltKTNs9tN7oDDMlC.1&details=Join+the+call:+https://us06web.zoom.us/j/84183088197?pwd%3Df4k7wPGVOhh4bDltKTNs9tN7oDDMlC.1'
-    },
-    'constant-contact': {
-      name: 'Constant Contact Coaching Call',
-      details: '10 AM EST — Monday to Thursday',
-      directLink: 'https://meet.google.com/ujj-nkgd-ccj',
-      calendarLink: 'https://calendar.google.com/calendar/u/0/r/eventedit?text=Alex+-+Q%26A+Call&dates=20260707T140000Z/20260707T150000Z&location=https://meet.google.com/ujj-nkgd-ccj&details=Join+the+call:+https://meet.google.com/ujj-nkgd-ccj'
-    },
-    'diamond': {
-      name: '💎 Diamond Access Coaching Call',
-      details: '',
-      directLink: '',
-      calendarLink: ''
-    }
-  };
+  // call slot definitions — access = which approved slugs can see this call
+  const CALL_SLOTS = [
+    { idx: 0, label: 'Wix Monthly Call',      access: ['wix-monthly', 'wix-yearly', 'diamond'] },
+    { idx: 1, label: 'Wix Yearly Bonus Call', access: ['wix-yearly', 'diamond'] },
+    { idx: 2, label: 'Constant Contact Call', access: ['constant-contact', 'diamond'] },
+    { idx: 3, label: '💎 Diamond Bonus Call', access: ['diamond'] },
+  ];
 
-  function renderCallCard(slug, data) {
-    const hasLink = !!data.directLink;
+  function renderCallCard(label, time, link) {
     return `
-      <div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:16px;overflow:hidden;margin-bottom:16px;max-width:600px;">
-        <div style="background:#111;padding:22px 24px 18px;">
-          <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.45);margin-bottom:7px;">Live Coaching Call</div>
-          <div style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1.3;">${data.name}</div>
-          ${data.details ? `<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border-radius:6px;padding:4px 10px;font-size:.75rem;color:rgba(255,255,255,.8);font-weight:600;margin-top:10px;">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            ${data.details}
-          </div>` : ''}
-        </div>
-        <div style="padding:20px 24px 22px;display:flex;flex-direction:column;gap:12px;">
-          ${hasLink
-            ? `<div style="display:flex;gap:10px;flex-wrap:wrap;">
-                <a href="${data.directLink}" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:#2563eb;color:#fff;text-decoration:none;border-radius:10px;padding:11px 20px;font-size:.85rem;font-weight:700;">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 10l4.553-2.069A1 1 0 0121 8.845v6.31a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
-                  Join Call
-                </a>
-                ${data.calendarLink ? `<a href="${data.calendarLink}" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:#f3f4f6;color:#111;text-decoration:none;border-radius:10px;padding:11px 20px;font-size:.85rem;font-weight:700;">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                  Add to Calendar
-                </a>` : ''}
-              </div>`
-            : `<p style="font-size:.82rem;color:#9ca3af;margin:0;">Your coach will add the call link here shortly. Check back soon!</p>`
-          }
-        </div>
+      <div style="background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:16px;padding:22px 24px;margin-bottom:14px;max-width:600px;">
+        <div style="font-size:1rem;font-weight:800;color:#111;margin-bottom:${time ? '6px' : '14px'};">${label}</div>
+        ${time ? `<div style="display:inline-flex;align-items:center;gap:5px;background:#f3f4f6;border-radius:6px;padding:4px 10px;font-size:.75rem;color:#374151;font-weight:600;margin-bottom:14px;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          ${time}
+        </div>` : ''}
+        ${link
+          ? `<div><a href="${link}" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:#2563eb;color:#fff;text-decoration:none;border-radius:10px;padding:11px 22px;font-size:.85rem;font-weight:700;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 10l4.553-2.069A1 1 0 0121 8.845v6.31a1 1 0 01-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
+              Join Call
+            </a></div>`
+          : `<p style="font-size:.82rem;color:#9ca3af;margin:0;">Call link coming soon — check back closer to the session.</p>`
+        }
       </div>
     `;
   }
@@ -4107,27 +4098,37 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     try {
       const email = getStoredEmail();
       const isAdmin = email === ADMIN_EMAIL;
-      let approvedSlugs;
 
-      if (isAdmin) {
-        approvedSlugs = Object.keys(COACH_CALL_DATA);
-      } else {
-        const rows = await sbSelect(
-          'proof_submissions',
-          `email=eq.${encodeURIComponent(email)}&tab=eq.${encodeURIComponent('Coaching Call')}&status=eq.approved`
-        );
-        approvedSlugs = Array.isArray(rows) ? rows.map(r => r.action_key) : [];
-      }
+      // fetch schedule and approved slugs in parallel
+      const [csRows, proofRows] = await Promise.all([
+        sbSelect('coaching_settings', 'id=eq.1'),
+        isAdmin
+          ? Promise.resolve(null)
+          : sbSelect('proof_submissions', `email=eq.${encodeURIComponent(email)}&tab=eq.${encodeURIComponent('Coaching Call')}&status=eq.approved`)
+      ]);
 
-      if (!approvedSlugs.length) {
+      const schedule = (() => {
+        try { return JSON.parse((Array.isArray(csRows) && csRows[0] ? csRows[0] : {}).details || '{}'); } catch { return {}; }
+      })();
+      const calls = Array.isArray(schedule.calls) ? schedule.calls : [{},{},{},{}];
+
+      const approvedSlugs = isAdmin
+        ? ['wix-monthly','wix-yearly','constant-contact','diamond']
+        : (Array.isArray(proofRows) ? proofRows.map(r => r.action_key) : []);
+
+      const visibleSlots = CALL_SLOTS.filter(slot =>
+        slot.access.some(s => approvedSlugs.includes(s))
+      );
+
+      if (!visibleSlots.length) {
         el.innerHTML = '<p style="color:#9ca3af;font-size:.88rem;">No calls unlocked yet. Upload proof in the Elite tab to get access.</p>';
         return;
       }
 
-      el.innerHTML = approvedSlugs
-        .filter(slug => COACH_CALL_DATA[slug])
-        .map(slug => renderCallCard(slug, COACH_CALL_DATA[slug]))
-        .join('');
+      el.innerHTML = visibleSlots.map(slot => {
+        const c = calls[slot.idx] || {};
+        return renderCallCard(c.label || slot.label, c.time || '', c.link || '');
+      }).join('');
     } catch(e) {
       el.innerHTML = '<p style="color:#dc2626;font-size:.85rem;">Could not load coaching info. Try refreshing.</p>';
     }
@@ -4217,29 +4218,29 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     try {
       const cs = await sbSelect('coaching_settings', 'id=eq.1');
       const s = Array.isArray(cs) && cs[0] ? cs[0] : {};
-      const details = s.details ? JSON.parse(s.details) : {};
-      const t  = document.getElementById('admin-call-title');
-      const dt = document.getElementById('admin-call-datetime');
-      const zl = document.getElementById('admin-zoom-link');
-      const cd = document.getElementById('admin-coaching-details');
-      if (t)  t.value  = details.title    || '';
-      if (dt) dt.value = details.datetime || '';
-      if (zl) zl.value = s.zoom_link      || '';
-      if (cd) cd.value = details.desc     || '';
+      const schedule = s.details ? (() => { try { return JSON.parse(s.details); } catch { return {}; } })() : {};
+      const calls = Array.isArray(schedule.calls) ? schedule.calls : [{},{},{},{}];
+      [0,1,2,3].forEach(i => {
+        const c = calls[i] || {};
+        const tEl = document.getElementById('cs-time-' + i);
+        const lEl = document.getElementById('cs-link-' + i);
+        if (tEl) tEl.value = c.time || '';
+        if (lEl) lEl.value = c.link || '';
+      });
     } catch(e) {}
   }
 
   async function adminSaveCoaching(btn) {
-    btn.disabled = true; btn.textContent = 'Publishing...';
-    const zoom_link = document.getElementById('admin-zoom-link').value.trim();
-    const details   = JSON.stringify({
-      title:    document.getElementById('admin-call-title').value.trim(),
-      datetime: document.getElementById('admin-call-datetime').value.trim(),
-      desc:     document.getElementById('admin-coaching-details').value.trim(),
-    });
+    btn.disabled = true; btn.textContent = 'Saving...';
+    const calls = CALL_SLOTS.map((slot, i) => ({
+      label: slot.label,
+      time:  (document.getElementById('cs-time-' + i) || {}).value?.trim() || '',
+      link:  (document.getElementById('cs-link-' + i) || {}).value?.trim() || '',
+    }));
+    const details = JSON.stringify({ calls });
     try {
-      await sbUpdate('coaching_settings', 'id=eq.1', { zoom_link, details });
-      btn.textContent = 'Publish Call';
+      await sbUpdate('coaching_settings', 'id=eq.1', { details });
+      btn.textContent = 'Save Schedule';
       btn.disabled = false;
       const status = document.getElementById('admin-coaching-status');
       if (status) { status.style.display = ''; setTimeout(() => status.style.display = 'none', 3000); }
