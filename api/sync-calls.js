@@ -24,7 +24,7 @@ const COACH_MAP = {
 const SLOT_LABELS = [
   'Wix Monthly Call',
   'Wix Yearly Call',
-  'Wix Yearly Bonus Call',
+  'Diamond Call',
   'Constant Contact Call',
 ];
 

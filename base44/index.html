@@ -1820,27 +1820,27 @@
             </div>
           </div>
 
-          <!-- Call 2: Wix Yearly Bonus -->
+          <!-- Call 2: Wix Yearly -->
           <div style="border:1px solid #f3f4f6;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;">
-            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6366f1;">Call 2 — Wix Yearly Bonus (wix-yearly + diamond)</div>
+            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6366f1;">Call 2 — Wix Yearly (wix-yearly + diamond)</div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
-              <input id="cs-time-1" type="text" placeholder="e.g. Thursday 2 PM EST" style="flex:1;min-width:160px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+              <input id="cs-time-1" type="text" placeholder="e.g. Tuesday 2 PM EST" style="flex:1;min-width:160px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
               <input id="cs-link-1" type="url" placeholder="Zoom or Meet link" style="flex:2;min-width:200px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
             </div>
           </div>
 
-          <!-- Call 3: Constant Contact -->
+          <!-- Call 3: Diamond -->
           <div style="border:1px solid #f3f4f6;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;">
-            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6366f1;">Call 3 — Constant Contact (constant-contact + diamond)</div>
+            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6366f1;">Call 3 — 💎 Diamond (diamond only)</div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
-              <input id="cs-time-2" type="text" placeholder="e.g. Wednesday 10 AM EST" style="flex:1;min-width:160px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
+              <input id="cs-time-2" type="text" placeholder="e.g. Thursday 2 PM EST" style="flex:1;min-width:160px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
               <input id="cs-link-2" type="url" placeholder="Zoom or Meet link" style="flex:2;min-width:200px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
             </div>
           </div>
 
-          <!-- Call 4: Diamond Bonus -->
+          <!-- Call 4: Constant Contact -->
           <div style="border:1px solid #f3f4f6;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;">
-            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6366f1;">Call 4 — 💎 Diamond Bonus (diamond only)</div>
+            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6366f1;">Call 4 — Constant Contact (constant-contact + diamond)</div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
               <input id="cs-time-3" type="text" placeholder="e.g. Friday 12 PM EST" style="flex:1;min-width:160px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
               <input id="cs-link-3" type="url" placeholder="Zoom or Meet link" style="flex:2;min-width:200px;box-sizing:border-box;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 11px;font-size:.82rem;font-family:inherit;outline:none;color:#111;" onfocus="this.style.borderColor='#111'" onblur="this.style.borderColor='#e5e7eb'">
@@ -4067,9 +4067,9 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   // call slot definitions — access = which approved slugs can see this call
   const CALL_SLOTS = [
     { idx: 0, label: 'Wix Monthly Call',      access: ['wix-monthly', 'wix-yearly', 'diamond'] },
-    { idx: 1, label: 'Wix Yearly Bonus Call', access: ['wix-yearly', 'diamond'] },
-    { idx: 2, label: 'Constant Contact Call', access: ['constant-contact', 'diamond'] },
-    { idx: 3, label: '💎 Diamond Bonus Call', access: ['diamond'] },
+    { idx: 1, label: 'Wix Yearly Call',        access: ['wix-yearly', 'diamond'] },
+    { idx: 2, label: 'Diamond Call',           access: ['diamond'] },
+    { idx: 3, label: 'Constant Contact Call',  access: ['constant-contact', 'diamond'] },
   ];
 
   function renderCallCard(label, time, link) {
