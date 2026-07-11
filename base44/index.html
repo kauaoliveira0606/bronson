@@ -1710,36 +1710,26 @@
   <div class="rw-toast" id="rw-toast"></div>
   <input type="file" id="rw-file-input" accept="image/*" style="display:none" onchange="rwOnFileSelected(this)">
   <input type="file" id="es-file-input" accept="image/*" style="display:none" onchange="esOnFileSelected(this)">
+  <input type="file" id="coach-file-input" accept="image/*" style="display:none" onchange="coachOnFileSelected(this)">
 
   <!-- ── Elite Status ── -->
   <div class="view padded" id="view-elite">
     <h1 class="page-title" style="margin-bottom:5px;">⭐ Elite Status ⭐</h1>
-    <p class="page-sub" style="margin-bottom:22px;">Exclusive perks for members with a Wix Yearly + Base44 Yearly Subscription</p>
-
-    <!-- Unlock Access Card -->
-    <div class="es-access-card">
-      <div class="es-access-head">
-        <div class="es-access-title">Unlock Elite Access</div>
-        <span class="es-badge locked" id="es-status-badge">Locked</span>
-      </div>
-      <div class="es-access-desc">Upgrade to Wix Yearly + Base44 Yearly subscriptions and upload proof to unlock all Elite perks below.</div>
-      <button class="rw-btn gold" id="es-upload-btn" onclick="esUpload()">⬆ Upload Proof</button>
-    </div>
+    <p class="page-sub" style="margin-bottom:22px;">Exclusive coaching call perks for Wix and Constant Contact members</p>
 
     <!-- What You Get -->
     <div class="es-section-title">✦ What You Get</div>
     <div class="es-perks-grid">
 
-      <div class="es-perk-card es-locked" id="es-perk-1">
+      <div class="es-perk-card">
         <div class="es-perk-header">
           <span class="es-perk-icon">👑</span>
-          <span class="es-perk-lock" id="es-perk-lock-1">🔒 Locked</span>
         </div>
-        <div class="es-perk-name">Monthly Founder Call</div>
-        <div class="es-perk-freq">1x per month</div>
+        <div class="es-perk-name">Weekly Coaching Call</div>
+        <div class="es-perk-freq">Up to 4x per week</div>
         <ul class="es-perk-list">
-          <li>Live Q&amp;A with Bronson every month</li>
-          <li>Get your store reviewed by the founder</li>
+          <li>Live Q&amp;A + Lessons</li>
+          <li>Get your store reviewed</li>
           <li>Ask anything about your E-Com business</li>
           <li>Recorded replays available after each call</li>
         </ul>
@@ -1747,25 +1737,56 @@
 
     </div>
 
-    <!-- How to Unlock -->
-    <div class="es-unlock-card">
-      <div class="es-unlock-icon">👑</div>
-      <div class="es-unlock-title">How to Unlock Elite Status</div>
-      <div class="es-unlock-desc">Upgrade both your Wix and Base44 subscriptions to yearly plans, then upload a screenshot as proof. Elite Status activates within 2 hours.</div>
-      <div class="es-unlock-steps">
-        <div class="es-unlock-step"><div class="es-unlock-step-num">1</div> Upgrade to <strong>Wix Yearly</strong> subscription</div>
-        <div class="es-unlock-step"><div class="es-unlock-step-num">2</div> Upgrade to <strong>Base44 Builder Yearly</strong> plan</div>
-        <div class="es-unlock-step"><div class="es-unlock-step-num">3</div> Screenshot both active subscription dashboards</div>
-        <div class="es-unlock-step"><div class="es-unlock-step-num">4</div> Upload proof — Elite perks activate within ~2 hours</div>
+    <!-- Coaching Call Access -->
+    <div class="es-section-title">✦ Coaching Call Access</div>
+    <p class="page-sub" style="margin-bottom:16px;">Each weekly coaching call unlocks separately — approved based on which plan you upload proof for.</p>
+    <div style="background:rgba(26,131,242,0.08);border:1px solid rgba(26,131,242,0.2);border-radius:12px;padding:14px 18px;margin-bottom:20px;">
+      <p style="font-size:.85rem;color:#111;margin:0;"><strong>🎁 Bonus:</strong> Sign up for Wix's Business plan (the minimum plan required — Business or higher) and get one free coaching call a week — go yearly and get a second call added on top. Sign up for Constant Contact (any plan works, no minimum tier) and get another free coaching call a week, stacking up to 3 calls a week total. Do both the Wix Yearly plan and Constant Contact, and unlock 💎 Diamond Access — a 4th bonus call, for up to 4 calls a week total.</p>
+    </div>
+    <div class="es-perks-grid">
+
+      <div class="es-perk-card" id="coach-card-wix-monthly">
+        <div class="es-perk-header">
+          <span class="es-perk-icon">📞</span>
+          <span class="es-perk-lock" id="coach-status-wix-monthly">Not submitted</span>
+        </div>
+        <div class="es-perk-name">Wix Monthly Coaching Call</div>
+        <div class="es-perk-freq">1 call a week — unlocked with proof of your Wix Business Monthly plan (Business plan required)</div>
+        <button class="rw-btn gold" onclick="coachUpload('wix-monthly')" id="coach-btn-wix-monthly">⬆ Upload Proof of Wix Monthly</button>
       </div>
-      <div class="es-btn-pair">
-        <button class="es-btn gold" id="es-verify-btn" onclick="esUpload()">⬆ Upload Verification</button>
-        <a href="https://re.aistorebuilder.com/direct-checkout?subid=ad-ventur" target="_blank" class="es-btn outline">Get Wix Yearly</a>
+
+      <div class="es-perk-card" id="coach-card-wix-yearly">
+        <div class="es-perk-header">
+          <span class="es-perk-icon">📞</span>
+          <span class="es-perk-lock" id="coach-status-wix-yearly">Not submitted</span>
+        </div>
+        <div class="es-perk-name">Wix Yearly Coaching Call</div>
+        <div class="es-perk-freq">2 calls a week — unlocked with proof of your Wix Business Yearly plan (Business plan required)</div>
+        <button class="rw-btn gold" onclick="coachUpload('wix-yearly')" id="coach-btn-wix-yearly">⬆ Upload Proof of Wix Yearly</button>
       </div>
-      <div class="es-btn-pair">
-        <a href="https://re.aistorebuilder.com/base44-pricing?subid=ad-ventur" target="_blank" class="es-btn outline" style="flex:1;">Get Base44 Builder</a>
+
+      <div class="es-perk-card" id="coach-card-constant-contact">
+        <div class="es-perk-header">
+          <span class="es-perk-icon">📞</span>
+          <span class="es-perk-lock" id="coach-status-constant-contact">Not submitted</span>
+        </div>
+        <div class="es-perk-name">Constant Contact Coaching Call</div>
+        <div class="es-perk-freq">1 call a week — unlocked with proof of your Constant Contact sign-up (any plan)</div>
+        <button class="rw-btn gold" onclick="coachUpload('constant-contact')" id="coach-btn-constant-contact">⬆ Upload Proof of Constant Contact</button>
       </div>
-      <div class="rw-proof-note" style="margin-top:12px;">📸 Screenshot both dashboards showing your yearly plan — Wix &amp; Base44</div>
+
+    </div>
+
+    <!-- Diamond Access -->
+    <div style="background:linear-gradient(135deg,#0b3d91,#1A83F2 60%,#38bdf8);border:1px solid rgba(26,131,242,0.4);border-radius:16px;padding:22px 24px;margin-top:24px;box-shadow:0 8px 24px rgba(26,131,242,0.25);" id="coach-card-diamond">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <span style="font-size:1.4rem;">💎</span>
+        <span style="font-size:1.05rem;font-weight:900;color:#fff;letter-spacing:-0.3px;">Diamond Access</span>
+        <span style="font-size:1.4rem;">💎</span>
+        <span class="es-perk-lock" id="coach-status-diamond" style="margin-left:auto;background:rgba(255,255,255,0.18);color:#fff;">Not submitted</span>
+      </div>
+      <p style="font-size:.85rem;color:rgba(255,255,255,0.92);line-height:1.6;margin:0 0 14px;">Sign up for <strong>both</strong> the Wix Yearly plan and Constant Contact, then upload proof showing both are active to unlock Diamond Access: a 4th bonus coaching call every week, for up to <strong>4 calls a week total</strong>. 💎</p>
+      <button class="rw-btn gold" onclick="coachUpload('diamond')" id="coach-btn-diamond">⬆ Upload Proof of Diamond Access</button>
     </div>
   </div>
 
@@ -3318,39 +3339,71 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   }
 
   function updateEliteUI() {
-    const unlocked = esIsUnlocked();
-    const pending  = esIsPending();
+    coachCheckStatus();
+  }
 
-    const badge = document.getElementById('es-status-badge');
-    if (badge) {
-      if (unlocked)     { badge.textContent = '✓ Active';           badge.className = 'es-badge active'; }
-      else if (pending) { badge.textContent = '⏳ Awaiting Approval'; badge.className = 'es-badge pending'; }
-      else              { badge.textContent = 'Locked';              badge.className = 'es-badge locked'; }
-    }
+  // ── Coaching Call proof uploads ──
+  const COACH_SLUGS = ['wix-monthly', 'wix-yearly', 'constant-contact', 'diamond'];
 
-    const uploadBtn = document.getElementById('es-upload-btn');
-    if (uploadBtn) {
-      if (unlocked)     { uploadBtn.textContent = '✓ Elite Active';       uploadBtn.disabled = true; }
-      else if (pending) { uploadBtn.textContent = '⏳ Awaiting Approval'; uploadBtn.disabled = true; }
-      else              { uploadBtn.textContent = '⬆ Upload Proof';       uploadBtn.disabled = false; }
-    }
+  function coachUpload(slug) {
+    document.getElementById('coach-file-input').dataset.slug = slug;
+    document.getElementById('coach-file-input').click();
+  }
 
-    const verifyBtn = document.getElementById('es-verify-btn');
-    if (verifyBtn) {
-      if (unlocked)     { verifyBtn.textContent = '✓ Elite Active';       verifyBtn.disabled = true; }
-      else if (pending) { verifyBtn.textContent = '⏳ Awaiting Approval'; verifyBtn.disabled = true; }
-      else              { verifyBtn.textContent = '⬆ Upload Verification'; verifyBtn.disabled = false; }
-    }
+  async function coachOnFileSelected(input) {
+    if (!input.files || !input.files.length) return;
+    const slug = input.dataset.slug;
+    const file = input.files[0];
+    const email = getStoredEmail();
+    const btn = document.getElementById('coach-btn-' + slug);
+    if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
+    try {
+      const base64 = await fileToBase64(file);
+      await fetch('/api/discord-proof', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, tab: 'Coaching Call', action: slug, fileName: file.name, fileType: file.type, fileBase64: base64 }),
+      });
+      await sbInsert('proof_submissions', { email, tab: 'Coaching Call', action_key: slug, status: 'pending' });
+    } catch(e) { /* fail silently — toast still shows */ }
+    input.value = '';
+    rwShowToast('📸 Proof submitted! Awaiting review.');
+    coachCheckStatus();
+  }
 
-    [1].forEach(i => {
-      const card = document.getElementById('es-perk-' + i);
-      const lock = document.getElementById('es-perk-lock-' + i);
-      if (card) {
-        card.classList.toggle('es-locked', !unlocked);
-        card.classList.toggle('es-perk-unlocked', unlocked);
-      }
-      if (lock) lock.style.display = unlocked ? 'none' : '';
-    });
+  async function coachCheckStatus() {
+    const email = getStoredEmail();
+    if (!email) return;
+    try {
+      const rows = await sbSelect(
+        'proof_submissions',
+        `email=eq.${encodeURIComponent(email)}&tab=eq.${encodeURIComponent('Coaching Call')}`
+      );
+      const bySlug = {};
+      if (Array.isArray(rows)) rows.forEach(r => { bySlug[r.action_key] = r.status; });
+      COACH_SLUGS.forEach(slug => {
+        const status = bySlug[slug];
+        const badge = document.getElementById('coach-status-' + slug);
+        const btn = document.getElementById('coach-btn-' + slug);
+        if (!badge || !btn) return;
+        if (status === 'approved') {
+          badge.textContent = '✓ Approved';
+          btn.textContent = '✓ Approved';
+          btn.disabled = true;
+        } else if (status === 'pending') {
+          badge.textContent = '⏳ Awaiting Approval';
+          btn.textContent = '⏳ Awaiting Approval';
+          btn.disabled = true;
+        } else if (status === 'rejected') {
+          badge.textContent = 'Rejected';
+          btn.textContent = '⬆ Re-upload Proof';
+          btn.disabled = false;
+        } else {
+          badge.textContent = 'Not submitted';
+          if (btn) btn.disabled = false;
+        }
+      });
+    } catch(e) { /* fail silently */ }
   }
 
   // Init tools on page load so values are correct when user navigates there
@@ -3536,8 +3589,8 @@ After implementing, add clear comments in the code showing where the Pixel ID is
         }
       }
       if (changed) localStorage.setItem(RW_PENDING_KEY, JSON.stringify(pending));
-      const hasApproval = rows.some(r => r.tab === 'elite' && r.status === 'approved');
-      if (hasApproval) {
+      const hasCoachingApproval = rows.some(r => r.tab === 'Coaching Call' && r.status === 'approved');
+      if (hasCoachingApproval) {
         const nc = document.getElementById('nav-coaching');
         const mc = document.getElementById('mnav-coaching');
         if (nc) nc.style.display = '';
