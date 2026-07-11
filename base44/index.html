@@ -764,6 +764,8 @@
     #mob-lesson-list { padding:8px 12px 8px; }
     #mob-lesson-list .lesson-item { margin-bottom:2px; }
   }
+  @keyframes pr-spin { to { transform: rotate(360deg); } }
+  @keyframes pr-pulse { 0%,100% { opacity:1; } 50% { opacity:.4; } }
   </style>
 <script src="https://widgets.leadconnectorhq.com/loader.js" data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" data-widget-id="6a46e10b8acf50dff3d635e1" data-source="WEB_USER"></script>
 </head>
@@ -843,7 +845,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
       <span class="nav-label">Wix Guide</span>
     </div>
-    <div class="nav-item" onclick="showView('product-research',this);">
+    <div class="nav-item" onclick="showView('product-research',this); initProductResearch();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <span class="nav-label">Product Research</span>
     </div>
@@ -903,7 +905,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
       Wix
     </button>
-    <button class="mob-nav-item" id="mnav-product-research" onclick="showView('product-research', null);">
+    <button class="mob-nav-item" id="mnav-product-research" onclick="showView('product-research', null); initProductResearch();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       Research
     </button>
@@ -1827,9 +1829,48 @@
   </div>
 
   <!-- ── Product Research ── -->
-  <div class="view padded" id="view-product-research">
-    <h1 class="page-title">Product Research</h1>
-    <p class="page-sub">Coming soon.</p>
+  <div class="view padded" id="view-product-research" style="background:#f9f8f6;">
+    <div style="max-width:960px;margin:0 auto;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px;">
+        <div>
+          <h1 class="page-title" style="margin-bottom:4px;">Product Research</h1>
+          <p class="page-sub">Find winning products and viral trends</p>
+        </div>
+        <button id="pr-refresh-btn" onclick="prRefresh()" style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid #e5e7eb;background:#fff;font-size:.82rem;font-weight:600;cursor:pointer;color:#374151;">
+          <svg id="pr-refresh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Refresh
+        </button>
+      </div>
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:14px;">
+        <form onsubmit="prSearch(event)" style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <div style="position:relative;flex:1;min-width:180px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:15px;height:15px;pointer-events:none;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="pr-search-input" type="text" placeholder="Search products..." style="width:100%;padding:8px 12px 8px 34px;border:1px solid #e5e7eb;border-radius:8px;font-size:.85rem;box-sizing:border-box;outline:none;color:#111;">
+            </div>
+            <button type="submit" style="padding:8px 20px;background:#6366f1;color:#fff;border:none;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;">Search</button>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;font-size:.75rem;padding-top:10px;border-top:1px solid #f3f4f6;">
+            <span style="font-weight:600;color:#6b7280;">Demand Guide:</span>
+            <span style="color:#22c55e;">🔥 Hot (2000+ sold)</span>
+            <span style="color:#22c55e;">↑ High (1000+)</span>
+            <span style="color:#eab308;">↑ Good (500+)</span>
+          </div>
+        </form>
+      </div>
+      <div id="pr-categories" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;"></div>
+      <div id="pr-results-info" style="display:none;font-size:.82rem;color:#6b7280;margin-bottom:12px;justify-content:space-between;"></div>
+      <div id="pr-error" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:16px;text-align:center;margin-bottom:14px;">
+        <p id="pr-error-msg" style="color:#dc2626;font-size:.85rem;margin-bottom:8px;"></p>
+        <button onclick="prLoad(1)" style="padding:6px 16px;border:1px solid #e5e7eb;background:#fff;border-radius:8px;font-size:.8rem;cursor:pointer;">Try Again</button>
+      </div>
+      <div id="pr-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:20px;"></div>
+      <div id="pr-pagination" style="display:none;align-items:center;justify-content:center;gap:12px;margin-bottom:32px;">
+        <button onclick="prChangePage(-1)" id="pr-prev" style="padding:8px 18px;border:1px solid #e5e7eb;background:#fff;border-radius:8px;font-size:.83rem;font-weight:500;cursor:pointer;">← Prev</button>
+        <span id="pr-page-info" style="font-size:.83rem;color:#6b7280;"></span>
+        <button onclick="prChangePage(1)" id="pr-next" style="padding:8px 18px;border:1px solid #e5e7eb;background:#fff;border-radius:8px;font-size:.83rem;font-weight:500;cursor:pointer;">Next →</button>
+      </div>
+    </div>
   </div>
 
   <!-- ── Coaching Settings (admin only) ── -->
@@ -4291,6 +4332,220 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     }
   });
   supObserver.observe(lessonView, { attributes: true, attributeFilter: ['class'] });
+</script>
+
+<script>
+  // ── Product Research ──
+  (function() {
+    const CJ_URL = 'https://aucakdtwvdhedqttxbyo.supabase.co/functions/v1/cj-products';
+    const CJ_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1Y2FrZHR3dmRoZWRxdHR4YnlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc1NTgzNTQsImV4cCI6MjA4MzEzNDM1NH0.QGsc4_bjEEEVkxt6m3AB623mNktFHsU3rItvmhinB_g';
+    const CATEGORIES = ['Home, Garden & Furniture','Jewelry & Watches','Beauty & Health','Electronics','Sports & Outdoors','Clothing & Accessories','Toys & Hobbies','Bags & Shoes','Pet Supplies','Baby & Kids'];
+    const MIN_LISTED = 500;
+
+    const st = {
+      loading: false, products: [], page: 1, pagination: null,
+      query: '', category: 'Home, Garden & Furniture', seed: 0, initialized: false,
+    };
+
+    function demand(n) {
+      if (n >= 2000) return { label: 'Hot 🔥', color: '#22c55e' };
+      if (n >= 1000) return { label: 'High Demand', color: '#22c55e' };
+      if (n >= 500)  return { label: 'Good Demand', color: '#eab308' };
+      return { label: 'Moderate', color: '#f59e0b' };
+    }
+
+    function hash(s) {
+      let h = 0;
+      for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+      return h;
+    }
+
+    function shuffle(arr) {
+      if (arr.length <= 1 || st.query.trim()) return arr;
+      const seed = `${Math.floor(Date.now() / (2*60*60*1000))}-${st.category}-${st.page}-${st.seed}`;
+      return [...arr].sort((a, b) => hash(`${a.id}-${seed}`) - hash(`${b.id}-${seed}`));
+    }
+
+    function setLoading(on) {
+      st.loading = on;
+      const icon = document.getElementById('pr-refresh-icon');
+      const btn  = document.getElementById('pr-refresh-btn');
+      if (icon) icon.style.animation = on ? 'pr-spin 1s linear infinite' : '';
+      if (btn)  btn.disabled = on;
+    }
+
+    function renderCategories() {
+      const el = document.getElementById('pr-categories');
+      if (!el) return;
+      el.innerHTML = CATEGORIES.map((c, i) => {
+        const active = st.category === c;
+        return `<button data-pr-cat="${i}" style="padding:6px 14px;border-radius:20px;border:1px solid ${active?'#6366f1':'#e5e7eb'};background:${active?'#6366f1':'#fff'};color:${active?'#fff':'#374151'};font-size:.78rem;font-weight:500;cursor:pointer;">${c}</button>`;
+      }).join('');
+    }
+
+    function bindCategoryClicks() {
+      const el = document.getElementById('pr-categories');
+      if (!el) return;
+      el.addEventListener('click', function(e) {
+        const btn = e.target.closest('[data-pr-cat]');
+        if (!btn) return;
+        st.category = CATEGORIES[parseInt(btn.dataset.prCat)];
+        renderCategories();
+        load(1);
+      });
+    }
+
+    function skeletonCard() {
+      const a = 'animation:pr-pulse 1.5s ease-in-out infinite;background:#f3f4f6;border-radius:4px;';
+      return `<div style="border-radius:12px;border:1px solid #e5e7eb;background:#fff;overflow:hidden;">
+        <div style="aspect-ratio:1;${a}"></div>
+        <div style="padding:12px;display:flex;flex-direction:column;gap:8px;">
+          <div style="height:11px;width:40%;${a}"></div>
+          <div style="height:14px;${a}"></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;">
+            <div style="height:20px;flex:1;${a}"></div>
+            <div style="height:20px;flex:1;${a}"></div>
+          </div>
+          <div style="height:12px;width:50%;${a}"></div>
+          <div style="height:32px;${a}border-radius:8px;"></div>
+        </div>
+      </div>`;
+    }
+
+    function productCard(p) {
+      const d = demand(p.listed_count);
+      const q = encodeURIComponent(p.name.split(' ').slice(0,5).join(' '));
+      const nameEsc = p.name.replace(/"/g,'&quot;');
+      return `<div style="border-radius:12px;border:1px solid #e5e7eb;background:#fff;overflow:hidden;transition:box-shadow .2s,border-color .2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,.1)';this.style.borderColor='rgba(99,102,241,.3)'" onmouseout="this.style.boxShadow='';this.style.borderColor='#e5e7eb'">
+        <div style="position:relative;aspect-ratio:1;background:#f9f8f6;overflow:hidden;">
+          <img src="${p.image_url}" alt="${nameEsc}" style="width:100%;height:100%;object-fit:contain;" onerror="this.parentElement.innerHTML='<div style=&quot;display:flex;align-items:center;justify-content:center;height:100%;font-size:.75rem;color:#9ca3af;&quot;>Unavailable</div>'">
+          ${p.free_shipping ? '<span style="position:absolute;top:8px;left:8px;background:rgba(34,197,94,.9);color:#fff;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:20px;">Free Shipping</span>' : ''}
+        </div>
+        <div style="padding:12px;display:flex;flex-direction:column;gap:9px;">
+          <div>
+            <p style="font-size:.7rem;color:#9ca3af;margin-bottom:3px;">${p.niche||p.category||'&nbsp;'}</p>
+            <h3 style="font-size:.82rem;font-weight:500;color:#111;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4;margin:0;">${p.name}</h3>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <p style="font-size:.7rem;color:#9ca3af;margin-bottom:1px;">Cost</p>
+              <p style="font-size:.9rem;font-weight:700;color:#111;">$${p.cost_price.toFixed(2)}</p>
+            </div>
+            ${p.listed_count > 0 ? `<div style="text-align:right;"><p style="font-size:.7rem;color:#9ca3af;margin-bottom:1px;">Sold</p><p style="font-size:.9rem;font-weight:700;color:#6366f1;">${p.listed_count.toLocaleString()}</p></div>` : ''}
+          </div>
+          <div style="font-size:.75rem;font-weight:600;color:${d.color};">${d.label}</div>
+          <a href="https://www.aliexpress.com/wholesale?SearchText=${q}" target="_blank" rel="noopener" style="display:block;text-align:center;background:#6366f1;color:#fff;font-size:.78rem;font-weight:600;padding:10px;border-radius:8px;text-decoration:none;">Source on AliExpress ↗</a>
+        </div>
+      </div>`;
+    }
+
+    function renderGrid() {
+      const grid = document.getElementById('pr-grid');
+      if (!grid) return;
+      if (st.loading) { grid.innerHTML = Array(8).fill(0).map(skeletonCard).join(''); return; }
+      if (!st.products.length) {
+        grid.innerHTML = `<div style="grid-column:1/-1;padding:48px;text-align:center;background:#fff;border-radius:12px;border:1px solid #e5e7eb;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" style="width:44px;height:44px;margin:0 auto 12px;display:block;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <p style="font-weight:600;color:#111;margin-bottom:4px;">No products found</p>
+          <p style="font-size:.82rem;color:#6b7280;">Try adjusting your search or filters</p></div>`;
+        return;
+      }
+      grid.innerHTML = st.products.map(productCard).join('');
+    }
+
+    function renderPagination() {
+      const el   = document.getElementById('pr-pagination');
+      const info = document.getElementById('pr-page-info');
+      const prev = document.getElementById('pr-prev');
+      const next = document.getElementById('pr-next');
+      if (!el) return;
+      if (!st.pagination || st.pagination.totalPages <= 1 || st.loading) { el.style.display = 'none'; return; }
+      el.style.display = 'flex';
+      if (info) info.textContent = `Page ${st.pagination.page} of ${st.pagination.totalPages}`;
+      if (prev) prev.disabled = st.pagination.page <= 1;
+      if (next) next.disabled = st.pagination.page >= st.pagination.totalPages;
+    }
+
+    function renderResultsInfo() {
+      const el = document.getElementById('pr-results-info');
+      if (!el) return;
+      if (!st.pagination || st.loading) { el.style.display = 'none'; return; }
+      el.style.display = 'flex';
+      const catStr = st.category && st.category !== 'All' ? ` in <strong>${st.category}</strong>` : '';
+      el.innerHTML = `<span>Showing <strong>${st.products.length}</strong> of <strong>${st.pagination.totalRecords.toLocaleString()}</strong> products${catStr}</span><span>Page ${st.pagination.page} of ${st.pagination.totalPages}</span>`;
+    }
+
+    async function load(page) {
+      if (st.loading) return;
+      setLoading(true);
+      document.getElementById('pr-error').style.display = 'none';
+      renderGrid();
+
+      const body = {
+        action: 'products', page, size: 120, productFlag: '0',
+        ...(st.query ? { keyword: st.query } : {}),
+        ...(st.category && st.category !== 'All' ? { category: st.category } : {}),
+      };
+
+      try {
+        const res  = await fetch(CJ_URL, { method: 'POST', headers: { 'Authorization': `Bearer ${CJ_KEY}`, 'apikey': CJ_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || 'Failed to fetch products');
+
+        let products = data.products || [];
+        if (!st.query && (!st.category || st.category === 'All')) {
+          const re = /\b(dress|blouse|shirt|hoodie|jacket|legging|swimwear|bikini|romper|pajama|lingerie|underwear|bra|panties|skirt|trouser|pant|jeans|sweater|cardigan|coat|vest|clothing|garment|apparel|t-shirt)\b/i;
+          products = products.filter(p => !re.test(p.name));
+        }
+        const badRe = /\b(wholesale|bulk\s+lot|sample|test|placeholder|xxx|adult)\b/i;
+        products = products.filter(p => !badRe.test(p.name) && p.listed_count >= MIN_LISTED);
+        products.sort((a, b) => b.listed_count - a.listed_count);
+        products = shuffle(products);
+
+        st.products   = products;
+        st.pagination = data.pagination || null;
+        st.page       = page;
+      } catch (err) {
+        const errEl = document.getElementById('pr-error');
+        const msgEl = document.getElementById('pr-error-msg');
+        if (errEl) errEl.style.display = 'block';
+        if (msgEl) msgEl.textContent = err.message || 'Failed to load products';
+        st.products = [];
+      } finally {
+        setLoading(false);
+        renderGrid();
+        renderPagination();
+        renderResultsInfo();
+      }
+    }
+
+    window.initProductResearch = function() {
+      if (st.initialized) return;
+      st.initialized = true;
+      renderCategories();
+      bindCategoryClicks();
+      load(1);
+    };
+
+    window.prSearch = function(e) {
+      e.preventDefault();
+      st.query = document.getElementById('pr-search-input').value.trim();
+      load(1);
+    };
+
+    window.prRefresh = function() {
+      st.seed++;
+      load(1);
+    };
+
+    window.prChangePage = function(dir) {
+      if (!st.pagination) return;
+      const np = st.page + dir;
+      if (np < 1 || np > st.pagination.totalPages) return;
+      load(np);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  })();
 </script>
 
 </body>
