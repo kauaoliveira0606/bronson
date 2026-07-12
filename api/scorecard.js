@@ -395,6 +395,29 @@ module.exports = async function handler(req, res) {
     // Main CSV: prefer raw target-week CSV (works even when parse fails), then fall back
     const mainCsv = (targetCsvRaw || targetTab?.csv || currentTab?.csv || completedTabs[0]?.csv || '').trim();
 
+    // Debug mode: return date ranges and tab coverage
+    if (req.query?.debug === '1') {
+      const fmt = d => d ? d.toISOString().slice(0, 10) : 'null';
+      const tabInfo = tabs.map(t => ({
+        name: t.name,
+        sunday: fmt(t.sunday),
+        saturday: fmt(t.saturday),
+        completed: t.saturday < today,
+        l7Cols: Object.entries(t.dateMap)
+          .filter(([, d]) => d >= cut7 && d <= today)
+          .map(([c, d]) => `col${c}=${fmt(d)}`)
+      }));
+      return res.status(200).json({
+        today: fmt(today),
+        cut7:  fmt(cut7),
+        cut30: fmt(cut30),
+        currentTab: currentTab ? currentTab.name : null,
+        completedTabCount: completedTabs.length,
+        tabs: tabInfo.slice(0, 8),
+        l7Keys: Object.keys(L7.sums)
+      });
+    }
+
     const out = mainCsv
       + '\n__LAST7__\n'   + buildSection(L7)
       + '\n__LAST30__\n'  + buildSection(L30)
