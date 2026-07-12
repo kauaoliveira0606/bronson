@@ -245,8 +245,9 @@ module.exports = async function handler(req, res) {
     // Per-period accumulators
     const mk = () => ({ sums: {}, cnts: {}, sw: { num: 0, den: 0 }, cw: { num: 0, den: 0 } });
     const L7 = mk(), L30 = mk(), ALL = mk();
-    // L7 also tracks raw daily booked/sales for HT close rate derivation
+    // L7/L30 track raw daily booked/sales for HT close rate derivation
     let l7BookedHT = 0, l7SalesHT = 0;
+    let l30BookedHT = 0, l30SalesHT = 0;
 
     function addToAccum(accum, name, v) {
       if (isNaN(v) || v === 0) return;
@@ -282,26 +283,42 @@ module.exports = async function handler(req, res) {
         if (wb9 > 0 && !isNaN(ws9)) { L7.sw.num += ws9 * wb9; L7.sw.den += wb9; }
       }
 
-      // ── LAST30 and ALLTIME: use col9 weekly summaries ──
-      const col9 = name => parseVal((metrics[name] || [])[9]);
+      // ── LAST30: daily columns filtered by date (same logic as L7) ──
+      const l30Cols = Object.entries(dateMap)
+        .filter(([, d]) => d >= cut30 && d < today)
+        .map(([c]) => +c);
 
-      const addCol9ToAccum = (accum) => {
+      if (l30Cols.length > 0) {
         for (const [name, row] of Object.entries(metrics)) {
           if (SKIP.has(name.toLowerCase())) continue;
-          addToAccum(accum, name, col9(name));
+          for (const c of l30Cols) {
+            addToAccum(L30, name, parseVal(row[c]));
+          }
         }
-        // Show rate HT: weighted by col9 booked
-        const wb9 = col9('Booked calls (high ticket)') || 0;
-        const ws9 = col9('Show rate- High ticket')     || 0;
-        const wc9 = col9('Close Rate - High Ticket')   || 0;
-        if (wb9 > 0) {
-          if (!isNaN(ws9)) { accum.sw.num += ws9 * wb9; accum.sw.den += wb9; }
-          if (!isNaN(wc9)) { accum.cw.num += wc9 * wb9; accum.cw.den += wb9; }
+        const bookedRow = metrics['Booked calls (high ticket)'] || [];
+        const salesRow  = metrics['Sales - High Ticket']        || [];
+        for (const c of l30Cols) {
+          const b = parseVal(bookedRow[c]); if (!isNaN(b)) l30BookedHT += b;
+          const s = parseVal(salesRow[c]);  if (!isNaN(s)) l30SalesHT  += s;
         }
-      };
+        const wb9 = parseVal((metrics['Booked calls (high ticket)'] || [])[9]) || 0;
+        const ws9 = parseVal((metrics['Show rate- High ticket']      || [])[9]) || 0;
+        if (wb9 > 0 && !isNaN(ws9)) { L30.sw.num += ws9 * wb9; L30.sw.den += wb9; }
+      }
 
-      if (tab.saturday >= cut30) addCol9ToAccum(L30);
-      addCol9ToAccum(ALL);
+      // ── ALLTIME: use col9 weekly summaries ──
+      const col9 = name => parseVal((metrics[name] || [])[9]);
+      const wb9a = col9('Booked calls (high ticket)') || 0;
+      const ws9a = col9('Show rate- High ticket')     || 0;
+      const wc9a = col9('Close Rate - High Ticket')   || 0;
+      for (const [name, row] of Object.entries(metrics)) {
+        if (SKIP.has(name.toLowerCase())) continue;
+        addToAccum(ALL, name, col9(name));
+      }
+      if (wb9a > 0) {
+        if (!isNaN(ws9a)) { ALL.sw.num += ws9a * wb9a; ALL.sw.den += wb9a; }
+        if (!isNaN(wc9a)) { ALL.cw.num += wc9a * wb9a; ALL.cw.den += wb9a; }
+      }
     }
 
     // ── Include current (in-progress) week in all accumulators ──
@@ -345,10 +362,9 @@ module.exports = async function handler(req, res) {
         }
         const bookedRow = metrics['Booked calls (high ticket)'] || [];
         const salesRow  = metrics['Sales - High Ticket']        || [];
-        let curL30BookedHT = 0, curL30SalesHT = 0;
         for (const c of l30Cols) {
-          const b = parseVal(bookedRow[c]); if (!isNaN(b)) curL30BookedHT += b;
-          const s = parseVal(salesRow[c]);  if (!isNaN(s)) curL30SalesHT  += s;
+          const b = parseVal(bookedRow[c]); if (!isNaN(b)) l30BookedHT += b;
+          const s = parseVal(salesRow[c]);  if (!isNaN(s)) l30SalesHT  += s;
         }
         const wb9 = parseVal((metrics['Booked calls (high ticket)'] || [])[9]) || 0;
         const ws9 = parseVal((metrics['Show rate- High ticket']      || [])[9]) || 0;
@@ -388,9 +404,11 @@ module.exports = async function handler(req, res) {
       if (adSpend > 0 && totalCash > 0) accum.sums['Roas - Total']            = r2(totalCash / adSpend);
       if (adSpend > 0 && cashLT > 0)    accum.sums['Roas - Low ticket']       = r2(cashLT / adSpend);
 
-      // Close Rate HT: daily for L7 (preserves 50% behavior), col9-weighted for L30/ALL
+      // Close Rate HT: daily booked/sales totals for L7 and L30; col9-weighted for ALL
       if (period === 'L7') {
         if (l7BookedHT > 0) accum.sums['Close Rate - High Ticket'] = r2(l7SalesHT / l7BookedHT);
+      } else if (period === 'L30') {
+        if (l30BookedHT > 0) accum.sums['Close Rate - High Ticket'] = r2(l30SalesHT / l30BookedHT);
       } else {
         if (accum.cw.den > 0) accum.sums['Close Rate - High Ticket'] = r2(accum.cw.num / accum.cw.den);
         else if (salesHT > 0 && g('Booked calls (high ticket)') > 0)
