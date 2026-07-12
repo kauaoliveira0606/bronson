@@ -2737,6 +2737,7 @@ After implementing, add clear comments in the code showing where the Pixel ID is
 
   function isLessonDone(phaseIdx, lessonIdx) { return !!(prog[`${phaseIdx}_${lessonIdx}`]); }
   function isLessonUnlocked(phaseIdx, lessonIdx) {
+    if (getStoredEmail() === ADMIN_EMAIL) return true;
     if (phaseIdx === 0 && lessonIdx === 0) return true;
     if (lessonIdx === 0) {
       const prev = PHASES[phaseIdx - 1];
