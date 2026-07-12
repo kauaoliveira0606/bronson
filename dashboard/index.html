@@ -160,8 +160,8 @@
     .tab-btn:hover { border-color:rgba(255,255,255,0.2); color:#fff; }
     .tab-btn.active { background:#fff; color:#000; border-color:#fff; }
 
-    #view-funnel, #view-ads, #view-model, #view-eod, #view-activity { display:none; }
-    #view-funnel.active, #view-ads.active, #view-model.active, #view-eod.active, #view-activity.active { display:block; }
+    #view-funnel, #view-ads, #view-model, #view-activity { display:none; }
+    #view-funnel.active, #view-ads.active, #view-model.active, #view-activity.active { display:block; }
 
     /* ── Activity ──────────────────────────────────────────────────────────── */
     .act-wrap { padding:28px; display:flex; flex-direction:column; gap:28px; }
@@ -172,40 +172,13 @@
     .act-tbl td { padding:10px 12px; border-top:1px solid var(--border); color:var(--text1); }
     .act-tbl tbody tr:hover { background:rgba(255,255,255,0.03); }
     .act-dials { font-weight:700; font-size:1rem; color:#fff; }
-    .stl-pill-green { background:rgba(34,197,94,0.12); color:#22c55e; border-radius:6px; padding:2px 8px; font-size:.75rem; font-weight:700; }
-    .stl-pill-red   { background:rgba(239,68,68,0.12);  color:#ef4444; border-radius:6px; padding:2px 8px; font-size:.75rem; font-weight:700; }
-    .stl-pill-gray  { background:rgba(255,255,255,0.07); color:var(--text2); border-radius:6px; padding:2px 8px; font-size:.75rem; font-weight:700; }
+    .stl-pill-blue   { background:rgba(59,130,246,0.15);  color:#60a5fa; border-radius:6px; padding:2px 8px; font-size:.75rem; font-weight:700; }
+    .stl-pill-yellow { background:rgba(234,179,8,0.15);   color:#facc15; border-radius:6px; padding:2px 8px; font-size:.75rem; font-weight:700; }
+    .stl-pill-red    { background:rgba(239,68,68,0.12);   color:#ef4444; border-radius:6px; padding:2px 8px; font-size:.75rem; font-weight:700; }
+    .stl-pill-gray   { background:rgba(255,255,255,0.07); color:var(--text2); border-radius:6px; padding:2px 8px; font-size:.75rem; font-weight:700; }
     .act-empty { text-align:center; color:var(--text2); padding:32px; font-size:.85rem; }
     .act-refresh { background:none; border:1px solid var(--border); color:var(--text2); border-radius:8px; padding:5px 14px; font-size:.75rem; font-weight:600; cursor:pointer; font-family:inherit; transition:all .15s; }
     .act-refresh:hover { border-color:rgba(255,255,255,.2); color:#fff; }
-
-    /* ── EOD ─────────────────────────────────────────────────────────────── */
-    .eod-wrap { padding:28px; display:flex; flex-direction:column; gap:24px; }
-    .eod-form-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:28px; }
-    .eod-form-title { font-size:1rem; font-weight:800; color:#fff; margin-bottom:6px; }
-    .eod-form-sub { font-size:.75rem; color:var(--text2); margin-bottom:24px; }
-    .eod-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-    .eod-field { display:flex; flex-direction:column; gap:6px; }
-    .eod-field.full { grid-column:1/-1; }
-    .eod-label { font-size:.68rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--text2); }
-    .eod-input { background:rgba(255,255,255,0.06); border:1px solid var(--border); border-radius:8px; padding:10px 13px; font-size:.85rem; color:#fff; font-family:inherit; outline:none; transition:border-color .15s; }
-    .eod-input:focus { border-color:rgba(255,255,255,0.3); }
-    .eod-submit { margin-top:20px; background:#fff; color:#000; border:none; border-radius:10px; padding:12px 28px; font-size:.82rem; font-weight:800; cursor:pointer; font-family:inherit; transition:opacity .15s; }
-    .eod-submit:hover { opacity:.85; }
-    .eod-submit:disabled { opacity:.4; cursor:default; }
-    .eod-table-card { background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
-    .eod-table-head { padding:18px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
-    .eod-table-title { font-size:.88rem; font-weight:800; color:#fff; }
-    .eod-filter-bar { display:flex; gap:6px; }
-    .eod-filter-btn { background:none; border:1px solid var(--border); color:var(--text2); border-radius:6px; padding:5px 12px; font-size:.72rem; font-weight:700; cursor:pointer; font-family:inherit; transition:all .15s; }
-    .eod-filter-btn.active, .eod-filter-btn:hover { background:#fff; color:#000; border-color:#fff; }
-    .eod-tbl { width:100%; border-collapse:collapse; font-size:.8rem; }
-    .eod-tbl th { text-align:left; font-size:.65rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text2); padding:10px 16px; border-bottom:1px solid var(--border); }
-    .eod-tbl td { padding:12px 16px; border-bottom:1px solid rgba(255,255,255,0.04); color:var(--text1); font-variant-numeric:tabular-nums; }
-    .eod-tbl tr:last-child td { border-bottom:none; }
-    .eod-tbl tr:hover td { background:rgba(255,255,255,0.03); }
-    .eod-rate { font-size:.72rem; color:var(--text2); margin-left:4px; }
-    .eod-empty { padding:40px 24px; text-align:center; color:var(--text2); font-size:.82rem; }
 
     /* ── Financial Model ─────────────────────────────────────────────────── */
     .fm-wrap { padding:28px; }
@@ -314,8 +287,7 @@
   <button class="tab-btn active" id="tab-funnel" onclick="switchTab('funnel')">Funnel Dashboard</button>
   <button class="tab-btn" id="tab-ads" onclick="switchTab('ads')">Ads Analysis</button>
   <button class="tab-btn" id="tab-model" onclick="switchTab('model')">Financial Model</button>
-  <button class="tab-btn" id="tab-eod" onclick="switchTab('eod')">EOD Reports</button>
-  <button class="tab-btn" id="tab-activity" onclick="switchTab('activity')">Sales Activity</button>
+<button class="tab-btn" id="tab-activity" onclick="switchTab('activity')">Sales Activity</button>
 </div>
 
 <div id="view-funnel" class="active">
@@ -427,39 +399,6 @@
   </div>
 </div>
 
-<!-- ── EOD Reports ──────────────────────────────────────────────────────── -->
-<div id="view-eod">
-  <div class="eod-wrap">
-
-    <div class="eod-table-card">
-      <div class="eod-table-head">
-        <div class="eod-table-title">Submissions</div>
-        <div class="eod-filter-bar">
-          <button class="eod-filter-btn active" id="eod-f-today"   onclick="setEODFilter('today')">Today</button>
-          <button class="eod-filter-btn"         id="eod-f-week"   onclick="setEODFilter('week')">This Week</button>
-          <button class="eod-filter-btn"         id="eod-f-all"    onclick="setEODFilter('all')">All Time</button>
-        </div>
-      </div>
-      <div style="overflow-x:auto;">
-        <table class="eod-tbl">
-          <thead>
-            <tr>
-              <th>Rep</th>
-              <th>Date</th>
-              <th>Dials</th>
-              <th>Pickups</th>
-              <th>Pitched</th>
-              <th>Closed</th>
-              <th>Close %</th>
-            </tr>
-          </thead>
-          <tbody id="eod-tbody"><tr><td colspan="7" class="eod-empty">Loading...</td></tr></tbody>
-        </table>
-      </div>
-    </div>
-
-  </div>
-</div>
 
 <!-- ── Sales Activity ────────────────────────────────────────────────────── -->
 <div id="view-activity">
@@ -1187,59 +1126,13 @@
 
   // ── Tab switching ────────────────────────────────────────────────────────────
   function switchTab(tab) {
-    ['funnel','ads','model','eod','activity'].forEach(t => {
+    ['funnel','ads','model','activity'].forEach(t => {
       document.getElementById('view-' + t).classList.toggle('active', tab === t);
       document.getElementById('tab-'  + t).classList.toggle('active', tab === t);
     });
     if (tab === 'model')    fmPopulateCurrentStats();
-    if (tab === 'eod')      loadEOD();
     if (tab === 'activity') loadActivity();
   }
-
-  // ── EOD ──────────────────────────────────────────────────────────────────
-  let eodFilter = 'today';
-
-  function setEODFilter(f) {
-    eodFilter = f;
-    ['today','week','all'].forEach(k => {
-      document.getElementById('eod-f-' + k).classList.toggle('active', k === f);
-    });
-    loadEOD();
-  }
-
-  async function loadEOD() {
-    const tbody = document.getElementById('eod-tbody');
-    tbody.innerHTML = '<tr><td colspan="7" class="eod-empty">Loading...</td></tr>';
-    try {
-      const r = await fetch('/api/eod-fetch?filter=' + eodFilter);
-      const rows = await r.json();
-      if (!rows.length) {
-        tbody.innerHTML = '<tr><td colspan="7" class="eod-empty">No submissions yet.</td></tr>';
-        return;
-      }
-      tbody.innerHTML = rows.map(row => {
-        const f = row.fields || {};
-        const dials   = f['Outbound Dials']   || 0;
-        const pickups = f['Pick ups']           || 0;
-        const pitched = f['Software Pitched']  || 0;
-        const closed  = f['Software Closed']   || 0;
-        const closeRate = pitched > 0 ? ((closed / pitched) * 100).toFixed(0) + '%' : '—';
-        const pickupRate = dials > 0 ? ((pickups / dials) * 100).toFixed(0) + '%' : '—';
-        return `<tr>
-          <td>${f['Your name'] || '—'}</td>
-          <td>${f['Date'] || '—'}</td>
-          <td>${dials}</td>
-          <td>${pickups} <span class="eod-rate">${pickupRate}</span></td>
-          <td>${pitched}</td>
-          <td>${closed}</td>
-          <td>${closeRate}</td>
-        </tr>`;
-      }).join('');
-    } catch(e) {
-      tbody.innerHTML = '<tr><td colspan="7" class="eod-empty">Error loading data.</td></tr>';
-    }
-  }
-
 
   // ── Sales Activity ────────────────────────────────────────────────────────
   let stlPeriod = 'today';
@@ -1314,7 +1207,7 @@
         stlTbody.innerHTML = '<tr><td colspan="6" class="act-empty">No leads for this period.</td></tr>';
       } else {
         const fmt = s => s ? new Date(s).toLocaleTimeString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' }) : '—';
-        const pillClass = s => s === 'Under 5 min' ? 'stl-pill-green' : s === 'Over 5 min' || s === 'Over 1 Hour' ? 'stl-pill-red' : s === 'Pending' ? 'stl-pill-gray' : 'stl-pill-green';
+        const pillClass = s => s === 'Pending' || !s ? 'stl-pill-red' : s === 'Over 1 Hour' ? 'stl-pill-yellow' : 'stl-pill-blue';
         stlTbody.innerHTML = records.map(rec => `<tr>
           <td>${rec.name}</td>
           <td>${rec.phone}</td>
