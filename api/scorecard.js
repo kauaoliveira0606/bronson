@@ -175,7 +175,7 @@ module.exports = async function handler(req, res) {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const cut7  = new Date(today); cut7.setDate(today.getDate() - 6);
+    const cut7  = new Date(today); cut7.setDate(today.getDate() - 7);
     const cut30 = new Date(today); cut30.setDate(today.getDate() - 29);
 
     // week=0 → current, week=1 → last week, week=2 → 2 weeks ago, etc.
@@ -259,7 +259,7 @@ module.exports = async function handler(req, res) {
 
       // ── LAST7: daily columns filtered by date ──
       const l7Cols = Object.entries(dateMap)
-        .filter(([, d]) => d >= cut7 && d <= today)
+        .filter(([, d]) => d >= cut7 && d < today)
         .map(([c]) => +c);
 
       if (l7Cols.length > 0) {
@@ -310,7 +310,7 @@ module.exports = async function handler(req, res) {
 
       // L7: daily columns from this week that have already passed
       const l7Cols = Object.entries(dateMap)
-        .filter(([, d]) => d >= cut7 && d <= today)
+        .filter(([, d]) => d >= cut7 && d < today)
         .map(([c]) => +c);
 
       if (l7Cols.length > 0) {
@@ -404,7 +404,7 @@ module.exports = async function handler(req, res) {
         saturday: fmt(t.saturday),
         completed: t.saturday < today,
         l7Cols: Object.entries(t.dateMap)
-          .filter(([, d]) => d >= cut7 && d <= today)
+          .filter(([, d]) => d >= cut7 && d < today)
           .map(([c, d]) => `col${c}=${fmt(d)}`)
       }));
       return res.status(200).json({

@@ -2682,6 +2682,59 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   function saveProg(p) { localStorage.setItem(storageKey('cp_prog'), JSON.stringify(p)); }
   let prog = loadProg();
 
+  async function pushProgressToServer() {
+    const email = getStoredEmail();
+    if (!email) return;
+    try {
+      await sbUpdate('profiles', `email=eq.${encodeURIComponent(email)}`, {
+        prog: prog,
+        activity: getActivity()
+      });
+    } catch {}
+  }
+
+  async function syncProgressFromServer() {
+    const email = getStoredEmail();
+    if (!email) return;
+    try {
+      const rows = await sbSelect('profiles', `email=eq.${encodeURIComponent(email)}`);
+      const profile = Array.isArray(rows) ? rows[0] : null;
+      if (!profile) return;
+
+      // Merge prog: any lesson marked done on either device stays done
+      const serverProg = profile.prog || {};
+      const localProg = loadProg();
+      const mergedProg = Object.assign({}, localProg);
+      for (const [k, v] of Object.entries(serverProg)) {
+        if (v) mergedProg[k] = 1;
+      }
+
+      // Merge activity: take max count per day between local and server
+      const serverAct = profile.activity || {};
+      const localAct = getActivity();
+      const mergedAct = Object.assign({}, localAct);
+      for (const [k, v] of Object.entries(serverAct)) {
+        mergedAct[k] = Math.max(mergedAct[k] || 0, v);
+      }
+
+      // Persist merged state locally
+      localStorage.setItem(storageKey('cp_prog'), JSON.stringify(mergedProg));
+      localStorage.setItem(storageKey('cp_activity'), JSON.stringify(mergedAct));
+      prog = mergedProg;
+
+      // Push merged state back so server is authoritative
+      await sbUpdate('profiles', `email=eq.${encodeURIComponent(email)}`, {
+        prog: mergedProg,
+        activity: mergedAct
+      });
+
+      // Re-render UI with synced data
+      renderPhasesGrid();
+      updateStats();
+      buildHeatmap();
+    } catch {}
+  }
+
   function isLessonDone(phaseIdx, lessonIdx) { return !!(prog[`${phaseIdx}_${lessonIdx}`]); }
   function isLessonUnlocked(phaseIdx, lessonIdx) {
     if (phaseIdx === 0 && lessonIdx === 0) return true;
@@ -2738,6 +2791,9 @@ After implementing, add clear comments in the code showing where the Pixel ID is
 
     // Handle deep link from email
     setTimeout(handleDeepLink, 100);
+
+    // Background sync: merge server progress with local, re-render when done
+    syncProgressFromServer();
   }
 
   // Logout
@@ -3027,6 +3083,7 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     const act = getActivity();
     act[todayKey] = (act[todayKey] || 0) + 1;
     localStorage.setItem(storageKey('cp_activity'), JSON.stringify(act));
+    pushProgressToServer();
     rwAddDaily();
     renderLessonView();
     renderPhasesGrid();
