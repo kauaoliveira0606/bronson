@@ -331,7 +331,31 @@ module.exports = async function handler(req, res) {
         if (wb9 > 0 && !isNaN(ws9)) { L7.sw.num += ws9 * wb9; L7.sw.den += wb9; }
       }
 
-      // L30 / ALL: use col9 running weekly summaries from the current tab
+      // L30: daily columns from current week that have already passed (same logic as L7)
+      const l30Cols = Object.entries(dateMap)
+        .filter(([, d]) => d >= cut30 && d < today)
+        .map(([c]) => +c);
+
+      if (l30Cols.length > 0) {
+        for (const [name, row] of Object.entries(metrics)) {
+          if (SKIP.has(name.toLowerCase())) continue;
+          for (const c of l30Cols) {
+            addToAccum(L30, name, parseVal(row[c]));
+          }
+        }
+        const bookedRow = metrics['Booked calls (high ticket)'] || [];
+        const salesRow  = metrics['Sales - High Ticket']        || [];
+        let curL30BookedHT = 0, curL30SalesHT = 0;
+        for (const c of l30Cols) {
+          const b = parseVal(bookedRow[c]); if (!isNaN(b)) curL30BookedHT += b;
+          const s = parseVal(salesRow[c]);  if (!isNaN(s)) curL30SalesHT  += s;
+        }
+        const wb9 = parseVal((metrics['Booked calls (high ticket)'] || [])[9]) || 0;
+        const ws9 = parseVal((metrics['Show rate- High ticket']      || [])[9]) || 0;
+        if (wb9 > 0 && !isNaN(ws9)) { L30.sw.num += ws9 * wb9; L30.sw.den += wb9; }
+      }
+
+      // ALL: use col9 running weekly summary
       const col9cur = name => parseVal((metrics[name] || [])[9]);
       const addCurCol9 = (accum) => {
         for (const [name] of Object.entries(metrics)) {
