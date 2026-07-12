@@ -176,7 +176,7 @@ module.exports = async function handler(req, res) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const cut7  = new Date(today); cut7.setDate(today.getDate() - 7);
-    const cut30 = new Date(today); cut30.setDate(today.getDate() - 29);
+    const cut30 = new Date(today); cut30.setDate(today.getDate() - 30);
 
     // week=0 → current, week=1 → last week, week=2 → 2 weeks ago, etc.
     const weekOffset = Math.max(0, parseInt(req.query?.week || '0', 10) || 0);
@@ -346,7 +346,6 @@ module.exports = async function handler(req, res) {
           if (!isNaN(wc9)) { accum.cw.num += wc9 * wb9; accum.cw.den += wb9; }
         }
       };
-      if (currentTab.sunday >= cut30) addCurCol9(L30);
       addCurCol9(ALL);
     }
 
