@@ -3230,7 +3230,15 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     document.getElementById('lv-bar').style.width          = pct + '%';
     document.getElementById('lv-pct').textContent          = pct + '%';
     document.getElementById('lv-lesson-title').textContent = l.title;
-    document.getElementById('lv-lesson-desc').innerHTML  = l.desc || '';
+    const descEl = document.getElementById('lv-lesson-desc');
+    descEl.innerHTML = l.desc || '';
+    descEl.querySelectorAll('script').forEach(old => {
+      const s = document.createElement('script');
+      if (old.src) { s.src = old.src; s.async = true; }
+      else { s.textContent = old.textContent; }
+      document.head.appendChild(s);
+      old.remove();
+    });
     const sopRow = document.getElementById('lv-sop-row');
     const sopLink = document.getElementById('lv-sop-link');
     if (l.sopUrl) { sopRow.style.display = ''; sopLink.href = l.sopUrl; sopLink.textContent = l.sopUrl; }
