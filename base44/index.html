@@ -439,6 +439,52 @@
   #view-rewards .page-title, #view-rewards .page-sub { color:#111; }
   #view-rewards .page-sub { color:#6b7280; }
 
+  /* ── Rewards sub-tabs ── */
+  .rw-subtabs { display:flex; gap:8px; margin-bottom:22px; }
+  .rw-subtab-btn { flex:1; padding:10px 0; border:1px solid rgba(0,0,0,.12); border-radius:10px; background:#fff; color:#6b7280; font-size:.82rem; font-weight:700; cursor:pointer; font-family:inherit; transition:all .15s; }
+  .rw-subtab-btn.active { background:#111; color:#fff; border-color:#111; }
+
+  /* ── Referral Rewards ── */
+  .ref-link-box { background:#fff; border:1px solid rgba(0,0,0,.09); border-radius:14px; padding:20px 22px; margin-bottom:16px; color:#111; }
+  .ref-link-label { font-size:.7rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#6b7280; margin-bottom:8px; }
+  .ref-link-row { display:flex; gap:10px; align-items:center; }
+  .ref-link-url { flex:1; background:#f5f0e8; border:1px solid rgba(0,0,0,.09); border-radius:8px; padding:10px 14px; font-size:.78rem; color:#111; font-family:inherit; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ref-copy-btn { background:#111; color:#fff; border:none; border-radius:8px; padding:10px 16px; font-size:.78rem; font-weight:700; cursor:pointer; white-space:nowrap; font-family:inherit; }
+
+  .ref-tier-card { background:#fff; border:1px solid rgba(0,0,0,.09); border-radius:14px; padding:20px 22px; margin-bottom:16px; color:#111; }
+  .ref-tier-title { font-size:.82rem; font-weight:800; color:#111; margin-bottom:14px; }
+  .ref-tier-row { display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid rgba(0,0,0,.06); }
+  .ref-tier-row:last-child { border-bottom:none; padding-bottom:0; }
+  .ref-tier-badge { width:36px; height:36px; border-radius:50%; background:#f5f0e8; display:flex; align-items:center; justify-content:center; font-size:.8rem; font-weight:800; color:#b45309; flex-shrink:0; }
+  .ref-tier-badge.active { background:#111; color:#fff; }
+  .ref-tier-info { flex:1; }
+  .ref-tier-name { font-size:.88rem; font-weight:700; color:#111; }
+  .ref-tier-desc { font-size:.75rem; color:#6b7280; margin-top:2px; }
+  .ref-tier-check { font-size:1rem; color:#22c55e; font-weight:800; }
+
+  .ref-status-card { background:#fff8ed; border:1.5px solid rgba(180,83,9,.25); border-radius:14px; padding:18px 22px; margin-bottom:16px; color:#111; }
+  .ref-status-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .ref-status-label { font-size:.7rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#b45309; }
+  .ref-count-big { font-size:2.2rem; font-weight:900; color:#111; line-height:1; }
+  .ref-count-sub { font-size:.72rem; color:#6b7280; margin-top:2px; }
+  .ref-current-tier { font-size:.82rem; font-weight:700; color:#b45309; margin-top:8px; }
+
+  .ref-how-card { background:#fff; border:1px solid rgba(0,0,0,.09); border-radius:14px; padding:20px 22px; margin-bottom:16px; color:#111; }
+  .ref-how-title { font-size:.82rem; font-weight:800; color:#111; margin-bottom:14px; }
+  .ref-step { display:flex; gap:12px; margin-bottom:12px; align-items:flex-start; }
+  .ref-step:last-child { margin-bottom:0; }
+  .ref-step-num { width:24px; height:24px; border-radius:50%; background:#111; color:#fff; font-size:.72rem; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .ref-step-text { font-size:.83rem; color:#374151; line-height:1.55; }
+  .ref-step-text strong { color:#111; }
+
+  .ref-warning { background:#fff8ed; border:1.5px solid rgba(180,83,9,.3); border-radius:10px; padding:12px 16px; font-size:.78rem; color:#b45309; line-height:1.55; margin-bottom:16px; }
+
+  .ref-upload-card { background:#fff; border:1px solid rgba(0,0,0,.09); border-radius:14px; padding:20px 22px; margin-bottom:16px; color:#111; }
+  .ref-upload-title { font-size:.88rem; font-weight:800; color:#111; margin-bottom:6px; }
+  .ref-upload-desc { font-size:.78rem; color:#6b7280; line-height:1.55; margin-bottom:14px; }
+  .ref-upload-btn { width:100%; padding:13px; background:#111; color:#fff; border:none; border-radius:10px; font-size:.88rem; font-weight:700; cursor:pointer; font-family:inherit; }
+  .ref-upload-btn:disabled { opacity:.5; cursor:default; }
+
   .rw-winners-card { background:#fff; border:1px solid rgba(0,0,0,.09); border-radius:16px; padding:20px 22px; margin-bottom:18px; color:#111; }
   .rw-winners-header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
   .rw-winners-icon { font-size:1.4rem; }
@@ -1264,8 +1310,17 @@
 
   <!-- ── Rewards ── -->
   <div class="view padded" id="view-rewards">
-    <h1 class="page-title" style="margin-bottom:5px;">🏆 Win a MacBook!</h1>
-    <p class="page-sub" style="margin-bottom:22px;">Complete actions below to earn entries. More entries = better chance to win!</p>
+    <h1 class="page-title" style="margin-bottom:5px;">🏆 Rewards</h1>
+    <p class="page-sub" style="margin-bottom:18px;">Win prizes and unlock more coaching with referrals.</p>
+
+    <!-- Sub-tabs -->
+    <div class="rw-subtabs">
+      <button class="rw-subtab-btn active" id="rw-subtab-entries" onclick="switchRwTab('entries')">🎟️ Prize Entries</button>
+      <button class="rw-subtab-btn" id="rw-subtab-referral" onclick="switchRwTab('referral')">🔗 Referral Rewards</button>
+    </div>
+
+    <!-- Prize Entries panel -->
+    <div id="rw-panel-entries">
 
     <!-- Last Cycle Winners -->
     <div class="rw-winners-card">
@@ -1408,6 +1463,96 @@
       </div>
       <div class="rw-keep-note">💡 Keep your Wix active to stay qualified — MacBook or $2,000 cash this cycle!</div></div>
     </div>
+
+    </div><!-- end rw-panel-entries -->
+
+    <!-- Referral Rewards panel -->
+    <div id="rw-panel-referral" style="display:none;">
+
+      <!-- Status card -->
+      <div class="ref-status-card">
+        <div class="ref-status-top">
+          <div class="ref-status-label">Your Referrals</div>
+        </div>
+        <div class="ref-count-big" id="ref-count">0</div>
+        <div class="ref-count-sub">approved referrals</div>
+        <div class="ref-current-tier" id="ref-tier-label">Complete 1 referral to unlock your first coaching call.</div>
+      </div>
+
+      <!-- Reward tiers -->
+      <div class="ref-tier-card">
+        <div class="ref-tier-title">Referral Reward Tiers</div>
+        <div class="ref-tier-row">
+          <div class="ref-tier-badge" id="ref-badge-1">1</div>
+          <div class="ref-tier-info">
+            <div class="ref-tier-name">1 Referral</div>
+            <div class="ref-tier-desc">1 coaching call per week</div>
+          </div>
+          <div class="ref-tier-check" id="ref-check-1" style="display:none;">✓</div>
+        </div>
+        <div class="ref-tier-row">
+          <div class="ref-tier-badge" id="ref-badge-3">3</div>
+          <div class="ref-tier-info">
+            <div class="ref-tier-name">3 Referrals</div>
+            <div class="ref-tier-desc">2 coaching calls per week</div>
+          </div>
+          <div class="ref-tier-check" id="ref-check-3" style="display:none;">✓</div>
+        </div>
+        <div class="ref-tier-row">
+          <div class="ref-tier-badge" id="ref-badge-5">5</div>
+          <div class="ref-tier-info">
+            <div class="ref-tier-name">5 Referrals</div>
+            <div class="ref-tier-desc">4 coaching calls per week + extra modules unlocked</div>
+          </div>
+          <div class="ref-tier-check" id="ref-check-5" style="display:none;">✓</div>
+        </div>
+      </div>
+
+      <!-- Share link -->
+      <div class="ref-link-box">
+        <div class="ref-link-label">Your Referral Link</div>
+        <div class="ref-link-row">
+          <div class="ref-link-url">https://re.aistorebuilder.com/base44-pricing?subid=ad-ventur</div>
+          <button class="ref-copy-btn" onclick="refCopyLink()">Copy</button>
+        </div>
+      </div>
+
+      <!-- Warning -->
+      <div class="ref-warning">
+        ⚠️ Referrals must sign up through the link above. We cannot track referrals made through any other link. Make sure your friend uses this exact link when signing up.
+      </div>
+
+      <!-- How it works -->
+      <div class="ref-how-card">
+        <div class="ref-how-title">How It Works</div>
+        <div class="ref-step">
+          <div class="ref-step-num">1</div>
+          <div class="ref-step-text"><strong>Share your link</strong> with a friend who wants to start an AI dropshipping store.</div>
+        </div>
+        <div class="ref-step">
+          <div class="ref-step-num">2</div>
+          <div class="ref-step-text"><strong>Your friend signs up</strong> through the link above and gets their free store and course.</div>
+        </div>
+        <div class="ref-step">
+          <div class="ref-step-num">3</div>
+          <div class="ref-step-text"><strong>Submit proof below.</strong> Upload a screenshot showing you referred them, plus their purchase or sign-up confirmation (email receipt or billing history screenshot).</div>
+        </div>
+        <div class="ref-step">
+          <div class="ref-step-num">4</div>
+          <div class="ref-step-text"><strong>We review and approve</strong> your referral within 48 hours. Once approved, your reward tier updates automatically.</div>
+        </div>
+      </div>
+
+      <!-- Upload proof -->
+      <input type="file" id="ref-file-input" accept="image/*" style="display:none" onchange="refOnFileSelected(this)">
+      <div class="ref-upload-card">
+        <div class="ref-upload-title">Submit Referral Proof</div>
+        <div class="ref-upload-desc">Upload one screenshot per referral showing both: (1) proof you sent them the link, and (2) their sign-up or purchase confirmation. Submit one at a time for each friend you refer.</div>
+        <button class="ref-upload-btn" id="ref-upload-btn" onclick="document.getElementById('ref-file-input').click()">📷 Upload Proof</button>
+      </div>
+
+    </div><!-- end rw-panel-referral -->
+
   </div>
 
   <!-- ── Leaderboard ── -->
@@ -3272,6 +3417,73 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     if (!t) return;
     t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // ── Referral Rewards ──
+  function switchRwTab(tab) {
+    document.getElementById('rw-panel-entries').style.display  = tab === 'entries'  ? '' : 'none';
+    document.getElementById('rw-panel-referral').style.display = tab === 'referral' ? '' : 'none';
+    document.getElementById('rw-subtab-entries').classList.toggle('active',  tab === 'entries');
+    document.getElementById('rw-subtab-referral').classList.toggle('active', tab === 'referral');
+    if (tab === 'referral') loadReferralStatus();
+  }
+
+  function refCopyLink() {
+    navigator.clipboard.writeText('https://re.aistorebuilder.com/base44-pricing?subid=ad-ventur').then(() => {
+      rwShowToast('Link copied!');
+    });
+  }
+
+  async function loadReferralStatus() {
+    const email = getStoredEmail();
+    if (!email) return;
+    try {
+      const rows = await sbSelect('proof_submissions', `email=eq.${encodeURIComponent(email)}&tab=eq.Referral&status=eq.approved`);
+      const count = Array.isArray(rows) ? rows.length : 0;
+      const el = (id) => document.getElementById(id);
+
+      if (el('ref-count')) el('ref-count').textContent = count;
+
+      const tiers = [
+        { threshold: 5, badge: 'ref-badge-5', check: 'ref-check-5' },
+        { threshold: 3, badge: 'ref-badge-3', check: 'ref-check-3' },
+        { threshold: 1, badge: 'ref-badge-1', check: 'ref-check-1' },
+      ];
+      tiers.forEach(t => {
+        const reached = count >= t.threshold;
+        const badge = el(t.badge);
+        const check = el(t.check);
+        if (badge) badge.classList.toggle('active', reached);
+        if (check) check.style.display = reached ? '' : 'none';
+      });
+
+      let label = 'Complete 1 referral to unlock your first coaching call.';
+      if (count >= 5) label = 'Tier 3 active: 4 coaching calls per week + extra modules unlocked.';
+      else if (count >= 3) label = 'Tier 2 active: 2 coaching calls per week. ' + (5 - count) + ' more referral' + (5 - count === 1 ? '' : 's') + ' to reach Tier 3.';
+      else if (count >= 1) label = 'Tier 1 active: 1 coaching call per week. ' + (3 - count) + ' more referral' + (3 - count === 1 ? '' : 's') + ' to reach Tier 2.';
+      if (el('ref-tier-label')) el('ref-tier-label').textContent = label;
+    } catch(e) {}
+  }
+
+  async function refOnFileSelected(input) {
+    if (!input.files || !input.files.length) return;
+    const file = input.files[0];
+    input.value = '';
+    const btn = document.getElementById('ref-upload-btn');
+    if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
+    try {
+      const base64 = await fileToBase64(file);
+      await fetch('/api/discord-proof', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: getStoredEmail(), tab: 'Referral', action: 'referral', fileName: file.name, fileType: file.type, fileBase64: base64 }),
+      });
+      await sbInsert('proof_submissions', { email: getStoredEmail(), tab: 'Referral', action_key: 'referral', status: 'pending' });
+      rwShowToast('📸 Proof submitted! We will review within 48 hours.');
+    } catch(e) {
+      rwShowToast('📸 Proof submitted! Awaiting review.');
+    }
+    if (btn) { btn.disabled = false; btn.textContent = '📷 Upload Proof'; }
   }
 
   // ── Tools ─────────────────────────────────────────────
