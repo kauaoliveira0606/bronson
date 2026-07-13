@@ -1497,6 +1497,44 @@
       </div>
       <div class="rw-keep-note">💡 Keep your Wix active to stay qualified — MacBook or $2,000 cash this cycle!</div></div>
     </div>
+
+    <!-- Subscription Bonuses -->
+    <div style="background:linear-gradient(135deg,rgba(34,197,94,0.07),rgba(21,128,61,0.04));border:1.5px solid rgba(34,197,94,0.28);border-radius:16px;padding:18px 18px 14px;margin-top:16px;">
+      <div style="font-size:.88rem;font-weight:800;color:#15803d;margin-bottom:4px;">💳 Subscription Bonuses</div>
+      <div style="font-size:.73rem;color:#6b7280;margin-bottom:14px;">Sign up through these links to earn entries</div>
+
+      <div class="rw-earn-item" style="background:#fff;">
+        <div class="rw-earn-icon">🎁</div>
+        <div class="rw-earn-info">
+          <div class="rw-earn-name">Sign Up for Wix Business Yearly</div>
+          <div class="rw-earn-pts">+75 entries</div>
+        </div>
+        <a href="https://re.aistorebuilder.com/direct-checkout?subid=ad-ventur" target="_blank" style="font-size:.72rem;font-weight:700;color:#15803d;text-decoration:none;white-space:nowrap;margin-right:8px;">Sign Up →</a>
+        <button class="rw-verify-btn" id="rwv-sub-wix-yearly" onclick="rwUpload('sub-wix-yearly')">📷 Verify</button>
+      </div>
+
+      <div class="rw-earn-item" style="background:#fff;">
+        <div class="rw-earn-icon">🎁</div>
+        <div class="rw-earn-info">
+          <div class="rw-earn-name">Sign Up for Wix Business Monthly</div>
+          <div class="rw-earn-pts">+25 entries</div>
+        </div>
+        <a href="https://re.aistorebuilder.com/base44-pricing?subid=ad-ventur" target="_blank" style="font-size:.72rem;font-weight:700;color:#15803d;text-decoration:none;white-space:nowrap;margin-right:8px;">Sign Up →</a>
+        <button class="rw-verify-btn" id="rwv-sub-wix-monthly" onclick="rwUpload('sub-wix-monthly')">📷 Verify</button>
+      </div>
+
+      <div class="rw-earn-item" style="background:#fff;">
+        <div class="rw-earn-icon">🎁</div>
+        <div class="rw-earn-info">
+          <div class="rw-earn-name">Sign Up for Constant Contact</div>
+          <div class="rw-earn-pts">+75 entries</div>
+        </div>
+        <a href="https://join.constantcontact.com/aidropshipping" target="_blank" style="font-size:.72rem;font-weight:700;color:#15803d;text-decoration:none;white-space:nowrap;margin-right:8px;">Sign Up →</a>
+        <button class="rw-verify-btn" id="rwv-sub-constant-contact" onclick="rwUpload('sub-constant-contact')">📷 Verify</button>
+      </div>
+
+      <div class="rw-proof-note" style="margin-top:8px;color:#15803d;background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.2);">📸 Upload a screenshot of your active paid subscription dashboard — free trials won't be approved</div>
+    </div>
   </div>
 
   <!-- ── Referral Rewards ── -->
@@ -3455,6 +3493,7 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     'wix-30-days': 50, 'first-sale': 50,
     'wix-domain': 10, 'wix-email': 10, 'payments': 10, 'fb-ads': 10,
     'spend-100': 10, 'spend-500': 20, 'spend-1000': 30, 'wix-sub': 20,
+    'sub-wix-yearly': 75, 'sub-wix-monthly': 25, 'sub-constant-contact': 75,
   };
 
   function rwGetEntries() { return parseInt(localStorage.getItem(RW_ENTRIES_KEY) || '0'); }
