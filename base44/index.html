@@ -1336,7 +1336,25 @@
   <!-- ── Rewards ── -->
   <div class="view padded" id="view-rewards">
     <h1 class="page-title" style="margin-bottom:5px;">🏆 Win a MacBook!</h1>
-    <p class="page-sub" style="margin-bottom:22px;">Complete actions below to earn entries. More entries = better chance to win!</p>
+    <p class="page-sub" style="margin-bottom:16px;">Complete actions below to earn entries. More entries = better chance to win!</p>
+
+    <!-- Onboarding CTA — pinned first -->
+    <div style="position:relative;background:linear-gradient(135deg,rgba(234,179,8,0.08),rgba(234,88,12,0.06));border:1.5px solid rgba(234,179,8,0.45);border-radius:14px;padding:20px 20px 16px;margin-bottom:18px;overflow:hidden;">
+      <div style="position:absolute;top:0;right:0;background:#b45309;color:#fff;font-size:.6rem;font-weight:800;letter-spacing:.08em;padding:4px 12px;border-bottom-left-radius:10px;">DO THIS FIRST</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <span style="font-size:1.3rem;">📋</span>
+        <div>
+          <div style="font-size:.88rem;font-weight:800;color:#111;">Complete Your Onboarding Form <span style="color:#b45309;font-weight:700;">= 100 Entries</span></div>
+          <div style="font-size:.68rem;font-weight:700;color:#b45309;margin-top:1px;">FOUNDING ENTRIES — Biggest single boost on the portal</div>
+        </div>
+      </div>
+      <div style="font-size:.78rem;color:#4b5563;line-height:1.6;margin-bottom:14px;">Takes 2–3 minutes. Early completers lock in as <strong>Founding Members</strong> for this season — your 100 entries are reserved the moment we approve your proof. No other action gets you this many entries at once.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <a href="https://bronny.typeform.com/to/KOLZTNMu" target="_blank" style="display:inline-block;background:#b45309;color:#fff;font-size:.8rem;font-weight:700;padding:10px 20px;border-radius:9px;text-decoration:none;">Fill Out the Form →</a>
+        <button class="rw-verify-btn" id="rwv-onboarding" onclick="rwUpload('onboarding')">📷 Upload Proof</button>
+      </div>
+      <div class="rw-proof-note" style="margin-top:10px;">📸 Screenshot the form's confirmation/thank-you page as proof</div>
+    </div>
 
     <!-- Last Cycle Winners -->
     <div class="rw-winners-card">
@@ -1401,24 +1419,6 @@
       <div class="rw-proof-note">📸 Screenshot your Wix dashboard showing your active subscription with 30+ days</div>
     </div>
 
-
-    <!-- Onboarding Form — pinned above all earn actions -->
-    <div style="position:relative;background:linear-gradient(135deg,rgba(234,179,8,0.08),rgba(234,88,12,0.06));border:1.5px solid rgba(234,179,8,0.45);border-radius:14px;padding:20px 20px 16px;margin-bottom:18px;overflow:hidden;">
-      <div style="position:absolute;top:0;right:0;background:#b45309;color:#fff;font-size:.6rem;font-weight:800;letter-spacing:.08em;padding:4px 12px;border-bottom-left-radius:10px;">DO THIS FIRST</div>
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-        <span style="font-size:1.3rem;">📋</span>
-        <div>
-          <div style="font-size:.88rem;font-weight:800;color:#111;">Complete Your Onboarding Form <span style="color:#b45309;font-weight:700;">= 100 Entries</span></div>
-          <div style="font-size:.68rem;font-weight:700;color:#b45309;margin-top:1px;">FOUNDING ENTRIES — Biggest single boost on the portal</div>
-        </div>
-      </div>
-      <div style="font-size:.78rem;color:#4b5563;line-height:1.6;margin-bottom:14px;">Takes 2–3 minutes. Early completers lock in as <strong>Founding Members</strong> for this season — your 100 entries are reserved the moment we approve your proof. No other action gets you this many entries at once.</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-        <a href="https://bronny.typeform.com/to/KOLZTNMu" target="_blank" style="display:inline-block;background:#b45309;color:#fff;font-size:.8rem;font-weight:700;padding:10px 20px;border-radius:9px;text-decoration:none;">Fill Out the Form →</a>
-        <button class="rw-verify-btn" id="rwv-onboarding" onclick="rwUpload('onboarding')">📷 Upload Proof</button>
-      </div>
-      <div class="rw-proof-note" style="margin-top:10px;">📸 Screenshot the form's confirmation/thank-you page as proof</div>
-    </div>
 
     <!-- Earn Entries (one-time) -->
     <div class="rw-section-title">🎁 Earn Entries <span style="font-weight:400;color:var(--text3);font-size:.75rem;">· Complete these once</span></div>
