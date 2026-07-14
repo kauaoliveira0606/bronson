@@ -3554,12 +3554,13 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     updateRewardsUI();
     try {
       const base64 = await fileToBase64(file);
-      await fetch('/api/discord-proof', {
+      const dr = await fetch('/api/discord-proof', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: getStoredEmail(), tab: 'rewards', action: actionKey, fileName: file.name, fileType: file.type, fileBase64: base64 }),
       });
-      await sbInsert('proof_submissions', { email: getStoredEmail(), tab: 'rewards', action_key: actionKey, status: 'pending' });
+      const dj = dr.ok ? await dr.json() : {};
+      await sbInsert('proof_submissions', { email: getStoredEmail(), tab: 'rewards', action_key: actionKey, status: 'pending', proof_url: dj.proof_url || null });
       rwShowToast('📸 Proof submitted! You\'ll be notified when approved.');
     } catch(e) {
       rwShowToast('📸 Proof submitted! Entries will be added after review.');
@@ -3796,12 +3797,13 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     updateEliteUI();
     try {
       const base64 = await fileToBase64(file);
-      await fetch('/api/discord-proof', {
+      const dr = await fetch('/api/discord-proof', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: getStoredEmail(), tab: 'elite', action: 'elite-yearly', fileName: file.name, fileType: file.type, fileBase64: base64 }),
       });
-      await sbInsert('proof_submissions', { email: getStoredEmail(), tab: 'elite', action_key: 'elite-yearly', status: 'pending' });
+      const dj = dr.ok ? await dr.json() : {};
+      await sbInsert('proof_submissions', { email: getStoredEmail(), tab: 'elite', action_key: 'elite-yearly', status: 'pending', proof_url: dj.proof_url || null });
       rwShowToast('📸 Proof submitted! Elite Status pending admin review.');
     } catch(e) {
       rwShowToast('📸 Proof submitted! Elite Status will activate after review.');
@@ -3829,12 +3831,13 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
     try {
       const base64 = await fileToBase64(file);
-      await fetch('/api/discord-proof', {
+      const dr = await fetch('/api/discord-proof', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, tab: 'Coaching Call', action: slug, fileName: file.name, fileType: file.type, fileBase64: base64 }),
       });
-      await sbInsert('proof_submissions', { email, tab: 'Coaching Call', action_key: slug, status: 'pending' });
+      const dj = dr.ok ? await dr.json() : {};
+      await sbInsert('proof_submissions', { email, tab: 'Coaching Call', action_key: slug, status: 'pending', proof_url: dj.proof_url || null });
     } catch(e) { /* fail silently — toast still shows */ }
     input.value = '';
     rwShowToast('📸 Proof submitted! Awaiting review.');
@@ -4624,20 +4627,23 @@ After implementing, add clear comments in the code showing where the Pixel ID is
         proof.innerHTML = '<p style="color:#6b7280;font-size:.85rem;">No submissions yet.</p>';
       } else {
         proof.innerHTML = subs.map(s => `
-          <div style="display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border-radius:10px;padding:12px 14px;gap:10px;">
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:.85rem;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${s.email}</div>
-              <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">${s.tab} / ${s.action_key} &middot; ${new Date(s.created_at).toLocaleDateString()}</div>
+          <div style="background:#f8fafc;border:1px solid rgba(0,0,0,0.07);border-radius:12px;padding:14px;margin-bottom:8px;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:${s.proof_url ? '10px' : '0'};">
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:.85rem;font-weight:700;color:#111;word-break:break-all;">${s.email}</div>
+                <div style="font-size:.72rem;color:#6b7280;margin-top:2px;">${s.tab} / ${s.action_key} &middot; ${new Date(s.created_at).toLocaleDateString()}</div>
+              </div>
+              <div style="display:flex;gap:6px;flex-shrink:0;align-items:center;">
+                ${s.status === 'approved'
+                  ? `<span style="font-size:.72rem;color:#16a34a;font-weight:700;background:#dcfce7;border-radius:6px;padding:3px 8px;">Approved</span>`
+                  : s.status === 'rejected'
+                  ? `<span style="font-size:.72rem;color:#dc2626;font-weight:700;background:#fee2e2;border-radius:6px;padding:3px 8px;">Rejected</span>`
+                  : `<button onclick="adminReviewProof(${s.id},'approved',this)" style="font-size:.72rem;background:#dcfce7;color:#16a34a;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Approve</button>
+                     <button onclick="adminReviewProof(${s.id},'rejected',this)" style="font-size:.72rem;background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Reject</button>`
+                }
+              </div>
             </div>
-            <div style="display:flex;gap:6px;flex-shrink:0;align-items:center;">
-              ${s.status === 'approved'
-                ? `<span style="font-size:.72rem;color:#16a34a;font-weight:700;background:#dcfce7;border-radius:6px;padding:3px 8px;">Approved</span>`
-                : s.status === 'rejected'
-                ? `<span style="font-size:.72rem;color:#dc2626;font-weight:700;background:#fee2e2;border-radius:6px;padding:3px 8px;">Rejected</span>`
-                : `<button onclick="adminReviewProof(${s.id},'approved',this)" style="font-size:.72rem;background:#dcfce7;color:#16a34a;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Approve</button>
-                   <button onclick="adminReviewProof(${s.id},'rejected',this)" style="font-size:.72rem;background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-weight:700;">Reject</button>`
-              }
-            </div>
+            ${s.proof_url ? `<a href="${s.proof_url}" target="_blank" style="display:block;"><img src="${s.proof_url}" style="width:100%;max-height:260px;object-fit:contain;border-radius:8px;border:1px solid rgba(0,0,0,0.08);background:#fff;" /></a>` : `<div style="font-size:.72rem;color:#9ca3af;font-style:italic;">No image attached</div>`}
           </div>`).join('');
       }
     } catch(e) {

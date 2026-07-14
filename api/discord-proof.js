@@ -43,7 +43,7 @@ module.exports = async function handler(req, res) {
     const epilogue = Buffer.from(`\r\n--${boundary}--\r\n`, 'utf-8');
     const body = Buffer.concat([preamble, fileBuffer, epilogue]);
 
-    const response = await fetch(DISCORD_WEBHOOK, {
+    const response = await fetch(DISCORD_WEBHOOK + '?wait=true', {
       method: 'POST',
       headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}` },
       body,
@@ -55,7 +55,9 @@ module.exports = async function handler(req, res) {
       return res.status(502).json({ error: 'Discord delivery failed' });
     }
 
-    res.status(200).json({ ok: true });
+    const msg = await response.json();
+    const proofUrl = msg?.attachments?.[0]?.url || null;
+    res.status(200).json({ ok: true, proof_url: proofUrl });
   } catch (e) {
     console.error('discord-proof error:', e);
     res.status(500).json({ error: e.message });
