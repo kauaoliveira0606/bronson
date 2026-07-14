@@ -3534,6 +3534,25 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     });
   }
 
+  function compressImage(file, maxWidth = 1200, quality = 0.72) {
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+          const scale = Math.min(1, maxWidth / img.width);
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   function rwUpload(actionKey) {
     const input = document.getElementById('rw-file-input');
     input.dataset.action = actionKey;
@@ -3553,14 +3572,8 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     rwShowToast('📸 Uploading proof...');
     updateRewardsUI();
     try {
-      const base64 = await fileToBase64(file);
-      const dr = await fetch('/api/discord-proof', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: getStoredEmail(), tab: 'rewards', action: actionKey, fileName: file.name, fileType: file.type, fileBase64: base64 }),
-      });
-      const dj = dr.ok ? await dr.json() : {};
-      await sbInsert('proof_submissions', { email: getStoredEmail(), tab: 'rewards', action_key: actionKey, status: 'pending', proof_url: dj.proof_url || null });
+      const dataUrl = await compressImage(file);
+      await sbInsert('proof_submissions', { email: getStoredEmail(), tab: 'rewards', action_key: actionKey, status: 'pending', proof_url: dataUrl });
       rwShowToast('📸 Proof submitted! You\'ll be notified when approved.');
     } catch(e) {
       rwShowToast('📸 Proof submitted! Entries will be added after review.');
@@ -3796,14 +3809,8 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     localStorage.setItem(ES_PENDING_KEY, '1');
     updateEliteUI();
     try {
-      const base64 = await fileToBase64(file);
-      const dr = await fetch('/api/discord-proof', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: getStoredEmail(), tab: 'elite', action: 'elite-yearly', fileName: file.name, fileType: file.type, fileBase64: base64 }),
-      });
-      const dj = dr.ok ? await dr.json() : {};
-      await sbInsert('proof_submissions', { email: getStoredEmail(), tab: 'elite', action_key: 'elite-yearly', status: 'pending', proof_url: dj.proof_url || null });
+      const dataUrl = await compressImage(file);
+      await sbInsert('proof_submissions', { email: getStoredEmail(), tab: 'elite', action_key: 'elite-yearly', status: 'pending', proof_url: dataUrl });
       rwShowToast('📸 Proof submitted! Elite Status pending admin review.');
     } catch(e) {
       rwShowToast('📸 Proof submitted! Elite Status will activate after review.');
@@ -3830,14 +3837,8 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     const btn = document.getElementById('coach-btn-' + slug);
     if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
     try {
-      const base64 = await fileToBase64(file);
-      const dr = await fetch('/api/discord-proof', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, tab: 'Coaching Call', action: slug, fileName: file.name, fileType: file.type, fileBase64: base64 }),
-      });
-      const dj = dr.ok ? await dr.json() : {};
-      await sbInsert('proof_submissions', { email, tab: 'Coaching Call', action_key: slug, status: 'pending', proof_url: dj.proof_url || null });
+      const dataUrl = await compressImage(file);
+      await sbInsert('proof_submissions', { email, tab: 'Coaching Call', action_key: slug, status: 'pending', proof_url: dataUrl });
     } catch(e) { /* fail silently — toast still shows */ }
     input.value = '';
     rwShowToast('📸 Proof submitted! Awaiting review.');
