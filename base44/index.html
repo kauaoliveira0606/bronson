@@ -3006,12 +3006,17 @@ After implementing, add clear comments in the code showing where the Pixel ID is
   async function pushProgressToServer() {
     const email = getStoredEmail();
     if (!email) return;
+    const currentProg = loadProg();
     try {
-      await sbUpdate('profiles', `email=eq.${encodeURIComponent(email)}`, {
-        prog: prog,
-        activity: getActivity()
+      const res = await fetch('/api/save-progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, prog: currentProg, activity: getActivity() }),
       });
-    } catch {}
+      if (!res.ok) console.error('save-progress failed:', res.status, await res.text());
+    } catch (e) {
+      console.error('save-progress error:', e);
+    }
   }
 
   async function syncProgressFromServer() {
@@ -3044,10 +3049,11 @@ After implementing, add clear comments in the code showing where the Pixel ID is
       prog = mergedProg;
 
       // Push merged state back so server is authoritative
-      await sbUpdate('profiles', `email=eq.${encodeURIComponent(email)}`, {
-        prog: mergedProg,
-        activity: mergedAct
-      });
+      fetch('/api/save-progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, prog: mergedProg, activity: mergedAct }),
+      }).catch(() => {});
 
       // Re-render UI with synced data
       renderPhasesGrid();
