@@ -1596,7 +1596,6 @@
     decrementSlot();
     fetch('https://hooks.zapier.com/hooks/catch/22609617/432dfrr/', {
       method: 'POST',
-      mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, phone: country + phone })
     }).finally(() => {
