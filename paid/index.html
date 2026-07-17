@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '930673332466368');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=930673332466368&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+  <title>Free $3,000 Course</title>
+  <link rel="icon" type="image/png" href="/base44/img/aids.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f7f5;
+      --card: #ffffff;
+      --border: rgba(0,0,0,0.09);
+      --text: #111111;
+      --text2: #6b7280;
+      --green: #22c55e;
+      --gold: #f59e0b;
+      --blue: #3b82f6;
+      --accent: #22c55e;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    .nav-logo span { color: var(--green); }
+
+    .nav-cta {
+      background: var(--green);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 9px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      transition: opacity .15s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 12px 24px 16px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: var(--green);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 .highlight {
+      color: var(--green);
+      font-style: italic;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--text2);
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+
+    .trust-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .trust-avatars {
+      display: flex;
+    }
+
+    .trust-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      background: linear-gradient(135deg, #cbd5e1, #e2e8f0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #475569;
+      margin-left: -8px;
+    }
+    .trust-avatars .trust-avatar:first-child { margin-left: 0; }
+
+    .trust-stars {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stars {
+      display: flex;
+      gap: 2px;
+    }
+
+    .star { color: var(--gold); font-size: 1rem; }
+
+    .trust-label {
+      font-size: 0.85rem;
+      color: var(--text2);
+    }
+
+    .trust-label strong { color: var(--text); }
+
+    /* Video area */
+    .video-container {
+      max-width: 720px;
+      margin: 0 auto 28px;
+      padding: 0 24px;
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .video-wrapper iframe,
+    .video-wrapper .vid-placeholder {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .vid-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #e8e8e6, #d8d8d6);
+      gap: 12px;
+    }
+
+    .vid-play {
+      width: 64px;
+      height: 64px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .vid-play svg { width: 28px; height: 28px; fill: #000; margin-left: 4px; }
+
+    .vid-label {
+      font-size: 0.9rem;
+      color: var(--text2);
+    }
+
+    /* ── SECTION WRAPPER ── */
+    .section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 56px 24px;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      color: var(--text2);
+      font-size: 1rem;
+      max-width: 560px;
+      margin-bottom: 40px;
+    }
+
+    /* ── VALUE STACK ── */
+    .value-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 16px;
+    }
+
+    .value-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .value-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .value-price {
+      font-size: 0.9rem;
+      color: var(--text2);
+      white-space: nowrap;
+      text-decoration: line-through;
+    }
+
+    .value-card-desc {
+      font-size: 0.9rem;
+      color: var(--text2);
+    }
+
+    .value-total {
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.25);
+      border-radius: 16px;
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .value-total-label {
+      font-size: 1rem;
+      color: var(--text2);
+    }
+
+    .value-total-label strong {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--text);
+      margin-bottom: 2px;
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    .value-total-free {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--green);
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 600px) {
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+    }
+
+    .step-num {
+      width: 38px;
+      height: 38px;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+
+    .step-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 0.875rem;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    /* ── MODULE CARDS ── */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .module-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .module-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .module-info {}
+    .module-title { font-size: 0.975rem; font-weight: 700; margin-bottom: 4px; }
+    .module-desc { font-size: 0.85rem; color: var(--text2); line-height: 1.55; }
+    .module-value { font-size: 0.8rem; color: var(--text2); margin-top: 8px; }
+    .module-value span { color: var(--green); font-weight: 600; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .win-card {
+      break-inside: avoid;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 700px) {
+      .win-cols { columns: 2 !important; }
+    }
+    @media (max-width: 480px) {
+      .win-cols { columns: 1 !important; }
+    }
+
+    .testi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .testi-stars {
+      display: flex;
+      gap: 2px;
+      margin-bottom: 12px;
+    }
+
+    .testi-text {
+      font-size: 0.9rem;
+      color: var(--text2);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .testi-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #cbd5e1, #e2e8f0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #475569;
+      flex-shrink: 0;
+    }
+
+    .testi-name { font-size: 0.875rem; font-weight: 600; }
+    .testi-role { font-size: 0.78rem; color: var(--text2); }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 2px; }
+
+    .faq-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .faq-q {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 0.975rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      gap: 16px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .faq-icon {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      background: rgba(0,0,0,0.07);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      transition: transform .2s;
+    }
+
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease;
+    }
+
+    .faq-item.open .faq-a { max-height: 400px; }
+
+    .faq-a-inner {
+      padding: 0 24px 20px;
+      font-size: 0.9rem;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+
+    /* ── FINAL CTA ── */
+    .cta-box {
+      background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(34,197,94,0.02));
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 24px;
+      padding: 56px 40px;
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .cta-box h2 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+
+    .cta-box p {
+      color: var(--text2);
+      font-size: 1rem;
+      margin-bottom: 32px;
+    }
+
+    .cta-includes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 36px;
+      text-align: left;
+      max-width: 360px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-include-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text2);
+    }
+
+    .cta-check {
+      width: 20px;
+      height: 20px;
+      background: rgba(34,197,94,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green);
+      font-size: 0.7rem;
+      flex-shrink: 0;
+    }
+
+    .cta-btn {
+      background: var(--green);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: 16px 40px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      display: inline-block;
+      transition: opacity .15s, transform .15s;
+      margin-bottom: 16px;
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .cta-note {
+      font-size: 0.8rem;
+      color: var(--text2);
+    }
+
+    .urgency {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.25);
+      color: #f87171;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: #f87171; animation: pulse 1.4s infinite; }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 16px 24px;
+      text-align: center;
+      color: var(--text2);
+      font-size: 0.8rem;
+    }
+
+    footer a { color: var(--text2); margin: 0 8px; }
+    footer a:hover { color: var(--text); }
+
+    .footer-disclaimer {
+      max-width: 700px;
+      margin: 16px auto 0;
+      font-size: 0.72rem;
+      color: #4b5563;
+      line-height: 1.6;
+    }
+
+    /* ── WHY SECTION ── */
+    .why-list {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .why-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 28px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .why-item:last-child { border-bottom: none; }
+
+    .why-icon {
+      width: 48px;
+      height: 48px;
+      background: #fdf8ef;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #c8a84b;
+    }
+
+    .why-body strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .why-body p {
+      font-size: 0.9rem;
+      color: var(--text2);
+      line-height: 1.65;
+    }
+
+    @media (max-width: 600px) {
+      .why-item { padding: 22px 20px; gap: 14px; }
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ── LOGO TICKER ── */
+    .ticker-wrap {
+      padding: 32px 20px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ticker-label {
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text2);
+      margin-bottom: 24px;
+    }
+
+    .ticker-inner {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .ticker-track { display: contents; }
+
+    .partner-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: -0.3px;
+      text-align: center;
+    }
+    .partner-badge img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 480px) {
+      .ticker-inner { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ── SCROLL CTA ── */
+    @media (max-width: 600px) {
+      .hero { padding: 4px 16px 8px; }
+      .section { padding: 40px 16px; }
+      .cta-box { padding: 40px 20px; }
+      .value-card { padding: 20px; }
+      .module-card { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">
+    <span>🎓</span> Limited Free Access - AI Branded Dropshipping
+  </div>
+  <h1>Get A Store Built For You By AI In 10 Minutes Ready To Sell + Get Access To My <span class="highlight" style="font-style:italic;">$3,000 AI Branded Dropshipping Program <span style="text-decoration:underline;">For Free.</span></span></h1>
+  <p style="text-align:center;font-size:clamp(0.9rem,2.5vw,1.05rem);color:#4b5563;line-height:1.6;margin:10px 0 14px;">Watch the short video below. I show you what this online business actually is, why I'm giving it away, and how a Coach helps you get set up.</p>
+  <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+    <span style="display:flex;align-items:center;gap:6px;color:#111;font-size:clamp(0.75rem,2.2vw,0.95rem);font-weight:500;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      No tech skills needed.
+    </span>
+    <span style="display:flex;align-items:center;gap:6px;color:#111;font-size:clamp(0.75rem,2.2vw,0.95rem);font-weight:500;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+      No experience required.
+    </span>
+  </div>
+
+</div>
+
+<!-- VIDEO -->
+<div class="video-container">
+  <div style="background:#f5efe6;border-radius:20px;padding:10px 20px 24px;">
+    <div class="video-wrapper">
+      <vturb-smartplayer id="vid-6a3438a74d220fdcb15baf91" style="display: block; margin: 0 auto; width: 100%; "></vturb-smartplayer>
+      <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a3438a74d220fdcb15baf91/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center;padding:0 24px 28px;">
+  <button class="cta-btn" style="max-width:380px;width:100%;font-size:1.05rem;" onclick="openModal()">Get Your Free Course &amp; Store →</button>
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;">
+    <div style="display:flex;">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face" style="width:32px;height:32px;border-radius:50%;border:2px solid #1a1a1a;object-fit:cover;margin-right:-8px;" />
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" style="width:32px;height:32px;border-radius:50%;border:2px solid #1a1a1a;object-fit:cover;margin-right:-8px;" />
+      <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=80&h=80&fit=crop&crop=face" style="width:32px;height:32px;border-radius:50%;border:2px solid #1a1a1a;object-fit:cover;" />
+    </div>
+    <span style="font-size:0.85rem;color:var(--text2);">Join 1,500+ happy customers</span>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- WHAT'S INCLUDED -->
+<div class="section">
+  <h2 class="section-title" style="text-align:center;">You Don't Just Get A Store. You Get Everything You Need To Succeed.</h2>
+  <p style="text-align:center;font-size:1rem;color:#374151;line-height:1.7;margin-top:12px;margin-bottom:0;">Other platforms give you a store and leave you on your own. We give you the store, the education, the tools, the community, and the support to actually make it work.</p>
+
+  <!-- Card -->
+  <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;overflow:hidden;margin-top:24px;">
+
+    <!-- Card brand label -->
+    <div style="padding:14px 20px;border-bottom:1.5px solid #e5e7eb;text-align:center;">
+      <span style="font-size:0.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#6b7280;">AI Dropshipping Store</span>
+    </div>
+
+    <!-- Items -->
+    <div style="padding:6px 0;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:22px;height:22px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span style="font-size:0.9rem;font-weight:600;color:#111;">Fully Built AI Online Store</span>
+        </div>
+        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$2,000 value</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:22px;height:22px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span style="font-size:0.9rem;font-weight:600;color:#111;">Step-by-Step Course (50+ Lessons)</span>
+        </div>
+        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$3,000 value</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:22px;height:22px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span style="font-size:0.9rem;font-weight:600;color:#111;">Weekly Live Mentorship Calls</span>
+        </div>
+        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$4,000 value</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:22px;height:22px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span style="font-size:0.9rem;font-weight:600;color:#111;">Personal Onboarding Call</span>
+        </div>
+        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$500 value</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:22px;height:22px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span style="font-size:0.9rem;font-weight:600;color:#111;">Community of Members (Lifetime Access)</span>
+        </div>
+        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$1,000 value</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:22px;height:22px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span style="font-size:0.9rem;font-weight:600;color:#111;">Product Research Software</span>
+        </div>
+        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$1,500 value</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:22px;height:22px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span style="font-size:0.9rem;font-weight:600;color:#111;">Exclusive Partner Deals</span>
+        </div>
+        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$500+ value</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:22px;height:22px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span style="font-size:0.9rem;font-weight:600;color:#111;">Business Tools (Calculators &amp; Planners)</span>
+        </div>
+        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$500 value</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:22px;height:22px;background:#fef9c3;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.2 3.6H11L8.4 6.8l1 3.2L6 8.2 2.6 10l1-3.2L1 4.6h3.8z" fill="#ca8a04"/></svg>
+          </div>
+          <span style="font-size:0.9rem;font-weight:600;color:#111;">Thousands in Prizes &amp; Rewards Every 60 Days</span>
+        </div>
+        <span style="font-size:0.8rem;font-weight:700;color:#ca8a04;white-space:nowrap;margin-left:12px;">Priceless</span>
+      </div>
+    </div>
+
+    <!-- Total + Price + urgency (inside card) -->
+    <div style="background:#f9fafb;border-top:1.5px solid #e5e7eb;padding:16px 20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <span style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;">Total Value</span>
+        <span style="font-size:0.95rem;font-weight:800;color:#9ca3af;text-decoration:line-through;">$13,000+</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <span style="font-size:0.95rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#111;">Your Price</span>
+        <span style="font-size:1.6rem;font-weight:900;color:var(--green);">FREE</span>
+      </div>
+      <p style="text-align:center;font-size:0.75rem;color:#6b7280;line-height:1.5;">⚡ This won't be free forever. Our partners currently cover the cost — but that could change at any time.</p>
+    </div>
+  </div>
+
+  <!-- CTA (outside card) -->
+  <div style="margin-top:20px;text-align:center;">
+    <button class="cta-btn" style="width:100%;max-width:420px;font-size:1rem;" onclick="openModal()">Get Your Free Course &amp; Store →</button>
+    <p style="font-size:0.8rem;color:#6b7280;margin-top:10px;line-height:1.5;">⏰ Once we start charging, the course alone goes back to $3,000.</p>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- NO CATCH -->
+<div class="section">
+  <p class="section-label">No Catch</p>
+  <h2 class="section-title">Wait, <span style="color:var(--green);">How Is This Free?</span></h2>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 32px;max-width:640px;">
+    <p style="font-size:1rem;color:#374151;line-height:1.75;margin-bottom:16px;">I've had over 500 people pay me to learn this model. So you might be asking - <strong style="color:#111111;">"how are you giving this away for free?"</strong></p>
+    <p style="font-size:1rem;color:#374151;line-height:1.75;margin-bottom:16px;">No catch. We partnered up with multi-billion dollar brands like <span style="color:var(--green);">Base44 and Wix</span>. So instead of you having to pay thousands upfront to get access to this, you would just need to use the tools that I have personally been using for years to get full access to everything.</p>
+    <p style="font-size:1rem;color:#374151;line-height:1.75;margin-bottom:16px;">This model works way better because now the only way we win is if you win. We get paid by our partners if you become a long term user of their platform. That money doesn't even come to us - it goes straight to them, because you'd need hosting no matter where you built a store. It's not something we charge for.</p>
+    <p style="font-size:1rem;color:#374151;line-height:1.75;margin-bottom:16px;">A lot of gurus you'll see online would never be willing to do this because they're not confident in helping you out.</p>
+    <p style="font-size:1rem;color:#374151;line-height:1.75;margin-bottom:16px;">So in summary, all that you need is to have our partner's software subscription, which comes down to <span style="color:var(--green);">less than $2 a day to get full access to everything.</span></p>
+    <p style="font-size:1rem;color:#374151;line-height:1.75;margin-bottom:24px;">It's a <span style="color:var(--green);">win-win for everyone</span>.</p>
+    <div style="display:flex;align-items:center;gap:16px;padding-top:20px;border-top:1px solid var(--border);">
+      <span style="font-family:'Georgia',serif;font-style:italic;font-size:1.4rem;color:var(--text);white-space:nowrap;">Bronson</span>
+      <span style="width:1px;height:28px;background:var(--border);flex-shrink:0;"></span>
+      <span style="font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text2);">Founder, AI Dropshipping Store</span>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- WHY THIS MODEL -->
+<div class="section">
+  <p class="section-label">Why This Model</p>
+  <h2 class="section-title">Why Thousands of People Are Choosing This Online Business</h2>
+
+  <div class="why-list">
+    <div class="why-item">
+      <div class="why-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <div class="why-body">
+        <strong>No Products to Buy Upfront</strong>
+        <p>You only pay for a product after a customer buys it from your store. No buying inventory. No risk of unsold stock sitting in your garage.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </div>
+      <div class="why-body">
+        <strong>No Shipping or Handling</strong>
+        <p>Your supplier packs and ships everything directly to your customer. You never touch a product.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div class="why-body">
+        <strong>Work From Anywhere</strong>
+        <p>All you need is a laptop and internet connection. Run your store from your bedroom, a coffee shop, or a beach in Bali.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="why-body">
+        <strong>Your Store Runs 24/7</strong>
+        <p>Your online store takes orders even while you're sleeping. It never closes.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="3" style="display:none"/></svg>
+      </div>
+      <div class="why-body">
+        <strong>Low Startup Cost</strong>
+        <p>Most businesses require thousands to start. With branded e-commerce, you can get up and running for less than the cost of a dinner out.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- SLOT MACHINE TOOLS -->
+<div class="section" style="text-align:center;">
+  <h2 class="section-title">All The Built-In Tools</h2>
+
+  <div style="position:relative;height:220px;overflow:hidden;margin-top:28px;" id="slot-machine">
+    <div id="slot-track" style="display:flex;flex-direction:column;align-items:center;gap:28px;transition:transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94);">
+      <div class="slot-item">Product Scorecard</div>
+      <div class="slot-item">ROAS Calculator</div>
+      <div class="slot-item">Breakeven Calculator</div>
+      <div class="slot-item">Profit Margin Calculator</div>
+      <div class="slot-item">Product Research Software</div>
+      <!-- duplicates for seamless loop -->
+      <div class="slot-item">Product Scorecard</div>
+      <div class="slot-item">ROAS Calculator</div>
+      <div class="slot-item">Breakeven Calculator</div>
+      <div class="slot-item">Profit Margin Calculator</div>
+      <div class="slot-item">Product Research Software</div>
+    </div>
+    <!-- fade masks top and bottom -->
+    <div style="position:absolute;top:0;left:0;right:0;height:70px;background:linear-gradient(to bottom,var(--bg),transparent);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:0;left:0;right:0;height:70px;background:linear-gradient(to top,var(--bg),transparent);pointer-events:none;"></div>
+  </div>
+</div>
+
+<style>
+  .slot-item {
+    font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+    font-weight: 700;
+    color: #d1d5db;
+    transition: color 0.3s, font-size 0.3s;
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .slot-item.active {
+    color: #22c55e;
+    font-size: clamp(1.3rem, 4vw, 1.75rem);
+  }
+</style>
+
+<script>
+(function() {
+  const ITEMS = 5;
+  const ITEM_HEIGHT = 56; // px per slot item (font + gap)
+  let current = 0;
+  const track = document.getElementById('slot-track');
+  const items = track ? track.querySelectorAll('.slot-item') : [];
+
+  function update() {
+    const offset = current * ITEM_HEIGHT;
+    // center the active item in the 220px container: (220/2) - (item/2) ≈ 110 - 28 = 82
+    track.style.transform = `translateY(${82 - offset}px)`;
+    items.forEach((el, i) => {
+      el.classList.toggle('active', i === current || i === current + ITEMS);
+    });
+    current = (current + 1) % ITEMS;
+  }
+
+  update();
+  setInterval(update, 1800);
+})();
+</script>
+
+<!-- 3 STEPS -->
+<div class="section">
+  <h2 class="section-title">Get Your Free Store in 3 Simple Steps</h2>
+
+  <!-- Step 1 -->
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:24px;margin-top:20px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;border:2px solid #3b82f6;color:#3b82f6;font-size:0.75rem;font-weight:800;">1</span>
+      <span style="font-size:0.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#6b7280;">Step 1</span>
+    </div>
+    <h3 style="font-size:1.2rem;font-weight:800;color:#111;margin-bottom:10px;">Answer A Few Simple Questions</h3>
+    <p style="font-size:0.9rem;color:#374151;line-height:1.65;">Tell us about your niche and preferences. It takes about 2 minutes. No tech skills needed.</p>
+  </div>
+
+  <!-- Step 2 -->
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:24px;margin-top:12px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;border:2px solid #3b82f6;color:#3b82f6;font-size:0.75rem;font-weight:800;">2</span>
+      <span style="font-size:0.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#6b7280;">Step 2</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;">
+      <div style="flex:1;min-width:180px;">
+        <h3 style="font-size:1.2rem;font-weight:800;color:#111;margin-bottom:10px;">AI Builds Your Store</h3>
+        <p style="font-size:0.9rem;color:#374151;line-height:1.65;">Our AI gets to work. In under 10 minutes, you'll have a fully built online store with products, suppliers, and design all done for you.</p>
+      </div>
+      <div style="flex:1;min-width:200px;border-radius:10px;overflow:hidden;border:1px solid #e5e7eb;">
+        <img src="/lt/s2.avif" alt="AI builds your store" style="width:100%;display:block;" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:24px;margin-top:12px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;border:2px solid #3b82f6;color:#3b82f6;font-size:0.75rem;font-weight:800;">3</span>
+      <span style="font-size:0.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#6b7280;">Step 3</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;">
+      <div style="flex:1;min-width:180px;">
+        <h3 style="font-size:1.2rem;font-weight:800;color:#111;margin-bottom:10px;">Start Selling</h3>
+        <p style="font-size:0.9rem;color:#374151;line-height:1.65;">Your store is live. Send the link to anyone and they can make a purchase. Use our course to learn how to drive traffic and get your first sale.</p>
+      </div>
+      <div style="flex:1;min-width:200px;border-radius:10px;overflow:hidden;border:1px solid #e5e7eb;">
+        <img src="/lt/s3.avif" alt="Start selling" style="width:100%;display:block;" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- FINAL CTA -->
+<div class="section" id="apply">
+  <div class="cta-box">
+    <div class="urgency">
+      <span class="dot"></span>
+      This won't be free forever
+    </div>
+    <h2>Get Your Free Course<br>&amp; Store Today</h2>
+    <p>Everything you need to build a real branded dropshipping store.</p>
+
+    <div class="cta-includes">
+      <div class="cta-include-item">
+        <span class="cta-check">✓</span>
+        Complete AI Branded Dropshipping System ($1,000 value)
+      </div>
+      <div class="cta-include-item">
+        <span class="cta-check">✓</span>
+        All 6 Course Phases ($1,200 value)
+      </div>
+      <div class="cta-include-item">
+        <span class="cta-check">✓</span>
+        Meta Ads Mastery ($200 value)
+      </div>
+      <div class="cta-include-item">
+        <span class="cta-check">✓</span>
+        1-on-1 Onboarding Call ($100 value)
+      </div>
+      <div class="cta-include-item">
+        <span class="cta-check">✓</span>
+        Brand-to-Exit Roadmap ($200 value)
+      </div>
+    </div>
+
+    <button class="cta-btn" onclick="openModal()">
+      Get Your Free Course &amp; Store →
+    </button>
+    <p class="cta-note"></p>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- STORE EXAMPLES -->
+<div class="section">
+  <p style="text-align:center;font-size:0.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Built By AI</p>
+  <h2 class="section-title" style="text-align:center;">E-Com Stores That Our AI Has Built.</h2>
+  <p style="text-align:center;font-size:0.95rem;color:#374151;line-height:1.65;margin-top:10px;margin-bottom:28px;">Product research, copy, design, supplier setup — all handled. These are real stores built in under 10 minutes.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+    <div style="border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;height:220px;"><img src="/lt/store04.avif" alt="AI built store" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
+    <div style="border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;height:220px;"><img src="/lt/store01.avif" alt="AI built store" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
+    <div style="border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;height:220px;"><img src="/lt/store06.avif" alt="AI built store" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
+    <div style="border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;height:220px;"><img src="/lt/store03.avif" alt="AI built store" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
+    <div style="border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;height:220px;"><img src="/lt/store02.avif" alt="AI built store" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
+    <div style="border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;height:220px;"><img src="/lt/store05.avif" alt="AI built store" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- TESTIMONIALS -->
+<div class="section">
+  <p class="section-label">Student wins</p>
+  <h2 class="section-title">People Just Like You Who Followed The System</h2>
+  <p class="section-desc">No hype. Just outcomes from students who went through the same system you're about to access.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:32px;">
+    <div style="padding:24px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);">
+      <div style="font-family:'Georgia',serif;font-style:italic;font-size:2rem;font-weight:700;color:var(--green);margin-bottom:6px;">$1.7M+</div>
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text2);">Student Revenue</div>
+    </div>
+    <div style="padding:24px;border-bottom:1px solid var(--border);">
+      <div style="font-family:'Georgia',serif;font-style:italic;font-size:2rem;font-weight:700;color:var(--green);margin-bottom:6px;">1,000+</div>
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text2);">People Helped</div>
+    </div>
+    <div style="padding:24px;border-right:1px solid var(--border);">
+      <div style="font-family:'Georgia',serif;font-style:italic;font-size:2rem;font-weight:700;color:var(--green);margin-bottom:6px;">297</div>
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text2);">First Sales This Month</div>
+    </div>
+    <div style="padding:24px;">
+      <div style="font-family:'Georgia',serif;font-style:italic;font-size:2rem;font-weight:700;color:var(--green);margin-bottom:6px;">24 days</div>
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text2);">Avg. to First $1K</div>
+    </div>
+  </div>
+
+  <!-- Screenshot wins -->
+  <div class="win-cols" style="columns:3;column-gap:16px;margin-bottom:16px;">
+
+    <div class="win-card" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+      <div style="padding:14px 18px;">
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px;">Personal Record</div>
+        <div style="font-size:0.9rem;font-weight:700;color:var(--text);">Ryan — $20k/month</div>
+        <div style="font-size:0.8rem;color:var(--text2);margin-top:2px;">Scaled from zero in first 90 days</div>
+      </div>
+      <img src="https://www.ad-ventur.com/13.png" alt="Personal Record" style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+    <div class="win-card" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+      <div style="padding:14px 18px;">
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px;">Best Day</div>
+        <div style="font-size:0.9rem;font-weight:700;color:var(--text);">Jaden — $8k day</div>
+        <div style="font-size:0.8rem;color:var(--text2);margin-top:2px;">Six months into the program</div>
+      </div>
+      <img src="https://www.ad-ventur.com/14.jpeg" alt="Best Day" style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+    <div class="win-card" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+      <div style="padding:14px 18px;">
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px;">Scaling Fast</div>
+        <div style="font-size:0.9rem;font-weight:700;color:var(--text);">Tyler — $100k in 2 weeks</div>
+        <div style="font-size:0.8rem;color:var(--text2);margin-top:2px;">No prior e-com experience</div>
+      </div>
+      <img src="https://www.ad-ventur.com/15.jpeg" alt="Scaling Fast" style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+    <div class="win-card" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+      <div style="padding:14px 18px;">
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px;">Consistent Growth</div>
+        <div style="font-size:0.9rem;font-weight:700;color:var(--text);">Kaleb</div>
+        <div style="font-size:0.8rem;color:var(--text2);margin-top:2px;">"The month over month growth has been nuts!"</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/68e955a65db7d666d86e6e1e.png" alt="Consistent Growth" style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+    <div class="win-card" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+      <div style="padding:14px 18px;">
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px;">From Zero</div>
+        <div style="font-size:0.9rem;font-weight:700;color:var(--text);">Daniel</div>
+        <div style="font-size:0.8rem;color:var(--text2);margin-top:2px;">"1 month in and look at that spike. Zero sales before."</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee8a07f504aeaca49f2f7f.jpeg" alt="From Zero" style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+    <div class="win-card" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+      <div style="padding:14px 18px;">
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px;">Ads Success</div>
+        <div style="font-size:0.9rem;font-weight:700;color:var(--text);">Micah</div>
+        <div style="font-size:0.8rem;color:var(--text2);margin-top:2px;">"The 1-on-1 help with running the ads has been so awesome."</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee8b33585902432f7f8a20.jpeg" alt="Ads Success" style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+    <div class="win-card" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+      <div style="padding:14px 18px;">
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px;">$30k in 23 Days</div>
+        <div style="font-size:0.9rem;font-weight:700;color:var(--text);">$30,000 revenue</div>
+        <div style="font-size:0.8rem;color:var(--text2);margin-top:2px;">In the last 23 days</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee920b8f6c2c4ed1a2d580.png" alt="$30k in 23 days" style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+    <div class="win-card" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+      <div style="padding:14px 18px;">
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px;">8.79x ROAS</div>
+        <div style="font-size:0.9rem;font-weight:700;color:var(--text);">Skin care niche</div>
+        <div style="font-size:0.8rem;color:var(--text2);margin-top:2px;">TikTok ads crushing it</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee9318918308897e0d8c9b.png" alt="8.79x ROAS" style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+    <div class="win-card" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+      <div style="padding:14px 18px;">
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px;">3.59x ROAS</div>
+        <div style="font-size:0.9rem;font-weight:700;color:var(--text);">New student — under 1 month in</div>
+        <div style="font-size:0.8rem;color:var(--text2);margin-top:2px;">Already scaling</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee939558590276507f9c6c.png" alt="3.59x ROAS" style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+    <div class="win-card" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+      <div style="padding:14px 18px;">
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px;">Live Results</div>
+        <div style="font-size:0.9rem;font-weight:700;color:var(--text);">Current results</div>
+        <div style="font-size:0.8rem;color:var(--text2);margin-top:2px;">No old screenshots here</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee946b918308652f0d8de4.png" alt="Live Results" style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+    <div class="win-card" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+      <div style="padding:14px 18px;">
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px;">Clothing Niche</div>
+        <div style="font-size:0.9rem;font-weight:700;color:var(--text);">First drop sold out</div>
+        <div style="font-size:0.8rem;color:var(--text2);margin-top:2px;">Clothing brand — strong ROAS on first run</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95224930c4210b003576.png" alt="Clothing Niche" style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+    <div class="win-card" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+      <div style="padding:14px 18px;">
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px;">3.61x ROAS</div>
+        <div style="font-size:0.9rem;font-weight:700;color:var(--text);">Organic hair & skin care brand</div>
+        <div style="font-size:0.8rem;color:var(--text2);margin-top:2px;">Ripping sales with Meta ads</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95b6e416f131f1a415da.png" alt="3.61x ROAS" style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+    <div class="win-card" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+      <div style="padding:14px 18px;">
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:4px;">Supplement Niche</div>
+        <div style="font-size:0.9rem;font-weight:700;color:var(--text);">$100k+ months incoming</div>
+        <div style="font-size:0.8rem;color:var(--text2);margin-top:2px;">Getting into the big numbers</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee96518f6c2cb9f8a2da5b.png" alt="Supplement Niche" style="width:100%;display:block;object-fit:cover;" />
+    </div>
+
+  </div>
+  <div style="text-align:center;margin-top:32px;">
+    <button class="cta-btn" style="max-width:380px;width:100%;" onclick="openModal()">Get Your Free Course &amp; Store →</button>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- FAQ -->
+<div class="section">
+  <p class="section-label">Common questions</p>
+  <h2 class="section-title">Got questions? We've got answers.</h2>
+  <p class="section-desc" style="margin-bottom:32px;">Everything people ask before they claim access.</p>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Do I need e-commerce or tech experience?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">None. This was built for complete beginners. AI does most of the heavy lifting - building your store, writing copy, and researching products. You just follow the system.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What makes this e-commerce model different?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">This is NOT the typical dropshipping you see with pump and dump stores. You're building a real branded e-commerce business with long-term equity - something you can eventually sell. That's what separates members like Landon who are already thinking about their exit.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How much money do I need to start?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">Your startup costs are minimal. The program itself is free. You'll need a small budget for your store and ads - but your onboarding call will map out a plan that fits where you're starting from.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Can I do this while working a full-time job?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">Yes. Most members started part-time. The system is designed to run with focused effort - you don't need to quit your job first. Build revenue, then transition when it makes sense.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What if I have more questions before I apply?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">Apply first - your onboarding call is where you get every question answered by a real coach before you spend a dollar. That call alone is worth it.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How do I actually make sales?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">Inside the free $3,000 course, we teach you exactly how. We cover paid ads (Facebook, Instagram, Tiktok), organic marketing (free traffic methods), email/SMS marketing, and more. Our goal is to help you get your first sale within a few days.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Do I need to buy products upfront or handle shipping?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">No and no. You only pay for a product after a customer buys it from your store. The supplier handles packing and shipping directly to your customer. You never touch inventory.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How much can I realistically earn?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p class="faq-a-inner">That depends entirely on the effort you put in. Some of our students make a few hundred dollars a day. Others have scaled to six figures and beyond. We have countless success stories in our community. There's no limit - it comes down to you following the training and putting in the work.</p>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:32px;">
+    <button class="cta-btn" style="max-width:380px;width:100%;" onclick="openModal()">Get Your Free Course &amp; Store →</button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="apply-modal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#fff;border-radius:24px;max-width:480px;width:100%;padding:36px 32px 28px;position:relative;max-height:90vh;overflow-y:auto;">
+
+    <!-- Close -->
+    <button onclick="closeModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#888;line-height:1;">&times;</button>
+
+    <!-- Slots badge -->
+    <div style="text-align:center;margin-bottom:16px;">
+      <span id="slots-badge" style="display:inline-flex;align-items:center;gap:8px;background:#fff0f0;border:1px solid #fecaca;color:#dc2626;font-size:0.85rem;font-weight:700;padding:7px 18px;border-radius:100px;">
+        <span style="width:8px;height:8px;border-radius:50%;background:#dc2626;display:inline-block;flex-shrink:0;"></span>
+        <span id="slots-text">7 free slots remaining</span>
+      </span>
+    </div>
+
+    <!-- Eyebrow -->
+    <p style="text-align:center;font-size:0.78rem;font-weight:700;letter-spacing:1.5px;color:#888;text-transform:uppercase;margin-bottom:8px;">Free Access &nbsp;·&nbsp; $3,000 Value</p>
+
+    <!-- Heading -->
+    <h2 style="text-align:center;font-size:1.7rem;font-weight:900;color:#0a0a0a;letter-spacing:-0.5px;margin-bottom:10px;">Get Your Free Course &amp; Store</h2>
+
+    <!-- Sub -->
+    <p style="text-align:center;color:#666;font-size:0.95rem;line-height:1.55;margin-bottom:28px;">Drop your details and a coach reaches out to get you set up.</p>
+
+    <!-- Form -->
+    <form id="modal-form" onsubmit="handleModal(event)" style="display:flex;flex-direction:column;gap:12px;">
+      <input id="m-name" type="text" placeholder="First name" required style="background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 20px;font-size:0.95rem;font-family:'Inter',sans-serif;outline:none;transition:border .15s;color:#111;" onfocus="this.style.borderColor='#22c55e'" onblur="this.style.borderColor='#e5e7eb'" />
+      <input id="m-email" type="email" placeholder="Email" required style="background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 20px;font-size:0.95rem;font-family:'Inter',sans-serif;outline:none;transition:border .15s;color:#111;" onfocus="this.style.borderColor='#22c55e'" onblur="this.style.borderColor='#e5e7eb'" />
+      <div style="display:flex;gap:10px;">
+        <select id="m-country" style="background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 16px;font-size:0.9rem;font-family:'Inter',sans-serif;color:#333;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;min-width:110px;text-align:center;">
+          <option value="+1">🇺🇸 +1</option>
+          <option value="+1">🇨🇦 +1</option>
+          <option value="+44">🇬🇧 +44</option>
+          <option value="+61">🇦🇺 +61</option>
+          <option value="+64">🇳🇿 +64</option>
+          <option value="+49">🇩🇪 +49</option>
+          <option value="+33">🇫🇷 +33</option>
+          <option value="+39">🇮🇹 +39</option>
+          <option value="+34">🇪🇸 +34</option>
+          <option value="+31">🇳🇱 +31</option>
+          <option value="+32">🇧🇪 +32</option>
+          <option value="+41">🇨🇭 +41</option>
+          <option value="+43">🇦🇹 +43</option>
+          <option value="+46">🇸🇪 +46</option>
+          <option value="+47">🇳🇴 +47</option>
+          <option value="+45">🇩🇰 +45</option>
+          <option value="+358">🇫🇮 +358</option>
+          <option value="+353">🇮🇪 +353</option>
+          <option value="+351">🇵🇹 +351</option>
+          <option value="+81">🇯🇵 +81</option>
+          <option value="+82">🇰🇷 +82</option>
+          <option value="+65">🇸🇬 +65</option>
+          <option value="+852">🇭🇰 +852</option>
+          <option value="+971">🇦🇪 +971</option>
+          <option value="+972">🇮🇱 +972</option>
+          <option value="+55">🇧🇷 +55</option>
+          <option value="+52">🇲🇽 +52</option>
+        </select>
+        <input id="m-phone" type="tel" placeholder="Phone number" style="flex:1;background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 20px;font-size:0.95rem;font-family:'Inter',sans-serif;outline:none;transition:border .15s;color:#111;" onfocus="this.style.borderColor='#22c55e'" onblur="this.style.borderColor='#e5e7eb'" />
+      </div>
+      <button type="submit" style="background:var(--green);color:#000;font-weight:800;font-size:1.05rem;padding:17px;border-radius:50px;border:none;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px;transition:opacity .15s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">Get Your Free Course &amp; Store</button>
+    </form>
+
+    <div id="modal-success" style="display:none;text-align:center;padding:16px 0;">
+      <p style="font-size:1.1rem;font-weight:800;color:#22c55e;margin-bottom:6px;">You're in!</p>
+      <p style="font-size:0.9rem;color:#666;">We'll reach out within 24 hours to get you set up. Check your inbox.</p>
+    </div>
+
+    <!-- Disclaimer -->
+    <p style="text-align:center;font-size:0.72rem;color:#aaa;margin-top:16px;line-height:1.6;">Your information is 100% secure.<br>By submitting you agree to our <a href="https://www.ad-ventur.com/terms" target="_blank" style="color:#555;text-decoration:underline;">terms</a> and <a href="https://www.ad-ventur.com/privacy" target="_blank" style="color:#555;text-decoration:underline;">policies</a>.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+    <a href="/terms" target="_blank" rel="noopener">Terms of Service</a>
+  </div>
+  <p class="footer-disclaimer">
+    INCOME DISCLAIMER: Results mentioned are not typical. Individual results will vary based on effort, experience, background, and market conditions. This is an educational program. We make no guarantees of income or business outcomes.
+  </p>
+  <p style="margin-top:12px;">&copy; 2025 AI Dropshipping Store. All rights reserved.</p>
+</footer>
+
+<script>
+  // Exit intent
+  (function () {
+    var fired = false;
+    var ready = false;
+
+    // Only arm after 20 seconds so it doesn't fire on accidental immediate exits
+    setTimeout(function () { ready = true; }, 20000);
+
+    function triggerExit() {
+      if (fired || !ready) return;
+      fired = true;
+      openModal();
+    }
+
+    // Desktop: mouse leaves toward top of browser
+    document.addEventListener('mouseleave', function (e) {
+      if (e.clientY < 10) triggerExit();
+    });
+
+    // Mobile: fast scroll upward after scrolling down at least 300px
+    var lastScrollY = 0;
+    var lastScrollTime = 0;
+    window.addEventListener('scroll', function () {
+      var now = Date.now();
+      var y = window.scrollY;
+      if (y > 300 && y < lastScrollY && (now - lastScrollTime) < 300) {
+        triggerExit();
+      }
+      lastScrollY = y;
+      lastScrollTime = now;
+    }, { passive: true });
+  })();
+
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Slots remaining
+  function getSlots() {
+    let s = parseInt(localStorage.getItem('lt_slots'));
+    if (!s || s < 1) {
+      s = Math.floor(Math.random() * 4) + 5; // random 5-8
+      localStorage.setItem('lt_slots', s);
+    }
+    return s;
+  }
+
+  function updateSlotsDisplay() {
+    const s = getSlots();
+    const el = document.getElementById('slots-text');
+    if (el) el.textContent = s + ' free slot' + (s === 1 ? '' : 's') + ' remaining';
+  }
+
+  function decrementSlot() {
+    let s = getSlots();
+    if (s > 1) { s--; localStorage.setItem('lt_slots', s); }
+    updateSlotsDisplay();
+  }
+
+  function openModal() {
+    const m = document.getElementById('apply-modal');
+    m.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    updateSlotsDisplay();
+  }
+
+  function closeModal() {
+    const m = document.getElementById('apply-modal');
+    m.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('apply-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  function handleModal(e) {
+    e.preventDefault();
+    const name = document.getElementById('m-name').value.trim();
+    const email = document.getElementById('m-email').value.trim();
+    const country = document.getElementById('m-country').value;
+    const phone = document.getElementById('m-phone').value.trim();
+    if (!name || !email) return;
+
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    decrementSlot();
+    fetch('https://hooks.zapier.com/hooks/catch/22609617/432dfrr/', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, phone: country + phone })
+    }).finally(() => {
+      window.location.href = '/receiveaccess?name=' + encodeURIComponent(name);
+    });
+  }
+</script>
+
+</body>
+</html>
