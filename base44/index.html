@@ -918,10 +918,6 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>
       <span class="nav-label">Rewards</span>
     </div>
-    <div class="nav-item" onclick="showView('leaderboard',this); fetchLeaderboard();">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-      <span class="nav-label">Leaderboard</span>
-    </div>
     <div class="nav-item" onclick="showView('referral',this); loadReferralStatus();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
       <span class="nav-label">Referral Rewards</span>
@@ -983,10 +979,6 @@
     <button class="mob-nav-item" id="mnav-rewards" onclick="showView('rewards', null); updateRewardsUI();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>
       Rewards
-    </button>
-    <button class="mob-nav-item" id="mnav-leaderboard" onclick="showView('leaderboard', null); fetchLeaderboard();">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-      Rank
     </button>
     <button class="mob-nav-item" id="mnav-referral" onclick="showView('referral', null); loadReferralStatus();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
@@ -1673,46 +1665,6 @@
     </div>
   </div>
 
-  <!-- ── Leaderboard ── -->
-  <div class="view padded" id="view-leaderboard">
-  <div style="max-width:640px;margin:0 auto;">
-
-    <!-- Header -->
-    <div class="lb-header">
-      <div class="lb-header-icon">🏆</div>
-      <div class="lb-header-title">Leaderboard</div>
-      <div class="lb-header-sub">Top students ranked by entries this prize cycle</div>
-    </div>
-
-    <!-- My Position (shown when on board) -->
-    <div class="lb-my-card" id="lb-my-card" style="display:none;">
-      <div>
-        <div class="lb-my-label">Your Rank</div>
-        <div class="lb-my-rank-big" id="lb-my-rank">—</div>
-      </div>
-      <div style="flex:1;">
-        <div class="lb-my-name" id="lb-my-name">—</div>
-        <div class="lb-my-entries" id="lb-my-entries">0 entries</div>
-      </div>
-      <button class="lb-refresh-btn" onclick="fetchLeaderboard()">↻</button>
-    </div>
-
-    <!-- Top 3 Podium -->
-    <div class="lb-podium" id="lb-podium" style="display:none;"></div>
-
-    <!-- Full List (4th+) -->
-    <div class="lb-list-card" id="lb-list-wrap" style="display:none;">
-      <div id="lb-list"></div>
-    </div>
-
-    <!-- Loading/Empty state -->
-    <div id="lb-state"><div class="lb-loading">Loading rankings...</div></div>
-
-    <div style="text-align:center;margin-top:16px;">
-      <button class="lb-refresh-btn" onclick="fetchLeaderboard()">↻ Refresh</button>
-    </div>
-  </div>
-  </div>
 
   <!-- ── Tools ── -->
   <div class="view padded" id="view-tools">
