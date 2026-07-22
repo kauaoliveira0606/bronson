@@ -3573,17 +3573,29 @@ After implementing, add clear comments in the code showing where the Pixel ID is
 
     document.querySelectorAll('.rw-verify-btn').forEach(btn => {
       const key = btn.id.replace('rwv-', '');
-      if (actions[key])       { btn.textContent = '✓ Approved'; btn.className = 'rw-verify-btn submitted'; }
-      else if (pending[key])  { btn.textContent = '⏳ Awaiting Approval'; btn.className = 'rw-verify-btn submitted'; }
-      else                    { btn.textContent = '📷 Verify'; btn.className = 'rw-verify-btn'; btn.onclick = function(){ rwUpload(key); }; }
+      const row = btn.closest('.rw-earn-item');
+      if (actions[key]) {
+        if (row) row.style.display = 'none';
+        btn.textContent = '✓ Approved'; btn.className = 'rw-verify-btn submitted';
+      } else {
+        if (row) row.style.display = '';
+        if (pending[key]) { btn.textContent = '⏳ Awaiting Approval'; btn.className = 'rw-verify-btn submitted'; }
+        else              { btn.textContent = '📷 Verify'; btn.className = 'rw-verify-btn'; btn.onclick = function(){ rwUpload(key); }; }
+      }
     });
 
     const wixBtn = el('rw-wix-proof-btn');
     const wixKey = 'wix-30-days';
     if (wixBtn) {
-      if (actions[wixKey])      { wixBtn.textContent = '✓ Approved'; wixBtn.disabled = true; }
-      else if (pending[wixKey]) { wixBtn.textContent = '⏳ Awaiting Approval'; wixBtn.disabled = true; }
-      else                      { wixBtn.textContent = '📷 Upload Proof (After 30 Days)'; wixBtn.disabled = false; }
+      const wixCard = wixBtn.closest('.rw-action-card');
+      if (actions[wixKey]) {
+        if (wixCard) wixCard.style.display = 'none';
+        wixBtn.textContent = '✓ Approved'; wixBtn.disabled = true;
+      } else {
+        if (wixCard) wixCard.style.display = '';
+        if (pending[wixKey]) { wixBtn.textContent = '⏳ Awaiting Approval'; wixBtn.disabled = true; }
+        else                 { wixBtn.textContent = '📷 Upload Proof (After 30 Days)'; wixBtn.disabled = false; }
+      }
     }
   }
 
