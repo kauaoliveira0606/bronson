@@ -5,8 +5,14 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') { res.status(200).end(); return; }
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { name, email, phone, webhook } = req.body;
+  const body = req.body || {};
+  const { name, email, phone, webhook } = body;
   console.log('collect-lead:', JSON.stringify({ name, email, phone, webhook }));
+
+  if (!email || !name) {
+    console.log('Rejected: missing name or email');
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
 
   const urls = {
     lt:   'https://hooks.zapier.com/hooks/catch/22609617/432dfrr/',
