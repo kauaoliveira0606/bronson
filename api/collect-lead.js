@@ -9,8 +9,8 @@ module.exports = async function handler(req, res) {
   const { name, email, phone, webhook } = body;
   console.log('collect-lead:', JSON.stringify({ name, email, phone, webhook }));
 
-  if (!email || !name) {
-    console.log('Rejected: missing name or email');
+  if (!email || !name || !phone) {
+    console.log('Rejected: missing required fields');
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
