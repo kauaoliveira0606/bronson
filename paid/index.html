@@ -1690,8 +1690,8 @@
   // Slots remaining
   function getSlots() {
     let s = parseInt(localStorage.getItem('lt_slots'));
-    if (!s || s < 1) {
-      s = Math.floor(Math.random() * 4) + 5; // random 5-8
+    if (!s || s < 2) {
+      s = 7;
       localStorage.setItem('lt_slots', s);
     }
     return s;
