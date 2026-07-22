@@ -3543,10 +3543,15 @@ After implementing, add clear comments in the code showing where the Pixel ID is
     updateRewardsUI();
     try {
       const dataUrl = await compressImage(file);
-      await sbInsert('proof_submissions', { email: getStoredEmail(), tab: 'rewards', action_key: actionKey, status: 'pending', proof_url: dataUrl });
-      rwShowToast('📸 Proof submitted! You\'ll be notified when approved.');
+      await sbInsert('proof_submissions', { email: getStoredEmail(), tab: 'rewards', action_key: actionKey, status: 'approved', proof_url: dataUrl });
+      rwSetAction(actionKey);
+      rwAddEntries(RW_ENTRY_MAP[actionKey] || 0);
+      delete pending[actionKey];
+      localStorage.setItem(RW_PENDING_KEY, JSON.stringify(rwGetPending()));
+      rwShowToast('✅ Entries added!');
+      updateRewardsUI();
     } catch(e) {
-      rwShowToast('📸 Proof submitted! Entries will be added after review.');
+      rwShowToast('📸 Proof submitted! Entries will be added shortly.');
     }
   }
 
