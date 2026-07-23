@@ -1,745 +1,794 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Affiliate Script</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bronson — Sales Script</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Inter', -apple-system, sans-serif; background: #f8fafc; overflow: hidden; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  #topbar {
-    position: fixed; top: 0; left: 0; right: 0; height: 52px;
-    background: #1e293b; display: flex; align-items: center;
-    justify-content: space-between; padding: 0 20px; z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  :root {
+    --navy: #1e293b;
+    --navy-mid: #334155;
+    --slate: #64748b;
+    --slate-light: #94a3b8;
+    --bg: #f1f5f9;
+    --surface: #ffffff;
+    --border: #e2e8f0;
   }
-  .tb-left { display: flex; align-items: center; gap: 12px; }
-  .tb-logo {
-    width: 28px; height: 28px; border-radius: 6px;
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--navy);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--navy);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 20px;
+    height: 52px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .logo {
+    width: 30px; height: 30px;
+    border-radius: 7px;
     background: linear-gradient(135deg, #3b82f6, #8b5cf6);
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 800; color: #fff; flex-shrink: 0;
+    font-size: 14px; font-weight: 800; color: #fff;
+    flex-shrink: 0;
   }
-  .tb-title { color: #fff; font-size: 15px; font-weight: 600; }
-  .tb-sub { color: #94a3b8; font-size: 12px; margin-left: 8px; }
-  .tb-right { display: flex; align-items: center; gap: 8px; }
-  .zoom-btn {
-    background: #334155; border: none; color: #fff;
-    width: 32px; height: 32px; border-radius: 6px;
-    font-size: 18px; cursor: pointer; display: flex;
-    align-items: center; justify-content: center; font-family: inherit;
+  .header-title { color: #fff; font-size: 15px; font-weight: 700; }
+  .header-sub { color: var(--slate-light); font-size: 12px; margin-left: 4px; }
+  .stage-nav {
+    display: flex; align-items: center; gap: 2px;
+    padding: 0 20px; height: 38px;
+    overflow-x: auto; scrollbar-width: none;
   }
-  .zoom-btn:hover { background: #475569; }
-  #zoom-label { color: #94a3b8; font-size: 12px; min-width: 45px; text-align: center; }
-  .reset-btn {
-    background: #334155; border: none; color: #cbd5e1;
-    height: 32px; border-radius: 6px; font-size: 12px;
-    cursor: pointer; padding: 0 12px; margin-left: 4px;
-    font-family: inherit;
+  .stage-nav::-webkit-scrollbar { display: none; }
+  .stage-nav a {
+    color: var(--slate-light); text-decoration: none;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+    white-space: nowrap; padding: 4px 10px; border-radius: 5px;
+    transition: background 0.15s, color 0.15s;
   }
-  .reset-btn:hover { background: #475569; }
+  .stage-nav a:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .stage-nav .sep { color: rgba(255,255,255,0.15); font-size: 10px; padding: 0 2px; }
 
-  #legend {
-    position: fixed; bottom: 16px; left: 16px;
-    background: #fff; border-radius: 10px; padding: 12px 16px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.1); z-index: 100;
-    display: flex; gap: 16px; font-size: 11px; color: #475569;
-    flex-wrap: wrap;
-  }
-  .leg-item { display: flex; align-items: center; gap: 6px; }
-  .leg-dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+  .page { max-width: 800px; margin: 0 auto; padding: 28px 20px 80px; }
 
-  #canvas-wrap {
-    position: fixed; top: 52px; left: 0; right: 0; bottom: 0;
-    cursor: grab; user-select: none; overflow: hidden;
+  .legend {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 18px; margin-bottom: 32px;
+    display: flex; flex-wrap: wrap; gap: 10px 20px;
   }
-  #canvas-wrap.dragging { cursor: grabbing; }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #475569; font-weight: 500; }
+  .ldot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
 
-  #svg-canvas { width: 100%; height: 100%; display: block; }
+  .stage-section { margin-bottom: 44px; }
+  .stage-banner {
+    background: var(--navy); color: #fff;
+    border-radius: 10px; padding: 14px 22px; margin-bottom: 16px;
+  }
+  .stage-num { font-size: 10px; font-weight: 800; letter-spacing: 2px; opacity: 0.55; text-transform: uppercase; }
+  .stage-name { font-size: 16px; font-weight: 800; letter-spacing: -0.3px; }
+
+  .card {
+    border-radius: 8px; padding: 16px 18px;
+    margin-bottom: 10px; border-width: 1.5px; border-style: solid;
+  }
+  .wt  { background: #fff; border-color: #334155; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .br  { background: #fef9c3; border-color: #ca8a04; }
+  .kp  { background: #ecfdf5; border-color: #059669; }
+  .fw  { background: #eff6ff; border-color: #3b82f6; }
+  .dq  { background: #fef2f2; border-color: #dc2626; }
+  .pc  { background: #fffbeb; border-color: #d97706; }
+
+  .clabel {
+    font-size: 10px; font-weight: 800; letter-spacing: 1.5px;
+    text-transform: uppercase; margin-bottom: 8px; opacity: 0.6;
+  }
+  .wt .clabel  { color: #334155; }
+  .br .clabel  { color: #713f12; }
+  .kp .clabel  { color: #064e3b; }
+  .fw .clabel  { color: #1e3a5f; }
+  .dq .clabel  { color: #991b1b; }
+  .pc .clabel  { color: #92400e; }
+
+  .ctitle { font-size: 13.5px; font-weight: 800; margin-bottom: 6px; }
+  .wt .ctitle  { color: #1e293b; }
+  .br .ctitle  { color: #713f12; }
+  .kp .ctitle  { color: #064e3b; }
+  .fw .ctitle  { color: #1e3a5f; }
+  .dq .ctitle  { color: #991b1b; }
+  .pc .ctitle  { color: #92400e; }
+
+  .qt  { font-size: 14.5px; color: #1e293b; line-height: 1.6; }
+  .nt  { font-size: 12.5px; font-style: italic; font-weight: 600; color: #475569; margin-top: 8px; line-height: 1.5; }
+
+  .kp .qt, .kp .ctitle { color: #064e3b; font-size: 13.5px; }
+  .kp .nt { color: #064e3b; }
+  .fw .qt, .fw .ctitle { color: #1e3a5f; font-size: 13.5px; }
+  .fw .nt { color: #1e3a5f; }
+  .dq .qt, .dq .ctitle { color: #991b1b; font-size: 13.5px; }
+  .dq .nt { color: #991b1b; }
+  .br .qt, .br .nt { color: #713f12; font-size: 13.5px; }
+  .pc .qt, .pc .nt { color: #92400e; font-size: 13.5px; }
+
+  .two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+
+  .sub { background: rgba(0,0,0,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+  .sub-title {
+    font-size: 11px; font-weight: 800; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--slate);
+    margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+
+  .bhead { font-size: 11px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: var(--slate); margin: 14px 0 8px; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+
+  .card ul  { margin: 8px 0 0 18px; font-size: 13.5px; line-height: 1.7; }
+  .card ol  { margin: 8px 0 0 18px; font-size: 13.5px; line-height: 1.8; }
+  .card li  { margin-bottom: 3px; }
+  .fw ul, .fw ol { color: #1e3a5f; }
+
+  @media (max-width: 600px) {
+    .two-col, .three-col { grid-template-columns: 1fr; }
+    .header-sub { display: none; }
+    .page { padding: 18px 14px 60px; }
+  }
 </style>
 </head>
 <body>
 
-<div id="topbar">
-  <div class="tb-left">
-    <div class="tb-logo">A</div>
-    <span class="tb-title">Ad Ventur — Sales Script</span>
-    <span class="tb-sub">AI Dropshipping Course</span>
+<header class="header">
+  <div class="header-top">
+    <div class="logo">B</div>
+    <span class="header-title">Bronson — Sales Script</span>
+    <span class="header-sub">Phase 1: Discovery + Problem Awareness</span>
   </div>
-  <div class="tb-right">
-    <button class="zoom-btn" onclick="zoom(-0.1)">−</button>
-    <span id="zoom-label">75%</span>
-    <button class="zoom-btn" onclick="zoom(0.1)">+</button>
-    <button class="reset-btn" onclick="resetView()">Reset</button>
+  <nav class="stage-nav">
+    <a href="#s1">S1: Warm Up</a><span class="sep">·</span>
+    <a href="#s2">S2: Current State</a><span class="sep">·</span>
+    <a href="#s3">S3: Problem</a><span class="sep">·</span>
+    <a href="#s4">S4: Summarize</a><span class="sep">·</span>
+    <a href="#s5">S5: Financial QA</a><span class="sep">·</span>
+    <a href="#s6">S6: Sell the Need</a><span class="sep">·</span>
+    <a href="#s7">S7: Pitch</a><span class="sep">·</span>
+    <a href="#s8">S8: Onboarding</a><span class="sep">·</span>
+    <a href="#s9">S9: HT Need</a><span class="sep">·</span>
+    <a href="#s10">S10: Solidify</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <div class="legend">
+    <div class="legend-item"><div class="ldot" style="background:#fff;border:1.5px solid #334155;"></div>Word Track</div>
+    <div class="legend-item"><div class="ldot" style="background:#fef9c3;border:1.5px solid #ca8a04;"></div>Branch / Response</div>
+    <div class="legend-item"><div class="ldot" style="background:#ecfdf5;border:1.5px solid #059669;"></div>Qualified / Key Point</div>
+    <div class="legend-item"><div class="ldot" style="background:#eff6ff;border:1.5px solid #3b82f6;"></div>Framework / Rule</div>
+    <div class="legend-item"><div class="ldot" style="background:#fef2f2;border:1.5px solid #dc2626;"></div>DQ / Stop / Hard Rule</div>
+    <div class="legend-item"><div class="ldot" style="background:#fffbeb;border:1.5px solid #d97706;"></div>Pace</div>
   </div>
-</div>
-
-<div id="legend">
-  <div class="leg-item">
-    <div class="leg-dot" style="background:#fff;border:1.5px solid #334155;"></div> Word Track
-  </div>
-  <div class="leg-item">
-    <div class="leg-dot" style="background:#fef9c3;border:1.5px solid #ca8a04;"></div> Branch / Response
-  </div>
-  <div class="leg-item">
-    <div class="leg-dot" style="background:#ecfdf5;border:1.5px solid #059669;"></div> Principle / Outcome
-  </div>
-  <div class="leg-item">
-    <div class="leg-dot" style="background:#eff6ff;border:1.5px solid #3b82f6;"></div> Framework / Rule
-  </div>
-  <div class="leg-item">
-    <div class="leg-dot" style="background:#1e293b;border:1.5px solid #1e293b;"></div> Stage Label
-  </div>
-</div>
-
-<div id="canvas-wrap">
-  <svg id="svg-canvas" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
-        <circle cx="2" cy="2" r="0.8" fill="#cbd5e1" opacity="0.5"/>
-      </pattern>
-      <filter id="shadow" x="-4%" y="-4%" width="108%" height="116%">
-        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
-      </filter>
-      <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-        <polygon points="0 0, 8 4, 0 8" fill="#94a3b8"/>
-      </marker>
-      <marker id="arrow-dashed" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-        <polygon points="0 0, 8 4, 0 8" fill="#94a3b8"/>
-      </marker>
-    </defs>
-    <rect width="100%" height="100%" fill="url(#dots)"/>
-    <g id="main-group">
-      <!-- rendered by JS -->
-    </g>
-  </svg>
-</div>
-
-<script>
-// ─────────────────────────────────────────────────────────────────
-//  NODE DATA  — edit text here to change script content
-//
-//  Types:
-//    'stage'      → dark label (STAGE 1, WARM UP THE LEAD)
-//    'word-track' → white card with border (what to say)
-//    'branch'     → yellow card (response paths)
-//    'principle'  → green card (★ coaching notes)
-//    'framework'  → blue card (rules / frameworks)
-//
-//  x, y = top-left corner (in canvas pixels at 1× scale)
-//  w, h = width / height
-//  For 'stage': stageNum + title
-//  For 'branch': title (bold) + sub (italic, optional)
-//  All others: html (inner HTML, use \n for new lines)
-// ─────────────────────────────────────────────────────────────────
-const NODES = [
-
-  // ══ STAGE 1: WARM UP THE LEAD ════════════════════════════════
-  { id: 's1', type: 'stage', x: 600, y: 30, w: 200, h: 60,
-    stageNum: '1', title: 'WARM UP THE LEAD' },
-
-  { id: 's1_open', type: 'word-track', x: 460, y: 120, w: 480, h: 110,
-    html: `"Hey, is this [Name]?\n\nWhat's going on [Name]? This is [Rep] from Kaua's team here. I saw you requested the free course to start AI dropshipping, is that correct?"` },
-
-  { id: 's1_qualify', type: 'word-track', x: 460, y: 270, w: 480, h: 110,
-    html: `"Awesome, we'll get you access to everything here in a sec. Just kinda walk me through, [Name] — what exactly got you interested in joining the free course and learning how to dropship with AI?"` },
-
-  { id: 's1_b_escape', type: 'branch', x: 100, y: 430, w: 260, h: 70,
-    title: 'ESCAPE THE MATRIX',
-    sub: 'Making money, replace job, freedom, new income, side hustle' },
-
-  { id: 's1_b_vague', type: 'branch', x: 560, y: 430, w: 280, h: 70,
-    title: 'VAGUE / JUST LOOKING',
-    sub: 'Just checking it out, not sure yet, looking for info' },
-
-  { id: 's1_b_b2b', type: 'branch', x: 1040, y: 430, w: 260, h: 70,
-    title: 'B2B / SCALE BUSINESS',
-    sub: 'Has a business, wants more clients, grow company' },
-
-  { id: 's1_escape_q', type: 'word-track', x: 30, y: 550, w: 400, h: 110,
-    html: `"Ok, and I'm sure you're aware there's a lot of business models out there. I guess, what did you see in Kaua's content that made you feel like AI dropshipping would be the right fit for you?"` },
-
-  { id: 's1_escape_p', type: 'principle', x: 30, y: 680, w: 400, h: 60,
-    html: `★ Get them to articulate WHY this business model. Their answer tells you how aware they are of what AI dropshipping actually is.` },
-
-  { id: 's1_vague_q', type: 'word-track', x: 460, y: 550, w: 480, h: 130,
-    html: `"Got you. People typically request the free course for one of two reasons: they're either looking for another source of income, or they're already doing dropshipping and just looking to get to that next level. Which one of those boats do you feel like you're in personally?"` },
-
-  { id: 's1_vague_p', type: 'principle', x: 460, y: 700, w: 480, h: 50,
-    html: `★ "Just looking for info" people don't buy. This question forces them to pick a lane. Whatever they pick, follow that path.` },
-
-  { id: 's1_b2b_q', type: 'word-track', x: 970, y: 550, w: 400, h: 110,
-    html: `"Awesome, and I'm sure you're aware that there are a lot of tools and courses out there in this industry. I guess, what did you see in Kaua's content that made you want to apply to work with him specifically?"` },
-
-  // ══ STAGE 2: CURRENT STATE ════════════════════════════════════
-  { id: 's2', type: 'stage', x: 600, y: 820, w: 200, h: 60,
-    stageNum: '2', title: 'CURRENT STATE' },
 
-  { id: 's2_q', type: 'word-track', x: 460, y: 910, w: 480, h: 90,
-    html: `"Ok, well just so I could understand your current situation a little better — what exactly are you doing for work right now?"` },
-
-  { id: 's2_nojob', type: 'branch', x: 300, y: 1050, w: 160, h: 50,
-    title: 'NO JOB' },
-
-  { id: 's2_hasjob', type: 'branch', x: 940, y: 1050, w: 160, h: 50,
-    title: 'HAS A JOB' },
-
-  { id: 's2_nojob_q', type: 'word-track', x: 160, y: 1130, w: 440, h: 90,
-    html: `"Ok, and I guess what's the goal here with AI dropshipping? Are you hoping this could become your main source of income, or what does that look like?"` },
-
-  { id: 's2_hasjob_q', type: 'word-track', x: 800, y: 1130, w: 440, h: 90,
-    html: `"Oh, you're doing [JOB]. And I guess, what would be the goal here with AI dropshipping? Are you hoping this could replace the [JOB] job, or what does that look like?"` },
-
-  { id: 's2_p', type: 'principle', x: 460, y: 1260, w: 480, h: 50,
-    html: `★ We need to know: do they want to REPLACE their situation or ADD to it? This determines how deep we go on problem awareness.` },
-
-  // ══ STAGE 3: PROBLEM AWARENESS ════════════════════════════════
-  { id: 's3', type: 'stage', x: 570, y: 1370, w: 260, h: 60,
-    stageNum: '3', title: 'PROBLEM AWARENESS' },
-
-  { id: 's3_path1', type: 'branch', x: 60, y: 1480, w: 300, h: 60,
-    title: 'PATH 1: "YES, I WANT OUT"',
-    sub: '★ EASY' },
-
-  { id: 's3_path2', type: 'branch', x: 550, y: 1480, w: 300, h: 60,
-    title: `PATH 2: "JOB'S GOOD, JUST WANT X"`,
-    sub: '★ MEDIUM' },
-
-  { id: 's3_path3', type: 'branch', x: 1040, y: 1480, w: 300, h: 60,
-    title: 'PATH 3: "NOTHING WRONG, JUST LOOKING"',
-    sub: '★ HARDEST' },
-
-  { id: 's3_p1_q1', type: 'word-track', x: 20, y: 1580, w: 380, h: 70,
-    html: `"Ok, and I guess — what's causing you to want to get out of your [JOB], bro?"` },
-
-  { id: 's3_p1_q2', type: 'word-track', x: 20, y: 1680, w: 380, h: 70,
-    html: `"And when you say [THEIR WORD] — can you give me an example? What's that actually look like day to day?"` },
-
-  { id: 's3_p1_see', type: 'principle', x: 20, y: 1780, w: 380, h: 55,
-    html: `★ SEE: Get the specific event or reality they experience. "My back is messed up from lifting equipment."` },
-
-  { id: 's3_p1_q3', type: 'word-track', x: 20, y: 1860, w: 380, h: 120,
-    html: `"And when you say [THEIR WORD], like — can you give me an example? What's that actually look like day to day?"\n\n(Probe & clarify — mirror their vague word back and ask for specifics. Keep probing until you get the FEEL.)` },
-
-  { id: 's3_p1_feel', type: 'principle', x: 20, y: 2010, w: 380, h: 55,
-    html: `★ FEEL: Get the negative emotion. "I can't sleep, I never recover, I go right back to work."` },
-
-  { id: 's3_p2_q1', type: 'word-track', x: 510, y: 1580, w: 380, h: 80,
-    html: `"Ok, and I guess — what's preventing you from [MAKING MORE MONEY / HAVING FREEDOM] with what you're currently doing?"` },
-
-  { id: 's3_p2_fw', type: 'framework', x: 510, y: 1690, w: 380, h: 130,
-    html: `CLARIFY VAGUE WORDS:\n• "capped" → "How do you mean?"\n• "freedom" → "What do you mean by that?"\n• "more money" → "How much are you making now?"\n• "stuck" → "Give me an example?"\n• "limited" → "Limited in what way?"` },
-
-  { id: 's3_p2_q2', type: 'word-track', x: 510, y: 1850, w: 380, h: 60,
-    html: `"And how much are you making right now, if you don't mind me asking?"` },
-
-  { id: 's3_p2_q3', type: 'word-track', x: 510, y: 1940, w: 380, h: 90,
-    html: `"I don't want to assume anything, but — what's wrong with making $[X]k a month? Is that not enough, or what's going on?"\n\nALT: "$7k is not bad. What makes you feel like it's not enough?"` },
-
-  { id: 's3_p2_q4', type: 'word-track', x: 510, y: 2060, w: 380, h: 70,
-    html: `"And I guess, you're living check to check — is that causing any problems? What does that actually look like for you?"` },
-
-  { id: 's3_p2_p', type: 'principle', x: 510, y: 2150, w: 380, h: 50,
-    html: `★ DON'T say "what negative impact is that having on you" — too salesy. Keep it conversational.` },
-
-  { id: 's3_p3_q1', type: 'word-track', x: 1000, y: 1580, w: 380, h: 80,
-    html: `"Yeah, no, 100% — but I guess, what's kind of been going on at the job that's having you look into other things?"` },
-
-  { id: 's3_p3_b1', type: 'branch', x: 1000, y: 1700, w: 180, h: 60,
-    title: '"Not making enough"',
-    sub: '→ Goes to PATH 2' },
-
-  { id: 's3_p3_b2', type: 'branch', x: 1200, y: 1700, w: 180, h: 60,
-    title: '"Job isn\'t it anymore"',
-    sub: '→ Goes to PATH 1' },
-
-  { id: 's3_p3_still', type: 'branch', x: 1100, y: 1800, w: 180, h: 40,
-    title: 'STILL VAGUE' },
-
-  { id: 's3_p3_q2', type: 'word-track', x: 1000, y: 1870, w: 380, h: 80,
-    html: `"For sure — is there any particular reason why you're not able to [make more money / hit your goals] with your current job right now?"` },
-
-  { id: 's3_p3_p', type: 'principle', x: 1000, y: 1980, w: 380, h: 85,
-    html: `★ You CANNOT move forward without a tangible problem. If they won't give one, they're not buying. Keep probing or recognize the tire-kicker and fast-track to product pitch.` },
-
-  // ══ STAGE 4: SUMMARIZE + TRANSITION ══════════════════════════
-  { id: 's4', type: 'stage', x: 570, y: 2270, w: 260, h: 60,
-    stageNum: '4', title: 'SUMMARIZE + TRANSITION' },
-
-  { id: 's4_fw', type: 'framework', x: 100, y: 2360, w: 380, h: 210,
-    html: `THE "I DON'T HAVE" RULE:\n\nNever finish with "I WANT." Always finish with "I DON'T HAVE."\n\n❌ "So you want more freedom..."\n✅ "So you're not able to travel or help your family because you're capped at $7K..."\n\n"I want" is aspiration. "I don't have" is pain. Pain drives action.` },
-
-  { id: 's4_q', type: 'word-track', x: 510, y: 2370, w: 480, h: 100,
-    html: `"Ok, so just to make sure I understand — you want to be able to [THEIR SPECIFIC DESIRE], but right now you're in [THEIR SITUATION] because of [WHAT THEY DON'T HAVE]. Is that correct?"` },
-
-  { id: 's4_b1', type: 'word-track', x: 30, y: 2510, w: 320, h: 115,
-    html: `"Ok, and for you personally, how much money would you need to be making per month in order for this to be your main source of income?"` },
-
-  { id: 's4_b2', type: 'word-track', x: 370, y: 2510, w: 320, h: 115,
-    html: `"Ok, and for you personally, how much money would you need to be making per month in order for this to be a solid side hustle for yourself?"` },
-
-  { id: 's4_b3', type: 'word-track', x: 710, y: 2510, w: 320, h: 115,
-    html: `"Ok, and for you personally, how much money would you need to be making per month in order to fully replace your [JOB] job?"` },
-
-  { id: 's4_b4', type: 'word-track', x: 1050, y: 2510, w: 320, h: 115,
-    html: `"Ok, and for you personally, how much money would you need to be making per month in order for this to be a solid side hustle?"` },
-
-  { id: 's4_goal', type: 'word-track', x: 460, y: 2660, w: 480, h: 85,
-    html: `"$5k! What makes you say $5k specifically? How would that change things for you?"\n\n(Repeat back their exact number. Challenge it. Get them to paint the picture.)` },
-
-  // ══ STAGE 5: FINANCIAL QUALIFYING ════════════════════════════
-  { id: 's5', type: 'stage', x: 570, y: 2790, w: 260, h: 60,
-    stageNum: '5', title: 'FINANCIAL QUALIFYING' },
-
-  { id: 's5_fw1', type: 'framework', x: 40, y: 2880, w: 340, h: 130,
-    html: `⚠️ GET OUT ASAP\n\nDo NOT linger here. Get the number, qualify, move on.\n\nONLY DQ = literally < $50.\nEveryone else → Sell the Appointment.\nHT-qualified leads get upsell attempt later.` },
-
-  { id: 's5_q', type: 'word-track', x: 420, y: 2880, w: 520, h: 130,
-    html: `"Ok, and if we could... help you [STATED GOALS]... I'm sure you're aware, like any other business model, when it comes to our program, there is start up capital involved there... as I'm sure you know what sorts of strategies we could even use in your case. How much capital do you have set aside at the moment to get the business up and running?"` },
-
-  { id: 's5_fw2', type: 'framework', x: 1000, y: 2880, w: 300, h: 145,
-    html: `HT QUALIFICATIONS:\n• $2k liquid\n  — OR —\n• Minimum $4k credit limit\n  — OR —\n• 500+ credit score, 21+ and $500 Budget` },
-
-  { id: 's5_dq_b', type: 'branch', x: 1100, y: 3060, w: 200, h: 65,
-    title: '< $50 / Broke',
-    sub: 'Literally cannot afford anything' },
-
-  { id: 's5_dq_fw', type: 'framework', x: 1080, y: 3150, w: 240, h: 120,
-    html: `TRUE DQ\n\n"No worries at all bro. Go through the free course — it's yours regardless. When you're in a position to invest, hit us up."` },
-
-  { id: 's5_ez', type: 'branch', x: 80, y: 3060, w: 220, h: 80,
-    title: '*EZ Qualified*',
-    sub: 'I have x amount set aside to invest!\n($ is enough)' },
-
-  { id: 's5_iffy', type: 'branch', x: 380, y: 3060, w: 260, h: 110,
-    title: '*Iffy Qualified*',
-    sub: '$ is enough but...\n- might / maybe / potentially\n- prospect sounds unsure' },
-
-  { id: 's5_low', type: 'branch', x: 800, y: 3060, w: 220, h: 80,
-    title: '"Budget too low"',
-    sub: 'Has money but less than ideal range' },
-
-  { id: 's5_ht_fw', type: 'framework', x: 1100, y: 3060, w: 280, h: 150,
-    html: `HT Qualifications\n- $2k liquid\n  or\n- Minimum $4k credit limit\n  or\n- 500+ credit score + $500 budget` },
-
-  // ══ STAGE 6: PITCH THE PROGRAM ════════════════════════════════
-  { id: 's6', type: 'stage', x: 570, y: 3320, w: 260, h: 60,
-    stageNum: '6', title: 'PITCH THE PROGRAM' },
-
-  { id: 's6_transition', type: 'word-track', x: 300, y: 3410, w: 580, h: 90,
-    html: `"Ok, so here's what I want to do — I want to walk you through exactly what we do, why it works, and what results students are getting. Then at the end, if it makes sense, we can talk about what it looks like to actually get started. Sound good?"` },
-
-  { id: 's6_p1', type: 'principle', x: 300, y: 3520, w: 580, h: 60,
-    html: `★ Get the YES before pitching. Consent to the pitch = consent to the close. Never pitch without permission.` },
-
-  { id: 's6_pitch', type: 'word-track', x: 200, y: 3610, w: 780, h: 150,
-    html: `"So what we do is we teach people how to build and scale an AI dropshipping store. Basically, AI does the heavy lifting — product research, ad copy, store setup — while you focus on building the business. Students are doing [RESULT] in their first [TIMEFRAME]. The program includes [OFFER STACK]. We only work with people we know we can get results for, which is why we're on this call today."` },
-
-  { id: 's6_p2', type: 'principle', x: 200, y: 3780, w: 780, h: 55,
-    html: `★ Tie the pitch back to THEIR specific problem. Use their words. "You mentioned you want to replace your [JOB] — this is exactly how."` },
-
-  // ══ STAGE 7: HANDLE OBJECTIONS ════════════════════════════════
-  { id: 's7', type: 'stage', x: 570, y: 3870, w: 260, h: 60,
-    stageNum: '7', title: 'HANDLE OBJECTIONS' },
-
-  { id: 's7_b1', type: 'branch', x: 50, y: 3960, w: 250, h: 60,
-    title: '"I need to think about it"' },
-
-  { id: 's7_b2', type: 'branch', x: 330, y: 3960, w: 250, h: 60,
-    title: '"I need to talk to my spouse"' },
-
-  { id: 's7_b3', type: 'branch', x: 610, y: 3960, w: 250, h: 60,
-    title: '"I don\'t have the money"' },
-
-  { id: 's7_b4', type: 'branch', x: 890, y: 3960, w: 250, h: 60,
-    title: '"I need to do more research"' },
-
-  { id: 's7_think', type: 'word-track', x: 50, y: 4060, w: 250, h: 110,
-    html: `"Totally, I get it. Out of curiosity — what specifically are you thinking about? Is it the money side, or is it more like you're not sure if it's the right fit?"` },
-
-  { id: 's7_spouse', type: 'word-track', x: 330, y: 4060, w: 250, h: 110,
-    html: `"Absolutely — is there any particular reason they'd need to be involved in this decision? I want to make sure I understand the situation."` },
-
-  { id: 's7_money', type: 'word-track', x: 610, y: 4060, w: 250, h: 110,
-    html: `"Ok, so if money wasn't an issue — is this something you'd want to do? Like, does the actual program make sense to you, or is there something else holding you back?"` },
-
-  { id: 's7_research', type: 'word-track', x: 890, y: 4060, w: 250, h: 110,
-    html: `"I respect that. Out of curiosity, what exactly would you be researching? Like what specific question do you need answered before you'd feel comfortable moving forward?"` },
-
-  // ══ STAGE 8: CLOSE ════════════════════════════════════════════
-  { id: 's8', type: 'stage', x: 570, y: 4220, w: 260, h: 60,
-    stageNum: '8', title: 'THE CLOSE' },
-
-  { id: 's8_q', type: 'word-track', x: 300, y: 4310, w: 580, h: 90,
-    html: `"Ok, so based on everything we talked about — you want [THEIR GOAL], you're currently stuck because [THEIR PROBLEM], and this program is exactly how you get there. What's stopping you from getting started today?"` },
-
-  { id: 's8_p', type: 'principle', x: 300, y: 4420, w: 580, h: 55,
-    html: `★ Silence is your friend. Ask the question and WAIT. The first person to speak loses. Give them time to respond.` },
-
-  { id: 's8_close', type: 'word-track', x: 300, y: 4500, w: 580, h: 90,
-    html: `"Perfect. Let's get you set up. Here's what we're going to do right now — [NEXT STEPS: payment link, onboarding, etc]. You'll get access within [TIMEFRAME] and we'll have someone reach out within [X] hours to kick things off."` },
-
-  // ══ STAGE 9: UPSELL / FOLLOW-UP ══════════════════════════════
-  { id: 's9', type: 'stage', x: 570, y: 4640, w: 260, h: 60,
-    stageNum: '9', title: 'UPSELL / FOLLOW-UP' },
-
-  { id: 's9_q', type: 'word-track', x: 300, y: 4730, w: 580, h: 90,
-    html: `"By the way — a lot of people who join also end up adding [UPSELL] because [REASON IT MAKES SENSE]. We have a slot open right now. Would that be something you'd want to look at while we're on the call?"` },
-
-  { id: 's9_p', type: 'principle', x: 300, y: 4840, w: 580, h: 60,
-    html: `★ Only offer the upsell AFTER the initial close. Never pitch both at once. One win at a time.` },
-
-  { id: 's9_followup', type: 'framework', x: 300, y: 4920, w: 580, h: 100,
-    html: `FOLLOW-UP SEQUENCE (if no close today):\n• Same day: "Hey, just following up from our call..."\n• Day 2: Send a relevant result/testimonial\n• Day 4: "Spot is still open — are you in or out?"\n• Day 7: Last attempt, then move on` },
-];
-
-// ─────────────────────────────────────────────────────────────────
-//  ARROW DATA — { from: nodeId, to: nodeId, dashed: bool }
-//  dashed = true for "alternative" or branch paths
-// ─────────────────────────────────────────────────────────────────
-const ARROWS = [
-  // Stage 1 main flow
-  { from: 's1',         to: 's1_open',      dashed: false },
-  { from: 's1_open',    to: 's1_qualify',   dashed: false },
-  { from: 's1_qualify', to: 's1_b_escape',  dashed: true  },
-  { from: 's1_qualify', to: 's1_b_vague',   dashed: false },
-  { from: 's1_qualify', to: 's1_b_b2b',     dashed: true  },
-  { from: 's1_b_escape',to: 's1_escape_q',  dashed: false },
-  { from: 's1_escape_q',to: 's1_escape_p',  dashed: false },
-  { from: 's1_b_vague', to: 's1_vague_q',   dashed: false },
-  { from: 's1_vague_q', to: 's1_vague_p',   dashed: false },
-  { from: 's1_b_b2b',   to: 's1_b2b_q',    dashed: false },
-
-  // All paths merge → Stage 2
-  { from: 's1_escape_p',to: 's2',           dashed: true  },
-  { from: 's1_vague_p', to: 's2',           dashed: false },
-  { from: 's1_b2b_q',   to: 's2',           dashed: true  },
-
-  // Stage 2
-  { from: 's2',         to: 's2_q',         dashed: false },
-  { from: 's2_q',       to: 's2_nojob',     dashed: true  },
-  { from: 's2_q',       to: 's2_hasjob',    dashed: true  },
-  { from: 's2_nojob',   to: 's2_nojob_q',   dashed: false },
-  { from: 's2_hasjob',  to: 's2_hasjob_q',  dashed: false },
-  { from: 's2_nojob_q', to: 's2_p',         dashed: true  },
-  { from: 's2_hasjob_q',to: 's2_p',         dashed: true  },
-
-  // Stage 3
-  { from: 's2_p',       to: 's3',           dashed: false },
-  { from: 's3',         to: 's3_path1',     dashed: true  },
-  { from: 's3',         to: 's3_path2',     dashed: false },
-  { from: 's3',         to: 's3_path3',     dashed: true  },
-
-  // Path 1
-  { from: 's3_path1',   to: 's3_p1_q1',    dashed: false },
-  { from: 's3_p1_q1',   to: 's3_p1_q2',    dashed: false },
-  { from: 's3_p1_q2',   to: 's3_p1_see',   dashed: false },
-  { from: 's3_p1_see',  to: 's3_p1_q3',    dashed: false },
-  { from: 's3_p1_q3',   to: 's3_p1_feel',  dashed: false },
-
-  // Path 2
-  { from: 's3_path2',   to: 's3_p2_q1',    dashed: false },
-  { from: 's3_p2_q1',   to: 's3_p2_fw',    dashed: false },
-  { from: 's3_p2_fw',   to: 's3_p2_q2',    dashed: false },
-  { from: 's3_p2_q2',   to: 's3_p2_q3',    dashed: false },
-  { from: 's3_p2_q3',   to: 's3_p2_q4',    dashed: false },
-  { from: 's3_p2_q4',   to: 's3_p2_p',     dashed: false },
-
-  // Path 3
-  { from: 's3_path3',   to: 's3_p3_q1',    dashed: false },
-  { from: 's3_p3_q1',   to: 's3_p3_b1',    dashed: true  },
-  { from: 's3_p3_q1',   to: 's3_p3_b2',    dashed: true  },
-  { from: 's3_p3_b1',   to: 's3_p3_still', dashed: false },
-  { from: 's3_p3_b2',   to: 's3_p3_still', dashed: false },
-  { from: 's3_p3_still',to: 's3_p3_q2',    dashed: false },
-  { from: 's3_p3_q2',   to: 's3_p3_p',     dashed: false },
-
-  // All paths → Stage 4
-  { from: 's3_p1_feel', to: 's4',           dashed: true  },
-  { from: 's3_p2_p',    to: 's4',           dashed: true  },
-  { from: 's3_p3_p',    to: 's4',           dashed: true  },
-
-  // Stage 4
-  { from: 's4',         to: 's4_fw',        dashed: false },
-  { from: 's4',         to: 's4_q',         dashed: false },
-  { from: 's4_q',       to: 's4_b1',        dashed: true  },
-  { from: 's4_q',       to: 's4_b2',        dashed: true  },
-  { from: 's4_q',       to: 's4_b3',        dashed: true  },
-  { from: 's4_q',       to: 's4_b4',        dashed: true  },
-  { from: 's4_b1',      to: 's4_goal',      dashed: true  },
-  { from: 's4_b2',      to: 's4_goal',      dashed: true  },
-  { from: 's4_b3',      to: 's4_goal',      dashed: true  },
-  { from: 's4_b4',      to: 's4_goal',      dashed: true  },
-
-  // Stage 5
-  { from: 's4_goal',    to: 's5',           dashed: false },
-  { from: 's5',         to: 's5_fw1',       dashed: false },
-  { from: 's5',         to: 's5_q',         dashed: false },
-  { from: 's5',         to: 's5_fw2',       dashed: false },
-  { from: 's5_q',       to: 's5_ez',        dashed: false },
-  { from: 's5_q',       to: 's5_iffy',      dashed: false },
-  { from: 's5_q',       to: 's5_low',       dashed: false },
-  { from: 's5_q',       to: 's5_dq_b',      dashed: true  },
-  { from: 's5_dq_b',    to: 's5_dq_fw',     dashed: false },
-
-  // Qualified → Stage 6
-  { from: 's5_ez',      to: 's6',           dashed: true  },
-  { from: 's5_iffy',    to: 's6',           dashed: true  },
-  { from: 's5_low',     to: 's6',           dashed: true  },
-
-  // Stage 6
-  { from: 's6',         to: 's6_transition',dashed: false },
-  { from: 's6_transition',to:'s6_p1',       dashed: false },
-  { from: 's6_p1',      to: 's6_pitch',     dashed: false },
-  { from: 's6_pitch',   to: 's6_p2',        dashed: false },
-
-  // Stage 7
-  { from: 's6_p2',      to: 's7',           dashed: false },
-  { from: 's7',         to: 's7_b1',        dashed: true  },
-  { from: 's7',         to: 's7_b2',        dashed: true  },
-  { from: 's7',         to: 's7_b3',        dashed: true  },
-  { from: 's7',         to: 's7_b4',        dashed: true  },
-  { from: 's7_b1',      to: 's7_think',     dashed: false },
-  { from: 's7_b2',      to: 's7_spouse',    dashed: false },
-  { from: 's7_b3',      to: 's7_money',     dashed: false },
-  { from: 's7_b4',      to: 's7_research',  dashed: false },
-
-  // All objection handles → Stage 8
-  { from: 's7_think',   to: 's8',           dashed: true  },
-  { from: 's7_spouse',  to: 's8',           dashed: true  },
-  { from: 's7_money',   to: 's8',           dashed: true  },
-  { from: 's7_research',to: 's8',           dashed: true  },
-
-  // Stage 8
-  { from: 's8',         to: 's8_q',         dashed: false },
-  { from: 's8_q',       to: 's8_p',         dashed: false },
-  { from: 's8_p',       to: 's8_close',     dashed: false },
-
-  // Stage 9
-  { from: 's8_close',   to: 's9',           dashed: false },
-  { from: 's9',         to: 's9_q',         dashed: false },
-  { from: 's9_q',       to: 's9_p',         dashed: false },
-  { from: 's9_p',       to: 's9_followup',  dashed: false },
-];
-
-// ─────────────────────────────────────────────────────────────────
-//  RENDERING
-// ─────────────────────────────────────────────────────────────────
-const COLORS = {
-  'stage':      { fill: '#1e293b', stroke: '#1e293b', textColor: '#ffffff' },
-  'word-track': { fill: '#ffffff', stroke: '#334155', textColor: '#1e293b' },
-  'branch':     { fill: '#fef9c3', stroke: '#ca8a04', textColor: '#713f12' },
-  'principle':  { fill: '#ecfdf5', stroke: '#059669', textColor: '#064e3b' },
-  'framework':  { fill: '#eff6ff', stroke: '#3b82f6', textColor: '#1e3a5f' },
-};
-
-const NS = 'http://www.w3.org/2000/svg';
-
-function nodeById(id) { return NODES.find(n => n.id === id); }
-
-function nodeCenter(n) {
-  return { x: n.x + n.w / 2, y: n.y + n.h / 2 };
-}
-function nodeBottom(n) {
-  return { x: n.x + n.w / 2, y: n.y + n.h };
-}
-function nodeTop(n) {
-  return { x: n.x + n.w / 2, y: n.y };
-}
-
-function buildPath(a, b, dashed) {
-  const x1 = a.x + a.w / 2, y1 = a.y + a.h;
-  const x2 = b.x + b.w / 2, y2 = b.y;
-  const dy = y2 - y1;
-  const dx = x2 - x1;
-  const cp1y = y1 + Math.max(30, dy * 0.4);
-  const cp2y = y2 - Math.max(30, dy * 0.4);
-  return `M ${x1} ${y1} C ${x1} ${cp1y}, ${x2} ${cp2y}, ${x2} ${y2}`;
-}
-
-function renderArrows(g) {
-  for (const arr of ARROWS) {
-    const from = nodeById(arr.from);
-    const to   = nodeById(arr.to);
-    if (!from || !to) continue;
-    const path = document.createElementNS(NS, 'path');
-    path.setAttribute('d', buildPath(from, to));
-    path.setAttribute('fill', 'none');
-    path.setAttribute('stroke', '#94a3b8');
-    path.setAttribute('stroke-width', '2');
-    if (arr.dashed) path.setAttribute('stroke-dasharray', '6,4');
-    path.setAttribute('marker-end', 'url(#arrow)');
-    g.appendChild(path);
-  }
-}
-
-function escHtml(s) {
-  return s
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;');
-}
-
-function buildNodeHtml(node) {
-  const c = COLORS[node.type];
-  if (node.type === 'stage') {
-    return `<div style="text-align:center;">
-      <div style="font-size:11px;opacity:0.7;letter-spacing:2px;color:${c.textColor};">STAGE ${node.stageNum}</div>
-      <div style="font-size:15px;font-weight:800;color:${c.textColor};">${node.title}</div>
-    </div>`;
-  }
-  if (node.type === 'branch') {
-    let html = `<div style="font-size:12.5px;font-weight:700;color:${c.textColor};line-height:1.4;">${node.title}</div>`;
-    if (node.sub) {
-      html += `<div style="font-size:10.5px;opacity:0.65;margin-top:4px;font-style:italic;color:${c.textColor};">${node.sub.replace(/\n/g,'<br>')}</div>`;
-    }
-    return html;
-  }
-  // word-track, principle, framework
-  const lines = node.html
-    .replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/\n/g, '<br>');
-  return `<div style="font-size:12.5px;font-weight:400;color:${c.textColor};line-height:1.4;">${lines}</div>`;
-}
-
-function renderNodes(g) {
-  for (const node of NODES) {
-    const c = COLORS[node.type];
-    const grp = document.createElementNS(NS, 'g');
-
-    const rect = document.createElementNS(NS, 'rect');
-    rect.setAttribute('x', node.x);
-    rect.setAttribute('y', node.y);
-    rect.setAttribute('width', node.w);
-    rect.setAttribute('height', node.h);
-    rect.setAttribute('rx', node.type === 'stage' ? '8' : '6');
-    rect.setAttribute('fill', c.fill);
-    rect.setAttribute('stroke', c.stroke);
-    rect.setAttribute('stroke-width', '1.5');
-    if (node.type === 'word-track') rect.setAttribute('filter', 'url(#shadow)');
-    grp.appendChild(rect);
-
-    const fo = document.createElementNS(NS, 'foreignObject');
-    const pad = 12;
-    fo.setAttribute('x', node.x + pad);
-    fo.setAttribute('y', node.y + pad);
-    fo.setAttribute('width', node.w - pad * 2);
-    fo.setAttribute('height', node.h - pad * 2);
-    fo.style.pointerEvents = 'none';
-    fo.style.overflow = 'visible';
-
-    const div = document.createElement('div');
-    div.style.fontFamily = "'Inter', -apple-system, sans-serif";
-    div.style.fontSize = '12.5px';
-    div.style.lineHeight = '1.4';
-    div.style.whiteSpace = 'pre-wrap';
-    div.style.overflow = 'visible';
-    div.innerHTML = buildNodeHtml(node);
-    fo.appendChild(div);
-    grp.appendChild(fo);
-    g.appendChild(grp);
-  }
-}
-
-function init() {
-  const g = document.getElementById('main-group');
-  renderArrows(g);
-  renderNodes(g);
-  applyTransform();
-}
-
-// ─────────────────────────────────────────────────────────────────
-//  PAN + ZOOM
-// ─────────────────────────────────────────────────────────────────
-let scale = 0.75, panX = 20, panY = 10;
-let dragging = false, lastX = 0, lastY = 0;
-
-function applyTransform() {
-  document.getElementById('main-group').setAttribute(
-    'transform',
-    `translate(${panX}, ${panY}) scale(${scale})`
-  );
-  document.getElementById('zoom-label').textContent = Math.round(scale * 100) + '%';
-}
-
-function zoom(delta) {
-  scale = Math.max(0.2, Math.min(2, scale + delta));
-  applyTransform();
-}
-
-function resetView() {
-  scale = 0.75; panX = 20; panY = 10;
-  applyTransform();
-}
-
-const wrap = document.getElementById('canvas-wrap');
-
-wrap.addEventListener('mousedown', e => {
-  dragging = true; lastX = e.clientX; lastY = e.clientY;
-  wrap.classList.add('dragging');
-});
-window.addEventListener('mousemove', e => {
-  if (!dragging) return;
-  panX += e.clientX - lastX;
-  panY += e.clientY - lastY;
-  lastX = e.clientX; lastY = e.clientY;
-  applyTransform();
-});
-window.addEventListener('mouseup', () => {
-  dragging = false;
-  wrap.classList.remove('dragging');
-});
-
-wrap.addEventListener('wheel', e => {
-  e.preventDefault();
-  const delta = e.deltaY > 0 ? -0.08 : 0.08;
-  // zoom toward mouse pointer
-  const rect = wrap.getBoundingClientRect();
-  const mx = e.clientX - rect.left;
-  const my = e.clientY - rect.top - 0; // offset for topbar handled by fixed positioning
-  const oldScale = scale;
-  scale = Math.max(0.2, Math.min(2, scale + delta));
-  panX = mx - (mx - panX) * (scale / oldScale);
-  panY = my - (my - panY) * (scale / oldScale);
-  applyTransform();
-}, { passive: false });
-
-// Touch support
-let lastTouchDist = null;
-wrap.addEventListener('touchstart', e => {
-  if (e.touches.length === 1) {
-    dragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
-  }
-  if (e.touches.length === 2) {
-    lastTouchDist = Math.hypot(
-      e.touches[0].clientX - e.touches[1].clientX,
-      e.touches[0].clientY - e.touches[1].clientY
-    );
-  }
-}, { passive: true });
-wrap.addEventListener('touchmove', e => {
-  if (e.touches.length === 1 && dragging) {
-    panX += e.touches[0].clientX - lastX;
-    panY += e.touches[0].clientY - lastY;
-    lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
-    applyTransform();
-  }
-  if (e.touches.length === 2 && lastTouchDist !== null) {
-    const dist = Math.hypot(
-      e.touches[0].clientX - e.touches[1].clientX,
-      e.touches[0].clientY - e.touches[1].clientY
-    );
-    scale = Math.max(0.2, Math.min(2, scale * (dist / lastTouchDist)));
-    lastTouchDist = dist;
-    applyTransform();
-  }
-}, { passive: true });
-wrap.addEventListener('touchend', () => { dragging = false; lastTouchDist = null; });
-
-init();
-</script>
+  <!-- S1 -->
+  <section class="stage-section" id="s1">
+    <div class="stage-banner">
+      <div class="stage-num">Stage 1</div>
+      <div class="stage-name">Warm Up the Lead</div>
+    </div>
+
+    <div class="two-col">
+      <div class="card dq">
+        <div class="ctitle">⚠️ Tonality — Whole Call</div>
+        <div class="qt">Concerned "homie" tone from the first hello. Curious, calm, like a friend — never salesy. Sound like a salesperson and they close up.</div>
+      </div>
+      <div class="card pc">
+        <div class="ctitle">⚡ Pace — Speed = Authority</div>
+        <div class="qt">Keep it moving or they tune out / it feels like therapy. Fast + clear up top, keep the energy up. Slow down ONLY in the pain.</div>
+      </div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Opening</div>
+      <div class="qt">"Hey, is this [Name]?<br><br>What's going on [Name]? This is [Rep] from Bronson's team here. I saw you applied to get started with AI ecom, is that correct?"</div>
+      <div class="nt">PACE: Speed UP the first 10 sec but be crystal clear who/why/what — don't sound like every other cold caller or they tune out. PAIN is most important later: don't just chase goal-state — build the burning building (current situation → "how's that affecting other areas of your life?") then raise their vibrations.</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Interest Question</div>
+      <div class="qt">"Awesome, we'll get you access to everything here in a sec. Just kinda walk me through, [Name] — what exactly got you interested in joining the free course and learning how to build an AI ecom brand?"</div>
+    </div>
+
+    <div class="bhead">Responses — pick the matching path:</div>
+
+    <div class="three-col">
+      <div class="card br"><div class="ctitle">Escape the Matrix</div><div class="qt">Making money, replace job, freedom, new income, side hustle</div></div>
+      <div class="card br"><div class="ctitle">Vague / Just Looking</div><div class="qt">Just checking it out, not sure yet, looking for info</div></div>
+      <div class="card br"><div class="ctitle">B2B / Scale Business</div><div class="qt">Has a business, wants more clients, grow company</div></div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">If: Escape the Matrix</div>
+      <div class="card wt">
+        <div class="qt">"Ok, and I'm sure you're aware there's a lot of business models out there. I guess, what did you see in Bronson's content that made you feel like AI ecom would be the right fit for you?"</div>
+      </div>
+      <div class="card kp">
+        <div class="qt">★ Get them to articulate WHY this business model. Their answer tells you how aware they are of what AI ecom actually is.</div>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">If: Vague / Just Looking</div>
+      <div class="card wt">
+        <div class="qt">"Got you. People typically request the free course for one of two reasons: they're either looking for another source of income, or they're already doing AI ecom and just looking to get to that next level. Which one of those boats do you feel like you're in personally?"</div>
+      </div>
+      <div class="card kp">
+        <div class="qt">★ "Just looking for info" people don't buy. This question forces them to pick a lane. Whatever they pick, follow that path.</div>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">If: B2B / Scale Business</div>
+      <div class="card wt">
+        <div class="qt">"Awesome, and I'm sure you're aware that there are a lot of tools and courses out there in this industry. I guess, what did you see in Bronson's content that made you want to apply to work with him specifically?"</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S2 -->
+  <section class="stage-section" id="s2">
+    <div class="stage-banner">
+      <div class="stage-num">Stage 2</div>
+      <div class="stage-name">Current State</div>
+    </div>
+
+    <div class="card wt">
+      <div class="qt">"Ok, well just so I could understand your current situation a little better — what exactly are you doing for work right now?"</div>
+    </div>
+
+    <div class="two-col">
+      <div class="card br"><div class="ctitle">No Job</div></div>
+      <div class="card br"><div class="ctitle">Has a Job</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card wt">
+        <div class="clabel">If No Job</div>
+        <div class="qt">"Ok, and I guess what's the goal here with AI ecom? Are you hoping this could become your main source of income, or what does that look like?"</div>
+      </div>
+      <div class="card wt">
+        <div class="clabel">If Has a Job</div>
+        <div class="qt">"Oh, you're doing [JOB]. And I guess, what would be the goal here with AI ecom? Are you hoping this could replace your [JOB], or what does that look like?"</div>
+      </div>
+    </div>
+
+    <div class="card kp">
+      <div class="qt">★ We need to know: do they want to REPLACE their situation or ADD to it? This determines how deep we go on problem awareness.</div>
+    </div>
+  </section>
+
+  <!-- S3 -->
+  <section class="stage-section" id="s3">
+    <div class="stage-banner">
+      <div class="stage-num">Stage 3</div>
+      <div class="stage-name">Problem Awareness</div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">Path 1 — "Yes, I Want Out" &nbsp;★ Easy</div>
+      <div class="card wt">
+        <div class="qt">"Ok, and I guess — what's causing you to want to get out of your [JOB], bro?"</div>
+      </div>
+      <div class="card wt">
+        <div class="qt">"And when you say [THEIR WORD] — can you give me an example? What's that actually look like day to day?"</div>
+      </div>
+      <div class="card kp">
+        <div class="qt">★ SEE: Get the specific event or reality they experience. "My back is messed up from lifting equipment."</div>
+      </div>
+      <div class="card wt">
+        <div class="qt">"And what's that actually like to deal with day to day?"</div>
+        <div class="nt">Now go for the FEEL, not another example. Don't ask "what negative impact" — too salesy on low-ticket. Mirror their situation back and pull the emotion. Keep probing until you get how it actually feels.</div>
+      </div>
+      <div class="card kp">
+        <div class="qt">★ FEEL: Get the negative emotion. "I can't sleep, I never recover, I go right back to work."</div>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">Path 2 — "Job's Good, Just Want X" &nbsp;★ Medium</div>
+      <div class="card wt">
+        <div class="qt">"Oh okay — so the [JOB]'s going good for you? I guess, what does good actually look like for you? ...And how much are you making right now with that, if you don't mind me asking?"</div>
+      </div>
+      <div class="card wt">
+        <div class="qt">"Gotcha. I mean honestly, sounds like everything's going pretty good for you — so are you not able to make more money with what you're currently doing?"</div>
+        <div class="nt">PUSH-AWAY: by acting like things sound fine, you make THEM argue why they're stuck. Push them away and they sell themselves on the problem.</div>
+      </div>
+      <div class="card fw">
+        <div class="ctitle">Clarify Vague Words</div>
+        <ul>
+          <li>"capped" → "How do you mean?"</li>
+          <li>"freedom" → "What do you mean by that?"</li>
+          <li>"stuck" → "Give me an example?"</li>
+          <li>"limited" → "Limited in what way?"</li>
+        </ul>
+      </div>
+      <div class="card wt">
+        <div class="qt">"I don't want to assume anything, but — what's wrong with making $[X]k a month? Is that not enough, or what's going on?"</div>
+        <div class="nt">ALT: "$7k is not bad. What makes you feel like it's not enough?"</div>
+      </div>
+      <div class="card wt">
+        <div class="qt">"And I guess, you're living check to check — is that causing any problems? What does that actually look like for you?"</div>
+      </div>
+      <div class="card kp">
+        <div class="qt">★ DON'T say "what negative impact is that having on you" — too salesy for low-ticket. Keep it conversational.</div>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">Path 3 — "Nothing Wrong, Just Looking" &nbsp;★ Hardest</div>
+      <div class="card wt">
+        <div class="qt">"Yeah, no, 100% — but I guess, what's kind of been going on at the job that's having you look into other things?"</div>
+      </div>
+      <div class="two-col">
+        <div class="card br"><div class="ctitle">"Not making enough"</div><div class="qt">→ Goes to Path 2</div></div>
+        <div class="card br"><div class="ctitle">"Job isn't it anymore"</div><div class="qt">→ Goes to Path 1</div></div>
+      </div>
+      <div class="card br"><div class="ctitle">Still Vague</div></div>
+      <div class="card wt">
+        <div class="qt">"For sure — is there any particular reason why you're not able to [make more money / hit your goals] with your current job right now?"</div>
+      </div>
+      <div class="card kp">
+        <div class="qt">★ You CANNOT move forward without a tangible problem. If they won't give one, they're not buying. Keep probing or recognize the tire-kicker and fast-track to the Base 44 pitch.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S4 -->
+  <section class="stage-section" id="s4">
+    <div class="stage-banner">
+      <div class="stage-num">Stage 4</div>
+      <div class="stage-name">Summarize + Transition</div>
+    </div>
+
+    <div class="card fw">
+      <div class="ctitle">The "I Don't Have" Rule</div>
+      <div class="qt">
+        Never finish with "I WANT." Always finish with "I DON'T HAVE."<br><br>
+        ❌ "So you want more freedom..."<br>
+        ✅ "So you're not able to travel or help your family because you're capped at $7K..."<br><br>
+        "I want" is aspiration. "I don't have" is pain. Pain drives action.
+      </div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Summarize</div>
+      <div class="qt">"Ok, so just to make sure I understand — you want to be able to [THEIR SPECIFIC DESIRE], but right now you're in [THEIR SITUATION] because of [WHAT THEY DON'T HAVE]. Is that correct?"</div>
+    </div>
+
+    <hr class="divider">
+    <div class="bhead">Income Goal Question — pick the right frame:</div>
+
+    <div class="card wt">
+      <div class="clabel">No Job / Replace Job</div>
+      <div class="qt">"Ok, and for you personally, how much money would you need to be making per month in order for this to be your main source of income?"</div>
+    </div>
+    <div class="card wt">
+      <div class="clabel">Has Job — Wants to Replace It</div>
+      <div class="qt">"Ok, and for you personally, how much money would you need to be making per month in order to fully replace your [JOB] job?"</div>
+    </div>
+    <div class="card wt">
+      <div class="clabel">Has Job — Life Is Good (Exception Only)</div>
+      <div class="qt">"Ok, and for you personally, how much money would you need to be making per month in order for this to be a solid side hustle for yourself?"</div>
+      <div class="nt">⚠️ EXCEPTION ONLY — use the side-hustle framing if their job/life is already going GOOD and they just wanna ADD income on top. If they need this to CHANGE their situation, push REPLACE.</div>
+    </div>
+    <div class="card wt">
+      <div class="clabel">Challenge Their Number</div>
+      <div class="qt">"$5k! What makes you say $5k specifically? How would that change things for you?"</div>
+      <div class="nt">Repeat back their exact number. Challenge it. Get them to paint the picture.</div>
+    </div>
+  </section>
+
+  <!-- S5 -->
+  <section class="stage-section" id="s5">
+    <div class="stage-banner">
+      <div class="stage-num">Stage 5</div>
+      <div class="stage-name">Financial Qualifying</div>
+    </div>
+
+    <div class="two-col">
+      <div class="card fw">
+        <div class="ctitle">⚠️ Longer You Stay = Worse</div>
+        <div class="qt">Every extra second raises their guard. Qualify properly but FAST. Only true DQ = &lt;$50; everyone else, sell the appointment.</div>
+      </div>
+      <div class="card fw">
+        <div class="ctitle">HT Qualifications</div>
+        <ul>
+          <li>$2k liquid</li>
+          <li>— OR — minimum $4k credit limit</li>
+          <li>— OR — 500+ credit score, 21+, $500 budget</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">FQ Question</div>
+      <div class="qt">"Ok, and if we could help you [STATED GOALS]... I'm sure you're aware, just like any other business model, when it comes to e-commerce there's some startup capital involved. Just so we know what sort of strategies we can use in your case — how much capital do you have set aside at the moment to get the business up and running?"</div>
+    </div>
+
+    <div class="bhead" style="margin-top: 16px;">Responses:</div>
+
+    <div class="three-col">
+      <div class="card kp"><div class="ctitle">EZ Qualified</div><div class="qt">$ is enough and they're confident → Proceed to Stage 6</div></div>
+      <div class="card kp"><div class="ctitle">Iffy Qualified</div><div class="qt">$ is enough but "might", "maybe", "potentially" — prospect sounds unsure</div></div>
+      <div class="card br"><div class="ctitle">Budget Too Low</div><div class="qt">More than $50, under $2k liquid</div></div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">If: Iffy Qualified</div>
+      <div class="card wt">
+        <div class="qt">"Ok, that is something we could work with, but again, if we could help you [STATED GOALS], is that [THEIR BUDGET] something you have now and would be willing to allocate if everything makes sense?"</div>
+      </div>
+      <div class="two-col">
+        <div class="card kp"><div class="ctitle">Yes → Proceed to Stage 6</div></div>
+        <div class="card dq"><div class="ctitle">No → Not HT Qualified</div><div class="qt">→ Base44 only</div></div>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">If: Budget Too Low</div>
+      <div class="card wt">
+        <div class="qt">"That's awesome! There's definitely a way you could get the business going. Just to see what sort of strategies we could use in your case, what's your age and do you have a credit card?"</div>
+        <div class="nt">"Not a big deal" tonality</div>
+      </div>
+      <div class="two-col">
+        <div class="card kp"><div class="ctitle">21+ and has credit card → Continue</div></div>
+        <div class="card dq"><div class="ctitle">Under 21 or no credit → Not HT Qualified</div><div class="qt">→ Base44 only</div></div>
+      </div>
+      <div class="card wt">
+        <div class="qt">"ok what's the available limit on that credit card, just to see what strategies we can use?"</div>
+      </div>
+      <div class="two-col">
+        <div class="card kp"><div class="ctitle">Hard cash + credit limit = PIF → Proceed</div></div>
+        <div class="card br"><div class="ctitle">21y/o+ but total = less than PIF → Check credit score</div></div>
+      </div>
+      <div class="card wt">
+        <div class="qt">"ok, and what's your credit score?"</div>
+      </div>
+      <div class="card fw"><div class="qt">*US Based only — if international, budget DQ*</div></div>
+      <div class="two-col">
+        <div class="card kp"><div class="ctitle">500+ with at least $500 hard cash → Proceed</div></div>
+        <div class="card dq"><div class="ctitle">Below 500 and/or &lt;$500 hard cash</div></div>
+      </div>
+      <div class="card wt">
+        <div class="qt">"awesome and have you used your credit for anything in the 4 figure range like student loans or car loan?"</div>
+      </div>
+      <div class="two-col">
+        <div class="card kp"><div class="ctitle">Yes → Proceed to Stage 6</div></div>
+        <div class="card dq"><div class="ctitle">No → Not HT Qualified → Base44 only</div></div>
+      </div>
+    </div>
+
+    <div class="card dq">
+      <div class="ctitle">&lt;$50 / Broke — True DQ</div>
+      <div class="qt">"No worries at all bro. Go through the free course — it's yours regardless. When you're in a position to invest, hit us up."</div>
+    </div>
+  </section>
+
+  <!-- S6 -->
+  <section class="stage-section" id="s6">
+    <div class="stage-banner">
+      <div class="stage-num">Stage 6</div>
+      <div class="stage-name">Sell the Need</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Knowledge Check</div>
+      <div class="qt">"Ok and it really doesn't make much difference, but just to see where you're at — what do you know about our business model so far in terms of how it works and how you actually make money with it?"</div>
+      <div class="nt">If they know nothing → give 30-sec explanation below. If they get it → skip to help question.</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">30-Second Explanation (If Needed)</div>
+      <div class="qt">"So basically the business model is AI ecom — you're building a real e-commerce brand — not a generic pump-and-dump store. You pick one product in an evergreen niche like health, supplements, pets, or beauty, build a real brand around it, scale it, and eventually sell it for a big payday. You're building a sellable asset. Does that make sense?"</div>
+      <div class="nt">Only if they didn't know. Keep it to 30 seconds max.</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Help Question</div>
+      <div class="qt">"Awesome. So I guess based off that, what part of the business do you feel like you need the most help in? Would it be picking the right product, building the brand, or scaling with ads?"</div>
+    </div>
+
+    <div class="card wt">
+      <div class="qt">"And why do you feel you would need the most help with that specifically?"</div>
+      <div class="nt">Their answer = the exact need you summarize back in the pitch.</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Summarize the Need</div>
+      <div class="qt">"Ok, so it sounds like for you it's really just having a clear A-to-Z road map on how to [THEIR SPECIFIC NEED]. Is that fair to say?"</div>
+      <div class="nt">Get a YES before moving to the pitch. This is the need you sell to.</div>
+    </div>
+  </section>
+
+  <!-- S7 -->
+  <section class="stage-section" id="s7">
+    <div class="stage-banner">
+      <div class="stage-num">Stage 7</div>
+      <div class="stage-name">Pitch</div>
+    </div>
+
+    <div class="card fw">
+      <div class="ctitle">Pitch Sequence</div>
+      <ol>
+        <li>Recommend for course → bridge to Base44</li>
+        <li>Get buy-in on the course</li>
+        <li>Get buy-in on Base44</li>
+        <li>Get buy-in on commitment</li>
+        <li>Price drop → ask for the sale</li>
+      </ol>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Bridge</div>
+      <div class="qt">"So next step from here would be to get you set up with the free course that you signed up for. Have you ever applied for Bronson's program in the past?"</div>
+      <div class="nt">Yes or no doesn't matter — either way, transition to the price reveal below.</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Reveal</div>
+      <div class="qt">"OK, well, I'm not sure you're aware of this, but the course that we're giving to you for free used to be anywhere between $2,000 and $5,000 USD. Now we're actually able to give this away for free because we partnered with a major AI company called Base 44. Have you heard of Base 44 before or no?"</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Base44 Explanation</div>
+      <div class="qt">"So here's how it actually works.<br><br>Most people who try ecom go about it all wrong — they test random product after random product, run a few stores at once, throw money at ads hopin somethin sticks, and burn more than they make back. 'Cause generic dropshipping's built to fail: no brand, no repeat customers, nothin you actually own. You're rentin a store, not buildin a business. Make sense why most people quit before they ever make a dollar?<br><br>What we do's different. Instead of guessin on a product, we use AI to research what's actually got demand — real buyers, real search — so you start on somethin proven instead of throwin darts. That alone saves you months of testin and a ton of wasted ad spend.<br><br>Then we point you to vetted suppliers, so you're not diggin through a hundred random ones hopin the quality's there. You skip the sourcing headache that stops most beginners before they even start.<br><br>And from there the AI helps at every step — findin the product, the ad copy, buildin out the brand and the store — so you move faster and cheaper than the old-school way. You don't gotta be techy, you don't need a big team, you're not figurin it out alone.<br><br>And the whole point? You're not spinnin up a throwaway store — you're buildin a real brand. Real customers that come back, somethin that's actually yours. Not a get-rich-quick thing — a real business, done the smart way.<br><br>From what we just went over — what part of that feels the most valuable to you?"</div>
+      <div class="nt">CONFIRM W/ KAUA: exact Base 44 capabilities.</div>
+    </div>
+
+    <div class="card kp">
+      <div class="ctitle">★ 45-Second Rule</div>
+      <div class="qt">Never go 45 seconds in a pitch without checking in on the prospect or getting a tie-down. This should be a collaborative pitch, not you talking for 3 minutes while they say nothing.</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Buy-In on Base44</div>
+      <div class="qt">"Do you actually feel like Base 44 and all the tools would help you build a real brand you could actually scale? Like, do you feel this can genuinely get you there?"</div>
+      <div class="nt">Wait for YES.</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Commitment</div>
+      <div class="qt">"Awesome, well listen man — I would definitely recommend you inside the course. I'm gonna walk you through how we're gonna get started. We always want to make sure you guys actually get results, because none of this is gonna work unless you actually do what's inside. So I guess, today, are you actually committed to take action on this so that you can [THEIR DREAM OUTCOME]?"</div>
+      <div class="nt">"The only reason why I ask this is because a lot of people say they're committed, but then they'll just get inside and they don't do anything."</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Why Committed</div>
+      <div class="qt">"We've worked with a lot of people, [Name]. We only want to give this to people that are actually going to use it. So I guess — why do you feel like you're committed?<br><br>Because this is a free course and the software is very cheap, so there's really not much commitment. Some people just put it on the sideline. Why is it important for you to come in and actually do this today?"</div>
+      <div class="nt">Free + cheap = low commitment frame. Makes them sell themselves on why THEY are different from the people who don't take action.</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Price Reveal</div>
+      <div class="qt">"The only reason I can give you this whole course for free — the same one Bronson charged $3,000 for — is because of his direct partnership with Base 44 and Wix. You get the full A-Z course free as long as you're an active subscriber on their platforms. So you're not paying for a course, you're just covering the tools you'd need to build the brand anyway. [CONFIRM EXACT BASE 44 + WIX SUB COST] Which works better for you — paying yearly or monthly?"</div>
+      <div class="nt">Partnership frame — they're not buying software, they're maintaining access to the free program through a subscription.</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Close</div>
+      <div class="qt">"Based off of those two, which one makes the most sense for you at this point? Would it be the $192 or the $50 a month?"</div>
+      <div class="nt">Shut up. Wait for the answer. Do NOT fill the silence.</div>
+    </div>
+
+    <div class="card fw">
+      <div class="ctitle">Common Objections</div>
+      <ul>
+        <li><strong>"I want to try the course first"</strong> → "The course tells you what to do. Base 44 does it. Lock in the $50 now so it's there when you're ready."</li>
+        <li><strong>"I need to think about it"</strong> → "What's the hesitation — the software itself or the $50?" Then handle.</li>
+        <li><strong>"I can't afford it right now"</strong> → "Can you do $50 today?" If no → let them go gracefully.</li>
+        <li><strong>"Is there a catch?"</strong> → "No catch. Base 44 sponsors the course because they want people using their software. You keep access as long as your subscription is active."</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- S8 -->
+  <section class="stage-section" id="s8">
+    <div class="stage-banner">
+      <div class="stage-num">Stage 8</div>
+      <div class="stage-name">Onboarding</div>
+    </div>
+
+    <div class="card fw">
+      <div class="ctitle">On-Call Onboarding Steps</div>
+      <ol>
+        <li>Cookie check → incognito if needed</li>
+        <li>Send Base44 signup link via text</li>
+        <li>Toggle to Monthly → select Builder ($50) or Annual ($192)</li>
+        <li>Create account (confirm email on file)</li>
+        <li>Authorization code → payment → subscribe</li>
+        <li>Navigate to billing → screenshot → send to your personal #</li>
+        <li>Send screenshot to team → get activation link</li>
+        <li>Send activation link → create Bronson account</li>
+        <li>Confirm they see phases 1–6 → wrap up</li>
+      </ol>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Cookie Check</div>
+      <div class="qt">"So have you ever opened the Base 44 website before, or no?"</div>
+    </div>
+
+    <div class="two-col">
+      <div class="card br"><div class="ctitle">Yes / Not Sure → Go Incognito</div></div>
+      <div class="card br"><div class="ctitle">No, Never → Skip Incognito</div></div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Incognito Instructions</div>
+      <div class="qt">"No worries. Just because sometimes with the cookies and stuff — it's kinda hard to explain but just to make sure everything goes through smoothly and there's no glitches, can you go on a private browser or incognito mode?<br><br>Whether that's Google incognito mode or Safari private browser, just make sure you're on there. Does that work?"</div>
+      <div class="nt">If they can't find incognito: "It might be a three-line button or a profile picture button in the top right of your browser."</div>
+    </div>
+
+    <div class="card kp">
+      <div class="ctitle">★ Affiliate Cookies</div>
+      <div class="qt">If they've visited Base44 before, old cookies can mess up our affiliate tracking and we won't get paid. Incognito = clean session = affiliate credit. If they've NEVER been on the site, skip this step.</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Send Link</div>
+      <div class="qt">"So what I can do is send you a link to your phone number here. We can walk through the steps to get set up on Base 44, and then once we make that happen, I'll get you set up on the Bronson program as well. Does that sound good?<br><br>So I'll send that over to your phone number right now. Let me know when that link comes through and I can walk you through the steps."</div>
+      <div class="nt">Wait for them to confirm they received the text.</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Navigate to Plan</div>
+      <div class="qt">"Once you see that link there, go ahead and click on it — it's gonna take you to the Base 44 homepage. It says 'Plans from First Idea to Full Scale.'<br><br>Underneath those words, you're gonna see a Yearly option that says 'save 20%' in parenthesis, and then there's a Monthly option. Since you wanna go with the [monthly/annual], go ahead and toggle over to that option. Do you see that?<br><br>So with the [monthly/annual], we're gonna do the Builder [for $50 / for $192]. Go ahead and click on the Get Started button underneath it."</div>
+      <div class="nt">Starter plan won't work — no credits, no integrations. Must be Builder.</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Create Account</div>
+      <div class="qt">"Once you click Get Started, it's gonna have you create an account with Base 44 if you don't have one already. So you'll put in your email, create a password.<br><br>And just to confirm — the email I have for you on file is [THEIR EMAIL]. Go ahead and use that email to create your account there.<br><br>Let me know when the account is created — you'll land on a new page that says 'Choose the plan that's right for you.'"</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Payment</div>
+      <div class="qt">"Go ahead and click on the Get Builder button. Make sure you're on the [monthly/yearly] option, then press Continue to Checkout down at the bottom.<br><br>It's gonna send you an authorization code to your phone number just to confirm it's you. Once you put that code in, it'll take you to where you can put in the payment details — card info, Apple Pay, whatever works.<br><br>Once you do that, hit the Subscribe button. Let me know when the payment goes through because I'll need a couple confirmation things from you so I can get you set up for the Bronson program."</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Screenshot Instructions</div>
+      <div class="qt">"Ok perfect. So now do you see up in the top left corner — it's gonna say [Name]'s Workspace? Go ahead and click on that.<br><br>It's gonna give you a dropdown that says Settings. Click on Settings.<br><br>And then once you're inside there, click on Plan and Billing.<br><br>Under the Billing History, it's gonna show you the plan you signed up for, the date of purchase, things like that. I'll just need a screenshot of that section there."</div>
+      <div class="nt">ALT NAV: "Bottom left of your screen, there's a little profile picture. Click on that → Account Settings → Plan and Billing."</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Send Screenshot</div>
+      <div class="qt">"My number is gonna be [YOUR PERSONAL NUMBER]. That's my personal right there. Go ahead and send the picture over there.<br><br>Once I get the picture on my end, I'll send it directly to the team, and then they'll get me an activation link to get you set up on Bronson. It should only be a few seconds."</div>
+      <div class="nt">If screenshot won't deliver — international: "Do you have WhatsApp? Send it on WhatsApp, same number."</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Activation Link</div>
+      <div class="qt">"Alright, I'm gonna send the activation link to your phone number now. Once it comes through, click on that link.<br><br>You'll wanna create an account with Bronson — put in your email, create a passcode. And then you should have access to the course with all the modules and phases."</div>
+      <div class="nt">If it says "Sign in link expired": "No worries — just put in your email again, press Continue, and they'll send a new link to your email. Check your inbox."</div>
+    </div>
+
+    <div class="card wt">
+      <div class="clabel">Confirm Access</div>
+      <div class="qt">"So you see phases 1 through 6? Those are all the steps to follow through. You're gonna wanna go in order — it won't let you skip around. You'll have to finish phase 1 to unlock phase 2, so on and so forth.<br><br>If you have any questions, you have both my numbers — my work phone and my personal. You can always reach out if you need something. But other than that, you have everything you need to get the business up and rolling."</div>
+    </div>
+
+    <div class="card fw">
+      <div class="ctitle">Troubleshooting</div>
+      <ul>
+        <li><strong>Can't find incognito</strong> → "Three-line menu button or profile picture in top right of browser"</li>
+        <li><strong>Screenshot not delivering</strong> → "Do you have WhatsApp? Send it there, same number"</li>
+        <li><strong>Activation link expired</strong> → "Put your email in again, press Continue, check your inbox for a new link"</li>
+        <li><strong>Stuck on plan page</strong> → "Make sure you toggled to [Monthly/Yearly] first, then click Builder"</li>
+        <li><strong>Can't find billing</strong> → Try both: "Top left [Name]'s Workspace" OR "Bottom left profile picture → Account Settings"</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- S9 -->
+  <section class="stage-section" id="s9">
+    <div class="stage-banner">
+      <div class="stage-num">Stage 9</div>
+      <div class="stage-name">Sell the Need for HT</div>
+    </div>
+
+    <div class="card br">
+      <div class="ctitle">Is This Lead HT Qualified?</div>
+      <div class="qt">(from Stage 5 FQ tagging)</div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">If: NOT HT Qualified → Wrap Up</div>
+      <div class="card wt">
+        <div class="qt">"Alright [Name], you're all set bro. You've got the course, you've got Base 44. Go through the modules, start applying what you learn, and if you run into anything — you have my number. Just shoot me a text. Sound good?"</div>
+        <div class="nt">Keep it short. They already bought.</div>
+      </div>
+      <div class="card kp">
+        <div class="qt">★ END CALL. Fill out EOC report immediately.</div>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-title">If: HT Qualified → Sell the Need</div>
+      <div class="card wt">
+        <div class="clabel">Pre-Frame</div>
+        <div class="qt">"Alright [Name], how are you feeling? Awesome!<br><br>Well listen bro, the only reason why we're able to actually maintain the success rate we do have in the program is because we're very intentional about the type of support and guidance we can give you guys."</div>
+        <div class="nt">Pre-frame only. Don't ask about past struggles — flow straight into the support question.</div>
+      </div>
+      <div class="card fw">
+        <div class="ctitle">Why Simplified</div>
+        <div class="qt">Removed past-struggle question. The pre-frame alone is enough to set up the support question. The propose box already ties back to their discovery pain — we don't need a separate anchor.</div>
+      </div>
+      <div class="card wt">
+        <div class="clabel">Support Question</div>
+        <div class="qt">"Are you the type of person that needs coaching calls, direct support and guidance from Bronson and the team, pretty much just more one-on-one support in general?<br><br>Or what can we do to increase the probability of you succeeding in this business and ultimately getting to [DREAM OUTCOME]?"</div>
+        <div class="nt">Wait for answer → "Ok, and why do you feel like having [WHAT THEY SAID] would increase the probability of you getting to [DREAM OUTCOME]?"</div>
+      </div>
+      <div class="card wt">
+        <div class="clabel">Doubt the Free Course</div>
+        <div class="qt">"I mean [Name], you are in the free course right now. You could technically watch the videos and do this all by yourself.<br><br>What do you feel like you would get from having direct guidance and support from Bronson and the team that you couldn't get just doing it all alone?"</div>
+        <div class="nt">They sell themselves on needing more. Whatever they say here, you use in the propose.</div>
+      </div>
+      <div class="card kp">
+        <div class="ctitle">★ Doubt the Free Course</div>
+        <div class="qt">Don't tell them the course isn't enough — make THEM say it. They verbalize the gap between self-paced and supported. That's the need you sell to.</div>
+      </div>
+      <div class="card wt">
+        <div class="clabel">Propose</div>
+        <div class="qt">"Ok listen [Name], I know you're already in the free course. And I know you said you would need more help — coaching calls, one-on-one support — to actually get to [THEIR DREAM OUTCOME], right? And that's still your biggest goal, correct?<br><br>So here's the thing bro — we just gave you the free course, but the free course is just videos. There's not one-on-one support, coaching calls — I mean it's great, but it doesn't come with what you're saying you need.<br><br>Now I only work here in the getting-started side, so when it comes to actually getting more advanced one-on-one support, I would need to connect you with one of the head coaches that works directly with Bronson. I can call Bronson and see if we could get you that additional support — I'm not sure if he could, but that coach can sit down with you and figure out if we could actually get you [THEIR SUPPORT NEED] so you can [DREAM OUTCOME].<br><br>What time today would you be sitting at your desk, ready to meet with that coach to see if we could get you the one-on-one support?"</div>
+        <div class="nt">Shut up. Wait for the time. If they give you a time → Stage 10.</div>
+      </div>
+      <div class="card fw">
+        <div class="ctitle">Three Frames in One</div>
+        <ul>
+          <li><strong>Department Frame:</strong> "I only work here in the getting-started side" — this is a DIFFERENT call with a DIFFERENT person. Prevents them from thinking the closer call is just onboarding part 2.</li>
+          <li><strong>Scarcity + Favor:</strong> "I can call Bronson and see if we could get you that" — you're doing them a favor, not selling. "I'm not sure if he could" = scarcity.</li>
+          <li><strong>Clear Expectation:</strong> "That coach can sit down with you and figure out..." — they know exactly what the call is about. No bait-and-switch.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- S10 -->
+  <section class="stage-section" id="s10">
+    <div class="stage-banner">
+      <div class="stage-num">Stage 10</div>
+      <div class="stage-name">Solidify the Upsell</div>
+    </div>
+
+    <div class="card fw">
+      <div class="ctitle">Solidify the Booking</div>
+      <ol>
+        <li>Confirm date/time of upsell call</li>
+        <li>Set expectations — what the call will cover</li>
+        <li>Get verbal commitment to show up</li>
+        <li>"If something comes up, just text me — don't ghost"</li>
+      </ol>
+    </div>
+  </section>
+
+</main>
 </body>
 </html>
