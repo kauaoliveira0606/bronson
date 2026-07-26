@@ -3,7 +3,7 @@
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://gpthswrobafxtmsuouph.supabase.co';
 const SUPABASE_SECRET_KEY = process.env.SUPABASE_SECRET_KEY;
-const GHL_API_KEY = process.env.GHL_API_KEY;
+const GHL_API_KEY = process.env.GHL_API_KEY_ADS;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
 
 module.exports = async function handler(req, res) {
