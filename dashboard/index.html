@@ -335,6 +335,110 @@
 </div>
 
 <div id="view-ads">
+  <!-- Ad Performance Tracker Section -->
+  <div class="ads-section" id="adsSection" style="padding: 28px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border);">
+      <h2 style="font-size: 1.3rem; font-weight: 700; margin: 0;">Ad Performance Tracker</h2>
+      <div style="display: flex; gap: 12px;">
+        <select id="rangeFilter" style="background: var(--surface); border: 1px solid var(--border); color: var(--text1); padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-family: inherit; cursor: pointer;">
+          <option value="1day">Last 24 Hours</option>
+          <option value="7days" selected>Last 7 Days</option>
+          <option value="30days">Last 30 Days</option>
+          <option value="90days">Last 90 Days</option>
+        </select>
+        <button class="refresh-btn" onclick="refreshAdsData()">↻ Refresh</button>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Total Spend</div>
+        <div class="kpi-value" id="totalSpend" style="color: var(--green);">$0.00</div>
+        <div class="kpi-sub">across all ads</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Total Leads</div>
+        <div class="kpi-value" id="totalLeads" style="color: var(--blue);">0</div>
+        <div class="kpi-sub">from ads</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Total Sales</div>
+        <div class="kpi-value" id="totalSales" style="color: var(--purple);">0</div>
+        <div class="kpi-sub">conversions</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Total Revenue</div>
+        <div class="kpi-value" id="totalRevenue" style="color: var(--green);">$0.00</div>
+        <div class="kpi-sub">from ads</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg Cost Per Lead</div>
+        <div class="kpi-value" id="avgCPL" style="color: var(--yellow);">$0.00</div>
+        <div class="kpi-sub">CPL</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg Cost Per Sale</div>
+        <div class="kpi-value" id="avgCPS" style="color: var(--red);">$0.00</div>
+        <div class="kpi-sub">CPS</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Average ROAS</div>
+        <div class="kpi-value" id="avgROAS" style="color: var(--green);">0.00x</div>
+        <div class="kpi-sub">return on ad spend</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div style="display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text2);">Campaign:</label>
+        <select id="campaignFilter" style="background: var(--surface); border: 1px solid var(--border); color: var(--text1); padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-family: inherit; cursor: pointer;" onchange="refreshAdsData()">
+          <option value="">All Campaigns</option>
+        </select>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text2);">Ad Set:</label>
+        <select id="adSetFilter" style="background: var(--surface); border: 1px solid var(--border); color: var(--text1); padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-family: inherit; cursor: pointer;" onchange="refreshAdsData()">
+          <option value="">All Ad Sets</option>
+        </select>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text2);">Ad:</label>
+        <select id="adFilter" style="background: var(--surface); border: 1px solid var(--border); color: var(--text1); padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-family: inherit; cursor: pointer;" onchange="refreshAdsData()">
+          <option value="">All Ads</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Detailed Table -->
+    <div style="margin-top: 24px;">
+      <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 16px;">Detailed Ad Performance</h3>
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+          <thead style="background: rgba(255, 255, 255, 0.03); border-bottom: 1px solid var(--border);">
+            <tr>
+              <th style="padding: 12px; text-align: left; font-weight: 600; color: var(--text2);">Campaign</th>
+              <th style="padding: 12px; text-align: left; font-weight: 600; color: var(--text2);">Ad Set</th>
+              <th style="padding: 12px; text-align: left; font-weight: 600; color: var(--text2);">Ad</th>
+              <th style="padding: 12px; text-align: left; font-weight: 600; color: var(--text2);">Spend</th>
+              <th style="padding: 12px; text-align: left; font-weight: 600; color: var(--text2);">Leads</th>
+              <th style="padding: 12px; text-align: left; font-weight: 600; color: var(--text2);">Sales</th>
+              <th style="padding: 12px; text-align: left; font-weight: 600; color: var(--text2);">Revenue</th>
+              <th style="padding: 12px; text-align: left; font-weight: 600; color: var(--text2);">CPL</th>
+              <th style="padding: 12px; text-align: left; font-weight: 600; color: var(--text2);">CPS</th>
+              <th style="padding: 12px; text-align: left; font-weight: 600; color: var(--text2);">ROAS</th>
+            </tr>
+          </thead>
+          <tbody id="adsTableBody">
+            <tr><td colspan="10" style="text-align: center; padding: 20px;">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Original Ads Analysis Section -->
   <div class="ads-main">
     <div id="ads-upload-section">
       <div class="ads-upload-zone" id="adsUploadZone">
@@ -1941,6 +2045,115 @@ Cross-campaign: [prospecting vs retargeting relationship if visible]
   }
 
   fmBuild();
+
+  // ── Ad Performance Tracker ──────────────────────────────────────────────────
+  async function loadAdsData() {
+    try {
+      const range = document.getElementById('rangeFilter').value;
+      const campaign = document.getElementById('campaignFilter').value;
+      const adSet = document.getElementById('adSetFilter').value;
+      const ad = document.getElementById('adFilter').value;
+
+      const params = new URLSearchParams({
+        range,
+        ...(campaign && { campaign }),
+        ...(adSet && { adSet }),
+        ...(ad && { ad }),
+      });
+
+      const response = await fetch(`/api/get-ads?${params}`);
+      const result = await response.json();
+
+      if (!result.success) {
+        console.error('Error loading ads data:', result.error);
+        return;
+      }
+
+      // Update KPI cards
+      document.getElementById('totalSpend').textContent = `$${result.metrics.totalSpend.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('totalLeads').textContent = result.metrics.totalLeads.toLocaleString();
+      document.getElementById('totalSales').textContent = result.metrics.totalSales.toLocaleString();
+      document.getElementById('totalRevenue').textContent = `$${result.metrics.totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('avgCPL').textContent = `$${result.metrics.avgCostPerLead.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('avgCPS').textContent = `$${result.metrics.avgCostPerSale.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('avgROAS').textContent = `${result.metrics.avgROAS.toFixed(2)}x`;
+
+      // Update filters
+      populateFilterSelects(result.filters);
+
+      // Update table
+      updateAdsTable(result.data);
+    } catch (error) {
+      console.error('Error loading ads data:', error);
+    }
+  }
+
+  function populateFilterSelects(filters) {
+    const campaignSelect = document.getElementById('campaignFilter');
+    const currentCampaign = campaignSelect.value;
+    campaignSelect.innerHTML = '<option value="">All Campaigns</option>';
+    filters.campaigns.forEach(campaign => {
+      const option = document.createElement('option');
+      option.value = campaign;
+      option.textContent = campaign;
+      campaignSelect.appendChild(option);
+    });
+    campaignSelect.value = currentCampaign;
+
+    const adSetSelect = document.getElementById('adSetFilter');
+    const currentAdSet = adSetSelect.value;
+    adSetSelect.innerHTML = '<option value="">All Ad Sets</option>';
+    filters.adSets.forEach(adSet => {
+      const option = document.createElement('option');
+      option.value = adSet;
+      option.textContent = adSet;
+      adSetSelect.appendChild(option);
+    });
+    adSetSelect.value = currentAdSet;
+
+    const adSelect = document.getElementById('adFilter');
+    const currentAd = adSelect.value;
+    adSelect.innerHTML = '<option value="">All Ads</option>';
+    filters.ads.forEach(ad => {
+      const option = document.createElement('option');
+      option.value = ad;
+      option.textContent = ad;
+      adSelect.appendChild(option);
+    });
+    adSelect.value = currentAd;
+  }
+
+  function updateAdsTable(data) {
+    const tbody = document.getElementById('adsTableBody');
+    
+    if (data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 20px;">No data available</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = data.map(row => `
+      <tr>
+        <td style="padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03);">${row.campaign_name}</td>
+        <td style="padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03);">${row.ad_set_name}</td>
+        <td style="padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03);">${row.ad_name}</td>
+        <td style="padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); color: var(--green);">$${row.spend.toFixed(2)}</td>
+        <td style="padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03);">${row.leads}</td>
+        <td style="padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03);">${row.sales}</td>
+        <td style="padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); color: var(--green);">$${row.revenue.toFixed(2)}</td>
+        <td style="padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); color: var(--yellow);">$${row.cost_per_lead.toFixed(2)}</td>
+        <td style="padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); color: var(--red);">$${row.cost_per_sale.toFixed(2)}</td>
+        <td style="padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); color: var(--green);">  ${row.roas.toFixed(2)}x</td>
+      </tr>
+    `).join('');
+  }
+
+  function refreshAdsData() {
+    loadAdsData();
+  }
+
+  // Load ads data when page loads and auto-refresh every 5 minutes
+  document.addEventListener('DOMContentLoaded', loadAdsData);
+  setInterval(loadAdsData, 5 * 60 * 1000);
 </script>
 </body>
 </html>
