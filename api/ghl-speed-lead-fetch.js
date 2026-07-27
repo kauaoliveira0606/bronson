@@ -53,6 +53,10 @@ module.exports = async function handler(req, res) {
     let firstCallAt = f['First Call At'] || null;
     let minutes     = f['Minutes to Call'] ?? null;
     let status      = f['Status'] || 'Pending';
+    // Normalize legacy 'Over 5 min' status written by old webhook
+    if (status === 'Over 5 min' && minutes !== null) {
+      status = minutes <= 60 ? 'Under 1 Hour' : 'Over 1 Hour';
+    }
 
     if (!firstCallAt && f['Contact ID'] && GHL_KEY) {
       const callTime = await getFirstCallAt(f['Contact ID'], f['Created At']);

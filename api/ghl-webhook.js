@@ -74,7 +74,7 @@ module.exports = async function handler(req, res) {
         await airtablePatch('Speed to Lead', record.id, {
           'First Call At':   now.toISOString(),
           'Minutes to Call': minutesToCall,
-          'Status':          minutesToCall <= 5 ? 'Under 5 min' : 'Over 5 min',
+          'Status':          minutesToCall <= 5 ? 'Under 5 min' : minutesToCall <= 60 ? 'Under 1 Hour' : 'Over 1 Hour',
         });
       }
     }

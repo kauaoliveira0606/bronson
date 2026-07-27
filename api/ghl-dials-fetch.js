@@ -18,16 +18,18 @@ module.exports = async function handler(req, res) {
     const userMap = {};
     for (const u of usersData.users || []) userMap[u.id] = u.name || u.firstName || u.email || u.id;
 
-    // Fetch all conversations updated today (don't filter by lastMessageType — a
-    // rep may have called then sent a text, making lastMessageType no longer TYPE_CALL)
+    // Fetch recent conversations without startDate filter — startDate filters on
+    // conversation createdAt, not message timestamps, so leads from prior days
+    // whose conversations were created before today would be missed entirely.
+    // We rely solely on the per-message dateAdded check below to scope to today.
     let allConvs = [];
-    let nextUrl = `${GHL_BASE}/conversations/search?locationId=${LOCATION_ID}&limit=100&startDate=${startTs}`;
+    let nextUrl = `${GHL_BASE}/conversations/search?locationId=${LOCATION_ID}&limit=100`;
     while (nextUrl) {
       const r = await fetch(nextUrl, { headers: GHL_HEADERS });
       const d = await r.json();
       allConvs = allConvs.concat(d.conversations || []);
       nextUrl = d.meta?.nextPageUrl || null;
-      if (allConvs.length >= 500) break;
+      if (allConvs.length >= 1000) break;
     }
 
     // For each conversation, get messages from today and count outbound calls per rep
