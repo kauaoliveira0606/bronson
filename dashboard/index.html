@@ -547,6 +547,7 @@
           <button class="act-refresh active" id="stl-f-today"  onclick="setSTLPeriod('today')"  style="background:#fff;color:#000;border-color:#fff;">Today</button>
           <button class="act-refresh"        id="stl-f-3days"  onclick="setSTLPeriod('3days')">Last 3 Days</button>
           <button class="act-refresh"        id="stl-f-7days"  onclick="setSTLPeriod('7days')">Last 7 Days</button>
+          <button class="act-refresh" id="stl-sync-btn" onclick="runSTLSync()" style="border-color:#22c55e;color:#22c55e;">↻ Sync Calls</button>
         </div>
       </div>
 
@@ -1324,6 +1325,22 @@
       }
     } catch(e) {
       document.getElementById('stl-tbody').innerHTML = '<tr><td colspan="6" class="act-empty">Error loading data.</td></tr>';
+    }
+  }
+
+  async function runSTLSync() {
+    const btn = document.getElementById('stl-sync-btn');
+    btn.textContent = 'Syncing...';
+    btn.disabled = true;
+    try {
+      const r = await fetch('/api/stl-sync?t=' + Date.now());
+      const d = await r.json();
+      btn.textContent = `✓ Synced ${d.synced ?? 0}`;
+      setTimeout(() => { btn.textContent = '↻ Sync Calls'; btn.disabled = false; }, 3000);
+      loadSTL();
+    } catch(e) {
+      btn.textContent = 'Error';
+      setTimeout(() => { btn.textContent = '↻ Sync Calls'; btn.disabled = false; }, 3000);
     }
   }
 
