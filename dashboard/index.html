@@ -226,6 +226,43 @@
     .fm-val-pos { color:#4ade80 !important; }
     .fm-val-neg { color:rgba(239,68,68,1) !important; }
 
+    /* ── Projection Panel ── */
+    .proj-wrap { padding:0 0 28px; }
+    .proj-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:24px; }
+    .proj-month-title { font-size:1rem; font-weight:900; letter-spacing:.12em; text-transform:uppercase; color:#fff; }
+    .proj-preset-row { display:flex; gap:6px; }
+    .proj-preset-btn { background:none; border:1px solid var(--border); color:var(--text2); border-radius:6px; padding:5px 14px; font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; font-family:inherit; transition:all .15s; }
+    .proj-preset-btn:hover { border-color:rgba(255,255,255,.25); color:#fff; }
+    .proj-preset-btn.active { background:#fff; color:#000; border-color:#fff; }
+    .proj-drivers-label { font-size:.65rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--text2); margin-bottom:14px; }
+    .proj-driver-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:24px; }
+    @media(max-width:600px){ .proj-driver-grid { grid-template-columns:1fr; } }
+    .proj-driver { background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+    .proj-driver-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+    .proj-driver-label { font-size:.78rem; font-weight:700; color:#ccc; }
+    .proj-driver-val { font-size:1.05rem; font-weight:800; color:#fff; background:none; border:none; outline:none; width:80px; text-align:right; font-family:inherit; }
+    .proj-driver-hint { font-size:.68rem; color:var(--text2); margin-bottom:10px; }
+    .proj-driver-bottom { display:flex; align-items:center; gap:8px; }
+    .proj-slider { flex:1; -webkit-appearance:none; appearance:none; height:3px; border-radius:2px; background:rgba(255,255,255,0.12); outline:none; cursor:pointer; }
+    .proj-slider::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:#fff; cursor:pointer; }
+    .proj-slider::-moz-range-thumb { width:14px; height:14px; border-radius:50%; background:#fff; border:none; cursor:pointer; }
+    .proj-reset { background:none; border:none; color:var(--text2); font-size:.7rem; font-weight:700; cursor:pointer; font-family:inherit; padding:0; white-space:nowrap; }
+    .proj-reset:hover { color:#fff; }
+    .proj-out-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media(max-width:600px){ .proj-out-grid { grid-template-columns:1fr; } }
+    .proj-out-card { background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:10px; padding:18px; }
+    .proj-out-title { font-size:.65rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--text2); margin-bottom:16px; }
+    .proj-out-row { display:flex; justify-content:space-between; align-items:baseline; padding:5px 0; border-bottom:1px solid rgba(255,255,255,.04); font-size:.82rem; }
+    .proj-out-row:last-child { border-bottom:none; }
+    .proj-out-row-label { color:#aaa; }
+    .proj-out-row-val { font-weight:700; color:#fff; font-variant-numeric:tabular-nums; }
+    .proj-out-row-val.green { color:#4ade80; }
+    .proj-out-row-val.red   { color:#f87171; }
+    .proj-out-row-val.gold  { color:#fbbf24; }
+    .proj-out-highlight { margin-top:14px; padding-top:14px; border-top:1px solid rgba(255,255,255,.1); display:flex; justify-content:space-between; align-items:baseline; }
+    .proj-out-big-label { font-size:.72rem; font-weight:700; color:#aaa; }
+    .proj-out-big-val { font-size:1.6rem; font-weight:900; color:#4ade80; font-variant-numeric:tabular-nums; }
+
     .ads-main { padding:24px 28px; display:flex; flex-direction:column; gap:20px; }
     .ads-upload-zone { border:2px dashed rgba(255,255,255,0.12); border-radius:12px; padding:48px 40px; text-align:center; cursor:pointer; transition:border-color .2s, background .2s; background:var(--surface); }
     .ads-upload-zone:hover, .ads-upload-zone.drag-over { border-color:rgba(255,255,255,0.3); background:rgba(255,255,255,0.03); }
@@ -485,8 +522,40 @@
     <div class="fm-subtabs">
       <button class="fm-subtab-btn active" id="fmsub-lt" onclick="switchFmTab('lt')">Low Ticket</button>
       <button class="fm-subtab-btn" id="fmsub-full" onclick="switchFmTab('full')">LT + High Ticket</button>
+      <button class="fm-subtab-btn" id="fmsub-proj" onclick="switchFmTab('proj')">Projection</button>
     </div>
-    <div class="fm-table-wrap">
+
+    <!-- Projection Panel -->
+    <div id="fmsub-proj-panel" style="display:none;">
+      <div class="proj-wrap">
+        <div class="proj-header">
+          <div class="proj-month-title" id="proj-month-label">July Projection</div>
+          <div class="proj-preset-row">
+            <button class="proj-preset-btn" id="proj-pre-cons" onclick="applyPreset('conservative')">Conservative</button>
+            <button class="proj-preset-btn active" id="proj-pre-avg" onclick="applyPreset('average')">July Avg</button>
+            <button class="proj-preset-btn" id="proj-pre-agg" onclick="applyPreset('aggressive')">Aggressive</button>
+          </div>
+        </div>
+
+        <div class="proj-drivers-label">Adjust Drivers</div>
+        <div class="proj-driver-grid" id="proj-driver-grid">
+          <!-- populated by projBuild() -->
+        </div>
+
+        <div class="proj-out-grid">
+          <div class="proj-out-card">
+            <div class="proj-out-title">Monthly</div>
+            <div id="proj-out-monthly"></div>
+          </div>
+          <div class="proj-out-card">
+            <div class="proj-out-title">Weekly</div>
+            <div id="proj-out-weekly"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fm-table-wrap" id="fm-table-wrap">
       <table class="fm-table" id="fm-table">
         <thead>
           <tr>
@@ -1832,9 +1901,20 @@ Cross-campaign: [prospecting vs retargeting relationship if visible]
     FM_METRICS = mode === 'lt' ? FM_METRICS_LT : FM_METRICS_FULL;
     document.getElementById('fmsub-lt').classList.toggle('active', mode === 'lt');
     document.getElementById('fmsub-full').classList.toggle('active', mode === 'full');
-    fmBuild();
-    fmUpdate();
-    fmPopulateCurrentStats();
+    document.getElementById('fmsub-proj').classList.toggle('active', mode === 'proj');
+    const projPanel = document.getElementById('fmsub-proj-panel');
+    const tableWrap = document.getElementById('fm-table-wrap');
+    if (mode === 'proj') {
+      projPanel.style.display = 'block';
+      tableWrap.style.display = 'none';
+      projBuild();
+    } else {
+      projPanel.style.display = 'none';
+      tableWrap.style.display = '';
+      fmBuild();
+      fmUpdate();
+      fmPopulateCurrentStats();
+    }
   }
 
   const FM_DEFAULTS = {
@@ -2062,6 +2142,126 @@ Cross-campaign: [prospecting vs retargeting relationship if visible]
   }
 
   fmBuild();
+
+  // ── Projection Tool ─────────────────────────────────────────────────────────
+  const PROJ_DRIVERS = [
+    { id:'days',        label:'Days in month',        unit:'days', min:1,   max:31,   step:1,    hint:'July = 31 days' },
+    { id:'spend_day',   label:'Ad spend / day',       unit:'$',    min:0,   max:1000, step:10,   hint:'July avg: $161/day' },
+    { id:'cpl',         label:'Cost per lead (paid)', unit:'$',    min:1,   max:100,  step:0.5,  hint:'July avg: ~$15' },
+    { id:'organic_day', label:'Organic leads / day',  unit:'',     min:0,   max:50,   step:0.5,  hint:'July avg: ~3/day' },
+    { id:'close_rate',  label:'Close rate',           unit:'%',    min:0.1, max:30,   step:0.1,  hint:'July avg: ~5%' },
+    { id:'aov',         label:'Avg order value',      unit:'$',    min:10,  max:500,  step:1,    hint:'July avg: ~$37' },
+  ];
+
+  const PROJ_PRESETS = {
+    conservative: { days:31, spend_day:100, cpl:18, organic_day:1, close_rate:3, aov:30 },
+    average:      { days:31, spend_day:161, cpl:15, organic_day:3, close_rate:5, aov:37 },
+    aggressive:   { days:31, spend_day:250, cpl:12, organic_day:6, close_rate:7, aov:45 },
+  };
+
+  let projVals = { ...PROJ_PRESETS.average };
+  let projActivePreset = 'average';
+
+  function applyPreset(name) {
+    projActivePreset = name;
+    projVals = { ...PROJ_PRESETS[name] };
+    ['cons','avg','agg'].forEach(k => document.getElementById('proj-pre-'+k)?.classList.remove('active'));
+    const btnMap = { conservative:'cons', average:'avg', aggressive:'agg' };
+    document.getElementById('proj-pre-'+btnMap[name])?.classList.add('active');
+    PROJ_DRIVERS.forEach(d => {
+      const slider = document.getElementById('proj-sl-'+d.id);
+      const display = document.getElementById('proj-dv-'+d.id);
+      if (slider) slider.value = projVals[d.id];
+      if (display) display.value = projVals[d.id];
+    });
+    projUpdate();
+  }
+
+  function projCalc(v) {
+    const paid_leads_day = v.cpl > 0 ? v.spend_day / v.cpl : 0;
+    const total_leads_day = paid_leads_day + v.organic_day;
+    const monthly_leads = total_leads_day * v.days;
+    const monthly_orders = monthly_leads * (v.close_rate / 100);
+    const monthly_revenue = monthly_orders * v.aov;
+    const monthly_spend = v.spend_day * v.days;
+    const monthly_profit = monthly_revenue - monthly_spend;
+    const weekly_leads = monthly_leads / (v.days / 7);
+    const weekly_orders = monthly_orders / (v.days / 7);
+    const weekly_revenue = monthly_revenue / (v.days / 7);
+    const weekly_spend = monthly_spend / (v.days / 7);
+    const weekly_profit = monthly_profit / (v.days / 7);
+    return { monthly_leads, monthly_orders, monthly_revenue, monthly_spend, monthly_profit,
+             weekly_leads, weekly_orders, weekly_revenue, weekly_spend, weekly_profit };
+  }
+
+  function fmt$(n) { return '$' + Math.round(n).toLocaleString(); }
+  function fmtN(n, dec=1) { return n.toFixed(dec).replace(/\.0$/,''); }
+
+  function projRenderCard(containerId, data, prefix) {
+    const r = data;
+    const profit = prefix === 'monthly' ? r.monthly_profit : r.weekly_profit;
+    const revenue = prefix === 'monthly' ? r.monthly_revenue : r.weekly_revenue;
+    const spend = prefix === 'monthly' ? r.monthly_spend : r.weekly_spend;
+    const leads = prefix === 'monthly' ? r.monthly_leads : r.weekly_leads;
+    const orders = prefix === 'monthly' ? r.monthly_orders : r.weekly_orders;
+    const profitClass = profit >= 0 ? 'green' : 'red';
+    document.getElementById(containerId).innerHTML = `
+      <div class="proj-out-row"><span class="proj-out-row-label">Leads</span><span class="proj-out-row-val">${fmtN(leads,0)}</span></div>
+      <div class="proj-out-row"><span class="proj-out-row-label">Orders</span><span class="proj-out-row-val">${fmtN(orders,1)}</span></div>
+      <div class="proj-out-row"><span class="proj-out-row-label">Revenue</span><span class="proj-out-row-val gold">${fmt$(revenue)}</span></div>
+      <div class="proj-out-row"><span class="proj-out-row-label">Ad Spend</span><span class="proj-out-row-val red">${fmt$(spend)}</span></div>
+      <div class="proj-out-highlight">
+        <span class="proj-out-big-label">Profit</span>
+        <span class="proj-out-big-val ${profitClass}">${fmt$(profit)}</span>
+      </div>`;
+  }
+
+  function projUpdate() {
+    const data = projCalc(projVals);
+    projRenderCard('proj-out-monthly', data, 'monthly');
+    projRenderCard('proj-out-weekly', data, 'weekly');
+    projCheckPresetMatch();
+  }
+
+  function projCheckPresetMatch() {
+    ['conservative','average','aggressive'].forEach(name => {
+      const p = PROJ_PRESETS[name];
+      const match = PROJ_DRIVERS.every(d => Math.abs((projVals[d.id]||0) - (p[d.id]||0)) < 0.001);
+      const btnMap = { conservative:'cons', average:'avg', aggressive:'agg' };
+      document.getElementById('proj-pre-'+btnMap[name])?.classList.toggle('active', match);
+    });
+  }
+
+  function projBuild() {
+    const grid = document.getElementById('proj-driver-grid');
+    if (!grid) return;
+    grid.innerHTML = PROJ_DRIVERS.map(d => `
+      <div class="proj-driver">
+        <div class="proj-driver-top">
+          <span class="proj-driver-label">${d.label}</span>
+          <input class="proj-driver-val" id="proj-dv-${d.id}" type="number" value="${projVals[d.id]}"
+            oninput="projVals['${d.id}']=parseFloat(this.value)||0; document.getElementById('proj-sl-${d.id}').value=this.value; projUpdate();">
+        </div>
+        <div class="proj-driver-hint">${d.hint}</div>
+        <div class="proj-driver-bottom">
+          <input class="proj-slider" id="proj-sl-${d.id}" type="range"
+            min="${d.min}" max="${d.max}" step="${d.step}" value="${projVals[d.id]}"
+            oninput="projVals['${d.id}']=parseFloat(this.value); document.getElementById('proj-dv-${d.id}').value=this.value; projUpdate();">
+          <button class="proj-reset" onclick="projReset('${d.id}')">Reset</button>
+        </div>
+      </div>`).join('');
+    projUpdate();
+  }
+
+  function projReset(id) {
+    const preset = PROJ_PRESETS[projActivePreset] || PROJ_PRESETS.average;
+    projVals[id] = preset[id];
+    const slider = document.getElementById('proj-sl-'+id);
+    const display = document.getElementById('proj-dv-'+id);
+    if (slider) slider.value = projVals[id];
+    if (display) display.value = projVals[id];
+    projUpdate();
+  }
 
   // ── Ad Performance Tracker ──────────────────────────────────────────────────
   async function loadAdsData() {
