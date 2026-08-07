@@ -1330,8 +1330,7 @@
 
     // Dials per rep
     try {
-      const _localMidnight = new Date(); _localMidnight.setHours(0,0,0,0);
-      const r = await fetch('/api/ghl-dials-fetch?startTs=' + _localMidnight.getTime() + '&t=' + Date.now());
+      const r = await fetch('/api/ghl-dials-fetch?t=' + Date.now());
       const data = await r.json();
       const rows = data.reps || [];
       document.getElementById('dials-total').textContent  = data.totalDials  ?? '0';
@@ -1361,8 +1360,7 @@
     const stlTbody = document.getElementById('stl-tbody');
     stlTbody.innerHTML = '<tr><td colspan="6" class="act-empty">Loading...</td></tr>';
     try {
-      const _stlMidnight = new Date(); _stlMidnight.setHours(0,0,0,0);
-      const r    = await fetch('/api/ghl-speed-lead-fetch?filter=' + stlPeriod + '&startTs=' + _stlMidnight.getTime() + '&t=' + Date.now());
+      const r    = await fetch('/api/ghl-speed-lead-fetch?filter=' + stlPeriod + '&t=' + Date.now());
       const data = await r.json();
 
       // Format avg response time
