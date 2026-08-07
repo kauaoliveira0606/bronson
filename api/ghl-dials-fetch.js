@@ -37,6 +37,7 @@ module.exports = async function handler(req, res) {
     // For each conversation, get messages from today and count outbound calls per rep
     const repDials = {};    // userId → { name, dials, pickups, convs2min, contacts: Set }
     const contactCalls = {}; // contactId → call count today (for double dial)
+    const debugSamples = []; // raw call messages for ?debug=1
 
     await Promise.all(allConvs.map(async conv => {
       const r = await fetch(`${GHL_BASE}/conversations/${conv.id}/messages?limit=100`, { headers: GHL_HEADERS });
@@ -48,6 +49,8 @@ module.exports = async function handler(req, res) {
         if (msg.direction !== 'outbound') continue;
         const msgDate = new Date(msg.dateAdded);
         if (msgDate < todayStart) continue;
+
+        if (debugSamples.length < 10) debugSamples.push(msg);
 
         const uid      = msg.userId || 'unknown';
         const duration = msg.meta?.duration ?? msg.duration ?? msg.callDuration ?? 0;
@@ -63,6 +66,8 @@ module.exports = async function handler(req, res) {
         contactCalls[conv.contactId] = (contactCalls[conv.contactId] || 0) + 1;
       }
     }));
+
+    if (req.query.debug === '1') return res.status(200).json({ samples: debugSamples });
 
     const result = Object.values(repDials)
       .map(r => ({ rep: r.name, dials: r.dials, pickups: r.pickups, convs2min: r.convs2min, uniqueContacts: r.contacts.size }))
