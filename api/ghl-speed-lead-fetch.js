@@ -74,12 +74,11 @@ module.exports = async function handler(req, res) {
         minutes      = parseFloat(((callTime - new Date(f['Created At'])) / 60000).toFixed(1));
         status       = minutes <= 5 ? 'Under 5 min' : minutes <= 60 ? 'Under 1 Hour' : 'Over 1 Hour';
 
-        // Update Airtable record so future fetches don't need to re-check GHL
-        fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent('Speed to Lead')}/${rec.id}`, {
+        await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent('Speed to Lead')}/${rec.id}`, {
           method: 'PATCH',
           headers: { 'Authorization': `Bearer ${AIRTABLE_TOKEN}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ fields: { 'First Call At': firstCallAt, 'Minutes to Call': minutes, 'Status': status } }),
-        }).catch(() => {});
+        });
       }
     }
 
