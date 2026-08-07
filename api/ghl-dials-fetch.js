@@ -35,7 +35,7 @@ module.exports = async function handler(req, res) {
     }
 
     // For each conversation, get messages from today and count outbound calls per rep
-    const repDials = {};    // userId → { name, dials, contacts: Set }
+    const repDials = {};    // userId → { name, dials, pickups, convs2min, contacts: Set }
     const contactCalls = {}; // contactId → call count today (for double dial)
 
     await Promise.all(allConvs.map(async conv => {
@@ -49,22 +49,31 @@ module.exports = async function handler(req, res) {
         const msgDate = new Date(msg.dateAdded);
         if (msgDate < todayStart) continue;
 
-        const uid = msg.userId || 'unknown';
-        if (!repDials[uid]) repDials[uid] = { name: userMap[uid] || uid, dials: 0, contacts: new Set() };
+        const uid      = msg.userId || 'unknown';
+        const duration = msg.meta?.duration ?? msg.duration ?? msg.callDuration ?? 0;
+        const status   = msg.meta?.callStatus || msg.status || msg.callStatus || '';
+        const isPickup = status === 'completed' || status === 'connected' || duration > 0;
+
+        if (!repDials[uid]) repDials[uid] = { name: userMap[uid] || uid, dials: 0, pickups: 0, convs2min: 0, contacts: new Set() };
         repDials[uid].dials++;
         repDials[uid].contacts.add(conv.contactId);
+        if (isPickup)      repDials[uid].pickups++;
+        if (duration >= 120) repDials[uid].convs2min++;
 
         contactCalls[conv.contactId] = (contactCalls[conv.contactId] || 0) + 1;
       }
     }));
 
     const result = Object.values(repDials)
-      .map(r => ({ rep: r.name, dials: r.dials, uniqueContacts: r.contacts.size }))
+      .map(r => ({ rep: r.name, dials: r.dials, pickups: r.pickups, convs2min: r.convs2min, uniqueContacts: r.contacts.size }))
       .sort((a, b) => b.dials - a.dials);
 
-    const doubleDials = Object.values(contactCalls).filter(c => c >= 2).length;
+    const doubleDials      = Object.values(contactCalls).filter(c => c >= 2).length;
+    const totalDials       = result.reduce((s, r) => s + r.dials, 0);
+    const totalPickups     = result.reduce((s, r) => s + r.pickups, 0);
+    const totalConvs2min   = result.reduce((s, r) => s + r.convs2min, 0);
 
-    res.status(200).json({ reps: result, doubleDials, totalDials: result.reduce((s, r) => s + r.dials, 0) });
+    res.status(200).json({ reps: result, doubleDials, totalDials, totalPickups, totalConvs2min });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

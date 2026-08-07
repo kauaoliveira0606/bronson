@@ -585,6 +585,14 @@
         <div style="font-size:2.2rem;font-weight:800;color:#fff;" id="dials-total">—</div>
       </div>
       <div>
+        <div class="act-card-title" style="margin-bottom:6px;">Pickups</div>
+        <div style="font-size:2.2rem;font-weight:800;color:#a78bfa;" id="dials-pickups">—</div>
+      </div>
+      <div>
+        <div class="act-card-title" style="margin-bottom:6px;">Convs 2+ Min</div>
+        <div style="font-size:2.2rem;font-weight:800;color:#f59e0b;" id="dials-convs2min">—</div>
+      </div>
+      <div>
         <div class="act-card-title" style="margin-bottom:6px;">Double Dialed</div>
         <div style="font-size:2.2rem;font-weight:800;color:#22c55e;" id="dials-double">—</div>
       </div>
@@ -1333,19 +1341,22 @@
       const r = await fetch('/api/ghl-dials-fetch?t=' + Date.now());
       const data = await r.json();
       const rows = data.reps || [];
-      document.getElementById('dials-total').textContent  = data.totalDials  ?? '0';
-      document.getElementById('dials-double').textContent = data.doubleDials ?? '0';
-      document.getElementById('dials-reps').textContent   = rows.length;
+      document.getElementById('dials-total').textContent    = data.totalDials    ?? '0';
+      document.getElementById('dials-pickups').textContent  = data.totalPickups  ?? '0';
+      document.getElementById('dials-convs2min').textContent= data.totalConvs2min ?? '0';
+      document.getElementById('dials-double').textContent   = data.doubleDials   ?? '0';
+      document.getElementById('dials-reps').textContent     = rows.length;
       if (!rows.length) {
-        dialsTbody.innerHTML = '<tr><td colspan="3" class="act-empty">No dials yet today.</td></tr>';
+        dialsTbody.innerHTML = '<tr><td colspan="5" class="act-empty">No dials yet today.</td></tr>';
       } else {
-        // Update header
         document.querySelector('#dials-tbody').closest('table').querySelector('thead tr').innerHTML =
-          '<th>Rep</th><th>Dials Today</th><th>Unique Contacts</th>';
+          '<th>Rep</th><th>Dials</th><th>Pickups</th><th>Convs 2+ Min</th><th>Unique Contacts</th>';
         dialsTbody.innerHTML = rows.map(row => `
           <tr>
             <td>${row.rep}</td>
             <td><span class="act-dials">${row.dials}</span></td>
+            <td><span style="color:#a78bfa;font-weight:700;">${row.pickups ?? 0}</span></td>
+            <td><span style="color:#f59e0b;font-weight:700;">${row.convs2min ?? 0}</span></td>
             <td>${row.uniqueContacts}</td>
           </tr>`).join('');
       }
