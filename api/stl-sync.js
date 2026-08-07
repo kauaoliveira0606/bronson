@@ -7,22 +7,28 @@ const GHL_HEADERS    = { 'Authorization': `Bearer ${GHL_KEY}`, 'Version': '2021-
 
 async function getFirstOutboundCall(contactId, createdAt) {
   try {
-    const r = await fetch(`${GHL_BASE}/conversations/search?locationId=${LOCATION_ID}&contactId=${contactId}`, { headers: GHL_HEADERS });
+    const r = await fetch(`${GHL_BASE}/conversations/search?locationId=${LOCATION_ID}&contactId=${contactId}&limit=20`, { headers: GHL_HEADERS });
     const d = await r.json();
-    const convId = d.conversations?.[0]?.id;
-    if (!convId) return null;
+    const convs = d.conversations || [];
+    if (!convs.length) return null;
 
-    const r2 = await fetch(`${GHL_BASE}/conversations/${convId}/messages?limit=100`, { headers: GHL_HEADERS });
-    const d2 = await r2.json();
-    const msgs = d2.messages?.messages || [];
+    const earliest = new Date(new Date(createdAt).getTime() - 5 * 60 * 1000);
 
-    const calls = msgs
-      .filter(m => m.messageType === 'TYPE_CALL' && m.direction === 'outbound')
-      .map(m => new Date(m.dateAdded))
-      .filter(d => d >= new Date(createdAt))
-      .sort((a, b) => a - b);
+    const allCalls = [];
+    await Promise.all(convs.map(async conv => {
+      const r2 = await fetch(`${GHL_BASE}/conversations/${conv.id}/messages?limit=100`, { headers: GHL_HEADERS });
+      const d2 = await r2.json();
+      const msgs = d2.messages?.messages || [];
+      for (const m of msgs) {
+        if (m.messageType === 'TYPE_CALL' && m.direction === 'outbound') {
+          const t = new Date(m.dateAdded);
+          if (t >= earliest) allCalls.push(t);
+        }
+      }
+    }));
 
-    return calls[0] || null;
+    allCalls.sort((a, b) => a - b);
+    return allCalls[0] || null;
   } catch { return null; }
 }
 
