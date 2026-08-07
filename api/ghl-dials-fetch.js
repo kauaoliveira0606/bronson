@@ -53,21 +53,21 @@ module.exports = async function handler(req, res) {
         if (debugSamples.length < 10) debugSamples.push(msg);
 
         const uid      = msg.userId || 'unknown';
-        const duration = msg.meta?.duration ?? msg.duration ?? msg.callDuration ?? 0;
-        const status   = msg.meta?.callStatus || msg.status || msg.callStatus || '';
-        const isPickup = status === 'completed' || status === 'connected' || duration > 0;
+        const duration = msg.meta?.call?.duration ?? null;
+        const isPickup = duration !== null && duration >= 20;
+        const isLong   = duration !== null && duration >= 120;
 
         if (!repDials[uid]) repDials[uid] = { name: userMap[uid] || uid, dials: 0, pickups: 0, convs2min: 0, contacts: new Set() };
         repDials[uid].dials++;
         repDials[uid].contacts.add(conv.contactId);
-        if (isPickup)      repDials[uid].pickups++;
-        if (duration >= 120) repDials[uid].convs2min++;
+        if (isPickup) repDials[uid].pickups++;
+        if (isLong)   repDials[uid].convs2min++;
 
         contactCalls[conv.contactId] = (contactCalls[conv.contactId] || 0) + 1;
       }
     }));
 
-    if (req.query.debug === '1') return res.status(200).json({ samples: debugSamples });
+    if (req.query.debug === '1') return res.status(200).json({ samples: debugSamples, userMap });
 
     const result = Object.values(repDials)
       .map(r => ({ rep: r.name, dials: r.dials, pickups: r.pickups, convs2min: r.convs2min, uniqueContacts: r.contacts.size }))
