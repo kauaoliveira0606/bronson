@@ -36,6 +36,8 @@ module.exports = async function handler(req, res) {
   const data = await r.json();
   const records = data.records || [];
 
+  if (req.query.debug === '1') return res.status(200).json({ iso, records: records.map(r => r.fields) });
+
   if (!records.length) {
     return res.status(200).json({ ok: true, message: `No EOD submissions found for ${iso}` });
   }
