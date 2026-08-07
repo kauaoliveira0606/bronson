@@ -45,9 +45,10 @@ module.exports = async function handler(req, res) {
   // Aggregate by rep name (handle duplicate submissions by summing)
   const repMap = {};
   for (const rec of records) {
-    const name  = rec.fields['Your Name'] || 'Unknown';
-    const cash  = Number(rec.fields['Cash Collected'])  || 0;
-    const dials = Number(rec.fields['Outbound Dials'])  || 0;
+    const f     = rec.fields;
+    const name  = f['Your name'] || 'Unknown';
+    const cash  = (Number(f['Cash collected affiliate']) || 0) + (Number(f['cash collected high ticket']) || 0);
+    const dials = Number(f['Outbound dials']) || 0;
     if (!repMap[name]) repMap[name] = { name, cash: 0, dials: 0 };
     repMap[name].cash  += cash;
     repMap[name].dials += dials;
