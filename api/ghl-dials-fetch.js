@@ -8,9 +8,9 @@ module.exports = async function handler(req, res) {
   if (!GHL_KEY) return res.status(500).json({ error: 'GHL_API_KEY not set' });
 
   try {
-    const todayStart = new Date();
-    todayStart.setHours(0, 0, 0, 0);
-    const startTs = todayStart.getTime();
+    const todayStart = req.query.startTs
+      ? new Date(parseInt(req.query.startTs))
+      : (() => { const d = new Date(); d.setHours(0,0,0,0); return d; })();
 
     // Fetch users so we can map userId → name
     const usersRes = await fetch(`${GHL_BASE}/users/?locationId=${LOCATION_ID}`, { headers: GHL_HEADERS });

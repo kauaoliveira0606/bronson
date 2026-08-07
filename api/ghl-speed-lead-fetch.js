@@ -33,11 +33,11 @@ module.exports = async function handler(req, res) {
 
   const filter = req.query.filter || 'today';
   const now    = new Date();
-  let cutoff   = new Date();
+  let cutoff   = req.query.startTs ? new Date(parseInt(req.query.startTs)) : new Date();
 
   if (filter === '3days') cutoff.setDate(now.getDate() - 2);
   else if (filter === '7days') cutoff.setDate(now.getDate() - 6);
-  else cutoff.setHours(0, 0, 0, 0);
+  else if (!req.query.startTs) cutoff.setHours(0, 0, 0, 0);
 
   const formula = encodeURIComponent(`IS_AFTER({Created At},"${cutoff.toISOString()}")`);
   const r = await fetch(
