@@ -581,8 +581,14 @@
 
     <!-- Total Dials Summary -->
     <div class="act-card" id="dials-summary" style="display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
+      <div style="width:100%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px;">
+        <div class="act-card-title" style="margin-bottom:0;" id="dials-summary-title">Total Outbound Dials — Today</div>
+        <div style="display:flex;gap:6px;">
+          <button class="act-refresh active" id="dials-f-today"     onclick="setDialsPeriod('today')"     style="background:#fff;color:#000;border-color:#fff;">Today</button>
+          <button class="act-refresh"        id="dials-f-yesterday" onclick="setDialsPeriod('yesterday')">Yesterday</button>
+        </div>
+      </div>
       <div>
-        <div class="act-card-title" style="margin-bottom:6px;">Total Outbound Dials Today</div>
         <div style="font-size:2.2rem;font-weight:800;color:#fff;" id="dials-total">—</div>
       </div>
       <div>
@@ -606,8 +612,8 @@
     <!-- Dials Per Rep -->
     <div class="act-card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-        <div class="act-card-title">Dials Today — Per Rep</div>
-        <button class="act-refresh" onclick="loadActivity()">Refresh</button>
+        <div class="act-card-title" id="dials-per-rep-title">Dials Today — Per Rep</div>
+        <button class="act-refresh" onclick="loadDials()">Refresh</button>
       </div>
       <div style="overflow-x:auto;">
         <table class="act-tbl">
@@ -1396,24 +1402,35 @@
     loadSTL();
   }
 
-  async function loadActivity() {
-    const dialsTbody = document.getElementById('dials-tbody');
-    const stlTbody   = document.getElementById('stl-tbody');
-    dialsTbody.innerHTML = '<tr><td colspan="2" class="act-empty">Loading...</td></tr>';
-    stlTbody.innerHTML   = '<tr><td colspan="6" class="act-empty">Loading...</td></tr>';
+  let dialsPeriod = 'today';
 
-    // Dials per rep
+  function setDialsPeriod(p) {
+    dialsPeriod = p;
+    ['today','yesterday'].forEach(k => {
+      const btn = document.getElementById('dials-f-' + k);
+      if (k === p) { btn.style.background='#fff'; btn.style.color='#000'; btn.style.borderColor='#fff'; }
+      else { btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; }
+    });
+    const label = p === 'yesterday' ? 'Yesterday' : 'Today';
+    document.getElementById('dials-summary-title').textContent  = `Total Outbound Dials — ${label}`;
+    document.getElementById('dials-per-rep-title').textContent  = `Dials ${label} — Per Rep`;
+    loadDials();
+  }
+
+  async function loadDials() {
+    const dialsTbody = document.getElementById('dials-tbody');
+    dialsTbody.innerHTML = '<tr><td colspan="2" class="act-empty">Loading...</td></tr>';
     try {
-      const r = await fetch('/api/ghl-dials-fetch?t=' + Date.now());
+      const r = await fetch('/api/ghl-dials-fetch?filter=' + dialsPeriod + '&t=' + Date.now());
       const data = await r.json();
       const rows = data.reps || [];
-      document.getElementById('dials-total').textContent    = data.totalDials    ?? '0';
-      document.getElementById('dials-pickups').textContent  = data.totalPickups  ?? '0';
-      document.getElementById('dials-convs2min').textContent= data.totalConvs2min ?? '0';
-      document.getElementById('dials-double').textContent   = data.doubleDials   ?? '0';
-      document.getElementById('dials-reps').textContent     = rows.length;
+      document.getElementById('dials-total').textContent     = data.totalDials     ?? '0';
+      document.getElementById('dials-pickups').textContent   = data.totalPickups   ?? '0';
+      document.getElementById('dials-convs2min').textContent = data.totalConvs2min ?? '0';
+      document.getElementById('dials-double').textContent    = data.doubleDials    ?? '0';
+      document.getElementById('dials-reps').textContent      = rows.length;
       if (!rows.length) {
-        dialsTbody.innerHTML = '<tr><td colspan="5" class="act-empty">No dials yet today.</td></tr>';
+        dialsTbody.innerHTML = '<tr><td colspan="5" class="act-empty">No dials found.</td></tr>';
       } else {
         document.querySelector('#dials-tbody').closest('table').querySelector('thead tr').innerHTML =
           '<th>Rep</th><th>Dials</th><th>Pickups</th><th>Convs 2+ Min</th><th>Unique Contacts</th>';
@@ -1429,7 +1446,10 @@
     } catch(e) {
       dialsTbody.innerHTML = '<tr><td colspan="3" class="act-empty">Error loading dials.</td></tr>';
     }
+  }
 
+  async function loadActivity() {
+    loadDials();
     loadSTL();
   }
 

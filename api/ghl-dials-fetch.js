@@ -8,11 +8,23 @@ module.exports = async function handler(req, res) {
   if (!GHL_KEY) return res.status(500).json({ error: 'GHL_API_KEY not set' });
 
   try {
+    const filter = req.query.filter || 'today';
     const now    = new Date();
     const nyNow  = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
     const offset = now.getTime() - nyNow.getTime();
-    nyNow.setHours(0, 0, 0, 0);
-    const todayStart = new Date(nyNow.getTime() + offset);
+
+    let periodStart, periodEnd;
+    if (filter === 'yesterday') {
+      const yest = new Date(nyNow); yest.setDate(nyNow.getDate() - 1); yest.setHours(0, 0, 0, 0);
+      const yestEnd = new Date(nyNow); yestEnd.setHours(0, 0, 0, 0);
+      periodStart = new Date(yest.getTime() + offset);
+      periodEnd   = new Date(yestEnd.getTime() + offset);
+    } else {
+      const todayMid = new Date(nyNow); todayMid.setHours(0, 0, 0, 0);
+      periodStart = new Date(todayMid.getTime() + offset);
+      periodEnd   = null;
+    }
+    const todayStart = periodStart;
 
     // Fetch users so we can map userId → name
     const usersRes = await fetch(`${GHL_BASE}/users/?locationId=${LOCATION_ID}`, { headers: GHL_HEADERS });
@@ -48,7 +60,8 @@ module.exports = async function handler(req, res) {
         if (msg.messageType !== 'TYPE_CALL') continue;
         if (msg.direction !== 'outbound') continue;
         const msgDate = new Date(msg.dateAdded);
-        if (msgDate < todayStart) continue;
+        if (msgDate < periodStart) continue;
+        if (periodEnd && msgDate >= periodEnd) continue;
 
         if (debugSamples.length < 10) debugSamples.push(msg);
 
