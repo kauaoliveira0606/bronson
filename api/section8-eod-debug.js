@@ -1,5 +1,4 @@
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN;
-const AIRTABLE_BASE  = 'appiMw8gpaLv2WITA';
 const AIRTABLE_TABLE = 'Affiliate EOD';
 
 module.exports = async function handler(req, res) {
@@ -7,6 +6,21 @@ module.exports = async function handler(req, res) {
   if (!AIRTABLE_TOKEN) return res.status(500).json({ error: 'AIRTABLE_TOKEN not set' });
 
   try {
+    // List every base this token can see, so we can find the "Section 8 Playbook"
+    // base by name instead of assuming the koconsultings base ID applies.
+    const basesRes = await fetch('https://api.airtable.com/v0/meta/bases', {
+      headers: { 'Authorization': `Bearer ${AIRTABLE_TOKEN}` },
+    });
+    const basesData = await basesRes.json();
+    const bases = basesData.bases || [];
+
+    const targetBase = bases.find(b => /section\s*8/i.test(b.name)) || null;
+    const AIRTABLE_BASE = req.query.base || targetBase?.id || null;
+
+    if (!AIRTABLE_BASE) {
+      return res.status(200).json({ bases, error: 'No base matching "Section 8" found and no ?base= override given' });
+    }
+
     // Full base schema — every table and every field, straight from Airtable's
     // metadata API. This tells us definitively what tables/fields actually exist
     // rather than guessing from other files' usage.
@@ -29,6 +43,8 @@ module.exports = async function handler(req, res) {
     const recordsData = await recordsRes.json();
 
     res.status(200).json({
+      bases,
+      usedBase: AIRTABLE_BASE,
       tables,
       affiliateEodTable: tables.find(t => t.name === AIRTABLE_TABLE) || null,
       recentRecords: (recordsData.records || []).map(r => r.fields),
