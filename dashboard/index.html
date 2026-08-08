@@ -332,45 +332,28 @@
 <div class="main">
 
   <div class="chart-card">
-    <!-- Scorecard / Plan Split tab switcher -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
-      <div style="display:flex;gap:6px;">
-        <button class="sc-filter-btn active" id="sc-subtab-scorecard" onclick="switchSCSubtab('scorecard')">Weekly Scorecard</button>
-        <button class="sc-filter-btn"        id="sc-subtab-plan"      onclick="switchSCSubtab('plan')">Plan Split</button>
-      </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <div class="chart-title" style="margin-bottom:0;">Weekly Scorecard</div>
       <div class="scorecard-week" id="scorecard-week"></div>
     </div>
-
-    <!-- Scorecard pane -->
-    <div id="sc-pane-scorecard">
-      <div class="sc-filter-bar" style="justify-content:space-between;flex-wrap:wrap;gap:8px;">
-        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-          <button class="sc-filter-btn active" data-f="week"    onclick="setSCFilter('week')">This Week</button>
-          <button class="sc-filter-btn"        data-f="7d"      onclick="setSCFilter('7d')">Last 7 Days</button>
-          <button class="sc-filter-btn"        data-f="30d"     onclick="setSCFilter('30d')">Last 30 Days</button>
-          <button class="sc-filter-btn"        data-f="alltime" onclick="setSCFilter('alltime')">All Time</button>
-          <div class="sc-filter-sep"></div>
-          <input class="sc-date-input" type="date" id="sc-from" onchange="setSCFilter('custom')" title="From">
-          <span style="color:var(--text2);font-size:.8rem;">→</span>
-          <input class="sc-date-input" type="date" id="sc-to"   onchange="setSCFilter('custom')" title="To">
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;">
-          <button class="sc-filter-btn" id="sc-week-prev" onclick="shiftWeek(1)" title="Previous week">← Prev</button>
-          <span id="sc-week-label" style="font-size:.75rem;color:var(--text2);min-width:120px;text-align:center;"></span>
-          <button class="sc-filter-btn" id="sc-week-next" onclick="shiftWeek(-1)" title="Next week">Next →</button>
-        </div>
+    <div class="sc-filter-bar" style="justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+        <button class="sc-filter-btn active" data-f="week"    onclick="setSCFilter('week')">This Week</button>
+        <button class="sc-filter-btn"        data-f="7d"      onclick="setSCFilter('7d')">Last 7 Days</button>
+        <button class="sc-filter-btn"        data-f="30d"     onclick="setSCFilter('30d')">Last 30 Days</button>
+        <button class="sc-filter-btn"        data-f="alltime" onclick="setSCFilter('alltime')">All Time</button>
+        <div class="sc-filter-sep"></div>
+        <input class="sc-date-input" type="date" id="sc-from" onchange="setSCFilter('custom')" title="From">
+        <span style="color:var(--text2);font-size:.8rem;">→</span>
+        <input class="sc-date-input" type="date" id="sc-to"   onchange="setSCFilter('custom')" title="To">
       </div>
-      <div id="scorecard-wrap"><div class="loading">Loading scorecard...</div></div>
-    </div>
-
-    <!-- Plan Split pane -->
-    <div id="sc-pane-plan" style="display:none;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-        <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text2);">Affiliates PCN</div>
-        <div id="plan-split-total" style="font-size:.72rem;color:var(--text2);"></div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <button class="sc-filter-btn" id="sc-week-prev" onclick="shiftWeek(1)" title="Previous week">← Prev</button>
+        <span id="sc-week-label" style="font-size:.75rem;color:var(--text2);min-width:120px;text-align:center;"></span>
+        <button class="sc-filter-btn" id="sc-week-next" onclick="shiftWeek(-1)" title="Next week">Next →</button>
       </div>
-      <div id="plan-split-body"><div class="loading">Loading plan split...</div></div>
     </div>
+    <div id="scorecard-wrap"><div class="loading">Loading scorecard...</div></div>
   </div>
 
   <div class="chart-card" id="ai-summary-card" style="display:none;">
@@ -1222,6 +1205,7 @@
     const cardsHtml =
       sectionLabel('💰 Leading Metrics') + leadingMetrics.map(buildCard).join('') +
       sectionLabel('🔥 Lead Flow')        + leadFlowMetrics.map(buildCard).join('') +
+      '<div id="plan-split-inline" class="sc-card" style="grid-column:1/-1;"><div class="sc-metric">Affiliates PCN — Plan Split</div><div id="plan-split-body" style="margin-top:10px;"><div style="font-size:.78rem;color:var(--text2);">Loading...</div></div></div>' +
       sectionLabel('🤝 Sales Conversion') + salesConvMetrics.map(buildCard).join('') +
       sectionLabel('📣 Marketing Metrics')+ marketingMetrics.map(buildCard).join('') +
       sectionLabel('📊 Backend') + pipelineMetrics.map(buildCard).join('');
@@ -1230,6 +1214,7 @@
 
     const table = `<div class="sc-table-wrap"><table class="sc-table"><thead><tr><th>Metric</th>${thDays}<th class="col-goal-th">Goal</th><th>Actual</th></tr></thead><tbody>${tableRowsHtml}</tbody></table></div>`;
     document.getElementById('scorecard-wrap').innerHTML = `<div class="scorecard-grid">${cardsHtml||'<div class="loading">No data found</div>'}</div>${table}`;
+    renderPlanSplit();
     generateSummary(metrics);
   }
 
@@ -1318,44 +1303,43 @@
     document.getElementById('ai-summary-card').style.display = 'block';
   }
 
-  // ── Scorecard subtab switcher ─────────────────────────────────────────────
-  function switchSCSubtab(tab) {
-    document.getElementById('sc-pane-scorecard').style.display = tab === 'scorecard' ? '' : 'none';
-    document.getElementById('sc-pane-plan').style.display      = tab === 'plan'      ? '' : 'none';
-    document.getElementById('sc-subtab-scorecard').classList.toggle('active', tab === 'scorecard');
-    document.getElementById('sc-subtab-plan').classList.toggle('active',      tab === 'plan');
-    if (tab === 'plan' && document.getElementById('plan-split-body').querySelector('.loading')) loadPlanSplit();
+  // ── PCN Plan Split ────────────────────────────────────────────────────────
+  let planSplitCache = null;
+
+  function renderPlanSplit() {
+    const body = document.getElementById('plan-split-body');
+    if (!body || !planSplitCache) return;
+    const { total, breakdown } = planSplitCache;
+    const COLORS = ['#3b82f6','#22c55e','#f59e0b','#a855f7','#ef4444','#2dd4bf','#f97316'];
+    body.innerHTML = `
+      <div style="font-size:.68rem;color:var(--text2);margin-bottom:10px;">${total} total affiliates</div>` +
+      breakdown.map((item, i) => {
+        const color = COLORS[i % COLORS.length];
+        return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:32px;text-align:right;font-size:.68rem;font-weight:700;color:var(--text2);flex-shrink:0;">${item.pct}%</div>
+          <div style="flex:1;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:.78rem;font-weight:600;color:#fff;">${item.plan}</span>
+              <span style="font-size:.78rem;font-weight:700;color:${color};">${item.count}</span>
+            </div>
+            <div style="height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;">
+              <div style="height:100%;width:${item.pct}%;background:${color};border-radius:3px;"></div>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
   }
 
-  // ── PCN Plan Split ────────────────────────────────────────────────────────
   async function loadPlanSplit() {
-    const body  = document.getElementById('plan-split-body');
-    const total = document.getElementById('plan-split-total');
     try {
       const r    = await fetch('/api/pcn-plan-split?t=' + Date.now());
       const data = await r.json();
       if (data.error) throw new Error(typeof data.error === 'string' ? data.error : JSON.stringify(data.error));
-      total.textContent = data.total + ' total affiliates';
-
-      const COLORS = ['#3b82f6','#22c55e','#f59e0b','#a855f7','#ef4444','#2dd4bf','#f97316'];
-      body.innerHTML = data.breakdown.map((item, i) => {
-        const color = COLORS[i % COLORS.length];
-        return `
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-            <div style="width:36px;text-align:right;font-size:.7rem;font-weight:700;color:var(--text2);flex-shrink:0;">${item.pct}%</div>
-            <div style="flex:1;">
-              <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
-                <span style="font-size:.82rem;font-weight:600;color:#fff;">${item.plan}</span>
-                <span style="font-size:.82rem;font-weight:700;color:${color};">${item.count}</span>
-              </div>
-              <div style="height:6px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;">
-                <div style="height:100%;width:${item.pct}%;background:${color};border-radius:3px;transition:width .4s;"></div>
-              </div>
-            </div>
-          </div>`;
-      }).join('');
+      planSplitCache = data;
+      renderPlanSplit();
     } catch (e) {
-      body.innerHTML = `<div class="loading" style="color:#ef4444;">Error: ${e.message}</div>`;
+      const body = document.getElementById('plan-split-body');
+      if (body) body.innerHTML = `<div style="font-size:.75rem;color:#ef4444;">Error: ${e.message}</div>`;
     }
   }
 
