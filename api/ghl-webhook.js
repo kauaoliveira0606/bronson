@@ -35,7 +35,8 @@ module.exports = async function handler(req, res) {
   const body = req.body || {};
   // GHL sends contact_id for ContactCreated, no type field
   const isContactCreated = body.contact_id && (body.full_name || body.first_name) && !body.duration && !body.call_status && !body.direction;
-  const isCall = body.direction || body.call_status || body.duration != null || body.type === 'OutboundCall' || body.type === 'CallStatusUpdated';
+  const isCall = (body.direction === 'outbound' || body.type === 'OutboundCall') &&
+    (body.call_status === 'completed' || body.call_status === 'no-answer' || body.call_status === 'busy' || body.call_status === 'failed' || body.duration != null);
 
   // New lead came in — log to Speed to Lead
   if (isContactCreated) {
@@ -54,14 +55,14 @@ module.exports = async function handler(req, res) {
     const repName   = body.userName || body.user?.name || body.userId || 'Unknown';
     const repId     = body.userId   || body.user?.id   || '';
     const duration  = Number(body.duration) || 0;
-    const now       = new Date();
+    const callTime  = body.dateAdded || body.date_added || body.createdAt || new Date().toISOString();
 
     // Log the dial
     await airtablePost('GHL Calls', {
       'Contact ID': contactId,
       'Rep Name':   repName,
       'Rep ID':     repId,
-      'Timestamp':  now.toISOString(),
+      'Timestamp':  callTime,
       'Duration':   duration,
     });
 
