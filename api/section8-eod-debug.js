@@ -1,0 +1,40 @@
+const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN;
+const AIRTABLE_BASE  = 'appiMw8gpaLv2WITA';
+const AIRTABLE_TABLE = 'Affiliate EOD';
+
+module.exports = async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  if (!AIRTABLE_TOKEN) return res.status(500).json({ error: 'AIRTABLE_TOKEN not set' });
+
+  try {
+    // Full base schema — every table and every field, straight from Airtable's
+    // metadata API. This tells us definitively what tables/fields actually exist
+    // rather than guessing from other files' usage.
+    const schemaRes = await fetch(`https://api.airtable.com/v0/meta/bases/${AIRTABLE_BASE}/tables`, {
+      headers: { 'Authorization': `Bearer ${AIRTABLE_TOKEN}` },
+    });
+    const schemaData = await schemaRes.json();
+    const tables = (schemaData.tables || []).map(t => ({
+      id: t.id,
+      name: t.name,
+      fields: (t.fields || []).map(f => ({ name: f.name, type: f.type })),
+    }));
+
+    // Raw recent records from the "Affiliate EOD" table specifically, so we can
+    // see real field names + values in use (not just schema-declared names).
+    const recordsRes = await fetch(
+      `https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent(AIRTABLE_TABLE)}?pageSize=10&sort[0][field]=Date&sort[0][direction]=desc`,
+      { headers: { 'Authorization': `Bearer ${AIRTABLE_TOKEN}` } }
+    );
+    const recordsData = await recordsRes.json();
+
+    res.status(200).json({
+      tables,
+      affiliateEodTable: tables.find(t => t.name === AIRTABLE_TABLE) || null,
+      recentRecords: (recordsData.records || []).map(r => r.fields),
+      recordsError: recordsData.error || null,
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};
