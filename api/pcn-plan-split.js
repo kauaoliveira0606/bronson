@@ -15,9 +15,12 @@ module.exports = async function handler(req, res) {
       offset = data.offset || '';
     } while (offset);
 
+    const sampleKeys = records.length ? Object.keys(records[0]) : [];
+    const planKey = sampleKeys.find(k => k.toLowerCase().includes('plan'));
+
     const counts = {};
     records.forEach(f => {
-      const plan = (f['plan?'] || 'Unknown').trim();
+      const plan = planKey ? (f[planKey] || 'Unknown').trim() : 'Unknown';
       counts[plan] = (counts[plan] || 0) + 1;
     });
 
@@ -26,7 +29,7 @@ module.exports = async function handler(req, res) {
       .sort((a, b) => b[1] - a[1])
       .map(([plan, count]) => ({ plan, count, pct: total > 0 ? Math.round((count / total) * 100) : 0 }));
 
-    res.status(200).json({ total, breakdown });
+    res.status(200).json({ total, breakdown, _planKey: planKey, _sampleKeys: sampleKeys });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
