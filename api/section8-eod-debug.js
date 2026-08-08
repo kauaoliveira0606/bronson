@@ -1,5 +1,4 @@
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN;
-const AIRTABLE_TABLE = 'Affiliate EOD';
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -34,10 +33,11 @@ module.exports = async function handler(req, res) {
       fields: (t.fields || []).map(f => ({ name: f.name, type: f.type })),
     }));
 
-    // Raw recent records from the "Affiliate EOD" table specifically, so we can
-    // see real field names + values in use (not just schema-declared names).
+    // Raw recent records from whichever table is requested (defaults to Affiliate
+    // EOD), so we can see real field names + values in use, not just schema names.
+    const targetTable = req.query.table || 'Affiliate EOD';
     const recordsRes = await fetch(
-      `https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent(AIRTABLE_TABLE)}?pageSize=10&sort[0][field]=Date&sort[0][direction]=desc`,
+      `https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent(targetTable)}?pageSize=10&sort[0][field]=Date&sort[0][direction]=desc`,
       { headers: { 'Authorization': `Bearer ${AIRTABLE_TOKEN}` } }
     );
     const recordsData = await recordsRes.json();
@@ -46,7 +46,8 @@ module.exports = async function handler(req, res) {
       bases,
       usedBase: AIRTABLE_BASE,
       tables,
-      affiliateEodTable: tables.find(t => t.name === AIRTABLE_TABLE) || null,
+      queriedTable: targetTable,
+      queriedTableSchema: tables.find(t => t.name === targetTable) || null,
       recentRecords: (recordsData.records || []).map(r => r.fields),
       recordsError: recordsData.error || null,
     });
