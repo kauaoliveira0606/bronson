@@ -15,6 +15,10 @@
     {
       "path": "/api/discord-leaderboard",
       "schedule": "0 13 * * *"
+    },
+    {
+      "path": "/api/section8-discord-leaderboard",
+      "schedule": "0 13 * * *"
     }
   ]
 }
