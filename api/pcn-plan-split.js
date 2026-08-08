@@ -7,7 +7,7 @@ module.exports = async function handler(req, res) {
     const records = [];
     let offset = '';
     do {
-      const url = `https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent('Affiliates PCN')}?pageSize=100${offset ? '&offset=' + encodeURIComponent(offset) : ''}`;
+      const url = `https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent('Affiliate PCN')}?pageSize=100${offset ? '&offset=' + encodeURIComponent(offset) : ''}`;
       const r = await fetch(url, { headers: { 'Authorization': `Bearer ${AIRTABLE_TOKEN}` } });
       const data = await r.json();
       if (data.error) return res.status(500).json({ error: typeof data.error === 'string' ? data.error : JSON.stringify(data.error) });
