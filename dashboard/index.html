@@ -621,9 +621,10 @@
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
         <div class="act-card-title">Speed to Lead</div>
         <div style="display:flex;gap:6px;">
-          <button class="act-refresh active" id="stl-f-today"  onclick="setSTLPeriod('today')"  style="background:#fff;color:#000;border-color:#fff;">Today</button>
-          <button class="act-refresh"        id="stl-f-3days"  onclick="setSTLPeriod('3days')">Last 3 Days</button>
-          <button class="act-refresh"        id="stl-f-7days"  onclick="setSTLPeriod('7days')">Last 7 Days</button>
+          <button class="act-refresh active" id="stl-f-today"     onclick="setSTLPeriod('today')"     style="background:#fff;color:#000;border-color:#fff;">Today</button>
+          <button class="act-refresh"        id="stl-f-yesterday" onclick="setSTLPeriod('yesterday')">Yesterday</button>
+          <button class="act-refresh"        id="stl-f-3days"     onclick="setSTLPeriod('3days')">Last 3 Days</button>
+          <button class="act-refresh"        id="stl-f-7days"     onclick="setSTLPeriod('7days')">Last 7 Days</button>
           <button class="act-refresh" id="stl-sync-btn" onclick="runSTLSync()" style="border-color:#22c55e;color:#22c55e;">↻ Sync Calls</button>
         </div>
       </div>
@@ -1386,7 +1387,7 @@
 
   function setSTLPeriod(p) {
     stlPeriod = p;
-    ['today','3days','7days'].forEach(k => {
+    ['today','yesterday','3days','7days'].forEach(k => {
       const btn = document.getElementById('stl-f-' + k);
       if (k === p) { btn.style.background='#fff'; btn.style.color='#000'; btn.style.borderColor='#fff'; }
       else { btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; }

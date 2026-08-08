@@ -46,6 +46,32 @@ module.exports = async function handler(req, res) {
 
   if (filter === '3days') cutoff.setDate(now.getDate() - 2);
   else if (filter === '7days') cutoff.setDate(now.getDate() - 6);
+  else if (filter === 'yesterday') {
+    const yest = new Date(nyNow); yest.setDate(nyNow.getDate() - 1); yest.setHours(0, 0, 0, 0);
+    const yestEnd = new Date(nyNow); yestEnd.setHours(0, 0, 0, 0);
+    cutoff = new Date(yest.getTime() + offset);
+    const cutoffEnd = new Date(yestEnd.getTime() + offset);
+    const fYest = encodeURIComponent(`AND(IS_AFTER({Created At},"${cutoff.toISOString()}"),IS_BEFORE({Created At},"${cutoffEnd.toISOString()}"))`);
+    const rY = await fetch(
+      `https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent('Speed to Lead')}?filterByFormula=${fYest}&sort[0][field]=Created%20At&sort[0][direction]=desc&pageSize=100`,
+      { headers: { 'Authorization': `Bearer ${AIRTABLE_TOKEN}` } }
+    );
+    const dY = await rY.json();
+    const rawY = dY.records || [];
+    const recordsY = await Promise.all(rawY.map(async rec => {
+      const f = rec.fields;
+      let firstCallAt = f['First Call At'] || null;
+      let minutes     = f['Minutes to Call'] ?? null;
+      let status      = f['Status'] || 'Pending';
+      if (status === 'Over 5 min' && minutes !== null) status = minutes <= 60 ? 'Under 1 Hour' : 'Over 1 Hour';
+      return { name: f['Name'] || '—', phone: f['Phone'] || '—', createdAt: f['Created At'] || null, firstCallAt, minutes, status };
+    }));
+    const tot = recordsY.length, calledY = recordsY.filter(r => r.firstCallAt), notCalledY = recordsY.filter(r => !r.firstCallAt);
+    const u5 = calledY.filter(r => (r.minutes||0) <= 5), u60 = calledY.filter(r => { const m=r.minutes||0; return m>5&&m<=60; }), o60 = calledY.filter(r => (r.minutes||0)>60);
+    const avg = calledY.length > 0 ? calledY.reduce((s,r) => s+(r.minutes||0), 0)/calledY.length : null;
+    const p = n => tot > 0 ? ((n/tot)*100).toFixed(1) : '0.0';
+    return res.status(200).json({ total: tot, avgMinutes: avg !== null ? parseFloat(avg.toFixed(1)) : null, under5: {count:u5.length,pct:p(u5.length)}, under60: {count:u60.length,pct:p(u60.length)}, over60: {count:o60.length,pct:p(o60.length)}, notCalled: {count:notCalledY.length,pct:p(notCalledY.length)}, records: recordsY });
+  }
   else { nyNow.setHours(0, 0, 0, 0); cutoff = new Date(nyNow.getTime() + offset); }
 
   const formula = encodeURIComponent(`IS_AFTER({Created At},"${cutoff.toISOString()}")`);
