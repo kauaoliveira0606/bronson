@@ -13,18 +13,49 @@ module.exports = async function handler(req, res) {
     const nyNow  = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
     const offset = now.getTime() - nyNow.getTime();
 
-    let periodStart, periodEnd;
+    // Yesterday — pull from Airtable GHL Calls log (webhook stores every dial)
     if (filter === 'yesterday') {
-      const yest = new Date(nyNow); yest.setDate(nyNow.getDate() - 1); yest.setHours(0, 0, 0, 0);
+      const yest    = new Date(nyNow); yest.setDate(nyNow.getDate() - 1); yest.setHours(0, 0, 0, 0);
       const yestEnd = new Date(nyNow); yestEnd.setHours(0, 0, 0, 0);
-      periodStart = new Date(yest.getTime() + offset);
-      periodEnd   = new Date(yestEnd.getTime() + offset);
-    } else {
-      const todayMid = new Date(nyNow); todayMid.setHours(0, 0, 0, 0);
-      periodStart = new Date(todayMid.getTime() + offset);
-      periodEnd   = null;
+      const start   = new Date(yest.getTime() + offset).toISOString();
+      const end     = new Date(yestEnd.getTime() + offset).toISOString();
+      const formula = encodeURIComponent(`AND(IS_AFTER({Timestamp},"${start}"),IS_BEFORE({Timestamp},"${end}"))`);
+      const atRes   = await fetch(
+        `https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent('GHL Calls')}?filterByFormula=${formula}&pageSize=100`,
+        { headers: { 'Authorization': `Bearer ${AIRTABLE_TOKEN}` } }
+      );
+      const atData = await atRes.json();
+      const calls  = (atData.records || []).map(r => r.fields);
+
+      const repMap = {};
+      const contactCalls = {};
+      for (const c of calls) {
+        const rep      = c['Rep Name'] || 'Unknown';
+        const duration = Number(c['Duration']) || 0;
+        const isPickup = duration >= 20;
+        const isLong   = duration >= 120;
+        const contactId = c['Contact ID'] || '';
+        if (!repMap[rep]) repMap[rep] = { rep, dials: 0, pickups: 0, convs2min: 0, contacts: new Set() };
+        repMap[rep].dials++;
+        if (contactId) repMap[rep].contacts.add(contactId);
+        if (isPickup)  repMap[rep].pickups++;
+        if (isLong)    repMap[rep].convs2min++;
+        if (contactId) contactCalls[contactId] = (contactCalls[contactId] || 0) + 1;
+      }
+
+      const reps         = Object.values(repMap).map(r => ({ rep: r.rep, dials: r.dials, pickups: r.pickups, convs2min: r.convs2min, uniqueContacts: r.contacts.size })).sort((a, b) => b.dials - a.dials);
+      const doubleDials  = Object.values(contactCalls).filter(c => c >= 2).length;
+      const totalDials   = reps.reduce((s, r) => s + r.dials, 0);
+      const totalPickups = reps.reduce((s, r) => s + r.pickups, 0);
+      const totalConvs2min = reps.reduce((s, r) => s + r.convs2min, 0);
+      return res.status(200).json({ reps, doubleDials, totalDials, totalPickups, totalConvs2min });
     }
-    const todayStart = periodStart;
+
+    // Today — query GHL live
+    const todayMid   = new Date(nyNow); todayMid.setHours(0, 0, 0, 0);
+    const periodStart = new Date(todayMid.getTime() + offset);
+    const periodEnd   = null;
+    const todayStart  = periodStart;
 
     // Fetch users so we can map userId → name
     const usersRes = await fetch(`${GHL_BASE}/users/?locationId=${LOCATION_ID}`, { headers: GHL_HEADERS });
@@ -60,8 +91,7 @@ module.exports = async function handler(req, res) {
         if (msg.messageType !== 'TYPE_CALL') continue;
         if (msg.direction !== 'outbound') continue;
         const msgDate = new Date(msg.dateAdded);
-        if (msgDate < periodStart) continue;
-        if (periodEnd && msgDate >= periodEnd) continue;
+        if (msgDate < todayStart) continue;
 
         if (debugSamples.length < 10) debugSamples.push(msg);
 
