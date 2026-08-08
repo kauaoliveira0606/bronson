@@ -367,6 +367,15 @@
     <div id="ai-summary-body"></div>
   </div>
 
+  <!-- Plan Split Section -->
+  <div class="chart-card" id="plan-split-card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+      <div class="chart-title" style="margin-bottom:0;">Affiliates PCN — Plan Split</div>
+      <div id="plan-split-total" style="font-size:.72rem;color:var(--text2);"></div>
+    </div>
+    <div id="plan-split-body"><div class="loading">Loading plan split...</div></div>
+  </div>
+
 
 </div>
 </div>
@@ -1301,10 +1310,44 @@
     document.getElementById('ai-summary-card').style.display = 'block';
   }
 
+  // ── PCN Plan Split ────────────────────────────────────────────────────────
+  async function loadPlanSplit() {
+    const body  = document.getElementById('plan-split-body');
+    const total = document.getElementById('plan-split-total');
+    try {
+      const r    = await fetch('/api/pcn-plan-split?t=' + Date.now());
+      const data = await r.json();
+      if (data.error) throw new Error(data.error);
+      total.textContent = data.total + ' total affiliates';
+
+      const COLORS = ['#3b82f6','#22c55e','#f59e0b','#a855f7','#ef4444','#2dd4bf','#f97316'];
+      body.innerHTML = data.breakdown.map((item, i) => {
+        const color = COLORS[i % COLORS.length];
+        return `
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <div style="width:36px;text-align:right;font-size:.7rem;font-weight:700;color:var(--text2);flex-shrink:0;">${item.pct}%</div>
+            <div style="flex:1;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                <span style="font-size:.82rem;font-weight:600;color:#fff;">${item.plan}</span>
+                <span style="font-size:.82rem;font-weight:700;color:${color};">${item.count}</span>
+              </div>
+              <div style="height:6px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;">
+                <div style="height:100%;width:${item.pct}%;background:${color};border-radius:3px;transition:width .4s;"></div>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+    } catch (e) {
+      body.innerHTML = `<div class="loading" style="color:#ef4444;">Error: ${e.message}</div>`;
+    }
+  }
+
   loadAll();
   loadScorecard();
+  loadPlanSplit();
   setInterval(loadAll, 5 * 60 * 1000);
   setInterval(loadScorecard, 10 * 60 * 1000);
+  setInterval(loadPlanSplit, 10 * 60 * 1000);
 
 
   // ── Tab switching ────────────────────────────────────────────────────────────
