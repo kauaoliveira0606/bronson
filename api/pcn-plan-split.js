@@ -29,7 +29,7 @@ module.exports = async function handler(req, res) {
       .sort((a, b) => b[1] - a[1])
       .map(([plan, count]) => ({ plan, count, pct: total > 0 ? Math.round((count / total) * 100) : 0 }));
 
-    res.status(200).json({ total, breakdown, _planKey: planKey, _sampleKeys: sampleKeys });
+    res.status(200).json({ total, breakdown });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
