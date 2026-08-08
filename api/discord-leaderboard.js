@@ -1,6 +1,6 @@
 const AIRTABLE_TOKEN   = process.env.AIRTABLE_TOKEN;
 const AIRTABLE_BASE    = 'appiMw8gpaLv2WITA';
-const DISCORD_WEBHOOK  = process.env.DISCORD_WEBHOOK_URL;
+const DISCORD_WEBHOOK  = process.env.DISCORD_LEADERBOARD_WEBHOOK;
 
 function yesterdayEST() {
   const nyStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
