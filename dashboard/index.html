@@ -1308,11 +1308,12 @@
 
   function renderPlanSplit() {
     const body = document.getElementById('plan-split-body');
-    if (!body || !planSplitCache) return;
+    if (!body) return;
+    if (!planSplitCache) { body.innerHTML = '<div style="font-size:.75rem;color:var(--text2);">Loading...</div>'; return; }
+    if (!planSplitCache.ok) { body.innerHTML = `<div style="font-size:.75rem;color:#ef4444;">Error: ${planSplitCache.error}</div>`; return; }
     const { total, breakdown } = planSplitCache;
     const COLORS = ['#3b82f6','#22c55e','#f59e0b','#a855f7','#ef4444','#2dd4bf','#f97316'];
-    body.innerHTML = `
-      <div style="font-size:.68rem;color:var(--text2);margin-bottom:10px;">${total} total affiliates</div>` +
+    body.innerHTML = `<div style="font-size:.68rem;color:var(--text2);margin-bottom:10px;">${total} total affiliates</div>` +
       breakdown.map((item, i) => {
         const color = COLORS[i % COLORS.length];
         return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
@@ -1335,12 +1336,11 @@
       const r    = await fetch('/api/pcn-plan-split?t=' + Date.now());
       const data = await r.json();
       if (data.error) throw new Error(typeof data.error === 'string' ? data.error : JSON.stringify(data.error));
-      planSplitCache = data;
-      renderPlanSplit();
+      planSplitCache = { ok: true, total: data.total, breakdown: data.breakdown };
     } catch (e) {
-      const body = document.getElementById('plan-split-body');
-      if (body) body.innerHTML = `<div style="font-size:.75rem;color:#ef4444;">Error: ${e.message}</div>`;
+      planSplitCache = { ok: false, error: e.message };
     }
+    renderPlanSplit();
   }
 
   loadAll();
