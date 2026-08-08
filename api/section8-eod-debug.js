@@ -30,7 +30,12 @@ module.exports = async function handler(req, res) {
     const tables = (schemaData.tables || []).map(t => ({
       id: t.id,
       name: t.name,
-      fields: (t.fields || []).map(f => ({ name: f.name, type: f.type })),
+      primaryFieldId: t.primaryFieldId,
+      fields: (t.fields || []).map(f => ({
+        name: f.name,
+        type: f.type,
+        choices: f.options?.choices ? f.options.choices.map(c => c.name) : undefined,
+      })),
     }));
 
     // Raw recent records from whichever table is requested (defaults to Affiliate
