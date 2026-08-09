@@ -7,9 +7,10 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') { res.status(200).end(); return; }
   if (!AIRTABLE_TOKEN) return res.status(500).json({ error: 'AIRTABLE_TOKEN not set' });
 
-  const days = parseInt(req.query.days || '7', 10);
+  const days = parseInt(req.query.days || '1', 10);
+  const today = new Date().toISOString().slice(0, 10);
   const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - days);
+  if (days > 0) cutoff.setDate(cutoff.getDate() - days);
   const cutoffStr = cutoff.toISOString().slice(0, 10);
 
   let records = [], offset = null;
@@ -28,7 +29,9 @@ module.exports = async function handler(req, res) {
   for (const rec of records) {
     const raw = rec.fields['Created At'] || '';
     const day = raw.slice(0, 10);
-    if (!day || day < cutoffStr) continue;
+    if (!day) continue;
+    if (days === 0 && day !== today) continue;
+    if (days > 0 && day < cutoffStr) continue;
     const source = (rec.fields['Source'] || '').toLowerCase();
     if (!byDay[day]) byDay[day] = { paid: 0, organic: 0 };
     if (source === 'paid') byDay[day].paid++;

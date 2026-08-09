@@ -340,6 +340,7 @@
         <div style="font-size:.68rem;color:var(--text2);">Paid vs Organic — day by day</div>
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="sc-filter-btn"        id="ls-btn-0"  onclick="setLSFilter(0)">Today</button>
         <button class="sc-filter-btn active" id="ls-btn-1"  onclick="setLSFilter(1)">Yesterday</button>
         <button class="sc-filter-btn"        id="ls-btn-7"  onclick="setLSFilter(7)">Last 7 Days</button>
         <button class="sc-filter-btn"        id="ls-btn-30" onclick="setLSFilter(30)">Last 30 Days</button>
@@ -2527,7 +2528,7 @@ Cross-campaign: [prospecting vs retargeting relationship if visible]
 
   function setLSFilter(d) {
     lsDays = d;
-    [1, 7, 30].forEach(n => {
+    [0, 1, 7, 30].forEach(n => {
       const btn = document.getElementById('ls-btn-' + n);
       if (n === d) { btn.classList.add('active'); }
       else         { btn.classList.remove('active'); }
