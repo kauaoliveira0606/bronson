@@ -1,13 +1,17 @@
 const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN;
 const AIRTABLE_BASE  = 'appiMw8gpaLv2WITA';
 
+const RESET_DATE = '2026-08-09';
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   try {
+    const since = req.query.since || RESET_DATE;
+    const formula = encodeURIComponent(`IS_AFTER(CREATED_TIME(), "${since}")`);
     const records = [];
     let offset = '';
     do {
-      const url = `https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent('Affiliate PCN')}?pageSize=100${offset ? '&offset=' + encodeURIComponent(offset) : ''}`;
+      const url = `https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent('Affiliate PCN')}?pageSize=100&filterByFormula=${formula}${offset ? '&offset=' + encodeURIComponent(offset) : ''}`;
       const r = await fetch(url, { headers: { 'Authorization': `Bearer ${AIRTABLE_TOKEN}` } });
       const data = await r.json();
       if (data.error) return res.status(500).json({ error: typeof data.error === 'string' ? data.error : JSON.stringify(data.error) });
