@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bronson Dashboard</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+  <link rel="icon" type="image/png" href="/base44/img/aids.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <style>
@@ -332,6 +332,60 @@
 <div id="view-funnel" class="active">
 <div class="main">
 
+  <!-- Lead Sources + PCN Plan Split -->
+  <div class="chart-card" id="lead-source-card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+      <div>
+        <div class="chart-title" style="margin-bottom:2px;">Lead Sources</div>
+        <div style="font-size:.68rem;color:var(--text2);">Paid vs Organic — day by day</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="sc-filter-btn active" id="ls-btn-1"  onclick="setLSFilter(1)">Yesterday</button>
+        <button class="sc-filter-btn"        id="ls-btn-7"  onclick="setLSFilter(7)">Last 7 Days</button>
+        <button class="sc-filter-btn"        id="ls-btn-30" onclick="setLSFilter(30)">Last 30 Days</button>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 220px;gap:20px;align-items:start;">
+      <div>
+        <div id="ls-kpis" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+          <div class="sc-card">
+            <div class="sc-metric">Paid Leads</div>
+            <div class="sc-value" id="ls-total-paid" style="color:var(--blue);">—</div>
+          </div>
+          <div class="sc-card">
+            <div class="sc-metric">Organic Leads</div>
+            <div class="sc-value" id="ls-total-organic" style="color:var(--green);">—</div>
+          </div>
+          <div class="sc-card">
+            <div class="sc-metric">Total Leads</div>
+            <div class="sc-value" id="ls-total-all" style="color:#fff;">—</div>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="sc-table">
+            <thead>
+              <tr>
+                <th style="text-align:left;">Date</th>
+                <th style="color:var(--blue);">Paid</th>
+                <th style="color:var(--green);">Organic</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="ls-tbody">
+              <tr><td colspan="4" style="text-align:center;color:var(--text2);padding:24px;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="plan-split-inline" class="sc-card" style="align-self:start;">
+        <div class="sc-metric">PCN — Plan Split</div>
+        <div id="plan-split-body" style="margin-top:10px;"><div style="font-size:.75rem;color:var(--text2);">Loading...</div></div>
+      </div>
+    </div>
+  </div>
+
   <div class="chart-card">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
       <div class="chart-title" style="margin-bottom:0;">Weekly Scorecard</div>
@@ -368,51 +422,6 @@
     <div id="ai-summary-body"></div>
   </div>
 
-  <!-- Lead Source Tracker -->
-  <div class="chart-card" id="lead-source-card">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-      <div>
-        <div class="chart-title" style="margin-bottom:2px;">Lead Sources</div>
-        <div style="font-size:.68rem;color:var(--text2);">Paid vs Organic — day by day</div>
-      </div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;">
-        <button class="sc-filter-btn active" id="ls-btn-1"  onclick="setLSFilter(1)">Yesterday</button>
-        <button class="sc-filter-btn"        id="ls-btn-7"  onclick="setLSFilter(7)">Last 7 Days</button>
-        <button class="sc-filter-btn"        id="ls-btn-30" onclick="setLSFilter(30)">Last 30 Days</button>
-      </div>
-    </div>
-
-    <div id="ls-kpis" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;">
-      <div class="sc-card">
-        <div class="sc-metric">Paid Leads</div>
-        <div class="sc-value" id="ls-total-paid" style="color:var(--blue);">—</div>
-      </div>
-      <div class="sc-card">
-        <div class="sc-metric">Organic Leads</div>
-        <div class="sc-value" id="ls-total-organic" style="color:var(--green);">—</div>
-      </div>
-      <div class="sc-card">
-        <div class="sc-metric">Total Leads</div>
-        <div class="sc-value" id="ls-total-all" style="color:#fff;">—</div>
-      </div>
-    </div>
-
-    <div style="overflow-x:auto;">
-      <table class="sc-table" id="ls-table">
-        <thead>
-          <tr>
-            <th style="text-align:left;">Date</th>
-            <th style="color:var(--blue);">Paid</th>
-            <th style="color:var(--green);">Organic</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody id="ls-tbody">
-          <tr><td colspan="4" style="text-align:center;color:var(--text2);padding:24px;">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
 
 </div>
 </div>
@@ -1258,7 +1267,6 @@
     const cardsHtml =
       sectionLabel('💰 Leading Metrics') + leadingMetrics.map(buildCard).join('') +
       sectionLabel('🔥 Lead Flow')        + leadFlowMetrics.map(buildCard).join('') +
-      '<div id="plan-split-inline" class="sc-card"><div class="sc-metric">PCN — Plan Split</div><div id="plan-split-body" style="margin-top:10px;"><div style="font-size:.75rem;color:var(--text2);">Loading...</div></div></div>' +
       sectionLabel('🤝 Sales Conversion') + salesConvMetrics.map(buildCard).join('') +
       sectionLabel('📣 Marketing Metrics')+ marketingMetrics.map(buildCard).join('') +
       sectionLabel('📊 Backend') + pipelineMetrics.map(buildCard).join('');
