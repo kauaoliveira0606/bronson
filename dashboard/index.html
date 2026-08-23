@@ -193,8 +193,33 @@
     .tab-btn:hover { border-color:rgba(255,255,255,0.2); color:#fff; }
     .tab-btn.active { background:#fff; color:#000; border-color:#fff; }
 
-    #view-funnel, #view-ads, #view-model, #view-activity { display:none; }
-    #view-funnel.active, #view-ads.active, #view-model.active, #view-activity.active { display:block; }
+    #view-funnel, #view-ads, #view-model, #view-activity, #view-forecasts { display:none; }
+    #view-funnel.active, #view-ads.active, #view-model.active, #view-activity.active, #view-forecasts.active { display:block; }
+
+    /* ── Forecasts ─────────────────────────────────────────────────────────── */
+    .fc-wrap { padding:28px; display:flex; flex-direction:column; gap:24px; }
+    .fc-title { font-size:1.1rem; font-weight:800; margin:0 0 4px; }
+    .fc-sub { font-size:.8rem; color:var(--text2); margin:0; }
+    .fc-step { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px 24px; }
+    .fc-step-title { font-size:.95rem; font-weight:800; color:#fff; margin-bottom:2px; }
+    .fc-step-sub { font-size:.75rem; color:var(--text2); margin-bottom:16px; }
+    .fc-table { width:100%; border-collapse:collapse; font-size:.82rem; }
+    .fc-table th { padding:8px 14px; font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text2); text-align:right; border-bottom:1px solid var(--border); white-space:nowrap; }
+    .fc-table th:first-child { text-align:left; }
+    .fc-table td { padding:7px 14px; border-bottom:1px solid rgba(255,255,255,.04); vertical-align:middle; text-align:right; }
+    .fc-table td:first-child { text-align:left; color:#fff; font-weight:600; }
+    .fc-sub-row td { padding:12px 14px 4px; font-size:.65rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--text2); background:rgba(255,255,255,.025); border-top:1px solid rgba(255,255,255,.06); text-align:left; }
+    .fc-input-cell input { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:6px; color:#fff; font-family:inherit; font-size:.85rem; font-weight:700; padding:5px 10px; text-align:right; width:110px; transition:border-color .15s; }
+    .fc-input-cell input:focus { outline:none; border-color:rgba(255,255,255,.35); background:rgba(255,255,255,.09); }
+    .fc-calc-cell { color:#fff; font-weight:600; font-variant-numeric:tabular-nums; }
+    .fc-ref-cell { color:rgba(255,255,255,.4); font-weight:600; font-variant-numeric:tabular-nums; font-size:.78rem; }
+    .fc-highlight-row td { background:rgba(255,255,255,.03); }
+    .fc-highlight-row .fc-calc-cell, .fc-highlight-row td:first-child { color:#4ade80; font-weight:800; }
+    .fc-big-result { display:flex; justify-content:space-between; align-items:baseline; margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,.1); }
+    .fc-big-label { font-size:.8rem; font-weight:700; color:#aaa; }
+    .fc-big-val { font-size:1.9rem; font-weight:900; color:#4ade80; font-variant-numeric:tabular-nums; }
+    .fc-two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    @media(max-width:900px){ .fc-two-col { grid-template-columns:1fr; } }
 
     /* ── Activity ──────────────────────────────────────────────────────────── */
     .act-wrap { padding:28px; display:flex; flex-direction:column; gap:28px; }
@@ -359,6 +384,7 @@
   <button class="tab-btn" id="tab-ads" onclick="switchTab('ads')">Ads Analysis</button>
   <button class="tab-btn" id="tab-model" onclick="switchTab('model')">Financial Model</button>
 <button class="tab-btn" id="tab-activity" onclick="switchTab('activity')">Sales Activity</button>
+<button class="tab-btn" id="tab-forecasts" onclick="switchTab('forecasts')">Forecasts</button>
 </div>
 
 <div id="view-funnel" class="active">
@@ -818,6 +844,72 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- ── Forecasts ─────────────────────────────────────────────────────────── -->
+<div id="view-forecasts">
+  <div class="fc-wrap">
+    <div>
+      <h2 class="fc-title">Sales Team Forecasting</h2>
+      <p class="fc-sub">Edit any input — every downstream number recalculates instantly. Five steps: set your baseline, set an improvement target, size the team that target requires, account for your actual roster's ramping vs. stabilized reps, then see the true forecast.</p>
+    </div>
+
+    <!-- Step 1 & 2 -->
+    <div class="fc-step">
+      <div class="fc-step-title">Step 1 &amp; 2 — Baseline &amp; Improvement Target</div>
+      <div class="fc-step-sub">Baseline is where you are today. Target is where you're aiming — leave a target input blank/equal to baseline if you're not changing that lever yet.</div>
+      <table class="fc-table">
+        <thead><tr><th>Metric</th><th style="width:160px;">Baseline</th><th style="width:160px;">Target</th></tr></thead>
+        <tbody id="fc-s12-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="fc-step">
+      <div class="fc-step-title">Step 3 — Capacity Model</div>
+      <div class="fc-step-sub">Uses the Step 2 target to work out how many setters and closers you need on the phones to actually hit it.</div>
+      <div class="fc-two-col">
+        <table class="fc-table">
+          <thead><tr><th colspan="2" style="text-align:left;">Setter Capacity</th></tr></thead>
+          <tbody id="fc-setter-tbody"></tbody>
+        </table>
+        <table class="fc-table">
+          <thead><tr><th colspan="2" style="text-align:left;">Closer Capacity</th></tr></thead>
+          <tbody id="fc-closer-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="fc-step">
+      <div class="fc-step-title">Step 4 — Stabilization vs. Ramping</div>
+      <div class="fc-step-sub">Only matters if part of your roster is still new. Blend each cohort's real performance into one roster-weighted rate.</div>
+      <div class="fc-two-col">
+        <table class="fc-table">
+          <thead><tr><th colspan="2" style="text-align:left;">SDR / Setter Roster</th></tr></thead>
+          <tbody id="fc-sdr-roster-tbody"></tbody>
+        </table>
+        <table class="fc-table">
+          <thead><tr><th colspan="2" style="text-align:left;">Closer Roster</th></tr></thead>
+          <tbody id="fc-closer-roster-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="fc-step">
+      <div class="fc-step-title">Step 5 — True Forecast</div>
+      <div class="fc-step-sub">Step 2's target, corrected for your actual roster's roster-weighted show rate and close rate from Step 4.</div>
+      <table class="fc-table">
+        <thead><tr><th>Metric</th><th style="width:160px;">Adjusted</th></tr></thead>
+        <tbody id="fc-s5-tbody"></tbody>
+      </table>
+      <div class="fc-big-result">
+        <div class="fc-big-label">Total Cash Collected (Adjusted)</div>
+        <div class="fc-big-val" id="fc-final-cash">$0</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1729,12 +1821,13 @@
 
   // ── Tab switching ────────────────────────────────────────────────────────────
   function switchTab(tab) {
-    ['funnel','ads','model','activity'].forEach(t => {
+    ['funnel','ads','model','activity','forecasts'].forEach(t => {
       document.getElementById('view-' + t).classList.toggle('active', tab === t);
       document.getElementById('tab-'  + t).classList.toggle('active', tab === t);
     });
-    if (tab === 'model')    fmPopulateCurrentStats();
-    if (tab === 'activity') loadActivity();
+    if (tab === 'model')     fmPopulateCurrentStats();
+    if (tab === 'activity')  loadActivity();
+    if (tab === 'forecasts') fcBuild();
   }
 
   // ── Sales Activity ────────────────────────────────────────────────────────
@@ -2992,6 +3085,196 @@ Cross-campaign: [prospecting vs retargeting relationship if visible]
   }
 
   document.addEventListener('DOMContentLoaded', loadLeadSources);
+
+  // ── Forecasts (Sales Team Forecasting) ──────────────────────────────────
+  const FC_DEFAULTS = {
+    leads_b: 31000, conn_b: 35, book_b: 30, show_b: 80, dq_b: 20, close_b: 30, aov_b: 1500,
+    leads_t: 31000, conn_t: 35, book_t: 30, dq_t: 10, close_t: 45, aov_t: 3000,
+    dials_per_setter_day: 200, setter_working_days: 27,
+    calls_per_closer_day: 10, closer_working_days: 31,
+    ramping_sdrs: 0, ramping_show_rate: 70, stable_sdrs: 2, stable_show_rate: 80,
+    ramping_closers: 0, ramping_close_rate: 35, stable_closers: 9, stable_close_rate: 40,
+    leads_f: 31000,
+  };
+
+  function fcVal(id) {
+    const el = document.getElementById('fc-inp-' + id);
+    if (el) { const n = parseFloat(el.value); return isNaN(n) ? 0 : n; }
+    return FC_DEFAULTS[id] || 0;
+  }
+
+  function fcCalc() {
+    const v = {};
+    Object.keys(FC_DEFAULTS).forEach(id => v[id] = fcVal(id));
+
+    // Step 1 — Baseline
+    v.calls_booked_b = v.leads_b * v.conn_b / 100 * v.book_b / 100;
+    v.calls_showed_b = v.calls_booked_b * v.show_b / 100;
+    v.qualified_b    = v.calls_showed_b * (1 - v.dq_b / 100);
+    v.calls_closed_b = v.qualified_b * v.close_b / 100;
+    v.ccpct_b        = v.close_b / 100 * v.aov_b;
+    v.total_cash_b   = v.calls_closed_b * v.aov_b;
+
+    // Step 2 — Improvement Target (Show Rate carries over from baseline — not independently set)
+    v.calls_booked_t = v.leads_t * v.conn_t / 100 * v.book_t / 100;
+    v.calls_showed_t = v.calls_booked_t * v.show_b / 100;
+    v.qualified_t    = v.calls_showed_t * (1 - v.dq_t / 100);
+    v.calls_closed_t = v.qualified_t * v.close_t / 100;
+    v.ccpct_t        = v.close_t / 100 * v.aov_t;
+    v.total_cash_t   = v.calls_closed_t * v.aov_t;
+
+    // Step 3 — Capacity Model (off Step 2 target)
+    v.bookings_per_day_capacity    = v.dials_per_setter_day * v.conn_t / 100 * v.book_t / 100;
+    v.monthly_booking_cap_setter   = v.bookings_per_day_capacity * v.setter_working_days;
+    v.setters_needed               = v.monthly_booking_cap_setter > 0 ? Math.ceil(v.calls_booked_t / v.monthly_booking_cap_setter) : 0;
+    v.bookings_required_per_setter = v.setters_needed > 0 ? v.calls_booked_t / v.setters_needed : 0;
+
+    v.calls_taken_per_closer_month = v.calls_per_closer_day * v.closer_working_days;
+    v.closers_needed               = v.calls_taken_per_closer_month > 0 ? Math.ceil(v.calls_showed_t / v.calls_taken_per_closer_month) : 0;
+
+    // Step 4 — Stabilization vs Ramping
+    const sdrTotal = v.ramping_sdrs + v.stable_sdrs;
+    v.pct_sdr_ramping  = sdrTotal > 0 ? (v.ramping_sdrs / sdrTotal) * 100 : 0;
+    v.pct_sdr_stable   = sdrTotal > 0 ? (v.stable_sdrs  / sdrTotal) * 100 : 0;
+    v.roster_show_rate = sdrTotal > 0 ? (v.ramping_sdrs * v.ramping_show_rate + v.stable_sdrs * v.stable_show_rate) / sdrTotal : v.show_b;
+
+    const closerTotal = v.ramping_closers + v.stable_closers;
+    v.pct_closer_ramping = closerTotal > 0 ? (v.ramping_closers / closerTotal) * 100 : 0;
+    v.pct_closer_stable  = closerTotal > 0 ? (v.stable_closers  / closerTotal) * 100 : 0;
+    v.roster_close_rate  = closerTotal > 0 ? (v.ramping_closers * v.ramping_close_rate + v.stable_closers * v.stable_close_rate) / closerTotal : v.close_t;
+
+    // Step 5 — True Forecast (Step 2 target, corrected for actual roster performance)
+    v.calls_booked_f = v.leads_f * v.conn_t / 100 * v.book_t / 100;
+    v.calls_showed_f = v.calls_booked_f * v.roster_show_rate / 100;
+    v.qualified_f    = v.calls_showed_f * (1 - v.dq_t / 100);
+    v.calls_closed_f = v.qualified_f * v.roster_close_rate / 100;
+    v.ccpct_f        = v.roster_close_rate / 100 * v.aov_t;
+    v.total_cash_f   = v.calls_closed_f * v.aov_t;
+
+    return v;
+  }
+
+  let fcOutputs = []; // [{id, key, unit}] — populated at build time, read at update time
+  let fcBuilt = false;
+
+  // cell descriptor -> <td> html. 'input' cells create a live field; everything else
+  // registers an output slot that fcUpdate() fills in by id (never rebuilt, so focus survives typing).
+  function fcCell(spec) {
+    if (spec.kind === 'input') {
+      return `<td class="fc-input-cell"><input id="fc-inp-${spec.id}" type="number" value="${FC_DEFAULTS[spec.id]}" oninput="fcUpdate()"></td>`;
+    }
+    const id = 'fc-out-' + fcOutputs.length;
+    fcOutputs.push({ id, key: spec.key, unit: spec.unit });
+    const cls = spec.ref ? 'fc-ref-cell' : 'fc-calc-cell';
+    return `<td class="${cls}" id="${id}"></td>`;
+  }
+
+  function fcRow(label, cells, highlight) {
+    return `<tr class="${highlight ? 'fc-highlight-row' : ''}"><td>${label}</td>${cells.map(fcCell).join('')}</tr>`;
+  }
+
+  function fcBuildS12() {
+    const rows = [
+      fcRow('Leads', [{kind:'input',id:'leads_b'}, {kind:'input',id:'leads_t'}]),
+      fcRow('Connection Rate', [{kind:'input',id:'conn_b'}, {kind:'input',id:'conn_t'}]),
+      fcRow('Connect-to-Booking Rate', [{kind:'input',id:'book_b'}, {kind:'input',id:'book_t'}]),
+      fcRow('Calls Booked', [{key:'calls_booked_b',unit:'#'}, {key:'calls_booked_t',unit:'#'}]),
+      fcRow('Show Rate', [{kind:'input',id:'show_b'}, {key:'show_b',unit:'%',ref:true}]),
+      fcRow('Calls Showed', [{key:'calls_showed_b',unit:'#'}, {key:'calls_showed_t',unit:'#'}]),
+      fcRow('DQ Rate', [{kind:'input',id:'dq_b'}, {kind:'input',id:'dq_t'}]),
+      fcRow('Qualified Calls', [{key:'qualified_b',unit:'#'}, {key:'qualified_t',unit:'#'}]),
+      fcRow('Close Rate', [{kind:'input',id:'close_b'}, {kind:'input',id:'close_t'}]),
+      fcRow('Calls Closed', [{key:'calls_closed_b',unit:'#'}, {key:'calls_closed_t',unit:'#'}]),
+      fcRow('AOV', [{kind:'input',id:'aov_b'}, {kind:'input',id:'aov_t'}]),
+      fcRow('CCPCT', [{key:'ccpct_b',unit:'$'}, {key:'ccpct_t',unit:'$'}]),
+      fcRow('Total Cash Collected', [{key:'total_cash_b',unit:'$'}, {key:'total_cash_t',unit:'$'}], true),
+    ];
+    document.getElementById('fc-s12-tbody').innerHTML = rows.join('');
+  }
+
+  function fcBuildCapacity() {
+    const setterRows = [
+      fcRow('Dials per Setter per Day', [{kind:'input',id:'dials_per_setter_day'}]),
+      fcRow('Setter Working Days per Month', [{kind:'input',id:'setter_working_days'}]),
+      fcRow('Target Connection Rate', [{key:'conn_t',unit:'%',ref:true}]),
+      fcRow('Target Connect-to-Booking Rate', [{key:'book_t',unit:'%',ref:true}]),
+      fcRow('Bookings per Day Capacity', [{key:'bookings_per_day_capacity',unit:'#'}]),
+      fcRow('Monthly Booking Capacity per Setter', [{key:'monthly_booking_cap_setter',unit:'#'}]),
+      fcRow('Monthly Calls Booked Target', [{key:'calls_booked_t',unit:'#',ref:true}]),
+      fcRow('# Setters Needed', [{key:'setters_needed',unit:'#'}], true),
+      fcRow('Bookings Required per Setter (Monthly)', [{key:'bookings_required_per_setter',unit:'#'}]),
+    ];
+    const closerRows = [
+      fcRow('Calls Taken per Closer per Day', [{kind:'input',id:'calls_per_closer_day'}]),
+      fcRow('Closer Working Days per Month', [{kind:'input',id:'closer_working_days'}]),
+      fcRow('Monthly Calls Showed Target', [{key:'calls_showed_t',unit:'#',ref:true}]),
+      fcRow('Calls Taken per Closer per Month', [{key:'calls_taken_per_closer_month',unit:'#'}]),
+      fcRow('# Closers Needed', [{key:'closers_needed',unit:'#'}], true),
+    ];
+    document.getElementById('fc-setter-tbody').innerHTML = setterRows.join('');
+    document.getElementById('fc-closer-tbody').innerHTML = closerRows.join('');
+  }
+
+  function fcBuildRoster() {
+    const sdrRows = [
+      fcRow('Ramping SDRs', [{kind:'input',id:'ramping_sdrs'}]),
+      fcRow('Ramping Show Rate', [{kind:'input',id:'ramping_show_rate'}]),
+      fcRow('Stabilized SDRs', [{kind:'input',id:'stable_sdrs'}]),
+      fcRow('Stabilized Show Rate', [{kind:'input',id:'stable_show_rate'}]),
+      fcRow('% of SDRs Ramping', [{key:'pct_sdr_ramping',unit:'%'}]),
+      fcRow('% of SDRs Stabilized', [{key:'pct_sdr_stable',unit:'%'}]),
+      fcRow('Roster-Weighted Show Rate', [{key:'roster_show_rate',unit:'%'}], true),
+    ];
+    const closerRows = [
+      fcRow('Ramping Closers', [{kind:'input',id:'ramping_closers'}]),
+      fcRow('Ramping Close Rate', [{kind:'input',id:'ramping_close_rate'}]),
+      fcRow('Stabilized Closers', [{kind:'input',id:'stable_closers'}]),
+      fcRow('Stabilized Close Rate', [{kind:'input',id:'stable_close_rate'}]),
+      fcRow('% of Closers Ramping', [{key:'pct_closer_ramping',unit:'%'}]),
+      fcRow('% of Closers Stabilized', [{key:'pct_closer_stable',unit:'%'}]),
+      fcRow('Roster-Weighted Close Rate', [{key:'roster_close_rate',unit:'%'}], true),
+    ];
+    document.getElementById('fc-sdr-roster-tbody').innerHTML = sdrRows.join('');
+    document.getElementById('fc-closer-roster-tbody').innerHTML = closerRows.join('');
+  }
+
+  function fcBuildS5() {
+    const rows = [
+      fcRow('Leads (Adjust to Goal)', [{kind:'input',id:'leads_f'}]),
+      fcRow('Connection Rate', [{key:'conn_t',unit:'%',ref:true}]),
+      fcRow('Connect-to-Booking Rate', [{key:'book_t',unit:'%',ref:true}]),
+      fcRow('Calls Booked', [{key:'calls_booked_f',unit:'#'}]),
+      fcRow('Show Rate (Roster-Weighted)', [{key:'roster_show_rate',unit:'%'}]),
+      fcRow('Calls Showed (Adjusted)', [{key:'calls_showed_f',unit:'#'}]),
+      fcRow('DQ Rate', [{key:'dq_t',unit:'%',ref:true}]),
+      fcRow('Qualified Calls (Adjusted)', [{key:'qualified_f',unit:'#'}]),
+      fcRow('Close Rate (Roster-Weighted)', [{key:'roster_close_rate',unit:'%'}]),
+      fcRow('Calls Closed (Adjusted)', [{key:'calls_closed_f',unit:'#'}]),
+      fcRow('AOV', [{key:'aov_t',unit:'$',ref:true}]),
+      fcRow('CCPCT', [{key:'ccpct_f',unit:'$'}]),
+    ];
+    document.getElementById('fc-s5-tbody').innerHTML = rows.join('');
+  }
+
+  function fcUpdate() {
+    const v = fcCalc();
+    fcOutputs.forEach(o => {
+      const el = document.getElementById(o.id);
+      if (el) el.textContent = fmFmt(v[o.key], o.unit);
+    });
+    document.getElementById('fc-final-cash').textContent = fmFmt(v.total_cash_f, '$');
+  }
+
+  function fcBuild() {
+    if (fcBuilt) { fcUpdate(); return; }
+    fcBuilt = true;
+    fcOutputs = [];
+    fcBuildS12();
+    fcBuildCapacity();
+    fcBuildRoster();
+    fcBuildS5();
+    fcUpdate();
+  }
 </script>
 </body>
 </html>
