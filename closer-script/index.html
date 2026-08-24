@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bronson — Closer Script</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1e293b;--bg:#f1f5f9;--border:#e2e8f0;--slate:#64748b;--slate-lt:#94a3b8}
+body{background:var(--bg);color:var(--navy);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:14px;line-height:1.5}
+
+/* HEADER */
+.hdr{position:sticky;top:0;z-index:100;background:var(--navy);box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.hdr-top{display:flex;align-items:center;gap:12px;padding:0 20px;height:50px;border-bottom:1px solid rgba(255,255,255,.08)}
+.logo{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.hdr-title{color:#fff;font-size:14px;font-weight:700}
+.stage-nav{display:flex;align-items:center;gap:2px;padding:0 20px;height:36px;overflow-x:auto;scrollbar-width:none}
+.stage-nav::-webkit-scrollbar{display:none}
+.stage-nav a{color:var(--slate-lt);text-decoration:none;font-size:11px;font-weight:700;letter-spacing:.04em;white-space:nowrap;padding:4px 9px;border-radius:5px;transition:background .15s,color .15s}
+.stage-nav a:hover{background:rgba(255,255,255,.08);color:#fff}
+.stage-nav .sep{color:rgba(255,255,255,.15);font-size:10px;padding:0 1px}
+
+/* PAGE */
+.page{max-width:980px;margin:0 auto;padding:24px 20px 80px}
+
+/* LEGEND */
+.legend{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:30px;display:flex;flex-wrap:wrap;gap:8px 18px}
+.li{display:flex;align-items:center;gap:6px;font-size:11.5px;color:#475569;font-weight:500}
+.ldot{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+/* STAGE */
+.stage{margin-bottom:52px}
+.stage-hdr{text-align:center;margin-bottom:20px}
+.stage-pill{display:inline-flex;flex-direction:column;align-items:center;background:var(--navy);color:#fff;border-radius:10px;padding:10px 28px}
+.stage-num{font-size:9px;font-weight:800;letter-spacing:2px;opacity:.5;text-transform:uppercase}
+.stage-name{font-size:14px;font-weight:800;letter-spacing:-.2px}
+.sublabel{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;margin:26px 0 12px;text-align:center}
+.sublabel:first-of-type{margin-top:0}
+
+/* LAYOUT PRIMITIVES */
+.branches-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;margin-bottom:6px}
+.branch{display:flex;flex-direction:column}
+.single{display:flex;justify-content:center;margin-bottom:6px}
+.single>.card{width:100%;max-width:640px}
+
+/* ARROWS */
+.arr-c{text-align:center;color:var(--slate-lt);font-size:22px;line-height:1;margin:8px 0;user-select:none}
+
+/* CARDS */
+.card{border-radius:8px;padding:13px 15px;border-width:1.5px;border-style:solid;margin-bottom:6px}
+.card:last-child{margin-bottom:0}
+.wt{background:#fff;border-color:#334155;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.br{background:#fef9c3;border-color:#ca8a04}
+.kp{background:#ecfdf5;border-color:#059669}
+.fw{background:#eff6ff;border-color:#3b82f6}
+
+.ctitle{font-size:12.5px;font-weight:800;margin-bottom:5px}
+.wt .ctitle{color:#1e293b}.br .ctitle{color:#713f12}.kp .ctitle{color:#064e3b}.fw .ctitle{color:#1e3a5f}
+
+.qt{font-size:13px;color:#1e293b;line-height:1.65}
+.br .qt{color:#713f12}.kp .qt{color:#064e3b}.fw .qt{color:#1e3a5f}
+
+.card ul{margin:7px 0 0 15px;font-size:13px;line-height:1.75}
+.card ol{margin:7px 0 0 15px;font-size:13px;line-height:1.85}
+.fw ul,.fw ol{color:#1e3a5f}
+
+@media(max-width:720px){
+  .branches-2{grid-template-columns:1fr}
+  .page{padding:16px 14px 60px}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-top">
+    <div class="logo">B</div>
+    <span class="hdr-title">Bronson — Closer Script</span>
+  </div>
+  <nav class="stage-nav">
+    <a href="#s1">S1: Intro</a><span class="sep">·</span>
+    <a href="#s2">S2: Discovery</a><span class="sep">·</span>
+    <a href="#s3">S3: Problem Awareness</a><span class="sep">·</span>
+    <a href="#s4">S4: Solution Awareness</a><span class="sep">·</span>
+    <a href="#s5">S5: Criteria + Consequences</a><span class="sep">·</span>
+    <a href="#s6">S6: Pitch</a><span class="sep">·</span>
+    <a href="#s7">S7: Close</a>
+  </nav>
+</header>
+
+<main class="page">
+
+<div class="legend">
+  <div class="li"><div class="ldot" style="background:#fff;border:1.5px solid #334155"></div>Word Track</div>
+  <div class="li"><div class="ldot" style="background:#fef9c3;border:1.5px solid #ca8a04"></div>Branch / Objection</div>
+  <div class="li"><div class="ldot" style="background:#ecfdf5;border:1.5px solid #059669"></div>Principle</div>
+  <div class="li"><div class="ldot" style="background:#eff6ff;border:1.5px solid #3b82f6"></div>Framework</div>
+</div>
+
+<!-- ══════ S1 ══════ -->
+<section class="stage" id="s1">
+  <div class="stage-hdr">
+    <div class="stage-pill"><div class="stage-num">Stage 1</div><div class="stage-name">Intro (Connecting Questions)</div></div>
+  </div>
+  <div class="sublabel">⭐ Frame — Advanced, Not Free Coaching</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"Hey, you see and hear me okay? How's it goin, [Name]?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"I'm one of the coaches here on Bronson's team."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"You got started in the Base 44 free course — how's that been goin? What've you found most helpful?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Just to preface — first part of this call's basic, just to understand your situation."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"What you're doin now, what you've tried, what you're lookin for — so I know the advanced side can actually help you."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"If it aligns and I can see you bein successful, I'll walk you through next steps. Sound good?"</div></div></div>
+
+  <div class="arr-c">↓</div>
+  <div class="single"><div class="card kp">
+    <div class="ctitle">Frame = Advanced, NOT Free Coaching</div>
+    <div class="qt">Coach-on-the-team identity → acknowledge the Base 44 journey → the qualify/takeaway ("see if it aligns and I can see you being successful"). They must know this isn't the free course / a coaching call, so you never hear "y'all just pitched me $5K" at the end.</div>
+  </div></div>
+
+  <div class="arr-c">↓</div>
+  <div class="single"><div class="card br">
+    <div class="ctitle">"I thought this was free / coaching"</div>
+    <div class="qt">PARK, don't force. Let them run the free course, hit the wall, frame the return: "When's the best time to reconnect + check your progress?"</div>
+  </div></div>
+</section>
+
+<!-- ══════ S2 ══════ -->
+<section class="stage" id="s2">
+  <div class="stage-hdr">
+    <div class="stage-pill"><div class="stage-num">Stage 2</div><div class="stage-name">Discovery (Situation Questions)</div></div>
+  </div>
+  <div class="sublabel">Situation</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"What was it about Bronson initially that resonated with you — enough to even hop on a call today?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"What are you doin for a living right now?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"And how long you been doin that?"</div></div></div>
+
+  <div class="arr-c">↓</div>
+  <div class="single"><div class="card kp">
+    <div class="ctitle">First Questions — Then Shut Up</div>
+    <div class="qt">Get the situation + what they're chasing. This loads everything. Don't stack — one question at a time, probe each.</div>
+  </div></div>
+</section>
+
+<!-- ══════ S3 ══════ -->
+<section class="stage" id="s3">
+  <div class="stage-hdr">
+    <div class="stage-pill"><div class="stage-num">Stage 3</div><div class="stage-name">Problem Awareness — Form the Pain, Then Expand It</div></div>
+  </div>
+  <div class="sublabel">⭐ Problem Awareness (Form the Pain)</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"How's that goin for you?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">[if they hesitate] "You don't sound too sure — anything you don't actually like about it?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"What do you like / not like about it?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">Time-Value: "Real talk — you're puttin in 5-6 hours a day, makin about [$X] an hour?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Is that really what you feel you're worth?" [pause] → no → "What makes you say that?"</div></div></div>
+
+  <div class="arr-c">↓</div>
+  <div class="single"><div class="card kp">
+    <div class="ctitle">Form the Pain First — Sit in the Pocket</div>
+    <div class="qt">Discovery ALWAYS forms pain, then expands it — that's the ammo you leverage in solution awareness + the pitch. Don't jump. The second they search for words, dig.</div>
+  </div></div>
+
+  <div class="sublabel">⭐ Expand the Pain (Gap Questions)</div>
+
+  <div class="single"><div class="card fw">
+    <div class="ctitle">Gap Q's — Pull the Thread (Pick What Fits)</div>
+    <ul>
+      <li>How's this affecting your life?</li>
+      <li>Why's this important to you?</li>
+      <li>How's it affecting your confidence / self-esteem?</li>
+      <li>Your personal life / relationships?</li>
+      <li>Your job / business?</li>
+      <li>What have you tried in the past to fix it?</li>
+      <li>How long has it been a struggle?</li>
+      <li>What's the worst thing it's caused?</li>
+      <li>What's it costing you (financially + emotionally)?</li>
+      <li>What's your biggest fear?</li>
+      <li>Do you have a plan to fix it?</li>
+    </ul>
+  </div></div>
+
+  <div class="single"><div class="card wt"><div class="qt">"So after [time] at your job, not satisfied 'cause it's causin [what they said]…"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"What've you actually done to put yourself in a position to be financially free?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Besides more hours or a side hustle — you're still capped there. What've you started online for uncapped income?"</div></div></div>
+
+  <div class="arr-c">↓</div>
+  <div class="single"><div class="card kp">
+    <div class="ctitle">Cost of Inaction Can Surface HERE</div>
+    <div class="qt">When they realize what it's costing them, that's a consequence moment — let it land (but don't force consequence questions everywhere; only where it's real).</div>
+  </div></div>
+</section>
+
+<!-- ══════ S4 ══════ -->
+<section class="stage" id="s4">
+  <div class="stage-hdr">
+    <div class="stage-pill"><div class="stage-num">Stage 4</div><div class="stage-name">Solution Awareness — Phase 1 (Focus on Tonality)</div></div>
+  </div>
+  <div class="sublabel">⭐ Solution Awareness P1</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"Why not, though? What's actually prevented you from takin the first step to become [north star]?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Be completely real with me — I'm on your side."</div></div></div>
+
+  <div class="single"><div class="card br">
+    <div class="ctitle">If Vague ("I haven't really thought about it")</div>
+    <div class="qt">"In all due respect, that's like an overweight person saying they don't know where the gym is. So if you really thought about it — what's prevented you?" → Find the real reason (lazy / comfortable / complacent / fear).</div>
+  </div></div>
+
+  <div class="single"><div class="card wt"><div class="qt">"And what shifted now that made you want to overcome [reason] this time around?"</div></div></div>
+
+  <div class="single"><div class="card fw">
+    <div class="ctitle">Grab the Real Objection (Same 4 Steps, Any Objection)</div>
+    <ol>
+      <li>"Can you see how letting [objection] hold you back has kept you stuck exactly where you don't want to be — [their spot]?"</li>
+      <li>"Looking back over [time], what have you lost because of [objection]?"</li>
+      <li>"So what if you keep allowing that to stop you from investing in your skillset?" → Get the consequence.</li>
+      <li>"So my question isn't do you want to make [goal] — everyone does. It's how committed are you to becoming that guy and actually investing in yourself to get there… because you don't have to."</li>
+    </ol>
+  </div></div>
+
+  <div class="branches-2">
+    <div class="branch"><div class="card br">
+      <div class="ctitle">Money</div>
+      <div class="qt">"Can I share a perspective? Money's a byproduct of skills. Why do you feel you don't have the money to invest? [answer] … If you had the skill to scale a product, what would you have more of? [more money]. Two types: 'I can't so I won't' vs 'how do I get resourceful.' What prevented you from getting resourceful and doing what it took?" → grab the real objection.</div>
+    </div></div>
+    <div class="branch"><div class="card br">
+      <div class="ctitle">Time</div>
+      <div class="qt">"Time's subjective — it comes down to what we prioritize. Why do you feel you don't have the time? … If you already had the results, would time even be an issue? Two types (I can't so I won't / how can I be resourceful and find the time). Which do you need to be? What's prevented you from prioritizing the time to change your situation?" → grab.</div>
+    </div></div>
+    <div class="branch"><div class="card br">
+      <div class="ctitle">Laziness / Complacency</div>
+      <div class="qt">"Can I share a perspective? Laziness isn't a lack of motivation — it's not believing the effort will pay off. If you KNEW action guaranteed success, would you still hesitate? Two types: wait till they feel ready vs act despite uncertainty. What's prevented you from pushing past that pattern of hesitation?" → grab.</div>
+    </div></div>
+    <div class="branch"><div class="card br">
+      <div class="ctitle">Cheap / Bad Past Program</div>
+      <div class="qt">"How much did you pay for it? [~$350–500] — that wasn't a mentorship. Did you actually want a mentorship? What prevented you from investing in a real one? Two types… what prevented you from getting resourceful to invest in the help you needed?" → grab.</div>
+    </div></div>
+    <div class="branch"><div class="card br">
+      <div class="ctitle">Invested in a Previous Mentorship (Didn't Work)</div>
+      <div class="qt">"Did others in that program succeed? What was the difference — the program, or something on your end (how you showed up, the effort, execution)? Open to the idea it was the commitment on your end? What needs to change this time? Two types: full ownership vs blame external. Which do you need to be? What prevented you from being the guy who takes ownership?" → grab.</div>
+    </div></div>
+    <div class="branch"><div class="card br">
+      <div class="ctitle">Bad Experience / Scam (Not Their Fault)</div>
+      <div class="qt">"How'd that go? Define that? What did you take away from it? Are you using it as a lesson to make better decisions moving forward — or letting it stop you from where you want to be?"</div>
+    </div></div>
+    <div class="branch"><div class="card br">
+      <div class="ctitle">Pushback ("What I'm Doing Works")</div>
+      <div class="qt">"If it's working, keep doing it. But why do you feel doing the same thing isn't worth continuing? … What's the definition of that? [insanity]. Can you see how thinking that way for [time] has kept you from changing? How much time / opportunity have you lost? What if you never break that pattern? So how committed are you to breaking it — and why?"</div>
+    </div></div>
+  </div>
+
+  <div class="sublabel">Solution Awareness P2 (Double Down)</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"Dude, 100% — I get why [reason] stopped you before. Cool if I give you a different way to look at it?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Honestly, the fear of [their excuse] is the exact thing that keeps people stuck years from now. Make sense?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"You know what winners and losers have in common? Every human's got excuses."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Unsuccessful people use em to stay stuck. Successful people feel the same fear and push through anyway."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"So how much longer you wanna let [their excuse] hold you back from [what they wanted]? Why? What changed?"</div></div></div>
+
+  <div class="arr-c">↓</div>
+  <div class="single"><div class="card kp">
+    <div class="ctitle">Permission → Reframe → Identity Shift</div>
+    <div class="qt">Acknowledge + justify the concern, ask permission to reframe, then shift the identity (winners vs losers). Tonality carries it. Only double down if P1 didn't fully land.</div>
+  </div></div>
+</section>
+
+<!-- ══════ S5 ══════ -->
+<section class="stage" id="s5">
+  <div class="stage-hdr">
+    <div class="stage-pill"><div class="stage-num">Stage 5</div><div class="stage-name">Criteria → Consequences → Transition</div></div>
+  </div>
+  <div class="sublabel">Ideal Criteria for Help</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"So for you — what would you say your ideal criteria for help is?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Anything else you'd be lookin for? Why's that important to you?"</div></div></div>
+
+  <div class="sublabel">Income Criteria</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"Goin back to your work — would you agree you're capped, since there's only so many hours?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Without that limit, what's your actual ideal monthly income?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Is that your humble goal, or would you want more?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"How close are you to that at your current job?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"How long would it take you to get there? Why that long?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Say we help you hit [$X] in the next few months — how would that change things?" (summarize + confirm, DIG)</div></div></div>
+
+  <div class="sublabel">⭐ Consequences (Cost of Inaction)</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"Say you didn't take this next step — let [the reason] stop you…"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"And you stayed where you are now for the next 1, 2, 5 years. What do you feel happens then?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"You willin to settle for that?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"So is it important to make this change now? Why now?"</div></div></div>
+
+  <div class="arr-c">↓</div>
+  <div class="single"><div class="card kp">
+    <div class="ctitle">Consequence Q's Live HERE (and at Cost-of-Inaction Moments)</div>
+    <div class="qt">Don't sprinkle consequence questions everywhere — they hit hardest right here + when they realize the cost in problem/solution awareness. That's what keeps it feeling scriptless.</div>
+  </div></div>
+
+  <div class="sublabel">Transition</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"The reason we have these meetings is to protect the success rate of the group."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Only way's findin out if you're committed, coachable, and got a strong why."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"'Cause the students who carry those traits are the ones who actually see results."</div></div></div>
+</section>
+
+<!-- ══════ S6 ══════ -->
+<section class="stage" id="s6">
+  <div class="stage-hdr">
+    <div class="stage-pill"><div class="stage-num">Stage 6</div><div class="stage-name">Pitch</div></div>
+  </div>
+  <div class="sublabel">Intro to Pitch + Opener</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"I can tell you're someone I'd recommend inside the program. Lemme walk you through how it works, what's included, and if it's a fit — onboarded and rollin. Sound fair?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"So the way the program works — 6-month coaching program. Direct access to Bronson, the team, and me, plus the tools to launch your first winning product, get real sales coming in, and scale. Two halves: finding the winning product, and scaling the brand."</div></div></div>
+
+  <div class="sublabel">The Model + The Path</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"Here's the model, bro — you build a real branded e-commerce store around one winning product. But it ain't just launch it once and you're done — you learn to run the ads too, Facebook, Instagram, wherever, to drive real buyers to your store."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"So every sale that comes through that store is yours, straight up. And the kicker — the more you scale the ads, the more orders stack, and it's all your margin. That's where it really stacks."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"You become the guy running a real brand that keeps selling every single month, so you're never starting from zero. Money comin in every month, even off one winning product."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Real talk — in the past, if you wanted to start an e-com brand, you had to manually research products, test twenty different ones, guess at demand. Took forever and thousands of dollars before you even knew if something would sell."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Now with AI? You cut all that grunt work — Base 44 pulls you real market data and demand on winning products fast, so you're not guessing. That's the part that makes you money."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">↳ "You ever do all the work and it just stopped payin?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"'Cause most hustles, you do the work, get one check, back to zero chasin the next deal. This flips it — every sale keeps coming in on autopilot once your ads are dialed in, and it stacks the more products you scale. You own a business, not a freelance gig."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"And your first sale? Inside 30 days when you put the work in and run the system consistent. Look at the numbers — 500 to a grand to launch that first store and test the product, then scale the ad spend from there. Stack enough winning campaigns and you're at that 10K a month. This month, bro. Not someday."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"What you think a solid product could sell for once it's dialed in?" [pause] "Right. And runnin the system consistent — it's almost unreasonable you don't land your first sale in the first 30 days."</div></div></div>
+
+  <div class="arr-c">↓</div>
+  <div class="single"><div class="card kp">
+    <div class="ctitle">Tie Down After EVERY Block — Never Monologue</div>
+    <div class="qt">A question after every beat — their answers pull it to the 4-5 min mark. Collaborative, not a speech. Check in every ~30 sec.</div>
+  </div></div>
+
+  <div class="sublabel">Pillar 1 — The System (The 90%)</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"It's built on 3 pillars — the System, the Coaching, and the Community."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"First, the system — the full A-to-Z course. Bronson walks you through the whole roadmap from zero. Pickin your niche is simple — health, supplements, pets, beauty, thousands of products openin every day. Buildin the store is fully AI-assisted with Base44 — the writing, the design, the ads — so you run it without droppin the ball."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"But here's the 90%, bro — findin the winning product and getting real buyers on it. Can't sell it, can't make money. So that's what we drill hardest — the product research: how to actually find something proven to sell. And the ads: what to say, what not to, how to turn views into orders."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Anybody can build a store — knowin how to find the right product and get people to actually buy it, THAT'S what makes you the money. And that's what we drill first."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">↳ "How would that help YOU specifically?"</div></div></div>
+
+  <div class="arr-c">↓</div>
+  <div class="single"><div class="card kp">
+    <div class="ctitle">Time Pre-Frame (Positive)</div>
+    <div class="qt">"Best part, this fits AROUND your job — hour before work, on lunch, after your shift. You stack it till it replaces the job." Never plant the doubt; frame it positive.</div>
+  </div></div>
+
+  <div class="sublabel">Pillar 2 — The Coaching</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"Second, the coaching — five live calls every single week, face to face on Google Meet, just like this. Product research, brand-building with Bronson, ads, Q&A — twice a week straight with Bronson himself."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"So once you got sales comin in and wanna make sure you're scaling it right without burnin your ad budget, the whole team shows you how. That's how you build it long-term — never figurin it out alone."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">↳ "How big is that vs figurin it out solo?"</div></div></div>
+
+  <div class="sublabel">Pillar 3 — The Community</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"Third, the community — you're in the room with a whole community of operators doin this right now. Wins drop every day, guys exactly where you're at walkin the same path — you learn from every one of em."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">↳ "How's it feel bein around people already winnin?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"And this ain't theory — real students, real deals, a community already cashin in."</div></div></div>
+
+  <div class="arr-c">↓</div>
+  <div class="single"><div class="card kp">
+    <div class="ctitle">Abundance (Counter Saturation)</div>
+    <div class="qt">Pair proof with abundance — "thousands of products launch every day, you never run out." Keeps the community from feeling crowded. Never lead with a headcount.</div>
+  </div></div>
+</section>
+
+<!-- ══════ S7 ══════ -->
+<section class="stage" id="s7">
+  <div class="stage-hdr">
+    <div class="stage-pill"><div class="stage-num">Stage 7</div><div class="stage-name">Close</div></div>
+  </div>
+  <div class="sublabel">Pre-Close → Close (Double-Ask)</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"Real talk before I show you the structure — this ain't a program where we do it for you. It's collaborative — YOU put in the work, we're in your corner the whole way. That's why we do these calls, to make sure you show up and execute."</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">↳ "That's what you're lookin for, right?"</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"So based on everything — you feel like this can actually help you?" [pause]</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"What makes you say that?" [pause — let them fully answer]</div></div></div>
+  <div class="single"><div class="card wt"><div class="qt">"Cool — next step is onboardin you and buildin your roadmap. First we process the investment. So as far as the $5,000 — how would you wanna proceed?" → STOP.</div></div></div>
+
+  <div class="sublabel">Price + Payment</div>
+
+  <div class="branches-2">
+    <div class="branch"><div class="card br">
+      <div class="ctitle">Pay in Full</div>
+      <div class="qt">Send the $5K payment link through CloseCRM. Always push PIF first.</div>
+    </div></div>
+    <div class="branch"><div class="card br">
+      <div class="ctitle">Can't PIF / Split</div>
+      <div class="qt">Min $2,000 to start, set up the remaining balance in CloseCRM. Most they have now, rest over 2–3 months. Two-strike rule: budge once, twice, then hold.</div>
+    </div></div>
+    <div class="branch"><div class="card br">
+      <div class="ctitle">Finance</div>
+      <div class="qt">ClarityPay, gross up to net $5K. 🚩 NEVER coach income on the app (fraud). Don't push a broke buyer into debt — qualify REAL capital.</div>
+    </div></div>
+  </div>
+
+  <div class="sublabel">⭐ If They Say… (Money-Aside + Responses)</div>
+
+  <div class="branches-2">
+    <div class="branch"><div class="card br">
+      <div class="ctitle">"It's too expensive / the money"</div>
+      <div class="qt">"Okay — money aside, money out of the equation, would you do it? … Why, though?" (get THEM to talk about why it benefits them). Then: "Is it that you have the $5K and there's uncertainty around spending it — or you just don't have it right now?" → handle accordingly.</div>
+    </div></div>
+    <div class="branch"><div class="card br">
+      <div class="ctitle">"I need to think about it"</div>
+      <div class="qt">"Totally — what specifically are you weighing?" → surface the real objection, handle that one.</div>
+    </div></div>
+    <div class="branch"><div class="card br">
+      <div class="ctitle">"Gotta talk to my wife / partner"</div>
+      <div class="qt">"Respect it — is it the money, or whether it'll work? Would they back you leveling up so you can take care of them?"</div>
+    </div></div>
+  </div>
+
+  <div class="single"><div class="card kp">
+    <div class="ctitle">Warm Buyer = Usually ONE Objection</div>
+    <div class="qt">Don't over-handle — it manufactures doubt. Their words → their goal → the help → re-close.</div>
+  </div></div>
+
+  <div class="sublabel">Confirm + Onboard</div>
+
+  <div class="single"><div class="card wt"><div class="qt">"Before I send this — do you actually believe this works for YOU? Say it out loud." (a nod is not a yes)</div></div></div>
+
+  <div class="arr-c">↓</div>
+  <div class="single"><div class="card kp">
+    <div class="ctitle">Confirm, Clear the Scam Fear, Onboard</div>
+    <div class="qt">"Ever tried something like this and got burned?" → clear it. After the yes: sign the agreement and process everything through CloseCRM, give access, set the first action. Welcome to the team.</div>
+  </div></div>
+</section>
+
+</main>
+</body>
+</html>
