@@ -54,6 +54,7 @@ body{background:var(--bg);color:var(--navy);font-family:-apple-system,BlinkMacSy
 .trio3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:start;margin-bottom:6px}
 .center-col{display:flex;flex-direction:column}
 .branches{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;align-items:start}
+.branches-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;align-items:start}
 .branches-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
 .branch{display:flex;flex-direction:column}
 .single{display:flex;justify-content:center;margin-bottom:6px}
@@ -100,7 +101,7 @@ body{background:var(--bg);color:var(--navy);font-family:-apple-system,BlinkMacSy
 }
 @media(max-width:720px){
   .trio{grid-template-columns:1fr}.trio>.ghost{display:none}
-  .duo,.trio3,.branches,.branches-2{grid-template-columns:1fr}
+  .duo,.trio3,.branches,.branches-2,.branches-4{grid-template-columns:1fr}
   .page{padding:16px 14px 60px}
 }
 </style>
@@ -268,7 +269,7 @@ body{background:var(--bg);color:var(--navy);font-family:-apple-system,BlinkMacSy
 
   <div class="arr-c">↓</div>
 
-  <div class="branches">
+  <div class="branches-4">
     <div class="branch">
       <div class="card dq">
         <div class="ctitle">If It's Literally Under $50 — Can't Afford It At All</div>
@@ -281,15 +282,8 @@ body{background:var(--bg);color:var(--navy);font-family:-apple-system,BlinkMacSy
         <div class="ctitle">Easily Qualified</div>
         <div class="qt">$1,000+ liquid, no hesitation</div>
       </div>
-      <div class="arr">↓</div>
-      <div class="card br">
-        <div class="qt">Hedging — "might," "maybe," "potentially," sounds unsure</div>
-      </div>
-      <div class="nt" style="margin-bottom:6px">That's enough on its own — skip straight to Discovery.</div>
-      <div class="card wt">
-        <div class="qt">"Gotcha, and that [insert amount], was that something you had ready and available to you RIGHT NOW to be able to put into the business?"</div>
-      </div>
-      <div class="nt">If yes → skip straight to Discovery. If no → the Iffy branch.</div>
+      <div class="arr" style="margin:26px 0;font-size:30px">↓</div>
+      <div class="card kp"><div class="qt">→ Straight to Stage 4</div></div>
     </div>
 
     <div class="branch">
@@ -298,6 +292,17 @@ body{background:var(--bg);color:var(--navy);font-family:-apple-system,BlinkMacSy
         <div class="qt">"Okay all good, I guess what would be the most you had set aside and available RIGHT NOW to get everything up and running?"</div>
       </div>
       <div class="arr">↓</div>
+      <div class="card br">
+        <div class="qt">Hedging — "might," "maybe," "potentially," sounds unsure</div>
+      </div>
+      <div class="nt" style="margin-bottom:6px">That's enough on its own — skip straight to Stage 4.</div>
+      <div class="card wt">
+        <div class="qt">"Gotcha, and that [insert amount], was that something you had ready and available to you RIGHT NOW to be able to put into the business?"</div>
+      </div>
+      <div class="nt">If yes → skip straight to Stage 4. If no → the Above $50 Floor branch.</div>
+    </div>
+
+    <div class="branch">
       <div class="card br">
         <div class="qt">Above the $50 floor, but clearly short of $1k</div>
       </div>
@@ -318,7 +323,7 @@ body{background:var(--bg);color:var(--navy);font-family:-apple-system,BlinkMacSy
       <div class="arr">↓</div>
       <div class="card wt">
         <div class="qt">"Awesome, and in terms of the best available strategy then, did you happen to know what the credit limit was on that card?"</div>
-        <div class="nt">$2,000+ Limit → HT-qualified, skip straight to Discovery. Under $2,000 (limit + hard cash combined) → keep going.</div>
+        <div class="nt">$2,000+ Limit → HT-qualified, skip straight to Stage 4. Under $2,000 (limit + hard cash combined) → keep going.</div>
       </div>
       <div class="arr">↓</div>
       <div class="card wt">
