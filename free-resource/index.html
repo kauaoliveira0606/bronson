@@ -142,8 +142,8 @@
 
     /* Generic dark video card */
     .video-card {
-      max-width: 720px; margin: 0 auto; background: rgba(255,255,255,0.03); border: 1px solid rgba(74,158,255,0.18);
-      border-radius: 16px; padding: 20px; transition: border-color 300ms;
+      width: 100%; min-width: 0; max-width: 720px; margin: 0 auto; background: rgba(255,255,255,0.03); border: 1px solid rgba(74,158,255,0.18);
+      border-radius: 16px; padding: 20px; transition: border-color 300ms; box-sizing: border-box;
     }
     .video-card:hover { border-color: rgba(74,158,255,0.4); }
     .video-card .kicker { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #4a9eff; margin-bottom: 10px; text-align: center; }
