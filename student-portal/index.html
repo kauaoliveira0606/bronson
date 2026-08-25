@@ -493,9 +493,10 @@ async function renderPoints() {
 }
 
 /* ══════ RANK / TIER (solar system) ══════ */
-/* MAX_POINTS is a placeholder for "100% of the way there" until the
-   real total across all challenges is set. */
-const MAX_POINTS = 100;
+/* MAX_POINTS = sum of every one-time challenge below (2,350) —
+   i.e. Elite (100%) means every non-repeatable challenge is done.
+   Weekly coaching-call points aren't counted since they're open-ended. */
+const MAX_POINTS = 2350;
 const TIERS = [
   { name: 'Bronze',  min: 0,  max: 20,  color: '#c2793a', emblem: '🥉' },
   { name: 'Silver',  min: 20, max: 40,  color: '#c7d2e0', emblem: '🥈' },
@@ -548,9 +549,55 @@ async function renderTier() {
 }
 
 /* ══════ CHALLENGES (each has its own inline submit-proof form) ══════ */
-/* Add more entries here as they're given — id must stay unique. */
+/* Add more entries here as they're given — id must stay unique. Point
+   values are our best-guess assignments (scaled to effort/impact) —
+   only "Coaching Call" (15) and "Mindset Section" (50) were given exactly. */
 const CHALLENGES = [
-  { id: 'mindset-module', title: 'Challenge 1: Finish the Mindset Module Section', points: 3, desc: 'Complete every lesson in the Mindset module section of the course.' },
+  // Onboarding — moved to the top
+  { id: 'join-discord', title: 'Join the Discord', points: 10, desc: 'Get into the community Discord.' },
+  { id: 'onboarding-form', title: 'Complete the Onboarding Form', points: 10, desc: 'Fill out the onboarding form.' },
+  { id: 'commitment-form', title: 'Sign the Commitment Form', points: 10, desc: 'Sign and submit the commitment form.' },
+  { id: 'csm-call', title: 'Finish Your Onboarding Call with the CSM', points: 15, desc: 'Complete your kickoff call with the CSM.' },
+  { id: 'launch-track', title: 'Review Your 14-Day Launch Track', points: 10, desc: 'Go through your 14-day launch track.' },
+
+  // Repeatable every week
+  { id: 'coaching-call', title: 'Attend a Coaching Call', points: 15, desc: 'Live on Monday, Wednesday, or Friday.', repeatable: true },
+
+  // Course + build milestones
+  { id: 'find-product-launch-store', title: 'Find a Winning Product and Launch Your Store', points: 40, desc: 'Get a validated product live in your store.' },
+  { id: 'mindset-section', title: 'Finish the Mindset Section Course', points: 50, desc: 'Complete every lesson in the Mindset section.' },
+  { id: 'figure-out-offer', title: 'Figure Out Your Offer', points: 20, desc: 'Lock in your offer.' },
+  { id: 'find-supplier', title: 'Find a Supplier', points: 20, desc: 'Find and confirm your supplier.' },
+  { id: 'winning-product-section', title: 'Finish the Finding a Winning Product Section Course', points: 40, desc: 'Complete every lesson in the Finding a Winning Product section.' },
+  { id: 'build-store', title: 'Build Out Your Store', points: 30, desc: 'Fully build out your store.' },
+  { id: 'meta-ad-account', title: 'Sign Up for a Meta Ad Account', points: 10, desc: 'Create your Meta ads account.' },
+  { id: 'meta-account-built', title: 'Fully Build Out Your Meta Account', points: 25, desc: 'Per the course modules.' },
+  { id: 'image-ads', title: 'Image Ads', points: 15, desc: 'Get your image ads built.' },
+  { id: 'ai-avatar', title: 'Build Your AI Avatar', points: 15, desc: 'Build out your AI avatar.' },
+  { id: 'ads-organic-section', title: 'Finish the Ads/Organic Section on the Whop Course', points: 40, desc: 'Complete every lesson in the Ads/Organic section.' },
+  { id: 'watch-5-calls', title: 'Watch 5 Previous Call Recordings', points: 10, desc: '' },
+  { id: 'watch-10-calls', title: 'Watch 10 Previous Call Recordings', points: 20, desc: '' },
+  { id: 'watch-15-calls', title: 'Watch 15 Previous Call Recordings', points: 30, desc: '' },
+  { id: 'watch-20-calls', title: 'Watch 20 Previous Call Recordings', points: 40, desc: '' },
+  { id: 'watch-25-calls', title: 'Watch 25 Previous Call Recordings', points: 50, desc: '' },
+  { id: 'watch-30-calls', title: 'Watch 30 Previous Call Recordings', points: 60, desc: '' },
+  { id: 'ai-tools', title: 'Build the AI Tools', points: 25, desc: 'Product scorecard, margin calculator, ad planning calculator, etc.' },
+  { id: 'score-product', title: 'Score Your Final Product', points: 15, desc: '' },
+  { id: 'brand-positioning', title: 'Create Your Unique Brand and Positioning', points: 25, desc: '' },
+  { id: 'buy-domain', title: 'Buy Your Domain', points: 10, desc: '' },
+  { id: 'meta-pixel', title: 'Set Up Your Meta Pixel', points: 10, desc: '' },
+
+  // Revenue milestones
+  { id: 'first-sale-ads', title: 'Make Your First Sale Through Ads', points: 30, desc: '' },
+  { id: 'first-sale-organic', title: 'Make Your First Sale Organically', points: 30, desc: '' },
+  { id: 'first-100', title: 'Make Your First $100', points: 20, desc: '' },
+  { id: 'first-1000', title: 'Make Your First $1,000', points: 40, desc: '' },
+  { id: 'first-5000', title: 'Make Your First $5,000', points: 75, desc: '' },
+  { id: 'first-10000', title: 'Make Your First $10,000', points: 100, desc: '' },
+  { id: 'first-10k-month', title: 'Make Your First $10K a Month', points: 150, desc: '' },
+  { id: 'first-30k-month', title: 'Make Your First $30K a Month', points: 250, desc: '' },
+  { id: 'first-50k-month', title: 'Make Your First $50K a Month', points: 400, desc: '' },
+  { id: 'first-100k-month', title: 'Make Your First $100K a Month', points: 600, desc: '' },
 ];
 
 function renderChallenges() {
@@ -561,6 +608,7 @@ function renderChallenges() {
         <div class="challenge-head">
           <div class="challenge-title">${c.title}</div>
           <div class="challenge-pts">+${c.points} pts</div>
+          ${c.repeatable ? `<span style="font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);border:1px solid rgba(34,211,238,.4);border-radius:20px;padding:2px 8px;flex-shrink:0">Weekly</span>` : ''}
         </div>
         <div class="challenge-desc">${c.desc}</div>
       </div>
