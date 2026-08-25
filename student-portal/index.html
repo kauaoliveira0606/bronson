@@ -38,7 +38,7 @@ a{color:inherit}
 .su-email{font-size:10.5px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .su-logout{color:var(--text3);cursor:pointer;background:none;border:none;font-size:16px;flex-shrink:0}
 
-.main{flex:1;min-width:0;padding:28px 32px 60px;max-width:1080px}
+.main{flex:1;min-width:0;padding:28px 40px 60px;max-width:1400px}
 .view{display:none}
 .view.active{display:block}
 
@@ -61,21 +61,24 @@ a{color:inherit}
 .bar-track{height:8px;background:rgba(255,255,255,.08);border-radius:5px;overflow:hidden;margin:12px 0}
 .bar-fill{height:100%;background:linear-gradient(90deg,var(--yellow),var(--green));border-radius:5px}
 
-/* activity heatmap */
-.activity-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
-.streak{display:flex;flex-direction:column;align-items:center;font-weight:800;color:var(--orange)}
-.streak-num{font-size:1.3rem}
-.streak-lbl{font-size:8.5px;letter-spacing:1px;color:var(--text3);font-weight:700}
-.heatmap{display:grid;grid-template-columns:repeat(14,1fr);gap:6px}
-.hm-col{display:flex;flex-direction:column;align-items:center;gap:5px}
-.hm-dow{font-size:9px;color:var(--text3);font-weight:700}
-.hm-day{width:100%;aspect-ratio:1;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
-.hm-day.on{background:var(--green)}
-.hm-day.off{background:rgba(239,68,68,.55)}
-.hm-day.future{background:rgba(255,255,255,.04);color:var(--text3)}
-.legend{display:flex;gap:16px;margin-top:14px;font-size:11.5px;color:var(--text3)}
-.legend span{display:inline-flex;align-items:center;gap:6px}
-.ldot{width:9px;height:9px;border-radius:50%}
+/* activity heatmap (GitHub-style contribution calendar) */
+.activity-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px}
+.streak{text-align:right}
+.streak-num{font-size:1.8rem;font-weight:800;color:var(--green);line-height:1}
+.streak-lbl{font-size:9px;letter-spacing:1px;color:var(--text3);font-weight:700;margin-top:2px}
+.heatmap-month-row{display:flex;margin-left:34px;margin-bottom:4px;gap:3px}
+.hm-month{font-size:.62rem;color:var(--text3);flex:1}
+.heatmap-body{display:flex;gap:6px}
+.hm-day-col{display:flex;flex-direction:column;gap:3px;padding-top:1px}
+.hm-day-lbl{font-size:.6rem;color:var(--text3);height:11px;line-height:11px}
+.hm-weeks{display:flex;gap:3px;flex:1}
+.hm-week{display:flex;flex-direction:column;gap:3px;flex:1}
+.hm-cell{flex:1;min-height:11px;border-radius:2px;background:rgba(255,255,255,.06)}
+.hm-cell.future{background:transparent}
+.hm-cell.today{outline:1px solid rgba(255,255,255,.35);outline-offset:1px}
+.hm-cell.on{background:#16a34a}
+.hm-legend{display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-top:10px;font-size:.65rem;color:var(--text3)}
+.hm-legend-cell{width:11px;height:11px;border-radius:2px}
 
 /* leaderboard */
 .lb-podium{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:22px}
@@ -114,7 +117,7 @@ a{color:inherit}
 .tier-dot{width:9px;height:9px;border-radius:50%}
 
 /* challenges */
-.challenge-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:12px;display:grid;grid-template-columns:1fr 260px;gap:20px}
+.challenge-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:12px;display:grid;grid-template-columns:1fr 300px;gap:24px}
 .challenge-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
 .challenge-title{font-size:14px;font-weight:800}
 .challenge-pts{font-size:11px;font-weight:800;color:#2b1c00;background:var(--yellow);border-radius:20px;padding:3px 10px;flex-shrink:0}
@@ -229,31 +232,34 @@ a{color:inherit}
 
     <!-- ══════ HOME ══════ -->
     <section class="view active" id="view-home">
-      <div class="card banner">
-        <div class="card-label" style="color:var(--green)">Your Points</div>
-        <div class="card-title" id="home-pts">0 points</div>
-        <div class="card-sub" id="home-next-tier">Earn points to unlock your next reward.</div>
-        <div class="bar-track"><div class="bar-fill" id="home-bar" style="width:0%"></div></div>
-        <a href="#" class="btn btn-green" onclick="switchView('points');return false;">See Points System →</a>
-      </div>
-
       <div class="card">
         <div class="activity-head">
           <div>
-            <div class="card-title" style="font-size:1.05rem">Activity</div>
-            <div class="card-sub" id="activity-sub">Last 14 days</div>
+            <div class="card-title" style="font-size:1.2rem">Activity</div>
+            <div class="card-sub" id="activity-sub">0 active days · last 12 weeks</div>
           </div>
           <div class="streak">
-            <span class="streak-num" id="streak-num">🔥 0</span>
+            <span class="streak-num" id="streak-num">0</span>
             <span class="streak-lbl">DAY STREAK</span>
           </div>
         </div>
-        <div class="heatmap" id="heatmap"></div>
-        <div class="legend">
-          <span><span class="ldot" style="background:var(--green)"></span>showed up</span>
-          <span><span class="ldot" style="background:rgba(239,68,68,.55)"></span>missed</span>
+        <div class="heatmap-month-row" id="hm-months"></div>
+        <div class="heatmap-body">
+          <div class="hm-day-col">
+            <div class="hm-day-lbl"></div><div class="hm-day-lbl">Mon</div>
+            <div class="hm-day-lbl"></div><div class="hm-day-lbl">Wed</div>
+            <div class="hm-day-lbl"></div><div class="hm-day-lbl">Fri</div>
+            <div class="hm-day-lbl"></div>
+          </div>
+          <div class="hm-weeks" id="hm-weeks"></div>
         </div>
-        <div style="margin-top:18px">
+        <div class="hm-legend">
+          <span>Less</span>
+          <div class="hm-legend-cell" style="background:rgba(255,255,255,.06)"></div>
+          <div class="hm-legend-cell" style="background:#16a34a"></div>
+          <span>More</span>
+        </div>
+        <div style="margin-top:20px">
           <button class="btn btn-yellow" id="log-activity-btn" onclick="logTodayActivity()">Log Today's Activity</button>
         </div>
       </div>
@@ -278,8 +284,8 @@ a{color:inherit}
       <!-- ══ THE REWARD (top 3 only) ══ -->
       <div class="card" style="border-color:rgba(234,179,8,.4)">
         <div class="card-label" style="color:var(--yellow)">The Reward — Top 3 Only</div>
-        <div class="card-title">Top 3 fly to Miami.</div>
-        <div class="card-sub">The top 3 point-earners at the end of this cycle get flown out for an in-person mastermind weekend with Bronson — everything you need to scale your brand to $500K/month.</div>
+        <div class="card-title">Top 3 meet up in person with Bronson.</div>
+        <div class="card-sub">The top 3 point-earners at the end of this cycle get to meet up in person with Bronson for a mastermind weekend — everything you need to scale your brand to $500K/month.</div>
         <div class="countdown" id="countdown">
           <div class="cd-box"><div class="cd-num" id="cd-d">--</div><div class="cd-lbl">DAYS</div></div>
           <div class="cd-box"><div class="cd-num" id="cd-h">--</div><div class="cd-lbl">HOURS</div></div>
@@ -292,8 +298,8 @@ a{color:inherit}
         <div class="prize-grid">
           <div class="prize-card"><div class="ic">🧠</div><div class="t">Full Mastermind Weekend</div><div class="d">One-on-one time with Bronson, focused entirely on your brand.</div></div>
           <div class="prize-card"><div class="ic">📈</div><div class="t">Scale to $500K/Month</div><div class="d">A specific game plan to get your brand there — built for you, not generic.</div></div>
-          <div class="prize-card"><div class="ic">🤝</div><div class="t">Stay Together</div><div class="d">All 3 of you, in the same area, the whole weekend.</div></div>
-          <div class="prize-card"><div class="ic">🛍️</div><div class="t">Go Shopping</div><div class="d">Off-the-clock time together in the city.</div></div>
+          <div class="prize-card"><div class="ic">🤝</div><div class="t">Stay Together</div><div class="d">All 3 of you, staying together in the Airbnb the whole weekend.</div></div>
+          <div class="prize-card"><div class="ic">🛍️</div><div class="t">Go Shopping</div><div class="d">Off-the-clock time together.</div></div>
         </div>
       </div>
 
@@ -437,7 +443,7 @@ function switchView(name) {
   document.getElementById('view-' + name).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === name));
   if (name === 'leaderboard') fetchLeaderboard();
-  if (name === 'points') { renderTier(); renderMySubmissions(); }
+  if (name === 'points') { renderTier(); renderChallenges(); renderMySubmissions(); }
 }
 
 function switchAdminTab(name) {
@@ -458,21 +464,22 @@ function initPortal() {
     document.getElementById('nav-admin').style.display = '';
     switchView('admin');
     openAdminPanel();
-    return;
+  } else {
+    const email = getStoredEmail();
+    const name  = getUserName(email);
+    document.getElementById('u-name').textContent  = name;
+    document.getElementById('u-email').textContent = email;
+    document.getElementById('u-avatar').textContent = name.charAt(0).toUpperCase();
+    buildHeatmap();
+    updateLogButton();
   }
 
-  const email = getStoredEmail();
-  const name  = getUserName(email);
-  document.getElementById('u-name').textContent  = name;
-  document.getElementById('u-email').textContent = email;
-  document.getElementById('u-avatar').textContent = name.charAt(0).toUpperCase();
-
-  renderPoints();
+  /* Rendered regardless of admin/student so an admin previewing the
+     tabs sees the same content a student would (points/heatmap above
+     are personal, so they stay student-only). */
   renderTier();
   renderChallenges();
   renderMySubmissions();
-  buildHeatmap();
-  updateLogButton();
   buildResources();
   startCountdown();
 }
@@ -485,12 +492,6 @@ async function getMyPoints() {
   const row = Array.isArray(rows) ? rows[0] : null;
   return row ? (row.points || 0) : 0;
 }
-async function renderPoints() {
-  const pts = await getMyPoints();
-  document.getElementById('home-pts').textContent = `${pts} points`;
-  document.getElementById('home-bar').style.width = Math.min(100, pts % 100) + '%';
-}
-
 /* ══════ RANK / TIER (solar system) ══════ */
 /* MAX_POINTS = sum of every one-time challenge below (2,350) —
    i.e. Elite (100%) means every non-repeatable challenge is done.
@@ -516,8 +517,8 @@ async function renderTier() {
 
   /* orbits: innermost = Bronze, outermost = Elite. Reached orbits are lit,
      and the "planet" sits on the current orbit — bigger as % climbs. */
-  const size = 240, cx = size/2, cy = size/2;
-  const radii = [34, 54, 74, 94, 114];
+  const size = 320, cx = size/2, cy = size/2;
+  const radii = [44, 70, 96, 122, 148];
   const orbits = TIERS.map((t, i) => {
     const reached = pct >= t.min;
     return `<circle cx="${cx}" cy="${cy}" r="${radii[i]}" fill="none" stroke="${t.color}" stroke-width="${reached ? 2.5 : 1.5}" opacity="${reached ? 0.9 : 0.15}" stroke-dasharray="${reached ? '' : '4,5'}"/>`;
@@ -534,8 +535,8 @@ async function renderTier() {
   document.getElementById('solar-system').innerHTML = `
     <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
       ${orbits}
-      <circle cx="${cx}" cy="${cy}" r="10" fill="#fbbf24"/>
-      <circle cx="${cx}" cy="${cy}" r="16" fill="none" stroke="#fbbf24" opacity=".3"/>
+      <circle cx="${cx}" cy="${cy}" r="14" fill="#fbbf24"/>
+      <circle cx="${cx}" cy="${cy}" r="21" fill="none" stroke="#fbbf24" opacity=".3"/>
       <circle cx="${px}" cy="${py}" r="${planetR}" fill="${tier.color}">
         <animate attributeName="opacity" values="1;.55;1" dur="2.4s" repeatCount="indefinite"/>
       </circle>
@@ -679,23 +680,42 @@ function calcStreak() {
   return streak;
 }
 function buildHeatmap() {
+  const WEEKS = 12;
   const act = getActivity();
-  const grid = document.getElementById('heatmap');
-  grid.innerHTML = '';
-  const DOW = ['S','M','T','W','T','F','S'];
-  for (let i = 13; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const key = localDate(d);
-    const col = document.createElement('div'); col.className = 'hm-col';
-    const dow = document.createElement('div'); dow.className = 'hm-dow'; dow.textContent = DOW[d.getDay()];
-    const box = document.createElement('div'); box.className = 'hm-day ' + (act[key] ? 'on' : 'off');
-    box.textContent = d.getDate();
-    col.appendChild(dow); col.appendChild(box);
-    grid.appendChild(col);
+  const today = new Date(); today.setHours(0,0,0,0,0);
+  const todayStr = localDate(today);
+  const start = new Date(today);
+  start.setDate(today.getDate() - WEEKS * 7);
+  start.setDate(start.getDate() - start.getDay());
+  const monthsEl = document.getElementById('hm-months');
+  const weeksEl  = document.getElementById('hm-weeks');
+  monthsEl.innerHTML = '';
+  weeksEl.innerHTML  = '';
+  let lastMonth = -1, activeDays = 0;
+  for (let w = 0; w < WEEKS; w++) {
+    const col = document.createElement('div'); col.className = 'hm-week';
+    let monthLabel = '';
+    for (let d = 0; d < 7; d++) {
+      const date = new Date(start); date.setDate(start.getDate() + w * 7 + d);
+      if (d === 0 && date.getMonth() !== lastMonth) {
+        monthLabel = date.toLocaleString('en-US', { month: 'short' }); lastMonth = date.getMonth();
+      }
+      const key = localDate(date);
+      const isOn = !!act[key];
+      if (isOn) activeDays++;
+      const isFuture = date > today, isToday = key === todayStr;
+      const cell = document.createElement('div'); cell.className = 'hm-cell';
+      if (isFuture) cell.classList.add('future');
+      else if (isOn) cell.classList.add('on');
+      if (isToday) cell.classList.add('today');
+      col.appendChild(cell);
+    }
+    weeksEl.appendChild(col);
+    const ml = document.createElement('div'); ml.className = 'hm-month'; ml.textContent = monthLabel;
+    monthsEl.appendChild(ml);
   }
-  const activeDays = Object.keys(act).filter(k => { const diff = (new Date(localDate())-new Date(k))/86400000; return diff >= 0 && diff < 14; }).length;
-  document.getElementById('activity-sub').textContent = `Last 14 days · ${activeDays} active day${activeDays!==1?'s':''}`;
-  document.getElementById('streak-num').textContent = `🔥 ${calcStreak()}`;
+  document.getElementById('activity-sub').textContent = `${activeDays} active day${activeDays!==1?'s':''} · last ${WEEKS} weeks`;
+  document.getElementById('streak-num').textContent = calcStreak();
 }
 function logTodayActivity() {
   const act = getActivity();
