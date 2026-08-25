@@ -286,7 +286,7 @@ a{color:inherit}
       <!-- ══ THE REWARD (top 3 only) ══ -->
       <div class="card" style="border-color:rgba(234,179,8,.4)">
         <div class="card-label" style="color:var(--yellow)">The Reward — Top 3 Only</div>
-        <div class="card-title">Top 3 meet up in person with Bronson.</div>
+        <div class="card-title">Top 3 join Bronson for an in-person mastermind.</div>
         <div class="card-sub">The top 3 point-earners at the end of this cycle get to meet up in person with Bronson for a mastermind weekend — everything you need to scale your brand to $500K/month.</div>
         <div class="countdown" id="countdown">
           <div class="cd-box"><div class="cd-num" id="cd-d">--</div><div class="cd-lbl">DAYS</div></div>
@@ -473,6 +473,7 @@ function switchView(name) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === name));
   if (name === 'leaderboard') fetchLeaderboard();
   if (name === 'points') { renderTier(); renderChallenges(); renderMySubmissions(); }
+  if (name === 'home') { buildHeatmap(); updateLogButton(); }
 }
 
 function switchAdminTab(name) {
@@ -502,13 +503,15 @@ function initPortal() {
     const avatarEl = document.getElementById('u-avatar');
     if (avatar) avatarEl.innerHTML = `<img src="${avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
     else avatarEl.textContent = name.charAt(0).toUpperCase();
-    buildHeatmap();
-    updateLogButton();
   }
 
   /* Rendered regardless of admin/student so an admin previewing the
-     tabs sees the same content a student would (points/heatmap above
-     are personal, so they stay student-only). */
+     tabs sees the same content (and correct button/grid state) a
+     student would. Personal data (heatmap/streak) is keyed by email,
+     so for admin it just reads/writes the no-suffix 'cp_activity' key
+     — harmless, but keeps every tab actually functional either way. */
+  buildHeatmap();
+  updateLogButton();
   renderTier();
   renderChallenges();
   renderMySubmissions();
@@ -843,10 +846,10 @@ async function fetchLeaderboard() {
   }
 }
 
-/* ══════ COUNTDOWN (Reward #10 cycle end) ══════ */
-const CYCLE_END = new Date('2026-06-30T23:59:00-04:00').getTime();
+/* ══════ COUNTDOWN (mastermind date) ══════ */
+const CYCLE_END = new Date('2027-01-30T23:59:00-05:00').getTime();
 function startCountdown() {
-  document.getElementById('cd-end').textContent = 'Ends June 30, 2026 · 11:59 PM ET';
+  document.getElementById('cd-end').textContent = 'January 30, 2027';
   function tick() {
     const diff = CYCLE_END - Date.now();
     if (diff <= 0) { document.getElementById('countdown').innerHTML = '<div class="cd-box"><div class="cd-num">Ended</div></div>'; return; }
