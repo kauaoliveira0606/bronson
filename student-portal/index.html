@@ -190,8 +190,8 @@ a{color:inherit}
   <div class="gate-box">
     <h2 id="sm-title">Submit Proof</h2>
     <p id="sm-pts" style="color:var(--yellow);font-weight:700"></p>
-    <input class="gate-input" id="sm-proof" placeholder="Paste a link — Google Drive, Zoom, Loom, anything">
-    <p style="font-size:11px;font-style:italic;color:var(--text3);margin-top:4px">If it's Google Drive, triple-check it's set to public view, not private, or we won't be able to open it.</p>
+    <input class="gate-input" id="sm-proof" placeholder="Paste a Google Drive, Loom, or Dropbox link">
+    <p style="font-size:11px;font-style:italic;color:var(--text3);margin-top:4px">Only Google Drive, Loom, or Dropbox links. If it's Google Drive or Dropbox, triple-check it's set to public view, not private, or we won't be able to open it.</p>
     <div class="gate-err" id="sm-msg" style="display:none"></div>
     <button class="btn btn-green" style="width:100%;justify-content:center;margin-bottom:8px" id="sm-btn" onclick="submitProofModal()">Submit →</button>
     <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="closeSubmitModal()">Cancel</button>
@@ -747,6 +747,13 @@ async function submitProofModal() {
   const proof_url = document.getElementById('sm-proof').value.trim();
   const msg = document.getElementById('sm-msg');
   if (!proof_url) { msg.style.display = 'block'; msg.textContent = 'Paste a link to your proof.'; return; }
+  const allowedHosts = ['drive.google.com', 'loom.com', 'dropbox.com'];
+  const isAllowed = allowedHosts.some(h => proof_url.toLowerCase().includes(h));
+  if (!isAllowed) {
+    msg.style.display = 'block';
+    msg.textContent = 'Only Google Drive, Loom, or Dropbox links are accepted.';
+    return;
+  }
   const btn = document.getElementById('sm-btn');
   btn.disabled = true; btn.textContent = 'Submitting...';
   try {
