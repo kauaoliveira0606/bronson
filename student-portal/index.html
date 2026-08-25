@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bronson — Student Portal</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e16; --panel:#111726; --panel-2:#0d1220; --border:rgba(255,255,255,.08);
+  --text:#f1f5f9; --text2:#94a3b8; --text3:#64748b;
+  --accent:#22d3ee; --green:#22c55e; --yellow:#eab308; --red:#ef4444; --orange:#f59e0b;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:14px;line-height:1.5}
+a{color:inherit}
+
+/* ── LAYOUT ── */
+.app{display:flex;min-height:100vh}
+.sidebar{width:254px;flex-shrink:0;background:var(--panel-2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:22px 16px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 8px 22px}
+.brand-logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;flex-shrink:0}
+.brand-name{font-size:14.5px;font-weight:800;color:var(--text)}
+.brand-sub{font-size:9.5px;font-weight:700;letter-spacing:1.2px;color:var(--text3);text-transform:uppercase}
+
+.nav{display:flex;flex-direction:column;gap:3px;flex:1}
+.nav-item{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:10px;color:var(--text2);text-decoration:none;font-size:13.5px;font-weight:600;cursor:pointer;border:1px solid transparent;transition:background .15s,color .15s}
+.nav-item:hover{background:rgba(255,255,255,.05);color:var(--text)}
+.nav-item.active{background:rgba(34,211,238,.09);border-color:rgba(34,211,238,.35);color:var(--text)}
+.nav-item .ic{width:18px;height:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:inherit}
+.nav-item svg{width:18px;height:18px}
+
+.sidebar-user{display:flex;align-items:center;gap:10px;padding:10px 8px;border-top:1px solid var(--border);margin-top:10px}
+.su-avatar{width:34px;height:34px;border-radius:50%;background:#22d3ee;color:#04303b;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.su-info{min-width:0;flex:1}
+.su-name{font-size:12.5px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.su-email{font-size:10.5px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.su-logout{color:var(--text3);cursor:pointer;background:none;border:none;font-size:16px;flex-shrink:0}
+
+.main{flex:1;min-width:0;padding:28px 32px 60px;max-width:1080px}
+.view{display:none}
+.view.active{display:block}
+
+/* ── CARDS ── */
+.card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:24px 26px;margin-bottom:18px}
+.card-label{font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.card-title{font-size:1.35rem;font-weight:800;color:var(--text);margin-bottom:6px}
+.card-sub{font-size:13px;color:var(--text2);line-height:1.6}
+
+.btn{display:inline-flex;align-items:center;gap:6px;border:none;border-radius:10px;padding:11px 20px;font-size:13.5px;font-weight:700;cursor:pointer;text-decoration:none}
+.btn-green{background:var(--green);color:#04220f}
+.btn-yellow{background:var(--yellow);color:#2b1c00}
+.btn-outline{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text)}
+.btn-sm{padding:7px 14px;font-size:12px}
+
+/* rewards banner */
+.banner{border:1.5px solid rgba(34,197,94,.4);background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.02))}
+
+/* progress bar */
+.bar-track{height:8px;background:rgba(255,255,255,.08);border-radius:5px;overflow:hidden;margin:12px 0}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--yellow),var(--green));border-radius:5px}
+
+/* activity heatmap */
+.activity-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.streak{display:flex;flex-direction:column;align-items:center;font-weight:800;color:var(--orange)}
+.streak-num{font-size:1.3rem}
+.streak-lbl{font-size:8.5px;letter-spacing:1px;color:var(--text3);font-weight:700}
+.heatmap{display:grid;grid-template-columns:repeat(14,1fr);gap:6px}
+.hm-col{display:flex;flex-direction:column;align-items:center;gap:5px}
+.hm-dow{font-size:9px;color:var(--text3);font-weight:700}
+.hm-day{width:100%;aspect-ratio:1;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.hm-day.on{background:var(--green)}
+.hm-day.off{background:rgba(239,68,68,.55)}
+.hm-day.future{background:rgba(255,255,255,.04);color:var(--text3)}
+.legend{display:flex;gap:16px;margin-top:14px;font-size:11.5px;color:var(--text3)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.ldot{width:9px;height:9px;border-radius:50%}
+
+/* leaderboard */
+.lb-podium{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:22px}
+.lb-pod{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px 14px;text-align:center}
+.lb-pod.first{border-color:rgba(234,179,8,.5);background:linear-gradient(135deg,rgba(234,179,8,.1),rgba(234,179,8,.02));transform:translateY(-8px)}
+.lb-pod-avatar{width:46px;height:46px;border-radius:50%;background:#1e293b;color:var(--text);font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 8px}
+.lb-pod-name{font-size:12.5px;font-weight:700;margin-bottom:4px}
+.lb-pod-pts{font-size:1.4rem;font-weight:800;color:var(--yellow)}
+.lb-pod-pts-lbl{font-size:10px;color:var(--text3)}
+.lb-you{background:var(--accent);color:#04303b;font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px;margin-left:4px}
+.lb-row{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px}
+.lb-row.me{background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.3)}
+.lb-rank{width:24px;text-align:center;font-weight:800;color:var(--text3)}
+.lb-avatar{width:32px;height:32px;border-radius:50%;background:#1e293b;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lb-name{flex:1;font-weight:600;font-size:13px}
+.lb-pts-wrap{text-align:right}
+.lb-pts{font-weight:800;font-size:14px}
+.lb-pts-lbl{font-size:10px;color:var(--text3)}
+.lb-state{text-align:center;color:var(--text3);padding:30px 0;font-size:13px}
+
+/* points system */
+.ways-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.way-card{border-radius:14px;padding:18px 20px;border:1px solid var(--border)}
+.way-card .ic{font-size:1.4rem;margin-bottom:8px}
+.way-card .t{font-size:9.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:6px}
+.way-card .d{font-size:12.5px;color:var(--text2);line-height:1.55}
+.way-1{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.02));border-color:rgba(59,130,246,.35)} .way-1 .t{color:#60a5fa}
+.way-2{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(34,197,94,.02));border-color:rgba(34,197,94,.35)} .way-2 .t{color:#4ade80}
+.way-3{background:linear-gradient(135deg,rgba(234,179,8,.12),rgba(234,179,8,.02));border-color:rgba(234,179,8,.35)} .way-3 .t{color:#fbbf24}
+.way-4{background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(168,85,247,.02));border-color:rgba(168,85,247,.35)} .way-4 .t{color:#c084fc}
+.way-5{background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.02));border-color:rgba(239,68,68,.35)} .way-5 .t{color:#f87171}
+
+.countdown{display:flex;gap:10px;margin:16px 0}
+.cd-box{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;padding:10px 16px;text-align:center;min-width:64px}
+.cd-num{font-size:1.6rem;font-weight:800}
+.cd-lbl{font-size:9px;letter-spacing:1px;color:var(--text3);font-weight:700}
+
+.prize-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px}
+.prize-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:16px}
+.prize-card .ic{font-size:1.3rem;margin-bottom:8px}
+.prize-card .t{font-size:12.5px;font-weight:700;margin-bottom:4px}
+.prize-card .d{font-size:11.5px;color:var(--text3);line-height:1.5}
+
+.rewards-ladder{display:flex;flex-direction:column;gap:8px}
+.rw-tier{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.02)}
+.rw-tier.final{border-color:rgba(234,179,8,.5);background:linear-gradient(135deg,rgba(234,179,8,.08),rgba(234,179,8,.01))}
+.rw-tier-num{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12.5px;flex-shrink:0}
+.rw-tier.final .rw-tier-num{background:var(--yellow);color:#2b1c00}
+.rw-tier-body{flex:1}
+.rw-tier-title{font-weight:700;font-size:13.5px}
+.rw-tier-sub{font-size:11.5px;color:var(--text3)}
+
+/* resources */
+.res-search{width:100%;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:13px 16px;color:var(--text);font-size:13.5px;margin-bottom:20px}
+.res-search::placeholder{color:var(--text3)}
+.res-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.res-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.res-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff}
+.res-name{font-size:13.5px;font-weight:700}
+.res-desc{font-size:11.5px;color:var(--text2);line-height:1.5;flex:1}
+.res-tag{display:inline-block;font-size:8.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:3px 8px;border-radius:6px;width:fit-content}
+.tag-ai{background:rgba(59,130,246,.15);color:#60a5fa}
+.tag-ads{background:rgba(20,184,166,.15);color:#2dd4bf}
+.tag-crm{background:rgba(34,197,94,.15);color:#4ade80}
+.tag-creative{background:rgba(244,63,94,.15);color:#fb7185}
+.tag-payments{background:rgba(234,179,8,.15);color:#fbbf24}
+.res-btn{margin-top:4px;text-align:center;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:8px;font-size:12px;font-weight:700;text-decoration:none;color:var(--text)}
+.res-btn:hover{background:rgba(255,255,255,.1)}
+
+/* email gate */
+.gate-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000}
+.gate-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:34px;max-width:380px;width:90%;text-align:center}
+.gate-box h2{font-size:1.2rem;margin-bottom:8px}
+.gate-box p{font-size:12.5px;color:var(--text2);margin-bottom:18px}
+.gate-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:13.5px;margin-bottom:10px}
+.gate-err{color:var(--red);font-size:11.5px;margin-bottom:10px;display:none}
+
+@media(max-width:900px){
+  .res-grid{grid-template-columns:1fr 1fr}
+  .ways-grid,.lb-podium,.prize-grid{grid-template-columns:1fr}
+  .sidebar{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ EMAIL GATE ══════ -->
+<div class="gate-overlay" id="gate">
+  <div class="gate-box">
+    <h2>Student Portal</h2>
+    <p>Enter the email you used to join the program.</p>
+    <input class="gate-input" id="gate-email" type="email" placeholder="you@email.com">
+    <div class="gate-err" id="gate-err">Please enter a valid email address.</div>
+    <button class="btn btn-green" style="width:100%;justify-content:center" id="gate-btn" onclick="submitGate()">Enter Portal →</button>
+  </div>
+</div>
+
+<div class="gate-overlay" id="pending" style="display:none">
+  <div class="gate-box">
+    <h2>Access Pending</h2>
+    <p>We couldn't find an approved account for that email yet. Reach out to your coach and they'll get you set up.</p>
+    <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="location.reload()">Try Again</button>
+  </div>
+</div>
+
+<!-- ══════ APP ══════ -->
+<div class="app" id="app" style="display:none">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">B</div>
+      <div>
+        <div class="brand-name">Bronson</div>
+        <div class="brand-sub">Student Portal</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-item active" data-view="home" onclick="switchView('home')">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+        Home
+      </div>
+      <div class="nav-item" data-view="leaderboard" onclick="switchView('leaderboard')">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 6h3a2 2 0 0 1-2 4M7 6H4a2 2 0 0 0 2 4"/></svg></span>
+        Leaderboard
+      </div>
+      <div class="nav-item" data-view="points" onclick="switchView('points')">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
+        Points System
+      </div>
+      <div class="nav-item" data-view="resources" onclick="switchView('resources')">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+        Resources
+      </div>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="su-avatar" id="u-avatar">S</div>
+      <div class="su-info">
+        <div class="su-name" id="u-name">Student</div>
+        <div class="su-email" id="u-email">—</div>
+      </div>
+      <button class="su-logout" onclick="logout()" title="Log out">⎋</button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ══════ HOME ══════ -->
+    <section class="view active" id="view-home">
+      <div class="card banner">
+        <div class="card-label" style="color:var(--green)">Your Points</div>
+        <div class="card-title" id="home-pts">0 points</div>
+        <div class="card-sub" id="home-next-tier">Earn points to unlock your next reward.</div>
+        <div class="bar-track"><div class="bar-fill" id="home-bar" style="width:0%"></div></div>
+        <a href="#" class="btn btn-green" onclick="switchView('points');return false;">See Points System →</a>
+      </div>
+
+      <div class="card">
+        <div class="activity-head">
+          <div>
+            <div class="card-title" style="font-size:1.05rem">Activity</div>
+            <div class="card-sub" id="activity-sub">Last 14 days</div>
+          </div>
+          <div class="streak">
+            <span class="streak-num" id="streak-num">🔥 0</span>
+            <span class="streak-lbl">DAY STREAK</span>
+          </div>
+        </div>
+        <div class="heatmap" id="heatmap"></div>
+        <div class="legend">
+          <span><span class="ldot" style="background:var(--green)"></span>showed up</span>
+          <span><span class="ldot" style="background:rgba(239,68,68,.55)"></span>missed</span>
+        </div>
+        <div style="margin-top:18px">
+          <button class="btn btn-yellow" id="log-activity-btn" onclick="logTodayActivity()">Log Today's Activity</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════ LEADERBOARD ══════ -->
+    <section class="view" id="view-leaderboard">
+      <div class="card-title" style="margin-bottom:4px">Leaderboard</div>
+      <div class="card-sub" style="margin-bottom:20px">Ranked by total points this cycle.</div>
+      <div class="lb-state" id="lb-state">Loading rankings...</div>
+      <div class="lb-podium" id="lb-podium" style="display:none"></div>
+      <div class="card" id="lb-list-wrap" style="display:none;padding:10px">
+        <div id="lb-list" style="display:flex;flex-direction:column;gap:4px"></div>
+      </div>
+    </section>
+
+    <!-- ══════ POINTS SYSTEM ══════ -->
+    <section class="view" id="view-points">
+      <div class="card-title" style="margin-bottom:4px">Points System</div>
+      <div class="card-sub" style="margin-bottom:20px">This is where you consume the program — course materials, wins, and coaching calls all stack points. Stack enough and you unlock rewards.</div>
+
+      <div class="card-label" style="margin-bottom:10px">Five Ways to Earn Points</div>
+      <div class="ways-grid">
+        <div class="way-card way-1">
+          <div class="ic">📚</div>
+          <div class="t">Learn</div>
+          <div class="d">Work through the course. Points scale with lesson length.</div>
+        </div>
+        <div class="way-card way-2">
+          <div class="ic">🛠️</div>
+          <div class="t">Implement</div>
+          <div class="d">Do the actual work. Submit proof on the Activity log to earn points.</div>
+        </div>
+        <div class="way-card way-3">
+          <div class="ic">🏆</div>
+          <div class="t">Get Wins</div>
+          <div class="d">Landed a sale, hit a milestone, launched a store? Submit it for bonus points.</div>
+        </div>
+        <div class="way-card way-4">
+          <div class="ic">🎥</div>
+          <div class="t">Coaching Calls</div>
+          <div class="d">Show up live to coaching calls with Bronson and the team.</div>
+        </div>
+        <div class="way-card way-5">
+          <div class="ic">🤝</div>
+          <div class="t">Community</div>
+          <div class="d">Engage in the community and help other students — it counts.</div>
+        </div>
+      </div>
+
+      <div class="card" style="border-color:rgba(234,179,8,.4)">
+        <div class="card-label" style="color:var(--yellow)">Reward #10</div>
+        <div class="card-title">Top 10 fly to Miami.</div>
+        <div class="card-sub">Earn points by learning, building, and getting results. The ten members with the most points at the end of this cycle get flown out for a full day with the team.</div>
+        <div class="countdown" id="countdown">
+          <div class="cd-box"><div class="cd-num" id="cd-d">--</div><div class="cd-lbl">DAYS</div></div>
+          <div class="cd-box"><div class="cd-num" id="cd-h">--</div><div class="cd-lbl">HOURS</div></div>
+          <div class="cd-box"><div class="cd-num" id="cd-m">--</div><div class="cd-lbl">MINS</div></div>
+          <div class="cd-box"><div class="cd-num" id="cd-s">--</div><div class="cd-lbl">SECS</div></div>
+        </div>
+        <div class="card-sub" style="font-size:11px" id="cd-end"></div>
+
+        <div class="card-label" style="margin-top:20px">The Prize</div>
+        <div class="card-title" style="font-size:1.05rem">A full day in Miami with the team.</div>
+        <div class="prize-grid">
+          <div class="prize-card"><div class="ic">🏝️</div><div class="t">Airbnb Covered</div><div class="d">Your stay in Miami is on us. All you book is the flight.</div></div>
+          <div class="prize-card"><div class="ic">🎉</div><div class="t">A Full Day of Events</div><div class="d">Cool stuff — this one's a surprise.</div></div>
+          <div class="prize-card"><div class="ic">🤝</div><div class="t">Meet Bronson</div><div class="d">Sit down with the creator of the program.</div></div>
+          <div class="prize-card"><div class="ic">❤️</div><div class="t">Meet the Team</div><div class="d">Everyone behind the scenes, in person.</div></div>
+          <div class="prize-card"><div class="ic">🎯</div><div class="t">Meet Your Coaches</div><div class="d">Most of the coaches will be there. Real conversations, no screens.</div></div>
+          <div class="prize-card"><div class="ic">🔥</div><div class="t">Meet the Other 9</div><div class="d">The ten people outworking everyone else in the program. Your actual network.</div></div>
+        </div>
+      </div>
+
+      <div class="card-label" style="margin:22px 0 10px">Rewards Ladder</div>
+      <div class="rewards-ladder">
+        <div class="rw-tier"><div class="rw-tier-num">1</div><div class="rw-tier-body"><div class="rw-tier-title">Reward 1</div><div class="rw-tier-sub">Details coming soon.</div></div></div>
+        <div class="rw-tier"><div class="rw-tier-num">2</div><div class="rw-tier-body"><div class="rw-tier-title">Reward 2</div><div class="rw-tier-sub">Details coming soon.</div></div></div>
+        <div class="rw-tier"><div class="rw-tier-num">3</div><div class="rw-tier-body"><div class="rw-tier-title">Reward 3</div><div class="rw-tier-sub">Details coming soon.</div></div></div>
+        <div class="rw-tier"><div class="rw-tier-num">4</div><div class="rw-tier-body"><div class="rw-tier-title">Reward 4</div><div class="rw-tier-sub">Details coming soon.</div></div></div>
+        <div class="rw-tier"><div class="rw-tier-num">5</div><div class="rw-tier-body"><div class="rw-tier-title">Reward 5</div><div class="rw-tier-sub">Details coming soon.</div></div></div>
+        <div class="rw-tier"><div class="rw-tier-num">6</div><div class="rw-tier-body"><div class="rw-tier-title">Reward 6</div><div class="rw-tier-sub">Details coming soon.</div></div></div>
+        <div class="rw-tier"><div class="rw-tier-num">7</div><div class="rw-tier-body"><div class="rw-tier-title">Reward 7</div><div class="rw-tier-sub">Details coming soon.</div></div></div>
+        <div class="rw-tier"><div class="rw-tier-num">8</div><div class="rw-tier-body"><div class="rw-tier-title">Reward 8</div><div class="rw-tier-sub">Details coming soon.</div></div></div>
+        <div class="rw-tier"><div class="rw-tier-num">9</div><div class="rw-tier-body"><div class="rw-tier-title">Reward 9</div><div class="rw-tier-sub">Details coming soon.</div></div></div>
+        <div class="rw-tier final"><div class="rw-tier-num">10</div><div class="rw-tier-body"><div class="rw-tier-title">Miami Mastermind Weekend</div><div class="rw-tier-sub">In-person with Bronson. See above.</div></div></div>
+      </div>
+    </section>
+
+    <!-- ══════ RESOURCES ══════ -->
+    <section class="view" id="view-resources">
+      <div class="card-title" style="margin-bottom:4px">Resources</div>
+      <div class="card-sub" style="margin-bottom:16px">Every tool used inside the program, in one place.</div>
+      <input class="res-search" id="res-search" placeholder="Search resources..." oninput="filterResources()">
+      <div class="res-grid" id="res-grid"></div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+/* ══════ SUPABASE + AIRTABLE (shared with base44 course platform) ══════ */
+const SB_URL   = 'https://gpthswrobafxtmsuouph.supabase.co/rest/v1';
+const SB_KEY    = 'sb_publishable_OohV5WdfvqHdsgcjKZqFGg_DE7SZmtD';
+const sbHeaders = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
+async function sbSelect(table, filter) {
+  const res = await fetch(`${SB_URL}/${table}?${filter}&select=*`, { headers: sbHeaders });
+  return res.ok ? res.json() : [];
+}
+async function sbInsert(table, body) {
+  return fetch(`${SB_URL}/${table}`, { method: 'POST', headers: { ...sbHeaders, 'Prefer': 'return=minimal' }, body: JSON.stringify(body) });
+}
+
+const AT_BASE  = 'appiMw8gpaLv2WITA';
+const AT_TABLE = 'tblumrfxY24tF2D8E';
+const AT_TOKEN = ['patXNYGWpuWaa25c7','79987be29d312ead1e834f20c41215854af8e507521df224e0457aad493d43d6'].join('.');
+const AT_URL   = `https://api.airtable.com/v0/${AT_BASE}/${AT_TABLE}`;
+
+function getStoredEmail() { return localStorage.getItem('cp_email') || ''; }
+function getUserName(email) {
+  if (!email) return 'Student';
+  return email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+function storageKey(key) {
+  const email = getStoredEmail();
+  return email ? `${key}_${email}` : key;
+}
+
+/* ══════ EMAIL GATE (same profiles table + approval flow as base44) ══════ */
+async function submitGate() {
+  const input = document.getElementById('gate-email');
+  const email = input.value.trim().toLowerCase();
+  const err   = document.getElementById('gate-err');
+  err.style.display = 'none';
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    err.textContent = 'Please enter a valid email address.';
+    err.style.display = 'block';
+    return;
+  }
+  const btn = document.getElementById('gate-btn');
+  btn.textContent = 'Checking...'; btn.disabled = true;
+
+  const rows = await sbSelect('profiles', `email=eq.${encodeURIComponent(email)}`);
+  const existing = Array.isArray(rows) ? rows[0] : null;
+
+  if (existing && existing.approved) {
+    localStorage.setItem('cp_email', email);
+    initPortal();
+  } else {
+    if (!existing) await sbInsert('profiles', { email, approved: false });
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('pending').style.display = 'flex';
+  }
+  btn.textContent = 'Enter Portal →'; btn.disabled = false;
+}
+document.getElementById('gate-email').addEventListener('keydown', e => { if (e.key === 'Enter') submitGate(); });
+
+function logout() { localStorage.removeItem('cp_email'); location.reload(); }
+
+(async () => {
+  const saved = getStoredEmail();
+  if (!saved) return;
+  const rows = await sbSelect('profiles', `email=eq.${encodeURIComponent(saved)}`);
+  const profile = Array.isArray(rows) ? rows[0] : null;
+  if (profile && profile.approved) initPortal();
+  else localStorage.removeItem('cp_email');
+})();
+
+/* ══════ VIEW SWITCHING ══════ */
+function switchView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === name));
+  if (name === 'leaderboard') fetchLeaderboard();
+}
+
+function initPortal() {
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('pending').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+
+  const email = getStoredEmail();
+  const name  = getUserName(email);
+  document.getElementById('u-name').textContent  = name;
+  document.getElementById('u-email').textContent = email;
+  document.getElementById('u-avatar').textContent = name.charAt(0).toUpperCase();
+
+  renderPoints();
+  buildHeatmap();
+  updateLogButton();
+  buildResources();
+  startCountdown();
+}
+
+/* ══════ POINTS (localStorage, synced to the same Airtable leaderboard base44 uses) ══════ */
+function rwGetEntries() { return parseInt(localStorage.getItem(storageKey('rw_entries')) || '0'); }
+function rwSetEntries(n) { localStorage.setItem(storageKey('rw_entries'), n); atSync(); }
+async function atSync() {
+  const email = getStoredEmail();
+  if (!email) return;
+  const name    = getUserName(email);
+  const entries = rwGetEntries();
+  try {
+    const search = await fetch(`${AT_URL}?filterByFormula=${encodeURIComponent(`{Email}="${email}"`)}`, { headers: { 'Authorization': `Bearer ${AT_TOKEN}` } });
+    const data = await search.json();
+    const payload = { fields: { Email: email, Name: name, Entries: entries, 'Last Updated': new Date().toISOString() } };
+    if (data.records && data.records.length) {
+      await fetch(`${AT_URL}/${data.records[0].id}`, { method: 'PATCH', headers: { 'Authorization': `Bearer ${AT_TOKEN}`, 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    } else {
+      await fetch(AT_URL, { method: 'POST', headers: { 'Authorization': `Bearer ${AT_TOKEN}`, 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    }
+  } catch (e) { console.warn('Airtable sync error:', e); }
+}
+function renderPoints() {
+  const pts = rwGetEntries();
+  document.getElementById('home-pts').textContent = `${pts} points`;
+  document.getElementById('home-bar').style.width = Math.min(100, pts % 100) + '%';
+}
+
+/* ══════ ACTIVITY HEATMAP + LOG BUTTON ══════ */
+function localDate(d) { const dt = d || new Date(); return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`; }
+function localDateOffset(daysBack) { const d = new Date(); d.setDate(d.getDate() - daysBack); return localDate(d); }
+function getActivity() { try { return JSON.parse(localStorage.getItem(storageKey('cp_activity')) || '{}'); } catch { return {}; } }
+function saveActivity(a) { localStorage.setItem(storageKey('cp_activity'), JSON.stringify(a)); }
+function calcStreak() {
+  const act = getActivity();
+  let streak = 0;
+  for (let i = 0; i < 365; i++) { if (act[localDateOffset(i)]) streak++; else break; }
+  return streak;
+}
+function buildHeatmap() {
+  const act = getActivity();
+  const grid = document.getElementById('heatmap');
+  grid.innerHTML = '';
+  const DOW = ['S','M','T','W','T','F','S'];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const key = localDate(d);
+    const col = document.createElement('div'); col.className = 'hm-col';
+    const dow = document.createElement('div'); dow.className = 'hm-dow'; dow.textContent = DOW[d.getDay()];
+    const box = document.createElement('div'); box.className = 'hm-day ' + (act[key] ? 'on' : 'off');
+    box.textContent = d.getDate();
+    col.appendChild(dow); col.appendChild(box);
+    grid.appendChild(col);
+  }
+  const activeDays = Object.keys(act).filter(k => { const diff = (new Date(localDate())-new Date(k))/86400000; return diff >= 0 && diff < 14; }).length;
+  document.getElementById('activity-sub').textContent = `Last 14 days · ${activeDays} active day${activeDays!==1?'s':''}`;
+  document.getElementById('streak-num').textContent = `🔥 ${calcStreak()}`;
+}
+function logTodayActivity() {
+  const act = getActivity();
+  const today = localDate();
+  if (act[today]) return;
+  act[today] = true;
+  saveActivity(act);
+  buildHeatmap();
+  updateLogButton();
+}
+function updateLogButton() {
+  const act = getActivity();
+  const btn = document.getElementById('log-activity-btn');
+  if (!btn) return;
+  if (act[localDate()]) { btn.textContent = "Logged for today ✓"; btn.disabled = true; }
+  else { btn.textContent = "Log Today's Activity"; btn.disabled = false; }
+}
+
+/* ══════ LEADERBOARD (same Airtable base as base44) ══════ */
+function lbInitials(name) { return (name||'?').substring(0,2).toUpperCase(); }
+function lbDisplayName(raw) { return (raw||'').includes('@') ? raw.split('@')[0] : (raw||'Anonymous'); }
+async function fetchLeaderboard() {
+  const stateEl  = document.getElementById('lb-state');
+  const podiumEl = document.getElementById('lb-podium');
+  const listWrap = document.getElementById('lb-list-wrap');
+  const listEl   = document.getElementById('lb-list');
+  stateEl.style.display = ''; stateEl.textContent = 'Loading rankings...';
+  podiumEl.style.display = 'none'; listWrap.style.display = 'none';
+  try {
+    const res = await fetch(`${AT_URL}?sort[0][field]=Entries&sort[0][direction]=desc&maxRecords=50`, { headers: { 'Authorization': `Bearer ${AT_TOKEN}` } });
+    const data = await res.json();
+    if (!data.records || !data.records.length) { stateEl.textContent = 'No points yet — be the first on the board!'; return; }
+    stateEl.style.display = 'none';
+    const myEmail = getStoredEmail();
+
+    const top3Order = [data.records[1], data.records[0], data.records[2]];
+    podiumEl.style.display = 'grid';
+    podiumEl.innerHTML = top3Order.map((r, idx) => {
+      if (!r) return '<div></div>';
+      const realRank = idx === 0 ? 2 : idx === 1 ? 1 : 3;
+      const isFirst  = realRank === 1;
+      const isMe     = r.fields.Email === myEmail;
+      const display  = lbDisplayName(r.fields.Name || r.fields.Email);
+      const pts      = r.fields.Entries || 0;
+      return `<div class="lb-pod${isFirst?' first':''}">
+        <div style="font-size:11px;color:var(--text3);font-weight:800;margin-bottom:6px">#${realRank}</div>
+        <div class="lb-pod-avatar">${lbInitials(display)}</div>
+        <div class="lb-pod-name">${display}${isMe?' <span class="lb-you">You</span>':''}</div>
+        <div class="lb-pod-pts">${pts}</div>
+        <div class="lb-pod-pts-lbl">points</div>
+      </div>`;
+    }).join('');
+
+    const rest = data.records.slice(3);
+    if (rest.length) {
+      listWrap.style.display = '';
+      listEl.innerHTML = rest.map((r, i) => {
+        const rank    = i + 4;
+        const isMe    = r.fields.Email === myEmail;
+        const display = lbDisplayName(r.fields.Name || r.fields.Email);
+        const pts     = r.fields.Entries || 0;
+        return `<div class="lb-row${isMe?' me':''}">
+          <div class="lb-rank">${rank}</div>
+          <div class="lb-avatar">${lbInitials(display)}</div>
+          <div class="lb-name">${display}${isMe?' <span class="lb-you">You</span>':''}</div>
+          <div class="lb-pts-wrap"><div class="lb-pts">${pts}</div><div class="lb-pts-lbl">points</div></div>
+        </div>`;
+      }).join('');
+    }
+  } catch (e) {
+    stateEl.style.display = ''; stateEl.textContent = 'Could not load leaderboard. Try refreshing.';
+  }
+}
+
+/* ══════ COUNTDOWN (Reward #10 cycle end) ══════ */
+const CYCLE_END = new Date('2026-06-30T23:59:00-04:00').getTime();
+function startCountdown() {
+  document.getElementById('cd-end').textContent = 'Ends June 30, 2026 · 11:59 PM ET';
+  function tick() {
+    const diff = CYCLE_END - Date.now();
+    if (diff <= 0) { document.getElementById('countdown').innerHTML = '<div class="cd-box"><div class="cd-num">Ended</div></div>'; return; }
+    const d = Math.floor(diff/86400000), h = Math.floor(diff%86400000/3600000), m = Math.floor(diff%3600000/60000), s = Math.floor(diff%60000/1000);
+    document.getElementById('cd-d').textContent = d;
+    document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+    setTimeout(tick, 1000);
+  }
+  tick();
+}
+
+/* ══════ RESOURCES ══════ */
+const RESOURCES = [
+  { name: 'Claude', desc: "Anthropic's AI assistant. Used throughout the program for research, writing, and brainstorming.", tag: 'ai', color: '#d97757', letter: '✳', url: '#' },
+  { name: 'ChatGPT', desc: "OpenAI's assistant. Pair with Claude for writing, analysis, and brainstorming.", tag: 'ai', color: '#10a37f', letter: '◍', url: '#' },
+  { name: 'AdLevel', desc: 'Our in-house AI for lead generation and outreach.', tag: 'ai', color: '#7c3aed', letter: 'A', url: '#' },
+  { name: 'Wispr Flow', desc: 'Voice-to-text on steroids. Dictate three times faster than you type.', tag: 'ai', color: '#f43f5e', letter: 'W', url: 'https://wisprflow.ai/r?KAUA4' },
+  { name: 'Manus', desc: 'General AI agent for research and multi-step tasks.', tag: 'ai', color: '#111827', letter: 'M', url: 'https://manus.im/invitation/8CRJ9QOPTBCL?utm_source=invitation&utm_medium=social&utm_campaign=copy_link' },
+  { name: 'n8n', desc: 'Self-hostable automation platform. Connect APIs and build agent workflows.', tag: 'ai', color: '#ea4b71', letter: 'n', url: '#' },
+  { name: 'Meta Business Manager', desc: 'The home base for running Meta ads. Covered in Phase 5.', tag: 'ads', color: '#1877f2', letter: '∞', url: '#' },
+  { name: 'Google Ads', desc: 'Run search, display, and performance max campaigns. Covered in Phase 6.', tag: 'ads', color: '#fbbc05', letter: 'G', url: '#' },
+  { name: 'Meta Ads Library', desc: 'Search live and past Meta ads for any brand or page — competitor research.', tag: 'ads', color: '#1877f2', letter: 'f', url: '#' },
+  { name: 'TikTok Creative Center', desc: 'Trending TikTok ads, top-performing creatives, and music/hashtag insights.', tag: 'ads', color: '#000000', letter: '♪', url: '#' },
+  { name: 'Google Ads Transparency Center', desc: 'Search any advertiser\'s live Google Ads — see what competitors are actually running.', tag: 'ads', color: '#4285f4', letter: '⊙', url: '#' },
+  { name: 'GoHighLevel', desc: 'All-in-one CRM, pipeline, and outreach platform. This is our primary stack.', tag: 'crm', color: '#22c55e', letter: '↥', url: '#' },
+  { name: 'Hyros', desc: 'Server-side ad tracking and attribution. Standard for high-ticket media buyers.', tag: 'crm', color: '#0ea5e9', letter: 'H', url: '#' },
+  { name: 'Loom', desc: 'Record quick video walkthroughs for clients and prospects.', tag: 'crm', color: '#625df5', letter: '◉', url: '#' },
+  { name: 'Canva', desc: 'Fast creative and graphic design. Go-to when you need something in under 10 minutes.', tag: 'creative', color: '#00c4cc', letter: 'C', url: '#' },
+  { name: 'Stripe', desc: 'Payment processing for client invoicing. The default for most offers.', tag: 'payments', color: '#635bff', letter: 'S', url: '#' },
+  { name: 'Wise', desc: 'International payments with low fees. Useful for foreign clients.', tag: 'payments', color: '#00b9ff', letter: '⇄', url: '#' },
+];
+const TAG_LABEL = { ai: 'AI & Automation', ads: 'Ad Platforms', crm: 'CRM & Tracking', creative: 'Creative', payments: 'Payments' };
+function buildResources() {
+  const grid = document.getElementById('res-grid');
+  grid.innerHTML = RESOURCES.map(r => `
+    <div class="res-card" data-name="${r.name.toLowerCase()}" data-desc="${r.desc.toLowerCase()}">
+      <div class="res-icon" style="background:${r.color}">${r.letter}</div>
+      <div class="res-name">${r.name}</div>
+      <div class="res-desc">${r.desc}</div>
+      <span class="res-tag tag-${r.tag}">${TAG_LABEL[r.tag]}</span>
+      <a class="res-btn" href="${r.url}" target="_blank" rel="noopener">Open →</a>
+    </div>
+  `).join('');
+}
+function filterResources() {
+  const q = document.getElementById('res-search').value.trim().toLowerCase();
+  document.querySelectorAll('.res-card').forEach(card => {
+    const match = card.dataset.name.includes(q) || card.dataset.desc.includes(q);
+    card.style.display = match ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
