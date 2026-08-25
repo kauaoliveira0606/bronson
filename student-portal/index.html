@@ -116,17 +116,25 @@ a{color:inherit}
 .tier-chip.active{border-color:currentColor;background:rgba(255,255,255,.06)}
 .tier-dot{width:9px;height:9px;border-radius:50%}
 
+/* how to earn */
+.earn-ways{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.earn-way{background:rgba(255,255,255,.03);border:1px solid var(--border);border-top:4px solid var(--sc);border-radius:12px;padding:14px}
+.earn-way .ic{font-size:1.3rem;margin-bottom:6px}
+.earn-way .t{font-size:13px;font-weight:800;color:var(--sc);margin-bottom:3px}
+.earn-way .d{font-size:11.5px;color:var(--text3);line-height:1.4}
+@media(max-width:900px){ .earn-ways{grid-template-columns:1fr 1fr} }
+
 /* challenges */
-.challenge-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:12px;display:grid;grid-template-columns:1fr 300px;gap:24px}
-.challenge-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.challenge-title{font-size:17px;font-weight:800}
-.challenge-pts{font-size:13px;font-weight:800;color:#2b1c00;background:var(--yellow);border-radius:20px;padding:4px 12px;flex-shrink:0}
-.challenge-desc{font-size:14.5px;color:var(--text2);line-height:1.55}
-.challenge-form{display:flex;flex-direction:column;gap:8px}
-.challenge-form input{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--text);font-size:12.5px}
-.challenge-form input::placeholder{color:var(--text3)}
-.challenge-msg{font-size:11px}
-@media(max-width:720px){ .challenge-card{grid-template-columns:1fr} }
+.challenge-section{margin-top:38px}
+.challenge-section-title{font-size:24px;font-weight:800;letter-spacing:-.3px;margin-bottom:16px;padding-bottom:12px;border-bottom:3px solid currentColor}
+.challenges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.challenge-sq{background:var(--panel);border:1.5px solid var(--border);border-top:5px solid var(--sc,var(--border));border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:9px}
+.challenge-sq .pts-badge{align-self:flex-start;font-size:12px;font-weight:800;color:#0b0f16;background:var(--sc,var(--yellow));border-radius:20px;padding:3px 11px}
+.challenge-sq .weekly-tag{align-self:flex-start;font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--sc);border:1px solid var(--sc);border-radius:20px;padding:2px 9px}
+.challenge-sq .sq-title{font-size:15px;font-weight:800;line-height:1.35}
+.challenge-sq .sq-desc{font-size:12.5px;color:var(--text2);line-height:1.5;flex:1}
+.challenge-sq button{margin-top:2px;width:100%;justify-content:center}
+@media(max-width:600px){ .challenges-grid{grid-template-columns:1fr 1fr} }
 
 /* email gate */
 .gate-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000}
@@ -169,7 +177,9 @@ a{color:inherit}
   <div class="gate-box">
     <h2 id="sm-title">Submit Proof</h2>
     <p id="sm-pts" style="color:var(--yellow);font-weight:700"></p>
-    <input class="gate-input" id="sm-proof" placeholder="Link to proof (or picture URL)">
+    <input class="gate-input" id="sm-proof" placeholder="Link to proof — any link works">
+    <p style="font-size:12px;color:var(--text3);margin:10px 0 6px">— or —</p>
+    <input class="gate-input" id="sm-file" type="file" accept="image/*,video/*" style="padding:10px">
     <div class="gate-err" id="sm-msg" style="display:none"></div>
     <button class="btn btn-green" style="width:100%;justify-content:center;margin-bottom:8px" id="sm-btn" onclick="submitProofModal()">Submit →</button>
     <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="closeSubmitModal()">Cancel</button>
@@ -273,7 +283,7 @@ a{color:inherit}
       <!-- ══ THE REWARD (top 3 only) ══ -->
       <div class="card" style="border-color:rgba(234,179,8,.4)">
         <div class="card-label" style="color:var(--yellow)">The Reward — Top 3 Only</div>
-        <div class="card-title">Top 3 join Bronson for an in-person mastermind.</div>
+        <div class="card-title">Top 3 Join Bronson For An In-Person Mastermind.</div>
         <div class="card-sub">The top 3 point-earners at the end of this cycle get to meet up in person with Bronson for a mastermind weekend — everything you need to scale your brand to $500K/month.</div>
         <div class="countdown" id="countdown">
           <div class="cd-box"><div class="cd-num" id="cd-d">--</div><div class="cd-lbl">DAYS</div></div>
@@ -299,6 +309,18 @@ a{color:inherit}
         <div class="card-sub" id="tier-sub" style="margin-bottom:16px">0 points</div>
         <div id="solar-system" style="display:flex;justify-content:center;padding:10px 0"></div>
         <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:10px" id="tier-legend"></div>
+      </div>
+
+      <!-- ══ HOW TO EARN ══ -->
+      <div class="card">
+        <div class="card-title" style="font-size:1.15rem;margin-bottom:14px">How to Earn Points</div>
+        <div class="earn-ways">
+          <div class="earn-way" style="--sc:#a855f7"><div class="ic">📚</div><div class="t">Learning</div><div class="d">Work through the course.</div></div>
+          <div class="earn-way" style="--sc:#22c55e"><div class="ic">🛠️</div><div class="t">Implementing</div><div class="d">Go do the actual work.</div></div>
+          <div class="earn-way" style="--sc:#f59e0b"><div class="ic">🔥</div><div class="t">Consistency</div><div class="d">Show up day after day.</div></div>
+          <div class="earn-way" style="--sc:#22d3ee"><div class="ic">🎥</div><div class="t">Showing Up</div><div class="d">Live on the coaching calls.</div></div>
+          <div class="earn-way" style="--sc:#f43f5e"><div class="ic">💰</div><div class="t">Earning</div><div class="d">Hit the revenue milestones.</div></div>
+        </div>
       </div>
 
       <!-- ══ CHALLENGES ══ -->
@@ -507,10 +529,10 @@ async function getMyPoints() {
   return row ? (row.points || 0) : 0;
 }
 /* ══════ RANK / TIER (solar system) ══════ */
-/* MAX_POINTS = sum of every one-time challenge below (2,350) —
+/* MAX_POINTS = sum of every one-time challenge below (3,565) —
    i.e. Elite (100%) means every non-repeatable challenge is done.
    Weekly coaching-call points aren't counted since they're open-ended. */
-const MAX_POINTS = 2350;
+const MAX_POINTS = 3565;
 const TIERS = [
   { name: 'Bronze',  min: 0,  max: 20,  color: '#c2793a', emblem: '🥉' },
   { name: 'Silver',  min: 20, max: 40,  color: '#c7d2e0', emblem: '🥈' },
@@ -566,7 +588,11 @@ async function renderTier() {
 /* Add more entries here as they're given — id must stay unique. Point
    values are our best-guess assignments (scaled to effort/impact) —
    only "Coaching Call" (15) and "Mindset Section" (50) were given exactly. */
-const SECTIONS = ['Onboarding', 'Course', 'Every Week', 'Actions', 'Money'];
+const SECTIONS = ['Onboarding', 'Course', 'Every Week', 'Consistency', 'Actions', 'Money'];
+const SECTION_COLOR = {
+  Onboarding: '#3b82f6', Course: '#a855f7', 'Every Week': '#22d3ee',
+  Consistency: '#f59e0b', Actions: '#22c55e', Money: '#f43f5e',
+};
 const CHALLENGES = [
   // Onboarding — as soon as they get started
   { id: 'join-discord', section: 'Onboarding', title: 'Join the Discord', points: 10, desc: 'Get into the community Discord.' },
@@ -588,6 +614,19 @@ const CHALLENGES = [
 
   // Every Week — repeatable
   { id: 'coaching-call', section: 'Every Week', title: 'Attend a Coaching Call', points: 15, desc: 'Live on Monday, Wednesday, or Friday.', repeatable: true },
+
+  // Consistency — login-streak milestones (stops at 150 days)
+  { id: 'streak-3', section: 'Consistency', title: 'Log In for 3 Days', points: 15, desc: 'Log your activity 3 days in a row.' },
+  { id: 'streak-5', section: 'Consistency', title: 'Log In for 5 Days', points: 20, desc: 'Log your activity 5 days in a row.' },
+  { id: 'streak-7', section: 'Consistency', title: 'Log In for 7 Days', points: 30, desc: 'Log your activity 7 days in a row.' },
+  { id: 'streak-10', section: 'Consistency', title: 'Log In for 10 Days', points: 40, desc: 'Log your activity 10 days in a row.' },
+  { id: 'streak-14', section: 'Consistency', title: 'Log In for 14 Days', points: 50, desc: 'Log your activity 14 days in a row.' },
+  { id: 'streak-21', section: 'Consistency', title: 'Log In for 21 Days', points: 70, desc: 'Log your activity 21 days in a row.' },
+  { id: 'streak-30', section: 'Consistency', title: 'Log In for 30 Days', points: 100, desc: 'Log your activity 30 days in a row.' },
+  { id: 'streak-45', section: 'Consistency', title: 'Log In for 45 Days', points: 130, desc: 'Log your activity 45 days in a row.' },
+  { id: 'streak-60', section: 'Consistency', title: 'Log In for 60 Days', points: 160, desc: 'Log your activity 60 days in a row.' },
+  { id: 'streak-120', section: 'Consistency', title: 'Log In for 120 Days', points: 250, desc: 'Log your activity 120 days in a row.' },
+  { id: 'streak-150', section: 'Consistency', title: 'Log In for 150 Days', points: 350, desc: 'Log your activity 150 days in a row. Top consistency tier.' },
 
   // Actions — things they actually go do
   { id: 'find-product-launch-store', section: 'Actions', title: 'Find a Winning Product and Launch Your Store', points: 40, desc: 'Get a validated product live in your store.' },
@@ -622,20 +661,21 @@ function renderChallenges() {
   wrap.innerHTML = SECTIONS.map(section => {
     const items = CHALLENGES.filter(c => c.section === section);
     if (!items.length) return '';
+    const color = SECTION_COLOR[section] || 'var(--yellow)';
     return `
-      <div class="sublabel" style="text-align:left;margin-top:26px">${section}</div>
-      ${items.map(c => `
-        <div class="challenge-card" style="grid-template-columns:1fr auto;align-items:center">
-          <div>
-            <div class="challenge-head">
-              <div class="challenge-title">${c.title}</div>
-              <div class="challenge-pts">+${c.points} pts</div>
-              ${c.repeatable ? `<span style="font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);border:1px solid rgba(34,211,238,.4);border-radius:20px;padding:2px 8px;flex-shrink:0">Weekly</span>` : ''}
-            </div>
-            <div class="challenge-desc">${c.desc}</div>
-          </div>
-          <button class="btn btn-green" onclick="openSubmitModal('${c.id}')">Submit Proof →</button>
-        </div>`).join('')}
+      <div class="challenge-section">
+        <div class="challenge-section-title" style="color:${color}">${section}</div>
+        <div class="challenges-grid">
+          ${items.map(c => `
+            <div class="challenge-sq" style="--sc:${color}">
+              ${c.repeatable ? `<span class="weekly-tag">Weekly</span>` : ''}
+              <span class="pts-badge">+${c.points} pts</span>
+              <div class="sq-title">${c.title}</div>
+              <div class="sq-desc">${c.desc}</div>
+              <button class="btn btn-green btn-sm" onclick="openSubmitModal('${c.id}')">Submit Proof →</button>
+            </div>`).join('')}
+        </div>
+      </div>
     `;
   }).join('');
 }
@@ -648,6 +688,7 @@ function openSubmitModal(id) {
   document.getElementById('sm-title').textContent = c.title;
   document.getElementById('sm-pts').textContent = `+${c.points} pts`;
   document.getElementById('sm-proof').value = '';
+  document.getElementById('sm-file').value = '';
   document.getElementById('sm-msg').style.display = 'none';
   const btn = document.getElementById('sm-btn');
   btn.disabled = false; btn.textContent = 'Submit →';
@@ -659,15 +700,26 @@ function closeSubmitModal() {
   currentChallengeId = null;
 }
 
+function fileToDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 async function submitProofModal() {
   const c = CHALLENGES.find(x => x.id === currentChallengeId);
   const email = getStoredEmail();
-  const proof_url = document.getElementById('sm-proof').value.trim();
+  const link = document.getElementById('sm-proof').value.trim();
+  const file = document.getElementById('sm-file').files[0];
   const msg = document.getElementById('sm-msg');
-  if (!proof_url) { msg.style.display = 'block'; msg.textContent = 'Attach a link or picture.'; return; }
+  if (!link && !file) { msg.style.display = 'block'; msg.textContent = 'Attach a link, or a picture/video.'; return; }
   const btn = document.getElementById('sm-btn');
   btn.disabled = true; btn.textContent = 'Submitting...';
   try {
+    const proof_url = file ? await fileToDataURL(file) : link;
     await sbInsert('ht_submissions', {
       email, category: c.title, description: c.title,
       proof_url, points_value: c.points, status: 'pending',
@@ -892,6 +944,12 @@ async function loadAdminApprovals() {
   }
 }
 
+function renderProofPreview(url) {
+  if (!url) return `<div style="font-size:11px;color:var(--text3);font-style:italic;">No proof attached</div>`;
+  if (url.startsWith('data:image')) return `<img src="${url}" style="max-width:100%;max-height:280px;border-radius:8px;border:1px solid var(--border);">`;
+  if (url.startsWith('data:video')) return `<video src="${url}" controls style="max-width:100%;max-height:280px;border-radius:8px;border:1px solid var(--border);"></video>`;
+  return `<a href="${url}" target="_blank" style="font-size:11.5px;color:var(--accent);word-break:break-all;">${url}</a>`;
+}
 async function loadAdminSubmissions() {
   const proof = document.getElementById('admin-proof-list');
   proof.innerHTML = 'Loading...';
@@ -918,7 +976,7 @@ async function loadAdminSubmissions() {
               }
             </div>
           </div>
-          ${s.proof_url ? `<a href="${s.proof_url}" target="_blank" style="font-size:11.5px;color:var(--accent);word-break:break-all;">${s.proof_url}</a>` : `<div style="font-size:11px;color:var(--text3);font-style:italic;">No proof attached</div>`}
+          ${renderProofPreview(s.proof_url)}
         </div>`).join('');
     }
   } catch (e) {
