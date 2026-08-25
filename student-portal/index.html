@@ -754,6 +754,37 @@ async function fileToDataURL(file) {
   return `data:${file.type || 'application/octet-stream'};base64,${base64}`;
 }
 
+/* A raw phone photo can be 8-15MB -- that's what was making submission
+   feel "insanely slow" (encoding it AND uploading it over the network).
+   Resize + re-encode as JPEG client-side first so it's small and fast. */
+function compressImage(file, maxDim = 1600, quality = 0.75) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let { width, height } = img;
+      if (width > maxDim || height > maxDim) {
+        if (width > height) { height = Math.round(height * maxDim / width); width = maxDim; }
+        else { width = Math.round(width * maxDim / height); height = maxDim; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Could not read that image.')); };
+    img.src = url;
+  });
+}
+
+function withTimeout(promise, ms, label) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error(`${label} took too long — check your connection and try again.`)), ms)),
+  ]);
+}
+
 const MAX_UPLOAD_BYTES = 4 * 1024 * 1024; // 4MB — base64 inflates this ~33% in the request body
 
 async function submitProofModal() {
@@ -763,19 +794,27 @@ async function submitProofModal() {
   const file = document.getElementById('sm-file').files[0];
   const msg = document.getElementById('sm-msg');
   if (!link && !file) { msg.style.display = 'block'; msg.textContent = 'Attach a link, or a picture/video.'; return; }
-  if (file && file.size > MAX_UPLOAD_BYTES) {
+  // Images always get compressed below regardless of original size, so
+  // the cap only needs to apply to videos (which can't be shrunk here).
+  if (file && !file.type.startsWith('image/') && file.size > MAX_UPLOAD_BYTES) {
     msg.style.display = 'block';
-    msg.textContent = `That file is too big (${(file.size/1024/1024).toFixed(1)}MB — max 4MB). Try a smaller photo, a shorter clip, or paste a link instead.`;
+    msg.textContent = `That file is too big (${(file.size/1024/1024).toFixed(1)}MB — max 4MB). Try a shorter clip, or paste a link instead.`;
     return;
   }
   const btn = document.getElementById('sm-btn');
-  btn.disabled = true; btn.textContent = 'Submitting...';
+  btn.disabled = true; btn.textContent = 'Processing...';
   try {
-    const proof_url = file ? await fileToDataURL(file) : link;
-    const res = await sbInsert('ht_submissions', {
-      email, category: c.title, description: c.title,
-      proof_url, points_value: c.points, status: 'pending',
-    });
+    let proof_url = link;
+    if (file) {
+      proof_url = file.type.startsWith('image/')
+        ? await withTimeout(compressImage(file), 15000, 'Compressing the image')
+        : await withTimeout(fileToDataURL(file), 20000, 'Reading the file');
+    }
+    btn.textContent = 'Uploading...';
+    const res = await withTimeout(
+      sbInsert('ht_submissions', { email, category: c.title, description: c.title, proof_url, points_value: c.points, status: 'pending' }),
+      25000, 'Uploading'
+    );
     if (!res.ok) {
       const errText = await res.text().catch(() => '');
       throw new Error(errText || `Request failed (${res.status})`);
