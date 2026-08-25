@@ -127,25 +127,6 @@ a{color:inherit}
 .challenge-form input::placeholder{color:var(--text3)}
 .challenge-msg{font-size:11px}
 @media(max-width:720px){ .challenge-card{grid-template-columns:1fr} }
-.rw-tier-title{font-weight:700;font-size:13.5px}
-.rw-tier-sub{font-size:11.5px;color:var(--text3)}
-
-/* resources */
-.res-search{width:100%;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:13px 16px;color:var(--text);font-size:13.5px;margin-bottom:20px}
-.res-search::placeholder{color:var(--text3)}
-.res-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.res-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
-.res-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff}
-.res-name{font-size:13.5px;font-weight:700}
-.res-desc{font-size:11.5px;color:var(--text2);line-height:1.5;flex:1}
-.res-tag{display:inline-block;font-size:8.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:3px 8px;border-radius:6px;width:fit-content}
-.tag-ai{background:rgba(59,130,246,.15);color:#60a5fa}
-.tag-ads{background:rgba(20,184,166,.15);color:#2dd4bf}
-.tag-crm{background:rgba(34,197,94,.15);color:#4ade80}
-.tag-creative{background:rgba(244,63,94,.15);color:#fb7185}
-.tag-payments{background:rgba(234,179,8,.15);color:#fbbf24}
-.res-btn{margin-top:4px;text-align:center;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:8px;font-size:12px;font-weight:700;text-decoration:none;color:var(--text)}
-.res-btn:hover{background:rgba(255,255,255,.1)}
 
 /* email gate */
 .gate-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000}
@@ -156,8 +137,7 @@ a{color:inherit}
 .gate-err{color:var(--red);font-size:11.5px;margin-bottom:10px;display:none}
 
 @media(max-width:900px){
-  .res-grid{grid-template-columns:1fr 1fr}
-  .ways-grid,.lb-podium,.prize-grid{grid-template-columns:1fr}
+  .lb-podium,.prize-grid{grid-template-columns:1fr}
   .sidebar{display:none}
 }
 </style>
@@ -185,6 +165,17 @@ a{color:inherit}
   </div>
 </div>
 
+<div class="gate-overlay" id="submit-modal" style="display:none;background:rgba(0,0,0,.6)">
+  <div class="gate-box">
+    <h2 id="sm-title">Submit Proof</h2>
+    <p id="sm-pts" style="color:var(--yellow);font-weight:700"></p>
+    <input class="gate-input" id="sm-proof" placeholder="Link to proof (or picture URL)">
+    <div class="gate-err" id="sm-msg" style="display:none"></div>
+    <button class="btn btn-green" style="width:100%;justify-content:center;margin-bottom:8px" id="sm-btn" onclick="submitProofModal()">Submit →</button>
+    <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="closeSubmitModal()">Cancel</button>
+  </div>
+</div>
+
 <!-- ══════ APP ══════ -->
 <div class="app" id="app" style="display:none">
 
@@ -209,10 +200,6 @@ a{color:inherit}
       <div class="nav-item" data-view="points" onclick="switchView('points')">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
         Points System
-      </div>
-      <div class="nav-item" data-view="resources" onclick="switchView('resources')">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
-        Resources
       </div>
       <div class="nav-item" data-view="admin" id="nav-admin" onclick="switchView('admin')" style="display:none">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg></span>
@@ -320,13 +307,6 @@ a{color:inherit}
 
       <div class="card-label" style="margin:22px 0 10px">My Submissions</div>
       <div class="card" id="my-submissions" style="padding:14px;margin-bottom:22px">Loading...</div>
-    </section>
-
-    <!-- ══════ RESOURCES ══════ -->
-    <section class="view" id="view-resources">
-      <div class="card-title" style="margin-bottom:4px">Resources</div>
-      <div class="card-sub" style="margin-bottom:16px">Tools used inside the program.</div>
-      <div class="res-grid" id="res-grid"></div>
     </section>
 
     <!-- ══════ ADMIN ══════ -->
@@ -515,7 +495,6 @@ function initPortal() {
   renderTier();
   renderChallenges();
   renderMySubmissions();
-  buildResources();
   startCountdown();
 }
 
@@ -646,7 +625,7 @@ function renderChallenges() {
     return `
       <div class="sublabel" style="text-align:left;margin-top:26px">${section}</div>
       ${items.map(c => `
-        <div class="challenge-card">
+        <div class="challenge-card" style="grid-template-columns:1fr auto;align-items:center">
           <div>
             <div class="challenge-head">
               <div class="challenge-title">${c.title}</div>
@@ -655,35 +634,50 @@ function renderChallenges() {
             </div>
             <div class="challenge-desc">${c.desc}</div>
           </div>
-          <div class="challenge-form">
-            <input value="${getStoredEmail()}" disabled style="opacity:.6">
-            <input id="ch-proof-${c.id}" placeholder="Link to proof (or picture URL)">
-            <button class="btn btn-green btn-sm" onclick="submitChallenge('${c.id}')">Submit Proof →</button>
-            <div class="challenge-msg" id="ch-msg-${c.id}"></div>
-          </div>
+          <button class="btn btn-green" onclick="openSubmitModal('${c.id}')">Submit Proof →</button>
         </div>`).join('')}
     `;
   }).join('');
 }
 
-async function submitChallenge(id) {
+let currentChallengeId = null;
+
+function openSubmitModal(id) {
   const c = CHALLENGES.find(x => x.id === id);
+  currentChallengeId = id;
+  document.getElementById('sm-title').textContent = c.title;
+  document.getElementById('sm-pts').textContent = `+${c.points} pts`;
+  document.getElementById('sm-proof').value = '';
+  document.getElementById('sm-msg').style.display = 'none';
+  const btn = document.getElementById('sm-btn');
+  btn.disabled = false; btn.textContent = 'Submit →';
+  document.getElementById('submit-modal').style.display = 'flex';
+}
+
+function closeSubmitModal() {
+  document.getElementById('submit-modal').style.display = 'none';
+  currentChallengeId = null;
+}
+
+async function submitProofModal() {
+  const c = CHALLENGES.find(x => x.id === currentChallengeId);
   const email = getStoredEmail();
-  const proof_url = document.getElementById(`ch-proof-${id}`).value.trim();
-  const msg = document.getElementById(`ch-msg-${id}`);
-  if (!proof_url) { msg.style.color = 'var(--red)'; msg.textContent = 'Attach a link or picture.'; return; }
+  const proof_url = document.getElementById('sm-proof').value.trim();
+  const msg = document.getElementById('sm-msg');
+  if (!proof_url) { msg.style.display = 'block'; msg.textContent = 'Attach a link or picture.'; return; }
+  const btn = document.getElementById('sm-btn');
+  btn.disabled = true; btn.textContent = 'Submitting...';
   try {
     await sbInsert('ht_submissions', {
       email, category: c.title, description: c.title,
       proof_url, points_value: c.points, status: 'pending',
     });
-    document.getElementById(`ch-proof-${id}`).value = '';
-    msg.style.color = 'var(--green)';
-    msg.textContent = 'Submitted — an admin will review it.';
+    closeSubmitModal();
     renderMySubmissions();
   } catch (e) {
-    msg.style.color = 'var(--red)';
+    msg.style.display = 'block';
     msg.textContent = 'Something went wrong. Try again.';
+    btn.disabled = false; btn.textContent = 'Submit →';
   }
 }
 
@@ -861,23 +855,6 @@ function startCountdown() {
     setTimeout(tick, 1000);
   }
   tick();
-}
-
-/* ══════ RESOURCES ══════ */
-/* Only real resources given so far — add more here as they're sent. */
-const RESOURCES = [
-  { name: 'Wispr Flow', color: '#f43f5e', letter: 'W', url: 'https://wisprflow.ai/r?KAUA4' },
-  { name: 'Manus', color: '#111827', letter: 'M', url: 'https://manus.im/invitation/8CRJ9QOPTBCL?utm_source=invitation&utm_medium=social&utm_campaign=copy_link' },
-];
-function buildResources() {
-  const grid = document.getElementById('res-grid');
-  grid.innerHTML = RESOURCES.map(r => `
-    <div class="res-card">
-      <div class="res-icon" style="background:${r.color}">${r.letter}</div>
-      <div class="res-name">${r.name}</div>
-      <a class="res-btn" href="${r.url}" target="_blank" rel="noopener">Open →</a>
-    </div>
-  `).join('');
 }
 
 /* ══════ ADMIN PANEL (reuses base44's profiles + proof_submissions tables) ══════ */
