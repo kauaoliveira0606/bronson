@@ -696,8 +696,34 @@ const CHALLENGES = [
   { id: 'first-100k-month', section: 'Money', title: 'Make Your First $100K a Month', points: 600, desc: '' },
 ];
 
-function renderChallenges() {
+async function renderChallenges() {
   const wrap = document.getElementById('challenges-list');
+  const email = getStoredEmail();
+  // Latest status per challenge title, so a card can't be resubmitted
+  // while pending or once approved -- only after a rejection (or if
+  // it's a weekly-repeatable challenge, which always stays open).
+  const statusByTitle = {};
+  if (email) {
+    const rows = await sbSelect('ht_submissions', `email=eq.${encodeURIComponent(email)}&order=created_at.desc`);
+    if (Array.isArray(rows)) {
+      rows.forEach(r => { if (!(r.category in statusByTitle)) statusByTitle[r.category] = r.status; });
+    }
+  }
+
+  function actionHTML(c) {
+    const status = statusByTitle[c.title];
+    if (!c.repeatable && status === 'pending') {
+      return `<button class="btn btn-outline btn-sm" disabled>Pending Review</button>`;
+    }
+    if (!c.repeatable && status === 'approved') {
+      return `<button class="btn btn-outline btn-sm" disabled>Approved ✓</button>`;
+    }
+    if (!c.repeatable && status === 'rejected') {
+      return `<button class="btn btn-green btn-sm" onclick="openSubmitModal('${c.id}')">Resubmit →</button>`;
+    }
+    return `<button class="btn btn-green btn-sm" onclick="openSubmitModal('${c.id}')">Submit Proof →</button>`;
+  }
+
   wrap.innerHTML = SECTIONS.map(section => {
     const items = CHALLENGES.filter(c => c.section === section);
     if (!items.length) return '';
@@ -712,7 +738,7 @@ function renderChallenges() {
               <span class="pts-badge">+${c.points} pts</span>
               <div class="sq-title">${c.title}</div>
               <div class="sq-desc">${c.desc}</div>
-              <button class="btn btn-green btn-sm" onclick="openSubmitModal('${c.id}')">Submit Proof →</button>
+              ${actionHTML(c)}
             </div>`).join('')}
         </div>
       </div>
@@ -751,6 +777,7 @@ async function submitProofModal() {
   const email = getStoredEmail();
   const proof_url = document.getElementById('sm-proof').value.trim();
   const msg = document.getElementById('sm-msg');
+  if (!email) { msg.style.display = 'block'; msg.textContent = 'Admin accounts can\'t submit proof — log in as a student to test this.'; return; }
   if (!proof_url) { msg.style.display = 'block'; msg.textContent = 'Paste a link to your proof.'; return; }
   const allowedHosts = ['drive.google.com', 'loom.com', 'dropbox.com'];
   const isAllowed = allowedHosts.some(h => proof_url.toLowerCase().includes(h));
@@ -772,6 +799,7 @@ async function submitProofModal() {
     }
     closeSubmitModal();
     renderMySubmissions();
+    renderChallenges();
   } catch (e) {
     msg.style.display = 'block';
     msg.textContent = 'Something went wrong: ' + (e.message || 'unknown error') + '. Try again.';
@@ -1065,13 +1093,23 @@ async function adminReviewSubmission(id, status, btn) {
     const subRows = await sbSelect('ht_submissions', `id=eq.${id}`);
     const sub = Array.isArray(subRows) ? subRows[0] : null;
     if (sub) {
+      // Every real submission comes from someone already logged in with
+      // an approved profile -- if there's no match, don't fabricate one
+      // (that's how a phantom "approved" account with no real signup
+      // ended up polluting the Approve People list).
+      if (!sub.email) {
+        alert('This submission has no email attached (likely test data) -- can\'t award points. Reject it instead.');
+        loadAdminSubmissions();
+        return;
+      }
       const profRows = await sbSelect('ht_profiles', `email=eq.${encodeURIComponent(sub.email)}`);
       const prof = Array.isArray(profRows) ? profRows[0] : null;
-      if (prof) {
-        await sbUpdate('ht_profiles', `email=eq.${encodeURIComponent(sub.email)}`, { points: (prof.points || 0) + pointsAwarded });
-      } else {
-        await sbInsert('ht_profiles', { email: sub.email, approved: true, points: pointsAwarded });
+      if (!prof) {
+        alert(`No approved profile found for ${sub.email} -- can't award points without a real account.`);
+        loadAdminSubmissions();
+        return;
       }
+      await sbUpdate('ht_profiles', `email=eq.${encodeURIComponent(sub.email)}`, { points: (prof.points || 0) + pointsAwarded });
       await sbUpdate('ht_submissions', `id=eq.${id}`, { status, points_value: pointsAwarded, reviewed_at: new Date().toISOString() });
     }
   } else {
