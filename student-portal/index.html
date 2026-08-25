@@ -794,7 +794,8 @@ async function renderChallenges() {
       return `<button class="btn btn-outline btn-sm" disabled>Approved ✓</button>`;
     }
     if (!c.repeatable && status === 'rejected') {
-      return `<button class="btn btn-green btn-sm" onclick="openSubmitModal('${c.id}')">Resubmit →</button>`;
+      return `<div style="font-size:11px;color:#fca5a5;font-weight:700;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4);border-radius:6px;padding:4px 8px;margin-bottom:6px;text-align:center">❌ Denied</div>
+        <button class="btn btn-green btn-sm" onclick="openSubmitModal('${c.id}')">Resubmit →</button>`;
     }
     return `<button class="btn btn-green btn-sm" onclick="openSubmitModal('${c.id}')">Submit Proof →</button>`;
   }
