@@ -501,12 +501,17 @@ function switchView(name) {
   if (name === 'leaderboard') { fetchLeaderboard(); if (typeof tickCountdown === 'function') tickCountdown(); }
   if (name === 'points') { renderTier(); renderChallenges(); renderMySubmissions(); if (typeof tickCountdown === 'function') tickCountdown(); }
   if (name === 'home') { buildHeatmap(); updateLogButton(); }
+  if (name === 'admin' && typeof openAdminPanel === 'function') openAdminPanel();
 }
 
 function switchAdminTab(name) {
   document.querySelectorAll('.admin-subtab').forEach(t => t.classList.toggle('active', t.dataset.admin === name));
   document.getElementById('admin-tab-approve').style.display = name === 'approve' ? '' : 'none';
   document.getElementById('admin-tab-points').style.display  = name === 'points'  ? '' : 'none';
+  // Re-fetch every time so a submission/signup that came in after admin
+  // logged in actually shows up, instead of only ever loading once.
+  if (name === 'approve') loadAdminApprovals();
+  if (name === 'points') loadAdminSubmissions();
 }
 
 function initPortal() {
@@ -785,7 +790,9 @@ async function renderMySubmissions() {
     : s === 'rejected'
     ? `<span style="font-size:11px;color:#f87171;font-weight:700;background:rgba(239,68,68,.15);border-radius:6px;padding:3px 9px">Rejected</span>`
     : `<span style="font-size:11px;color:#fbbf24;font-weight:700;background:rgba(234,179,8,.15);border-radius:6px;padding:3px 9px">Pending</span>`;
-  wrap.innerHTML = rows.map(r => `
+  wrap.innerHTML = rows.map(r => {
+    const match = CHALLENGES.find(c => c.title === r.category);
+    return `
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
       <div style="min-width:0">
         <div style="font-size:12.5px;font-weight:700">${r.category}</div>
@@ -794,8 +801,10 @@ async function renderMySubmissions() {
       <div style="text-align:right;flex-shrink:0">
         ${statusPill(r.status)}
         ${r.status === 'approved' && r.points_value ? `<div style="font-size:11px;color:var(--yellow);font-weight:700;margin-top:4px">+${r.points_value} pts</div>` : ''}
+        ${r.status === 'rejected' && match ? `<button class="btn btn-green btn-sm" style="margin-top:6px" onclick="openSubmitModal('${match.id}')">Resubmit →</button>` : ''}
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 /* ══════ ACTIVITY HEATMAP + LOG BUTTON ══════ */
