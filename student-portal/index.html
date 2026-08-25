@@ -81,10 +81,17 @@ a{color:inherit}
 .hm-legend-cell{width:11px;height:11px;border-radius:2px}
 
 /* leaderboard */
-.lb-podium{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:22px}
+.lb-podium{display:grid;grid-template-columns:1fr 1.18fr 0.88fr;gap:14px;margin-bottom:22px;align-items:end}
 .lb-pod{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px 14px;text-align:center}
-.lb-pod.first{border-color:rgba(234,179,8,.5);background:linear-gradient(135deg,rgba(234,179,8,.1),rgba(234,179,8,.02));transform:translateY(-8px)}
-.lb-pod-avatar{width:46px;height:46px;border-radius:50%;background:#1e293b;color:var(--text);font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 8px}
+.lb-pod.rank-1{border-color:rgba(234,179,8,.6);background:linear-gradient(135deg,rgba(234,179,8,.14),rgba(234,179,8,.02));transform:translateY(-14px);padding:26px 14px;box-shadow:0 8px 24px rgba(234,179,8,.15)}
+.lb-pod.rank-2{border-color:rgba(203,213,225,.4);background:linear-gradient(135deg,rgba(203,213,225,.1),rgba(203,213,225,.02));padding:20px 14px}
+.lb-pod.rank-3{border-color:rgba(205,127,50,.4);background:linear-gradient(135deg,rgba(205,127,50,.12),rgba(205,127,50,.02));padding:14px 12px}
+.lb-pod.rank-1 .lb-pod-avatar{width:60px;height:60px;font-size:18px}
+.lb-pod.rank-2 .lb-pod-avatar{width:50px;height:50px;font-size:15px}
+.lb-pod.rank-3 .lb-pod-avatar{width:40px;height:40px;font-size:13px}
+.lb-pod.rank-1 .lb-pod-pts{font-size:1.9rem}
+.lb-pod.rank-3 .lb-pod-pts{font-size:1.2rem}
+.lb-pod-avatar{width:46px;height:46px;border-radius:50%;background:#1e293b;color:var(--text);font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;overflow:hidden}
 .lb-pod-name{font-size:12.5px;font-weight:700;margin-bottom:4px}
 .lb-pod-pts{font-size:1.4rem;font-weight:800;color:var(--yellow)}
 .lb-pod-pts-lbl{font-size:10px;color:var(--text3)}
@@ -180,6 +187,7 @@ a{color:inherit}
     <input class="gate-input" id="sm-proof" placeholder="Link to proof — any link works">
     <p style="font-size:12px;color:var(--text3);margin:10px 0 6px">— or —</p>
     <input class="gate-input" id="sm-file" type="file" accept="image/*,video/*" style="padding:10px">
+    <p style="font-size:11px;color:var(--text3);margin-top:4px">Max 4MB — for a bigger video, paste a link instead.</p>
     <div class="gate-err" id="sm-msg" style="display:none"></div>
     <button class="btn btn-green" style="width:100%;justify-content:center;margin-bottom:8px" id="sm-btn" onclick="submitProofModal()">Submit →</button>
     <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="closeSubmitModal()">Cancel</button>
@@ -267,7 +275,14 @@ a{color:inherit}
     <!-- ══════ LEADERBOARD ══════ -->
     <section class="view" id="view-leaderboard">
       <div class="card-title" style="margin-bottom:4px">Leaderboard</div>
-      <div class="card-sub" style="margin-bottom:20px">Ranked by total points this cycle.</div>
+      <div class="card-sub" style="margin-bottom:16px">Ranked by total points this cycle. Top 3 fly to Bronson's mastermind.</div>
+      <div class="countdown" id="lb-countdown">
+        <div class="cd-box"><div class="cd-num" id="lb-cd-d">--</div><div class="cd-lbl">DAYS</div></div>
+        <div class="cd-box"><div class="cd-num" id="lb-cd-h">--</div><div class="cd-lbl">HOURS</div></div>
+        <div class="cd-box"><div class="cd-num" id="lb-cd-m">--</div><div class="cd-lbl">MINS</div></div>
+        <div class="cd-box"><div class="cd-num" id="lb-cd-s">--</div><div class="cd-lbl">SECS</div></div>
+      </div>
+      <div class="card-sub" style="font-size:11px;margin-bottom:20px" id="lb-cd-end"></div>
       <div class="lb-state" id="lb-state">Loading rankings...</div>
       <div class="lb-podium" id="lb-podium" style="display:none"></div>
       <div class="card" id="lb-list-wrap" style="display:none;padding:10px">
@@ -473,8 +488,8 @@ function switchView(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + name).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === name));
-  if (name === 'leaderboard') fetchLeaderboard();
-  if (name === 'points') { renderTier(); renderChallenges(); renderMySubmissions(); }
+  if (name === 'leaderboard') { fetchLeaderboard(); if (typeof tickCountdown === 'function') tickCountdown(); }
+  if (name === 'points') { renderTier(); renderChallenges(); renderMySubmissions(); if (typeof tickCountdown === 'function') tickCountdown(); }
   if (name === 'home') { buildHeatmap(); updateLogButton(); }
 }
 
@@ -709,6 +724,8 @@ function fileToDataURL(file) {
   });
 }
 
+const MAX_UPLOAD_BYTES = 4 * 1024 * 1024; // 4MB — base64 inflates this ~33% in the request body
+
 async function submitProofModal() {
   const c = CHALLENGES.find(x => x.id === currentChallengeId);
   const email = getStoredEmail();
@@ -716,19 +733,28 @@ async function submitProofModal() {
   const file = document.getElementById('sm-file').files[0];
   const msg = document.getElementById('sm-msg');
   if (!link && !file) { msg.style.display = 'block'; msg.textContent = 'Attach a link, or a picture/video.'; return; }
+  if (file && file.size > MAX_UPLOAD_BYTES) {
+    msg.style.display = 'block';
+    msg.textContent = `That file is too big (${(file.size/1024/1024).toFixed(1)}MB — max 4MB). Try a smaller photo, a shorter clip, or paste a link instead.`;
+    return;
+  }
   const btn = document.getElementById('sm-btn');
   btn.disabled = true; btn.textContent = 'Submitting...';
   try {
     const proof_url = file ? await fileToDataURL(file) : link;
-    await sbInsert('ht_submissions', {
+    const res = await sbInsert('ht_submissions', {
       email, category: c.title, description: c.title,
       proof_url, points_value: c.points, status: 'pending',
     });
+    if (!res.ok) {
+      const errText = await res.text().catch(() => '');
+      throw new Error(errText || `Request failed (${res.status})`);
+    }
     closeSubmitModal();
     renderMySubmissions();
   } catch (e) {
     msg.style.display = 'block';
-    msg.textContent = 'Something went wrong. Try again.';
+    msg.textContent = 'Something went wrong: ' + (e.message || 'unknown error') + '. Try again.';
     btn.disabled = false; btn.textContent = 'Submit →';
   }
 }
@@ -858,11 +884,10 @@ async function fetchLeaderboard() {
     podiumEl.innerHTML = top3Order.map((r, idx) => {
       if (!r) return '<div></div>';
       const realRank = idx === 0 ? 2 : idx === 1 ? 1 : 3;
-      const isFirst  = realRank === 1;
       const isMe     = r.email === myEmail;
       const display  = r.name || lbDisplayName(r.email);
       const pts      = r.points || 0;
-      return `<div class="lb-pod${isFirst?' first':''}">
+      return `<div class="lb-pod rank-${realRank}">
         <div style="font-size:11px;color:var(--text3);font-weight:800;margin-bottom:6px">#${realRank}</div>
         <div class="lb-pod-avatar">${lbAvatar(r, display)}</div>
         <div class="lb-pod-name">${display}${isMe?' <span class="lb-you">You</span>':''}</div>
@@ -892,21 +917,37 @@ async function fetchLeaderboard() {
   }
 }
 
-/* ══════ COUNTDOWN (mastermind date) ══════ */
+/* ══════ COUNTDOWN (mastermind date) — renders into both Points System and Leaderboard ══════ */
 const CYCLE_END = new Date('2027-01-30T23:59:00-05:00').getTime();
-function startCountdown() {
-  document.getElementById('cd-end').textContent = 'January 30, 2027';
-  function tick() {
-    const diff = CYCLE_END - Date.now();
-    if (diff <= 0) { document.getElementById('countdown').innerHTML = '<div class="cd-box"><div class="cd-num">Ended</div></div>'; return; }
+let _countdownInterval = null;
+
+function tickCountdown() {
+  const diff = CYCLE_END - Date.now();
+  const targets = [
+    { d: 'cd-d', h: 'cd-h', m: 'cd-m', s: 'cd-s', box: 'countdown', end: 'cd-end' },
+    { d: 'lb-cd-d', h: 'lb-cd-h', m: 'lb-cd-m', s: 'lb-cd-s', box: 'lb-countdown', end: 'lb-cd-end' },
+  ];
+  targets.forEach(t => {
+    const endEl = document.getElementById(t.end);
+    if (endEl) endEl.textContent = 'January 30, 2027';
+    if (diff <= 0) {
+      const boxEl = document.getElementById(t.box);
+      if (boxEl) boxEl.innerHTML = '<div class="cd-box"><div class="cd-num">Ended</div></div>';
+      return;
+    }
     const d = Math.floor(diff/86400000), h = Math.floor(diff%86400000/3600000), m = Math.floor(diff%3600000/60000), s = Math.floor(diff%60000/1000);
-    document.getElementById('cd-d').textContent = d;
-    document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
-    document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
-    document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
-    setTimeout(tick, 1000);
-  }
-  tick();
+    const dEl = document.getElementById(t.d), hEl = document.getElementById(t.h), mEl = document.getElementById(t.m), sEl = document.getElementById(t.s);
+    if (dEl) dEl.textContent = d;
+    if (hEl) hEl.textContent = String(h).padStart(2,'0');
+    if (mEl) mEl.textContent = String(m).padStart(2,'0');
+    if (sEl) sEl.textContent = String(s).padStart(2,'0');
+  });
+}
+
+function startCountdown() {
+  tickCountdown();
+  if (_countdownInterval) return; // avoid stacking multiple intervals on repeat calls
+  _countdownInterval = setInterval(tickCountdown, 1000);
 }
 
 /* ══════ ADMIN PANEL (reuses base44's profiles + proof_submissions tables) ══════ */
