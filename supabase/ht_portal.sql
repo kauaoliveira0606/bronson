@@ -8,10 +8,17 @@
 create table if not exists ht_profiles (
   id bigint generated always as identity primary key,
   email text unique not null,
+  name text not null default '',
+  avatar_url text,
   approved boolean not null default false,
   points integer not null default 0,
   created_at timestamptz not null default now()
 );
+
+-- Safe to re-run: adds name/avatar_url if this table already existed
+-- from an earlier version of this migration.
+alter table ht_profiles add column if not exists name text not null default '';
+alter table ht_profiles add column if not exists avatar_url text;
 
 alter table ht_profiles enable row level security;
 

@@ -13,7 +13,7 @@
   --text:#f1f5f9; --text2:#94a3b8; --text3:#64748b;
   --accent:#22d3ee; --green:#22c55e; --yellow:#eab308; --red:#ef4444; --orange:#f59e0b;
 }
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:14px;line-height:1.5}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:16px;line-height:1.55}
 a{color:inherit}
 
 /* ── LAYOUT ── */
@@ -25,7 +25,7 @@ a{color:inherit}
 .brand-sub{font-size:9.5px;font-weight:700;letter-spacing:1.2px;color:var(--text3);text-transform:uppercase}
 
 .nav{display:flex;flex-direction:column;gap:3px;flex:1}
-.nav-item{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:10px;color:var(--text2);text-decoration:none;font-size:13.5px;font-weight:600;cursor:pointer;border:1px solid transparent;transition:background .15s,color .15s}
+.nav-item{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:10px;color:var(--text2);text-decoration:none;font-size:15px;font-weight:600;cursor:pointer;border:1px solid transparent;transition:background .15s,color .15s}
 .nav-item:hover{background:rgba(255,255,255,.05);color:var(--text)}
 .nav-item.active{background:rgba(34,211,238,.09);border-color:rgba(34,211,238,.35);color:var(--text)}
 .nav-item .ic{width:18px;height:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:inherit}
@@ -38,15 +38,15 @@ a{color:inherit}
 .su-email{font-size:10.5px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .su-logout{color:var(--text3);cursor:pointer;background:none;border:none;font-size:16px;flex-shrink:0}
 
-.main{flex:1;min-width:0;padding:28px 40px 60px;max-width:1400px}
+.main{flex:1;min-width:0;padding:28px 44px 60px}
 .view{display:none}
 .view.active{display:block}
 
 /* ── CARDS ── */
 .card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:24px 26px;margin-bottom:18px}
-.card-label{font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
-.card-title{font-size:1.35rem;font-weight:800;color:var(--text);margin-bottom:6px}
-.card-sub{font-size:13px;color:var(--text2);line-height:1.6}
+.card-label{font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.card-title{font-size:1.65rem;font-weight:800;color:var(--text);margin-bottom:6px}
+.card-sub{font-size:15px;color:var(--text2);line-height:1.6}
 
 .btn{display:inline-flex;align-items:center;gap:6px;border:none;border-radius:10px;padding:11px 20px;font-size:13.5px;font-weight:700;cursor:pointer;text-decoration:none}
 .btn-green{background:var(--green);color:#04220f}
@@ -108,8 +108,8 @@ a{color:inherit}
 .prize-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px}
 .prize-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:16px}
 .prize-card .ic{font-size:1.3rem;margin-bottom:8px}
-.prize-card .t{font-size:12.5px;font-weight:700;margin-bottom:4px}
-.prize-card .d{font-size:11.5px;color:var(--text3);line-height:1.5}
+.prize-card .t{font-size:15px;font-weight:700;margin-bottom:4px}
+.prize-card .d{font-size:13.5px;color:var(--text3);line-height:1.5}
 
 /* tier legend chips */
 .tier-chip{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--text2);padding:5px 10px;border-radius:20px;border:1px solid var(--border)}
@@ -119,9 +119,9 @@ a{color:inherit}
 /* challenges */
 .challenge-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:12px;display:grid;grid-template-columns:1fr 300px;gap:24px}
 .challenge-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.challenge-title{font-size:14px;font-weight:800}
-.challenge-pts{font-size:11px;font-weight:800;color:#2b1c00;background:var(--yellow);border-radius:20px;padding:3px 10px;flex-shrink:0}
-.challenge-desc{font-size:12.5px;color:var(--text2);line-height:1.55}
+.challenge-title{font-size:17px;font-weight:800}
+.challenge-pts{font-size:13px;font-weight:800;color:#2b1c00;background:var(--yellow);border-radius:20px;padding:4px 12px;flex-shrink:0}
+.challenge-desc{font-size:14.5px;color:var(--text2);line-height:1.55}
 .challenge-form{display:flex;flex-direction:column;gap:8px}
 .challenge-form input{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--text);font-size:12.5px}
 .challenge-form input::placeholder{color:var(--text3)}
@@ -168,8 +168,10 @@ a{color:inherit}
 <div class="gate-overlay" id="gate">
   <div class="gate-box">
     <h2>Student Portal</h2>
-    <p>Enter the email you used to join the program.</p>
+    <p>First time here? We need your name and a profile picture so the leaderboard shows who you are, not just your email.</p>
+    <input class="gate-input" id="gate-name" placeholder="Your name">
     <input class="gate-input" id="gate-email" type="email" placeholder="you@email.com">
+    <input class="gate-input" id="gate-avatar" placeholder="Link to your profile picture">
     <div class="gate-err" id="gate-err">Please enter a valid email address.</div>
     <button class="btn btn-green" style="width:100%;justify-content:center" id="gate-btn" onclick="submitGate()">Enter Portal →</button>
   </div>
@@ -390,8 +392,9 @@ function storageKey(key) {
 function isAdmin() { return localStorage.getItem('cp_admin') === '1'; }
 
 async function submitGate() {
-  const input = document.getElementById('gate-email');
-  const raw   = input.value.trim();
+  const raw   = document.getElementById('gate-email').value.trim();
+  const name  = document.getElementById('gate-name').value.trim();
+  const avatar_url = document.getElementById('gate-avatar').value.trim();
   const err   = document.getElementById('gate-err');
   err.style.display = 'none';
 
@@ -407,17 +410,34 @@ async function submitGate() {
     err.style.display = 'block';
     return;
   }
-  const btn = document.getElementById('gate-btn');
-  btn.textContent = 'Checking...'; btn.disabled = true;
 
   const rows = await sbSelect('ht_profiles', `email=eq.${encodeURIComponent(email)}`);
   const existing = Array.isArray(rows) ? rows[0] : null;
 
+  if (!existing && !name) {
+    err.textContent = 'Enter your name — first time here, we need it for the leaderboard.';
+    err.style.display = 'block';
+    return;
+  }
+
+  const btn = document.getElementById('gate-btn');
+  btn.textContent = 'Checking...'; btn.disabled = true;
+
+  if (existing) {
+    const patch = {};
+    if (name && name !== existing.name) patch.name = name;
+    if (avatar_url && avatar_url !== existing.avatar_url) patch.avatar_url = avatar_url;
+    if (Object.keys(patch).length) await sbUpdate('ht_profiles', `email=eq.${encodeURIComponent(email)}`, patch);
+  } else {
+    await sbInsert('ht_profiles', { email, name, avatar_url: avatar_url || null, approved: false });
+  }
+
   if (existing && existing.approved) {
     localStorage.setItem('cp_email', email);
+    localStorage.setItem('cp_name', name || existing.name || '');
+    localStorage.setItem('cp_avatar', avatar_url || existing.avatar_url || '');
     initPortal();
   } else {
-    if (!existing) await sbInsert('ht_profiles', { email, approved: false });
     document.getElementById('gate').style.display = 'none';
     document.getElementById('pending').style.display = 'flex';
   }
@@ -425,7 +445,13 @@ async function submitGate() {
 }
 document.getElementById('gate-email').addEventListener('keydown', e => { if (e.key === 'Enter') submitGate(); });
 
-function logout() { localStorage.removeItem('cp_email'); localStorage.removeItem('cp_admin'); location.reload(); }
+function logout() {
+  localStorage.removeItem('cp_email');
+  localStorage.removeItem('cp_admin');
+  localStorage.removeItem('cp_name');
+  localStorage.removeItem('cp_avatar');
+  location.reload();
+}
 
 (async () => {
   if (isAdmin()) { initPortal(); return; }
@@ -433,8 +459,11 @@ function logout() { localStorage.removeItem('cp_email'); localStorage.removeItem
   if (!saved) return;
   const rows = await sbSelect('ht_profiles', `email=eq.${encodeURIComponent(saved)}`);
   const profile = Array.isArray(rows) ? rows[0] : null;
-  if (profile && profile.approved) initPortal();
-  else localStorage.removeItem('cp_email');
+  if (profile && profile.approved) {
+    localStorage.setItem('cp_name', profile.name || '');
+    localStorage.setItem('cp_avatar', profile.avatar_url || '');
+    initPortal();
+  } else localStorage.removeItem('cp_email');
 })();
 
 /* ══════ VIEW SWITCHING ══════ */
@@ -465,11 +494,14 @@ function initPortal() {
     switchView('admin');
     openAdminPanel();
   } else {
-    const email = getStoredEmail();
-    const name  = getUserName(email);
+    const email  = getStoredEmail();
+    const name   = localStorage.getItem('cp_name') || getUserName(email);
+    const avatar = localStorage.getItem('cp_avatar') || '';
     document.getElementById('u-name').textContent  = name;
     document.getElementById('u-email').textContent = email;
-    document.getElementById('u-avatar').textContent = name.charAt(0).toUpperCase();
+    const avatarEl = document.getElementById('u-avatar');
+    if (avatar) avatarEl.innerHTML = `<img src="${avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    else avatarEl.textContent = name.charAt(0).toUpperCase();
     buildHeatmap();
     updateLogButton();
   }
@@ -552,86 +584,94 @@ async function renderTier() {
 /* Add more entries here as they're given — id must stay unique. Point
    values are our best-guess assignments (scaled to effort/impact) —
    only "Coaching Call" (15) and "Mindset Section" (50) were given exactly. */
+const SECTIONS = ['Onboarding', 'Course', 'Every Week', 'Actions', 'Money'];
 const CHALLENGES = [
-  // Onboarding — moved to the top
-  { id: 'join-discord', title: 'Join the Discord', points: 10, desc: 'Get into the community Discord.' },
-  { id: 'onboarding-form', title: 'Complete the Onboarding Form', points: 10, desc: 'Fill out the onboarding form.' },
-  { id: 'commitment-form', title: 'Sign the Commitment Form', points: 10, desc: 'Sign and submit the commitment form.' },
-  { id: 'csm-call', title: 'Finish Your Onboarding Call with the CSM', points: 15, desc: 'Complete your kickoff call with the CSM.' },
-  { id: 'launch-track', title: 'Review Your 14-Day Launch Track', points: 10, desc: 'Go through your 14-day launch track.' },
+  // Onboarding — as soon as they get started
+  { id: 'join-discord', section: 'Onboarding', title: 'Join the Discord', points: 10, desc: 'Get into the community Discord.' },
+  { id: 'onboarding-form', section: 'Onboarding', title: 'Complete the Onboarding Form', points: 10, desc: 'Fill out the onboarding form.' },
+  { id: 'commitment-form', section: 'Onboarding', title: 'Sign the Commitment Form', points: 10, desc: 'Sign and submit the commitment form.' },
+  { id: 'csm-call', section: 'Onboarding', title: 'Finish Your Onboarding Call with the CSM', points: 15, desc: 'Complete your kickoff call with the CSM.' },
+  { id: 'launch-track', section: 'Onboarding', title: 'Review Your 14-Day Launch Track', points: 10, desc: 'Go through your 14-day launch track.' },
 
-  // Repeatable every week
-  { id: 'coaching-call', title: 'Attend a Coaching Call', points: 15, desc: 'Live on Monday, Wednesday, or Friday.', repeatable: true },
+  // Course — consuming the course
+  { id: 'mindset-section', section: 'Course', title: 'Finish the Mindset Section Course', points: 50, desc: 'Complete every lesson in the Mindset section.' },
+  { id: 'winning-product-section', section: 'Course', title: 'Finish the Finding a Winning Product Section Course', points: 40, desc: 'Complete every lesson in the Finding a Winning Product section.' },
+  { id: 'ads-organic-section', section: 'Course', title: 'Finish the Ads/Organic Section on the Whop Course', points: 40, desc: 'Complete every lesson in the Ads/Organic section.' },
+  { id: 'watch-5-calls', section: 'Course', title: 'Watch 5 Previous Call Recordings', points: 10, desc: '' },
+  { id: 'watch-10-calls', section: 'Course', title: 'Watch 10 Previous Call Recordings', points: 20, desc: '' },
+  { id: 'watch-15-calls', section: 'Course', title: 'Watch 15 Previous Call Recordings', points: 30, desc: '' },
+  { id: 'watch-20-calls', section: 'Course', title: 'Watch 20 Previous Call Recordings', points: 40, desc: '' },
+  { id: 'watch-25-calls', section: 'Course', title: 'Watch 25 Previous Call Recordings', points: 50, desc: '' },
+  { id: 'watch-30-calls', section: 'Course', title: 'Watch 30 Previous Call Recordings', points: 60, desc: '' },
 
-  // Course + build milestones
-  { id: 'find-product-launch-store', title: 'Find a Winning Product and Launch Your Store', points: 40, desc: 'Get a validated product live in your store.' },
-  { id: 'mindset-section', title: 'Finish the Mindset Section Course', points: 50, desc: 'Complete every lesson in the Mindset section.' },
-  { id: 'figure-out-offer', title: 'Figure Out Your Offer', points: 20, desc: 'Lock in your offer.' },
-  { id: 'find-supplier', title: 'Find a Supplier', points: 20, desc: 'Find and confirm your supplier.' },
-  { id: 'winning-product-section', title: 'Finish the Finding a Winning Product Section Course', points: 40, desc: 'Complete every lesson in the Finding a Winning Product section.' },
-  { id: 'build-store', title: 'Build Out Your Store', points: 30, desc: 'Fully build out your store.' },
-  { id: 'meta-ad-account', title: 'Sign Up for a Meta Ad Account', points: 10, desc: 'Create your Meta ads account.' },
-  { id: 'meta-account-built', title: 'Fully Build Out Your Meta Account', points: 25, desc: 'Per the course modules.' },
-  { id: 'image-ads', title: 'Image Ads', points: 15, desc: 'Get your image ads built.' },
-  { id: 'ai-avatar', title: 'Build Your AI Avatar', points: 15, desc: 'Build out your AI avatar.' },
-  { id: 'ads-organic-section', title: 'Finish the Ads/Organic Section on the Whop Course', points: 40, desc: 'Complete every lesson in the Ads/Organic section.' },
-  { id: 'watch-5-calls', title: 'Watch 5 Previous Call Recordings', points: 10, desc: '' },
-  { id: 'watch-10-calls', title: 'Watch 10 Previous Call Recordings', points: 20, desc: '' },
-  { id: 'watch-15-calls', title: 'Watch 15 Previous Call Recordings', points: 30, desc: '' },
-  { id: 'watch-20-calls', title: 'Watch 20 Previous Call Recordings', points: 40, desc: '' },
-  { id: 'watch-25-calls', title: 'Watch 25 Previous Call Recordings', points: 50, desc: '' },
-  { id: 'watch-30-calls', title: 'Watch 30 Previous Call Recordings', points: 60, desc: '' },
-  { id: 'ai-tools', title: 'Build the AI Tools', points: 25, desc: 'Product scorecard, margin calculator, ad planning calculator, etc.' },
-  { id: 'score-product', title: 'Score Your Final Product', points: 15, desc: '' },
-  { id: 'brand-positioning', title: 'Create Your Unique Brand and Positioning', points: 25, desc: '' },
-  { id: 'buy-domain', title: 'Buy Your Domain', points: 10, desc: '' },
-  { id: 'meta-pixel', title: 'Set Up Your Meta Pixel', points: 10, desc: '' },
+  // Every Week — repeatable
+  { id: 'coaching-call', section: 'Every Week', title: 'Attend a Coaching Call', points: 15, desc: 'Live on Monday, Wednesday, or Friday.', repeatable: true },
 
-  // Revenue milestones
-  { id: 'first-sale-ads', title: 'Make Your First Sale Through Ads', points: 30, desc: '' },
-  { id: 'first-sale-organic', title: 'Make Your First Sale Organically', points: 30, desc: '' },
-  { id: 'first-100', title: 'Make Your First $100', points: 20, desc: '' },
-  { id: 'first-1000', title: 'Make Your First $1,000', points: 40, desc: '' },
-  { id: 'first-5000', title: 'Make Your First $5,000', points: 75, desc: '' },
-  { id: 'first-10000', title: 'Make Your First $10,000', points: 100, desc: '' },
-  { id: 'first-10k-month', title: 'Make Your First $10K a Month', points: 150, desc: '' },
-  { id: 'first-30k-month', title: 'Make Your First $30K a Month', points: 250, desc: '' },
-  { id: 'first-50k-month', title: 'Make Your First $50K a Month', points: 400, desc: '' },
-  { id: 'first-100k-month', title: 'Make Your First $100K a Month', points: 600, desc: '' },
+  // Actions — things they actually go do
+  { id: 'find-product-launch-store', section: 'Actions', title: 'Find a Winning Product and Launch Your Store', points: 40, desc: 'Get a validated product live in your store.' },
+  { id: 'figure-out-offer', section: 'Actions', title: 'Figure Out Your Offer', points: 20, desc: 'Lock in your offer.' },
+  { id: 'find-supplier', section: 'Actions', title: 'Find a Supplier', points: 20, desc: 'Find and confirm your supplier.' },
+  { id: 'build-store', section: 'Actions', title: 'Build Out Your Store', points: 30, desc: 'Fully build out your store.' },
+  { id: 'meta-ad-account', section: 'Actions', title: 'Sign Up for a Meta Ad Account', points: 10, desc: 'Create your Meta ads account.' },
+  { id: 'meta-account-built', section: 'Actions', title: 'Fully Build Out Your Meta Account', points: 25, desc: 'Per the course modules.' },
+  { id: 'image-ads', section: 'Actions', title: 'Image Ads', points: 15, desc: 'Get your image ads built.' },
+  { id: 'ai-avatar', section: 'Actions', title: 'Build Your AI Avatar', points: 15, desc: 'Build out your AI avatar.' },
+  { id: 'ai-tools', section: 'Actions', title: 'Build the AI Tools', points: 25, desc: 'Product scorecard, margin calculator, ad planning calculator, etc.' },
+  { id: 'score-product', section: 'Actions', title: 'Score Your Final Product', points: 15, desc: '' },
+  { id: 'brand-positioning', section: 'Actions', title: 'Create Your Unique Brand and Positioning', points: 25, desc: '' },
+  { id: 'buy-domain', section: 'Actions', title: 'Buy Your Domain', points: 10, desc: '' },
+  { id: 'meta-pixel', section: 'Actions', title: 'Set Up Your Meta Pixel', points: 10, desc: '' },
+
+  // Money — revenue milestones
+  { id: 'first-sale-ads', section: 'Money', title: 'Make Your First Sale Through Ads', points: 30, desc: '' },
+  { id: 'first-sale-organic', section: 'Money', title: 'Make Your First Sale Organically', points: 30, desc: '' },
+  { id: 'first-100', section: 'Money', title: 'Make Your First $100', points: 20, desc: '' },
+  { id: 'first-1000', section: 'Money', title: 'Make Your First $1,000', points: 40, desc: '' },
+  { id: 'first-5000', section: 'Money', title: 'Make Your First $5,000', points: 75, desc: '' },
+  { id: 'first-10000', section: 'Money', title: 'Make Your First $10,000', points: 100, desc: '' },
+  { id: 'first-10k-month', section: 'Money', title: 'Make Your First $10K a Month', points: 150, desc: '' },
+  { id: 'first-30k-month', section: 'Money', title: 'Make Your First $30K a Month', points: 250, desc: '' },
+  { id: 'first-50k-month', section: 'Money', title: 'Make Your First $50K a Month', points: 400, desc: '' },
+  { id: 'first-100k-month', section: 'Money', title: 'Make Your First $100K a Month', points: 600, desc: '' },
 ];
 
 function renderChallenges() {
   const wrap = document.getElementById('challenges-list');
-  wrap.innerHTML = CHALLENGES.map(c => `
-    <div class="challenge-card">
-      <div>
-        <div class="challenge-head">
-          <div class="challenge-title">${c.title}</div>
-          <div class="challenge-pts">+${c.points} pts</div>
-          ${c.repeatable ? `<span style="font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);border:1px solid rgba(34,211,238,.4);border-radius:20px;padding:2px 8px;flex-shrink:0">Weekly</span>` : ''}
-        </div>
-        <div class="challenge-desc">${c.desc}</div>
-      </div>
-      <div class="challenge-form">
-        <input id="ch-name-${c.id}" placeholder="Your name">
-        <input id="ch-proof-${c.id}" placeholder="Link to proof (or picture URL)">
-        <button class="btn btn-green btn-sm" onclick="submitChallenge('${c.id}')">Submit Proof →</button>
-        <div class="challenge-msg" id="ch-msg-${c.id}"></div>
-      </div>
-    </div>`).join('');
+  wrap.innerHTML = SECTIONS.map(section => {
+    const items = CHALLENGES.filter(c => c.section === section);
+    if (!items.length) return '';
+    return `
+      <div class="sublabel" style="text-align:left;margin-top:26px">${section}</div>
+      ${items.map(c => `
+        <div class="challenge-card">
+          <div>
+            <div class="challenge-head">
+              <div class="challenge-title">${c.title}</div>
+              <div class="challenge-pts">+${c.points} pts</div>
+              ${c.repeatable ? `<span style="font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);border:1px solid rgba(34,211,238,.4);border-radius:20px;padding:2px 8px;flex-shrink:0">Weekly</span>` : ''}
+            </div>
+            <div class="challenge-desc">${c.desc}</div>
+          </div>
+          <div class="challenge-form">
+            <input value="${getStoredEmail()}" disabled style="opacity:.6">
+            <input id="ch-proof-${c.id}" placeholder="Link to proof (or picture URL)">
+            <button class="btn btn-green btn-sm" onclick="submitChallenge('${c.id}')">Submit Proof →</button>
+            <div class="challenge-msg" id="ch-msg-${c.id}"></div>
+          </div>
+        </div>`).join('')}
+    `;
+  }).join('');
 }
 
 async function submitChallenge(id) {
   const c = CHALLENGES.find(x => x.id === id);
   const email = getStoredEmail();
-  const name  = document.getElementById(`ch-name-${id}`).value.trim();
   const proof_url = document.getElementById(`ch-proof-${id}`).value.trim();
   const msg = document.getElementById(`ch-msg-${id}`);
-  if (!name) { msg.style.color = 'var(--red)'; msg.textContent = 'Enter your name.'; return; }
   if (!proof_url) { msg.style.color = 'var(--red)'; msg.textContent = 'Attach a link or picture.'; return; }
   try {
     await sbInsert('ht_submissions', {
-      email, name, category: c.title, description: c.title,
+      email, category: c.title, description: c.title,
       proof_url, points_value: c.points, status: 'pending',
     });
     document.getElementById(`ch-proof-${id}`).value = '';
@@ -684,9 +724,13 @@ function buildHeatmap() {
   const act = getActivity();
   const today = new Date(); today.setHours(0,0,0,0,0);
   const todayStr = localDate(today);
-  const start = new Date(today);
-  start.setDate(today.getDate() - WEEKS * 7);
-  start.setDate(start.getDate() - start.getDay());
+  /* Anchor the END of the grid at this week's Saturday so "today" is
+     always inside the range (the old start-then-round-back math could
+     land the whole grid before today, hiding it entirely). */
+  const end = new Date(today);
+  end.setDate(today.getDate() + (6 - today.getDay()));
+  const start = new Date(end);
+  start.setDate(end.getDate() - (WEEKS * 7 - 1));
   const monthsEl = document.getElementById('hm-months');
   const weeksEl  = document.getElementById('hm-weeks');
   monthsEl.innerHTML = '';
@@ -730,13 +774,23 @@ function updateLogButton() {
   const act = getActivity();
   const btn = document.getElementById('log-activity-btn');
   if (!btn) return;
-  if (act[localDate()]) { btn.textContent = "Logged for today ✓"; btn.disabled = true; }
-  else { btn.textContent = "Log Today's Activity"; btn.disabled = false; }
+  if (act[localDate()]) {
+    btn.textContent = "Logged for today ✓"; btn.disabled = true;
+    btn.classList.remove('btn-yellow'); btn.classList.add('btn-green');
+  } else {
+    btn.textContent = "Log Today's Activity"; btn.disabled = false;
+    btn.classList.remove('btn-green'); btn.classList.add('btn-yellow');
+  }
 }
 
 /* ══════ LEADERBOARD (ht_profiles.points — isolated from base44) ══════ */
 function lbInitials(name) { return (name||'?').substring(0,2).toUpperCase(); }
 function lbDisplayName(raw) { return (raw||'').includes('@') ? raw.split('@')[0] : (raw||'Anonymous'); }
+function lbAvatar(r, display) {
+  return r.avatar_url
+    ? `<img src="${r.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`
+    : lbInitials(display);
+}
 async function fetchLeaderboard() {
   const stateEl  = document.getElementById('lb-state');
   const podiumEl = document.getElementById('lb-podium');
@@ -757,11 +811,11 @@ async function fetchLeaderboard() {
       const realRank = idx === 0 ? 2 : idx === 1 ? 1 : 3;
       const isFirst  = realRank === 1;
       const isMe     = r.email === myEmail;
-      const display  = lbDisplayName(r.email);
+      const display  = r.name || lbDisplayName(r.email);
       const pts      = r.points || 0;
       return `<div class="lb-pod${isFirst?' first':''}">
         <div style="font-size:11px;color:var(--text3);font-weight:800;margin-bottom:6px">#${realRank}</div>
-        <div class="lb-pod-avatar">${lbInitials(display)}</div>
+        <div class="lb-pod-avatar">${lbAvatar(r, display)}</div>
         <div class="lb-pod-name">${display}${isMe?' <span class="lb-you">You</span>':''}</div>
         <div class="lb-pod-pts">${pts}</div>
         <div class="lb-pod-pts-lbl">points</div>
@@ -774,11 +828,11 @@ async function fetchLeaderboard() {
       listEl.innerHTML = rest.map((r, i) => {
         const rank    = i + 4;
         const isMe    = r.email === myEmail;
-        const display = lbDisplayName(r.email);
+        const display = r.name || lbDisplayName(r.email);
         const pts     = r.points || 0;
         return `<div class="lb-row${isMe?' me':''}">
           <div class="lb-rank">${rank}</div>
-          <div class="lb-avatar">${lbInitials(display)}</div>
+          <div class="lb-avatar">${lbAvatar(r, display)}</div>
           <div class="lb-name">${display}${isMe?' <span class="lb-you">You</span>':''}</div>
           <div class="lb-pts-wrap"><div class="lb-pts">${pts}</div><div class="lb-pts-lbl">points</div></div>
         </div>`;
@@ -839,8 +893,8 @@ async function loadAdminApprovals() {
       list.innerHTML = data.map(u => `
         <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px 14px;gap:10px;margin-bottom:8px;">
           <div style="flex:1;min-width:0;">
-            <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${u.email}</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:2px;">${u.points || 0} points &middot; ${u.created_at ? new Date(u.created_at).toLocaleDateString() : ''}</div>
+            <div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${u.name ? `${u.name} <span style="color:var(--text3);font-weight:400">— ${u.email}</span>` : u.email}</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:2px;">${u.points || 0} points &middot; ${u.created_at ? new Date(u.created_at).toLocaleDateString() : ''}</div>
           </div>
           <div style="display:flex;gap:6px;flex-shrink:0;">
             ${u.approved
@@ -870,7 +924,7 @@ async function loadAdminSubmissions() {
         <div class="card" style="padding:14px;margin-bottom:8px">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;">
             <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:700;">${s.name || '(no name)'} <span style="color:var(--text3);font-weight:400">— ${s.email}</span></div>
+              <div style="font-size:14px;font-weight:700;">${s.email}</div>
               <div style="font-size:11px;color:var(--text3);margin-top:2px;">${s.category} &middot; ${s.created_at ? new Date(s.created_at).toLocaleDateString() : ''}</div>
             </div>
             <div style="display:flex;gap:6px;flex-shrink:0;align-items:center;">
