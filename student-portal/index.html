@@ -317,8 +317,7 @@ a{color:inherit}
     <!-- ══════ RESOURCES ══════ -->
     <section class="view" id="view-resources">
       <div class="card-title" style="margin-bottom:4px">Resources</div>
-      <div class="card-sub" style="margin-bottom:16px">Every tool used inside the program, in one place.</div>
-      <input class="res-search" id="res-search" placeholder="Search resources..." oninput="filterResources()">
+      <div class="card-sub" style="margin-bottom:16px">Tools used inside the program.</div>
       <div class="res-grid" id="res-grid"></div>
     </section>
 
@@ -788,44 +787,20 @@ function startCountdown() {
 }
 
 /* ══════ RESOURCES ══════ */
+/* Only real resources given so far — add more here as they're sent. */
 const RESOURCES = [
-  { name: 'Claude', desc: "Anthropic's AI assistant. Used throughout the program for research, writing, and brainstorming.", tag: 'ai', color: '#d97757', letter: '✳', url: '#' },
-  { name: 'ChatGPT', desc: "OpenAI's assistant. Pair with Claude for writing, analysis, and brainstorming.", tag: 'ai', color: '#10a37f', letter: '◍', url: '#' },
-  { name: 'AdLevel', desc: 'Our in-house AI for lead generation and outreach.', tag: 'ai', color: '#7c3aed', letter: 'A', url: '#' },
-  { name: 'Wispr Flow', desc: 'Voice-to-text on steroids. Dictate three times faster than you type.', tag: 'ai', color: '#f43f5e', letter: 'W', url: 'https://wisprflow.ai/r?KAUA4' },
-  { name: 'Manus', desc: 'General AI agent for research and multi-step tasks.', tag: 'ai', color: '#111827', letter: 'M', url: 'https://manus.im/invitation/8CRJ9QOPTBCL?utm_source=invitation&utm_medium=social&utm_campaign=copy_link' },
-  { name: 'n8n', desc: 'Self-hostable automation platform. Connect APIs and build agent workflows.', tag: 'ai', color: '#ea4b71', letter: 'n', url: '#' },
-  { name: 'Meta Business Manager', desc: 'The home base for running Meta ads. Covered in Phase 5.', tag: 'ads', color: '#1877f2', letter: '∞', url: '#' },
-  { name: 'Google Ads', desc: 'Run search, display, and performance max campaigns. Covered in Phase 6.', tag: 'ads', color: '#fbbc05', letter: 'G', url: '#' },
-  { name: 'Meta Ads Library', desc: 'Search live and past Meta ads for any brand or page — competitor research.', tag: 'ads', color: '#1877f2', letter: 'f', url: '#' },
-  { name: 'TikTok Creative Center', desc: 'Trending TikTok ads, top-performing creatives, and music/hashtag insights.', tag: 'ads', color: '#000000', letter: '♪', url: '#' },
-  { name: 'Google Ads Transparency Center', desc: 'Search any advertiser\'s live Google Ads — see what competitors are actually running.', tag: 'ads', color: '#4285f4', letter: '⊙', url: '#' },
-  { name: 'GoHighLevel', desc: 'All-in-one CRM, pipeline, and outreach platform. This is our primary stack.', tag: 'crm', color: '#22c55e', letter: '↥', url: '#' },
-  { name: 'Hyros', desc: 'Server-side ad tracking and attribution. Standard for high-ticket media buyers.', tag: 'crm', color: '#0ea5e9', letter: 'H', url: '#' },
-  { name: 'Loom', desc: 'Record quick video walkthroughs for clients and prospects.', tag: 'crm', color: '#625df5', letter: '◉', url: '#' },
-  { name: 'Canva', desc: 'Fast creative and graphic design. Go-to when you need something in under 10 minutes.', tag: 'creative', color: '#00c4cc', letter: 'C', url: '#' },
-  { name: 'Stripe', desc: 'Payment processing for client invoicing. The default for most offers.', tag: 'payments', color: '#635bff', letter: 'S', url: '#' },
-  { name: 'Wise', desc: 'International payments with low fees. Useful for foreign clients.', tag: 'payments', color: '#00b9ff', letter: '⇄', url: '#' },
+  { name: 'Wispr Flow', color: '#f43f5e', letter: 'W', url: 'https://wisprflow.ai/r?KAUA4' },
+  { name: 'Manus', color: '#111827', letter: 'M', url: 'https://manus.im/invitation/8CRJ9QOPTBCL?utm_source=invitation&utm_medium=social&utm_campaign=copy_link' },
 ];
-const TAG_LABEL = { ai: 'AI & Automation', ads: 'Ad Platforms', crm: 'CRM & Tracking', creative: 'Creative', payments: 'Payments' };
 function buildResources() {
   const grid = document.getElementById('res-grid');
   grid.innerHTML = RESOURCES.map(r => `
-    <div class="res-card" data-name="${r.name.toLowerCase()}" data-desc="${r.desc.toLowerCase()}">
+    <div class="res-card">
       <div class="res-icon" style="background:${r.color}">${r.letter}</div>
       <div class="res-name">${r.name}</div>
-      <div class="res-desc">${r.desc}</div>
-      <span class="res-tag tag-${r.tag}">${TAG_LABEL[r.tag]}</span>
       <a class="res-btn" href="${r.url}" target="_blank" rel="noopener">Open →</a>
     </div>
   `).join('');
-}
-function filterResources() {
-  const q = document.getElementById('res-search').value.trim().toLowerCase();
-  document.querySelectorAll('.res-card').forEach(card => {
-    const match = card.dataset.name.includes(q) || card.dataset.desc.includes(q);
-    card.style.display = match ? '' : 'none';
-  });
 }
 
 /* ══════ ADMIN PANEL (reuses base44's profiles + proof_submissions tables) ══════ */
