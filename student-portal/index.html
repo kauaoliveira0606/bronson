@@ -737,13 +737,21 @@ function closeSubmitModal() {
   currentChallengeId = null;
 }
 
-function fileToDataURL(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
+async function fileToDataURL(file) {
+  // Uses Blob.arrayBuffer() + btoa in chunks instead of FileReader --
+  // FileReader.onerror only hands back a generic Event with no usable
+  // .message, which is why real failures were showing as
+  // "unknown error." This path throws real Error objects instead, and
+  // chunking avoids call-stack limits on large files.
+  const buf = await file.arrayBuffer();
+  const bytes = new Uint8Array(buf);
+  let binary = '';
+  const CHUNK = 0x8000;
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    binary += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+  }
+  const base64 = btoa(binary);
+  return `data:${file.type || 'application/octet-stream'};base64,${base64}`;
 }
 
 const MAX_UPLOAD_BYTES = 4 * 1024 * 1024; // 4MB — base64 inflates this ~33% in the request body
