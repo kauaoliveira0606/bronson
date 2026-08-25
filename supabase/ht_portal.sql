@@ -58,3 +58,6 @@ create policy "anyone can insert ht_submissions" on ht_submissions
 
 create policy "anyone can update ht_submissions" on ht_submissions
   for update to anon using (true);
+
+create policy "anyone can delete ht_submissions" on ht_submissions
+  for delete to anon using (true);
