@@ -150,6 +150,31 @@ a{color:inherit}
 .challenge-sq button{margin-top:2px;width:100%;justify-content:center}
 @media(max-width:600px){ .challenges-grid{grid-template-columns:1fr 1fr} }
 
+/* bronson ai chat */
+.ai-wrap{display:flex;flex-direction:column;height:calc(100vh - 88px);max-height:780px}
+.ai-messages{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:6px 2px 18px}
+.ai-msg{max-width:78%;padding:12px 15px;border-radius:14px;font-size:14px;line-height:1.55;white-space:pre-wrap}
+.ai-msg.user{align-self:flex-end;background:rgba(34,211,238,.14);border:1px solid rgba(34,211,238,.35);border-bottom-right-radius:4px}
+.ai-msg.bot{align-self:flex-start;background:var(--panel);border:1px solid var(--border);border-bottom-left-radius:4px}
+.ai-msg.bot.pending{color:var(--text3);font-style:italic}
+.ai-sources{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.ai-source-chip{font-size:10.5px;font-weight:700;color:var(--text3);border:1px solid var(--border);border-radius:20px;padding:3px 10px}
+.ai-starters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.ai-starter{font-size:12.5px;font-weight:600;color:var(--text2);border:1px solid var(--border);border-radius:20px;padding:7px 13px;cursor:pointer;background:rgba(255,255,255,.03)}
+.ai-starter:hover{color:var(--text);border-color:var(--accent)}
+.ai-input-bar{display:flex;gap:10px;padding-top:12px;border-top:1px solid var(--border)}
+.ai-input-bar textarea{flex:1;resize:none;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--text);font-size:14px;font-family:inherit;line-height:1.4;max-height:120px}
+.ai-input-bar textarea:focus{outline:none;border-color:var(--accent)}
+
+/* admin knowledge base */
+.kb-form{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.kb-form input,.kb-form select,.kb-form textarea{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-size:13.5px;font-family:inherit}
+.kb-form textarea{min-height:110px;resize:vertical;line-height:1.5}
+.kb-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+.kb-row .t{font-size:13.5px;font-weight:700}
+.kb-row .c{font-size:11px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.kb-row .p{font-size:12px;color:var(--text2);margin-top:4px;max-height:54px;overflow:hidden;text-overflow:ellipsis}
+
 /* email gate */
 .gate-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000}
 .gate-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:34px;max-width:380px;width:90%;text-align:center}
@@ -239,6 +264,10 @@ a{color:inherit}
       <div class="nav-item" data-view="points" onclick="switchView('points')">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
         Points System
+      </div>
+      <div class="nav-item" data-view="ai" onclick="switchView('ai')">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a2 2 0 0 1 2 2v1h1a3 3 0 0 1 3 3v1a2 2 0 0 1 0 4v3a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-3a2 2 0 0 1 0-4V8a3 3 0 0 1 3-3h1V4a2 2 0 0 1 2-2z"/><circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/><path d="M9 17h6"/></svg></span>
+        Bronson AI
       </div>
       <div class="nav-item" data-view="admin" id="nav-admin" onclick="switchView('admin')" style="display:none">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg></span>
@@ -373,14 +402,34 @@ a{color:inherit}
       <div class="card" id="my-submissions" style="padding:14px;margin-bottom:22px">Loading...</div>
     </section>
 
+    <!-- ══════ BRONSON AI ══════ -->
+    <section class="view" id="view-ai">
+      <div class="card-title" style="margin-bottom:4px">Bronson AI</div>
+      <div class="card-sub" style="margin-bottom:16px">Ask anything about product selection, suppliers, ads, or scaling — trained on Bronson's calls, modules, and SOPs.</div>
+      <div class="ai-wrap">
+        <div class="ai-messages" id="ai-messages"></div>
+        <div class="ai-starters" id="ai-starters">
+          <div class="ai-starter" onclick="askAi('How do I run a product through the 5 rules?')">How do I run a product through the 5 rules?</div>
+          <div class="ai-starter" onclick="askAi('What supplier does Bronson use and why?')">What supplier does Bronson use?</div>
+          <div class="ai-starter" onclick="askAi('What\'s the difference between white label and private label?')">White label vs. private label?</div>
+          <div class="ai-starter" onclick="askAi('How do I find winning ad creatives?')">How do I find winning ad creatives?</div>
+        </div>
+        <div class="ai-input-bar">
+          <textarea id="ai-input" rows="1" placeholder="Ask Bronson AI a question..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAiMessage();}"></textarea>
+          <button class="btn btn-green" id="ai-send-btn" onclick="sendAiMessage()">Send →</button>
+        </div>
+      </div>
+    </section>
+
     <!-- ══════ ADMIN ══════ -->
     <section class="view" id="view-admin">
       <div class="card-title" style="margin-bottom:4px">Admin</div>
-      <div class="card-sub" style="margin-bottom:20px">Two separate queues: who gets into the portal, and what points get awarded.</div>
+      <div class="card-sub" style="margin-bottom:20px">Three separate queues: who gets into the portal, what points get awarded, and what the AI has been trained on.</div>
 
-      <div style="display:flex;gap:8px;margin-bottom:20px">
+      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
         <div class="nav-item admin-subtab active" data-admin="approve" onclick="switchAdminTab('approve')" style="display:inline-flex">Approve People</div>
         <div class="nav-item admin-subtab" data-admin="points" onclick="switchAdminTab('points')" style="display:inline-flex">Point System</div>
+        <div class="nav-item admin-subtab" data-admin="knowledge" onclick="switchAdminTab('knowledge')" style="display:inline-flex">Bronson AI Knowledge Base</div>
       </div>
 
       <div id="admin-tab-approve">
@@ -391,6 +440,28 @@ a{color:inherit}
       <div id="admin-tab-points" style="display:none">
         <div class="card-label" style="margin-bottom:10px">Point Submissions</div>
         <div id="admin-proof-list">Loading...</div>
+      </div>
+
+      <div id="admin-tab-knowledge" style="display:none">
+        <div class="card-label" style="margin-bottom:10px">Add New Entry</div>
+        <div class="card" style="padding:16px">
+          <div class="kb-form">
+            <input id="kb-title" placeholder="Title — e.g. 'Coaching Call 8/12: Product Selection'">
+            <select id="kb-category">
+              <option>Coaching Call</option>
+              <option>Course Module</option>
+              <option>SOP</option>
+              <option>External Training</option>
+              <option>Case Study / Testimonial</option>
+              <option>General</option>
+            </select>
+            <textarea id="kb-content" placeholder="Paste the transcript, module text, or SOP content here..."></textarea>
+            <div class="kb-err" id="kb-err" style="display:none;color:var(--red);font-size:12px"></div>
+            <button class="btn btn-green" id="kb-add-btn" onclick="addKnowledge()" style="align-self:flex-start">Add to Knowledge Base →</button>
+          </div>
+        </div>
+        <div class="card-label" style="margin:22px 0 10px">Existing Entries</div>
+        <div id="admin-kb-list">Loading...</div>
       </div>
     </section>
 
@@ -577,17 +648,20 @@ function switchView(name) {
   if (name === 'leaderboard') { fetchLeaderboard(); if (typeof tickCountdown === 'function') tickCountdown(); }
   if (name === 'points') { renderTier(); renderChallenges(); renderMySubmissions(); if (typeof tickCountdown === 'function') tickCountdown(); }
   if (name === 'home') { buildHeatmap(); updateLogButton(); }
+  if (name === 'ai') { renderAiChat(); document.getElementById('ai-input').focus(); }
   if (name === 'admin' && typeof openAdminPanel === 'function') openAdminPanel();
 }
 
 function switchAdminTab(name) {
   document.querySelectorAll('.admin-subtab').forEach(t => t.classList.toggle('active', t.dataset.admin === name));
-  document.getElementById('admin-tab-approve').style.display = name === 'approve' ? '' : 'none';
-  document.getElementById('admin-tab-points').style.display  = name === 'points'  ? '' : 'none';
+  document.getElementById('admin-tab-approve').style.display   = name === 'approve'   ? '' : 'none';
+  document.getElementById('admin-tab-points').style.display    = name === 'points'    ? '' : 'none';
+  document.getElementById('admin-tab-knowledge').style.display = name === 'knowledge' ? '' : 'none';
   // Re-fetch every time so a submission/signup that came in after admin
   // logged in actually shows up, instead of only ever loading once.
   if (name === 'approve') loadAdminApprovals();
   if (name === 'points') loadAdminSubmissions();
+  if (name === 'knowledge') loadAdminKnowledge();
 }
 
 function initPortal() {
@@ -1222,6 +1296,132 @@ async function adminReviewSubmission(id, status, btn) {
     await sbUpdate('ht_submissions', `id=eq.${id}`, { status, reviewed_at: new Date().toISOString() });
   }
   loadAdminSubmissions();
+}
+
+/* ══════ BRONSON AI CHAT ══════ */
+function aiHistoryKey() { return storageKey('cp_ai_history'); }
+function getAiHistory() { try { return JSON.parse(localStorage.getItem(aiHistoryKey()) || '[]'); } catch { return []; } }
+function saveAiHistory(h) { localStorage.setItem(aiHistoryKey(), JSON.stringify(h)); }
+
+function renderAiChat() {
+  const wrap = document.getElementById('ai-messages');
+  const history = getAiHistory();
+  document.getElementById('ai-starters').style.display = history.length ? 'none' : '';
+  wrap.innerHTML = history.map(m => `
+    <div class="ai-msg ${m.role === 'user' ? 'user' : 'bot'}">${escapeHtml(m.content)}${m.sources && m.sources.length ? `
+      <div class="ai-sources">${m.sources.map(s => `<span class="ai-source-chip">${escapeHtml(s.title)}</span>`).join('')}</div>` : ''}</div>
+  `).join('');
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function escapeHtml(s) {
+  return (s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+function askAi(question) {
+  document.getElementById('ai-input').value = question;
+  sendAiMessage();
+}
+
+async function sendAiMessage() {
+  const input = document.getElementById('ai-input');
+  const btn = document.getElementById('ai-send-btn');
+  const message = input.value.trim();
+  if (!message) return;
+
+  const history = getAiHistory();
+  history.push({ role: 'user', content: message });
+  saveAiHistory(history);
+  renderAiChat();
+  input.value = '';
+  btn.disabled = true; btn.textContent = '...';
+
+  const wrap = document.getElementById('ai-messages');
+  wrap.insertAdjacentHTML('beforeend', `<div class="ai-msg bot pending" id="ai-pending">Thinking...</div>`);
+  wrap.scrollTop = wrap.scrollHeight;
+
+  try {
+    const claudeHistory = history.slice(0, -1).map(m => ({ role: m.role, content: m.content }));
+    const res = await withTimeout(
+      fetch('/api/bronson-ai-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, history: claudeHistory }),
+      }),
+      45000, 'Getting an answer'
+    );
+    if (!res.ok) throw new Error(`Request failed (${res.status})`);
+    const data = await res.json();
+    const updated = getAiHistory();
+    updated.push({ role: 'assistant', content: data.answer, sources: data.sources || [] });
+    saveAiHistory(updated);
+  } catch (e) {
+    const updated = getAiHistory();
+    updated.push({ role: 'assistant', content: "Something went wrong getting an answer: " + (e.message || 'unknown error') + '. Try again.' });
+    saveAiHistory(updated);
+  } finally {
+    document.getElementById('ai-pending')?.remove();
+    renderAiChat();
+    btn.disabled = false; btn.textContent = 'Send →';
+  }
+}
+
+/* ══════ ADMIN: BRONSON AI KNOWLEDGE BASE ══════ */
+async function addKnowledge() {
+  const title = document.getElementById('kb-title').value.trim();
+  const category = document.getElementById('kb-category').value;
+  const content = document.getElementById('kb-content').value.trim();
+  const err = document.getElementById('kb-err');
+  err.style.display = 'none';
+  if (!title || !content) {
+    err.textContent = 'Title and content are both required.';
+    err.style.display = 'block';
+    return;
+  }
+  const btn = document.getElementById('kb-add-btn');
+  btn.disabled = true; btn.textContent = 'Adding...';
+  try {
+    const res = await sbInsert('ht_ai_knowledge', { title, category, content });
+    if (!res.ok) throw new Error(await res.text().catch(() => 'Insert failed'));
+    document.getElementById('kb-title').value = '';
+    document.getElementById('kb-content').value = '';
+    loadAdminKnowledge();
+  } catch (e) {
+    err.textContent = 'Could not add entry: ' + (e.message || 'unknown error');
+    err.style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Add to Knowledge Base →';
+  }
+}
+
+async function deleteKnowledge(id, btn) {
+  if (!confirm('Remove this entry from the AI knowledge base?')) return;
+  btn.disabled = true; btn.textContent = '...';
+  await sbDelete('ht_ai_knowledge', `id=eq.${id}`);
+  loadAdminKnowledge();
+}
+
+async function loadAdminKnowledge() {
+  const list = document.getElementById('admin-kb-list');
+  list.innerHTML = 'Loading...';
+  try {
+    const rows = await sbSelect('ht_ai_knowledge', 'order=created_at.desc');
+    if (!Array.isArray(rows) || !rows.length) {
+      list.innerHTML = '<div class="card-sub">No entries yet — add the first one above.</div>';
+      return;
+    }
+    list.innerHTML = rows.map(r => `
+      <div class="kb-row">
+        <div style="flex:1;min-width:0">
+          <div class="c">${escapeHtml(r.category)}</div>
+          <div class="t">${escapeHtml(r.title)}</div>
+          <div class="p">${escapeHtml((r.content || '').slice(0, 160))}${(r.content || '').length > 160 ? '…' : ''}</div>
+        </div>
+        <button class="btn btn-outline btn-sm" style="flex-shrink:0" onclick="deleteKnowledge(${r.id}, this)">Delete</button>
+      </div>`).join('');
+  } catch (e) {
+    list.innerHTML = '<div class="card-sub" style="color:var(--red)">Error loading knowledge base.</div>';
+  }
 }
 </script>
 </body>
