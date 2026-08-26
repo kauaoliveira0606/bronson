@@ -16,7 +16,7 @@ module.exports = async function handler(req, res) {
 
   const urls = {
     lt:   'https://hooks.zapier.com/hooks/catch/22609617/432dfrr/',
-    paid: 'https://hooks.zapier.com/hooks/catch/22609617/4423sfn/',
+    paid: 'https://kauaoliveira06.app.n8n.cloud/webhook/free-course-paid-optin',
   };
 
   const url = urls[webhook];
