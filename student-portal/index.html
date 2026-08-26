@@ -139,7 +139,8 @@ a{color:inherit}
 
 /* challenges */
 .challenge-section{margin-top:38px}
-.challenge-section-title{font-size:24px;font-weight:800;letter-spacing:-.3px;margin-bottom:16px;padding-bottom:12px;border-bottom:3px solid currentColor}
+.challenge-section-title{font-size:24px;font-weight:800;letter-spacing:-.3px;margin-bottom:16px;padding-bottom:12px;border-bottom:3px solid currentColor;display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.section-pts-total{font-size:13px;font-weight:700;opacity:.75;letter-spacing:0}
 .challenges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
 .challenge-sq{background:var(--panel);border:1.5px solid var(--border);border-top:5px solid var(--sc,var(--border));border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:9px}
 .challenge-sq .pts-badge{align-self:flex-start;font-size:12px;font-weight:800;color:#0b0f16;background:var(--sc,var(--yellow));border-radius:20px;padding:3px 11px}
@@ -823,9 +824,13 @@ async function renderChallenges() {
     const items = CHALLENGES.filter(c => c.section === section);
     if (!items.length) return '';
     const color = SECTION_COLOR[section] || 'var(--yellow)';
+    const totalPts = items.reduce((s, c) => s + c.points, 0);
+    const allRepeatable = items.every(c => c.repeatable);
     return `
       <div class="challenge-section">
-        <div class="challenge-section-title" style="color:${color}">${section}</div>
+        <div class="challenge-section-title" style="color:${color}">${section}
+          <span class="section-pts-total" style="color:${color}">${totalPts.toLocaleString()} pts ${allRepeatable ? 'per round' : 'available'}</span>
+        </div>
         <div class="challenges-grid">
           ${items.map(c => `
             <div class="challenge-sq" style="--sc:${color}">
