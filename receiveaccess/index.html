@@ -300,7 +300,7 @@
     <span>Your coach is calling in under <b id="coach-countdown">10:00</b> from a <b>(616)</b> number, keep your phone close</span>
   </div>
 
-  <h1 id="main-headline">Your Free course Access Is Live For The Next 24 Hours. We're Calling In The Next <span>1-10 Minutes.</span></h1>
+  <h1 id="main-headline">A Coach Is Calling You In The <span>Next Few Minutes</span>. Answer It To Claim Your <span>Free Access</span>.</h1>
 
   <p class="hero-sub" style="color:#374151;">Get in contact with our team right now so your free course access doesn't expire. Make sure you answer when we reach out.</p>
 
@@ -707,7 +707,7 @@
     if (name) {
       const first = name.trim().split(' ')[0];
       const el = document.getElementById('main-headline');
-      if (el) el.innerHTML = first + ', Your Free course Access Is Live For The Next 24 Hours. We\'re Calling In The Next <span>1-10 Minutes.</span>';
+      if (el) el.innerHTML = first + ', A Coach Is Calling You In The <span>Next Few Minutes</span>. Answer It To Claim Your <span>Free Access</span>.';
       const sticky = document.getElementById('sticky-name');
       if (sticky) sticky.textContent = ' ' + first;
     }
