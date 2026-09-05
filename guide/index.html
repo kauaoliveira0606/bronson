@@ -408,41 +408,34 @@
     .data-note strong { color: var(--text); }
 
     /* ROADMAP */
-    .phases { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 40px 0 20px; }
-    @media (max-width: 880px) { .phases { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 520px) { .phases { grid-template-columns: 1fr; } }
-    .phase-tab {
-      background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
-      padding: 16px 18px; cursor: pointer; text-align: left;
-      font-family: var(--font); color: var(--text); transition: all 0.2s;
-    }
-    .phase-tab .pnum {
-      font-family: var(--mono); font-size: 10px; font-weight: 800; color: var(--text-mut);
-      letter-spacing: 0.16em; text-transform: uppercase; display: block; margin-bottom: 4px;
-    }
-    .phase-tab .pname { font-weight: 900; font-size: 16px; display: block; }
-    .phase-tab .pdays { font-size: 12.5px; color: var(--text-mut); }
-    .phase-tab:hover { border-color: var(--border-2); }
-    .phase-tab.active { border-color: var(--blue); background: rgba(74,158,255,0.08); box-shadow: 0 10px 24px -12px var(--blue-glow); }
-    .phase-tab.active .pnum { color: var(--blue); }
-    .phase-panel {
-      background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
-      padding: 36px; display: none; animation: fadeUp 0.4s ease;
-    }
-    .phase-panel.active { display: block; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    .phase-panel h3 { font-size: 24px; font-weight: 900; margin-bottom: 4px; }
-    .phase-panel .tl { font-family: var(--mono); color: var(--blue); font-weight: 800; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 16px; display: block; }
-    .phase-panel p { color: var(--text-dim); max-width: 720px; margin-bottom: 16px; }
-    .phase-panel ul { list-style: none; display: grid; gap: 11px; }
-    .phase-panel li { display: flex; gap: 12px; color: var(--text-dim); font-size: 15px; }
-    .phase-panel li::before { content: "\2192"; color: var(--blue); font-weight: 700; flex-shrink: 0; }
     .roadmap-note {
       margin-top: 24px; padding: 22px 26px; border-left: 3px solid var(--blue-dim);
       background: var(--bg-alt); border-radius: 0 10px 10px 0;
       color: var(--text-dim); font-size: 16px; max-width: 860px;
     }
     .roadmap-note strong { color: var(--text); }
+
+    /* 14-DAY LAUNCH PLAYBOOK */
+    .play-group {
+      font-family: var(--mono); font-size: 10.5px; font-weight: 800;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue);
+      margin-top: 36px; margin-bottom: 12px;
+    }
+    .play-list { list-style: none; counter-reset: pl; display: grid; gap: 10px; max-width: 820px; }
+    .play-list li {
+      counter-increment: pl;
+      display: flex; gap: 16px; align-items: flex-start;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px;
+    }
+    .play-list li::before {
+      content: counter(pl); flex-shrink: 0;
+      width: 26px; height: 26px; border-radius: 7px;
+      background: rgba(74,158,255,0.12); border: 1px solid var(--border);
+      color: var(--blue); font-family: var(--mono); font-weight: 800; font-size: 12px;
+      display: flex; align-items: center; justify-content: center; margin-top: 1px;
+    }
+    .play-list li strong { display: block; font-size: 15.5px; font-weight: 700; }
+    .play-list li span { font-size: 14px; color: var(--text-dim); }
 
     /* PROOF / PAYOUTS */
     .payout-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 40px; }
@@ -814,64 +807,53 @@
 <!-- ============ ROADMAP ============ -->
 <section id="roadmap">
   <div class="wrap">
-    <span class="eyebrow reveal">Your First 90 Days</span>
-    <h2 class="reveal">The 90 Day <span class="accent">Roadmap</span></h2>
-    <p class="lead reveal d1">Most members follow the same path. Four phases, each one building the next. Tap a phase to open it.</p>
+    <span class="eyebrow reveal">Product To Live In Two Weeks</span>
+    <h2 class="reveal">The 14-Day <span class="accent">Launch Playbook</span></h2>
+    <p class="lead reveal d1">The exact sequence Bronson AI walks you through, from a product idea to a live store running ads. No guessing what comes next.</p>
 
-    <div class="phases reveal d1">
-      <button class="phase-tab active" data-phase="0"><span class="pnum">Phase 1</span><span class="pname">Foundation</span><span class="pdays">Days 1 to 30</span></button>
-      <button class="phase-tab" data-phase="1"><span class="pnum">Phase 2</span><span class="pname">Build</span><span class="pdays">Days 30 to 60</span></button>
-      <button class="phase-tab" data-phase="2"><span class="pnum">Phase 3</span><span class="pname">Launch</span><span class="pdays">Days 60 to 90</span></button>
-      <button class="phase-tab" data-phase="3"><span class="pnum">Phase 4</span><span class="pname">Scale</span><span class="pdays">Day 90+</span></button>
-    </div>
+    <div class="play-group reveal">Part 1 &middot; Pick the product</div>
+    <ol class="play-list reveal">
+      <li><div><strong>Find a potential product</strong><span>Pull a candidate from the data, not a hunch.</span></div></li>
+      <li><div><strong>Check the data</strong><span>Revenue, sales, and units bought last month. Is the demand real?</span></div></li>
+      <li><div><strong>Research the winner signals</strong><span>Existing content, a visual before-and-after hook, and how the top brands sell it.</span></div></li>
+      <li><div><strong>Look for suppliers</strong><span>Can they brand it, ship it fast, and take a low or zero minimum order?</span></div></li>
+      <li><div><strong>Calculate the costs</strong><span>Product, shipping, fees, and what each fulfilled order actually costs you.</span></div></li>
+      <li><div><strong>Check the margins</strong><span>Does the math leave room to pay for ads and still profit?</span></div></li>
+      <li><div><strong>Score the product</strong><span>Run it through the five rules. It passes all five or you move on.</span></div></li>
+      <li><div><strong>Product selected</strong><span>One product, chosen on data. The testing loop is over.</span></div></li>
+    </ol>
 
-    <div class="phase-panel active" data-panel="0">
-      <h3>Foundation</h3>
-      <span class="tl">Days 1 to 30</span>
-      <p>Everything starts with picking the right product, before you spend on ads or inventory.</p>
-      <ul>
-        <li>Move through onboarding and the Inner Table curriculum at your own pace</li>
-        <li>Learn the five-rule product framework: demand, hook, supplier, edge, and the improvement</li>
-        <li>Run real products through the rules until one passes all five</li>
-        <li>Lock in your supplier with branding, fast shipping, and a low or zero minimum order</li>
-      </ul>
-    </div>
-    <div class="phase-panel" data-panel="1">
-      <h3>Build</h3>
-      <span class="tl">Days 30 to 60</span>
-      <p>Now you turn the product into a brand people trust enough to buy from.</p>
-      <ul>
-        <li>Build the store by replicating a proven competitor page, then editing in your details</li>
-        <li>Set your branding, packaging, and product page so it looks like a real brand, not a test</li>
-        <li>Dial in your offer so it beats the biggest player on at least one thing</li>
-        <li>Get product samples and fulfillment ready to go live</li>
-      </ul>
-    </div>
-    <div class="phase-panel" data-panel="2">
-      <h3>Launch</h3>
-      <span class="tl">Days 60 to 90</span>
-      <p>Real ad spend, controlled, guided. You are never launching alone.</p>
-      <ul>
-        <li>Build your first Meta creatives by replicating winners with your product swapped in</li>
-        <li>Launch at a controlled daily budget with a clear kill and scale rule</li>
-        <li>Keep attending the three weekly calls and bring your numbers to review</li>
-        <li>Get your store, funnel, and ads audited so you stop second-guessing</li>
-      </ul>
-    </div>
-    <div class="phase-panel" data-panel="3">
-      <h3>Scale</h3>
-      <span class="tl">Day 90 and beyond</span>
-      <p>The base is set. Now it compounds, month over month.</p>
-      <ul>
-        <li>Scale spend on what works and add TikTok and Google as acquisition channels</li>
-        <li>Set up Amazon FBA to capture the buyers who see your ads and check Amazon</li>
-        <li>Buy inventory and move from white label into private label for better margins</li>
-        <li>Build the brand into a real asset you could sell</li>
-      </ul>
-    </div>
+    <div class="play-group reveal" style="margin-top:22px;">Part 2 &middot; Build the brand</div>
+    <ol class="play-list reveal" style="counter-reset: pl 8;">
+      <li><div><strong>Find your ICP</strong><span>Who exactly buys this, and what they need to hear.</span></div></li>
+      <li><div><strong>Create the brand identity</strong><span>Name, logo, packaging, and voice so it reads as a real brand.</span></div></li>
+      <li><div><strong>Build the store with AI</strong><span>Replicate a proven page and edit in your product and offer.</span></div></li>
+      <li><div><strong>Launch ads</strong><span>First creatives live at a controlled budget, with a clear kill and scale rule.</span></div></li>
+    </ol>
 
     <div class="roadmap-note reveal">
-      <strong>The goal in your first 90 days is not one huge month.</strong> It is a live store, a proven product, and ad creatives that work, the base everything else scales from. We guarantee you a $1K revenue day within 90 days.
+      <strong>By day 14 you have a live store, a scored product, and ads running.</strong> The 90 day roadmap below is where you turn that launch into consistency.
+    </div>
+
+    <span class="eyebrow reveal" style="margin-top:80px;">Your Next 90 Days</span>
+    <h2 class="reveal">The 90-Day <span class="accent">Scaling Roadmap</span></h2>
+    <p class="lead reveal d1">Once the store is live, the game changes from launching to scaling. This is the path from your first sale to a consistent $1K day.</p>
+
+    <ol class="play-list reveal" style="margin-top:36px;">
+      <li><div><strong>Get your first sale</strong><span>Proof the offer works. Everything after this is optimization, not guesswork.</span></div></li>
+      <li><div><strong>Identify your biggest bottleneck</strong><span>The one thing holding revenue back right now: creative, offer, page, or price.</span></div></li>
+      <li><div><strong>Test angles with AI ads</strong><span>Spin up variations fast and let the data pick the message that lands.</span></div></li>
+      <li><div><strong>Launch your new offer</strong><span>Package the winning angle into an offer that beats the biggest player.</span></div></li>
+      <li><div><strong>Keep scaling with ads</strong><span>Raise budget on what works, cut what does not, on a fixed rule.</span></div></li>
+      <li><div><strong>Find UGC creators</strong><span>Real people using the product on camera. The highest-trust creative there is.</span></div></li>
+      <li><div><strong>Figure out what to double down on</strong><span>The product, angle, and channel doing the heavy lifting.</span></div></li>
+      <li><div><strong>Scale your ads</strong><span>Push spend on the winners and expand into new audiences.</span></div></li>
+      <li><div><strong>Replicate what is winning</strong><span>Take the top creative and make ten more like it, not one new idea.</span></div></li>
+      <li><div><strong>Build a content system machine</strong><span>A repeatable pipeline of creatives and UGC that carries you to $1K a day.</span></div></li>
+    </ol>
+
+    <div class="roadmap-note reveal">
+      <strong>The goal of the first 90 days is consistency, not one huge month.</strong> A live store, a proven product, and a content system that keeps the ads fed. We guarantee you a $1K revenue day within 90 days.
     </div>
   </div>
 </section>
@@ -1007,7 +989,7 @@
       <div class="sum-card reveal d1"><span class="k">$2.5M first year</span>What Bronson did on a single product with his brand on it from day one, <strong>documented publicly</strong>. Month one was $9k.</div>
       <div class="sum-card reveal d2"><span class="k">1-on-1, not a course</span>Bronson's <strong>personal phone 24/7</strong>, three Zoom calls a week, and your store, ads, and product audited by a real operator.</div>
       <div class="sum-card reveal d2"><span class="k">Built to be sold</span>White label to private label to Amazon FBA to <strong>exit</strong>. A real asset, not a store you rent from a supplier.</div>
-      <div class="sum-card reveal d3"><span class="k">A structured path</span>Your first 90 days follow a <strong>4 phase roadmap</strong>: Foundation, Build, Launch, Scale.</div>
+      <div class="sum-card reveal d3"><span class="k">A structured path</span>A <strong>14 day launch playbook</strong> to get the store live, then a <strong>90 day scaling roadmap</strong> from first sale to a consistent $1K day.</div>
       <div class="sum-card reveal d3"><span class="k">Accountability built in</span>Weekly number reviews, audits on your site, ads, and product, and direct access when you are stuck. <strong>You cannot hide here.</strong></div>
     </div>
     <div class="roadmap-note reveal" style="margin-top:28px;">
@@ -1084,17 +1066,6 @@ const io = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
-
-/* ===== ROADMAP TABS ===== */
-const phaseTabs = document.querySelectorAll(".phase-tab");
-const phasePanels = document.querySelectorAll(".phase-panel");
-phaseTabs.forEach(tab => tab.addEventListener("click", () => {
-  phaseTabs.forEach(t => t.classList.remove("active"));
-  phasePanels.forEach(p => p.classList.remove("active"));
-  tab.classList.add("active");
-  const panel = document.querySelector('.phase-panel[data-panel="' + tab.dataset.phase + '"]');
-  if (panel) panel.classList.add("active");
-}));
 
 /* ===== FAQ ACCORDION ===== */
 document.querySelectorAll(".faq-item").forEach(item => {
