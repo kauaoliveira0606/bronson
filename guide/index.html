@@ -257,7 +257,7 @@
       padding: 5px 12px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--border);
     }
     .chip .sw { width: 16px; height: 3px; border-radius: 2px; display: inline-block; }
-    .chip.liq { color: var(--cyan); } .chip.liq .sw { background: var(--cyan); }
+    .chip.liq { color: #ff8a94; } .chip.liq .sw { background: #ff5c5c; }
     .chip.flow { color: var(--blue); } .chip.flow .sw { background: var(--blue); }
     .chart-card svg { width: 100%; height: auto; display: block; }
     .chart-note { margin-top: 14px; font-size: 13.5px; color: var(--text-mut); text-align: center; font-style: italic; }
@@ -635,30 +635,57 @@
         <span class="chip liq"><span class="sw"></span>Ad Spend</span>
         <span class="chip flow"><span class="sw"></span>Revenue</span>
       </div>
-      <svg viewBox="0 0 440 260" xmlns="http://www.w3.org/2000/svg" aria-label="Stylized store growth chart with ad spend and revenue lines">
-        <line x1="0" y1="52" x2="440" y2="52" stroke="rgba(238,242,238,0.08)" stroke-width="1"/>
-        <line x1="0" y1="104" x2="440" y2="104" stroke="rgba(238,242,238,0.08)" stroke-width="1"/>
-        <line x1="0" y1="156" x2="440" y2="156" stroke="rgba(238,242,238,0.08)" stroke-width="1"/>
-        <line x1="0" y1="208" x2="440" y2="208" stroke="rgba(238,242,238,0.08)" stroke-width="1"/>
-        <g>
-          <g class="candle" style="animation-delay:0.05s; transform-origin: 22px 190px;"><line x1="22" y1="160" x2="22" y2="214" stroke="rgba(238,242,238,0.3)" stroke-width="2"/><rect x="14" y="170" width="16" height="34" rx="2" fill="#ff5c5c"/></g>
-          <g class="candle" style="animation-delay:0.15s; transform-origin: 54px 185px;"><line x1="54" y1="158" x2="54" y2="208" stroke="rgba(238,242,238,0.3)" stroke-width="2"/><rect x="46" y="166" width="16" height="30" rx="2" fill="#4a9eff"/></g>
-          <g class="candle" style="animation-delay:0.25s; transform-origin: 86px 175px;"><line x1="86" y1="148" x2="86" y2="198" stroke="rgba(238,242,238,0.3)" stroke-width="2"/><rect x="78" y="156" width="16" height="32" rx="2" fill="#4a9eff"/></g>
-          <g class="candle" style="animation-delay:0.35s; transform-origin: 118px 172px;"><line x1="118" y1="150" x2="118" y2="196" stroke="rgba(238,242,238,0.3)" stroke-width="2"/><rect x="110" y="160" width="16" height="26" rx="2" fill="#ff5c5c"/></g>
-          <g class="candle" style="animation-delay:0.45s; transform-origin: 150px 160px;"><line x1="150" y1="132" x2="150" y2="184" stroke="rgba(238,242,238,0.3)" stroke-width="2"/><rect x="142" y="140" width="16" height="36" rx="2" fill="#4a9eff"/></g>
-          <g class="candle" style="animation-delay:0.55s; transform-origin: 182px 145px;"><line x1="182" y1="120" x2="182" y2="170" stroke="rgba(238,242,238,0.3)" stroke-width="2"/><rect x="174" y="128" width="16" height="32" rx="2" fill="#4a9eff"/></g>
-          <g class="candle" style="animation-delay:0.65s; transform-origin: 214px 142px;"><line x1="214" y1="122" x2="214" y2="164" stroke="rgba(238,242,238,0.3)" stroke-width="2"/><rect x="206" y="130" width="16" height="24" rx="2" fill="#ff5c5c"/></g>
-          <g class="candle" style="animation-delay:0.75s; transform-origin: 246px 130px;"><line x1="246" y1="104" x2="246" y2="156" stroke="rgba(238,242,238,0.3)" stroke-width="2"/><rect x="238" y="112" width="16" height="34" rx="2" fill="#4a9eff"/></g>
-          <g class="candle" style="animation-delay:0.85s; transform-origin: 278px 115px;"><line x1="278" y1="92" x2="278" y2="142" stroke="rgba(238,242,238,0.3)" stroke-width="2"/><rect x="270" y="98" width="16" height="32" rx="2" fill="#4a9eff"/></g>
-          <g class="candle" style="animation-delay:0.95s; transform-origin: 310px 112px;"><line x1="310" y1="94" x2="310" y2="134" stroke="rgba(238,242,238,0.3)" stroke-width="2"/><rect x="302" y="102" width="16" height="22" rx="2" fill="#ff5c5c"/></g>
-          <g class="candle" style="animation-delay:1.05s; transform-origin: 342px 98px;"><line x1="342" y1="74" x2="342" y2="124" stroke="rgba(238,242,238,0.3)" stroke-width="2"/><rect x="334" y="82" width="16" height="32" rx="2" fill="#4a9eff"/></g>
-          <g class="candle" style="animation-delay:1.15s; transform-origin: 374px 82px;"><line x1="374" y1="58" x2="374" y2="108" stroke="rgba(238,242,238,0.3)" stroke-width="2"/><rect x="366" y="64" width="16" height="36" rx="2" fill="#4a9eff"/></g>
-          <g class="candle" style="animation-delay:1.25s; transform-origin: 406px 70px;"><line x1="406" y1="46" x2="406" y2="94" stroke="rgba(238,242,238,0.3)" stroke-width="2"/><rect x="398" y="52" width="16" height="30" rx="2" fill="#4a9eff"/></g>
+      <svg viewBox="0 0 486 292" xmlns="http://www.w3.org/2000/svg" aria-label="14 day launch chart: daily revenue and ad spend ramping toward a $1K day">
+        <!-- gridlines -->
+        <line x1="44" y1="31.5" x2="470" y2="31.5" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <line x1="44" y1="78" x2="470" y2="78" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <line x1="44" y1="124.5" x2="470" y2="124.5" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <line x1="44" y1="171" x2="470" y2="171" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <line x1="44" y1="217.5" x2="470" y2="217.5" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <line x1="44" y1="264" x2="470" y2="264" stroke="rgba(255,255,255,0.16)" stroke-width="1"/>
+        <!-- $1K/DAY target -->
+        <line x1="44" y1="42.6" x2="470" y2="42.6" stroke="#7dd8f8" stroke-width="1" stroke-dasharray="4 4" opacity="0.55"/>
+        <text x="46" y="38" fill="#7dd8f8" font-family="Montserrat, sans-serif" font-size="8" font-weight="700">$1K/DAY</text>
+        <!-- y labels -->
+        <g fill="rgba(255,255,255,0.45)" font-family="Montserrat, sans-serif" font-size="8.5" text-anchor="end">
+          <text x="39" y="267">$0</text>
+          <text x="39" y="220.5">$210</text>
+          <text x="39" y="174">$420</text>
+          <text x="39" y="127.5">$630</text>
+          <text x="39" y="81">$840</text>
+          <text x="39" y="34.5">$1050</text>
         </g>
-        <path class="draw-line" d="M 10 212 C 80 206, 130 196, 190 172 S 310 122, 430 84" fill="none" stroke="#4a9eff" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
-        <path class="draw-line" d="M 10 206 C 70 198, 120 184, 180 158 S 300 104, 430 62" fill="none" stroke="#7dd8f8" stroke-width="3" stroke-linecap="round"/>
+        <!-- bars: red = ad spend, blue = revenue -->
+        <g class="candle" style="transform-origin:59.2px 264px;animation-delay:0.04s"><rect x="49.7" y="245.2" width="8" height="18.8" rx="3" fill="#ff5c5c"/><rect x="60.7" y="237.4" width="8" height="26.6" rx="3" fill="#4a9eff"/><line x1="64.7" y1="232.4" x2="64.7" y2="242.4" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></g>
+        <g class="candle" style="transform-origin:89.6px 264px;animation-delay:0.08s"><rect x="80.1" y="248.5" width="8" height="15.5" rx="3" fill="#ff5c5c"/><rect x="91.1" y="241.9" width="8" height="22.1" rx="3" fill="#4a9eff"/><line x1="95.1" y1="236.9" x2="95.1" y2="246.9" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></g>
+        <g class="candle" style="transform-origin:120.1px 264px;animation-delay:0.12s"><rect x="110.6" y="238.5" width="8" height="25.5" rx="3" fill="#ff5c5c"/><rect x="121.6" y="225.3" width="8" height="38.7" rx="3" fill="#4a9eff"/><line x1="125.6" y1="220.3" x2="125.6" y2="230.3" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></g>
+        <g class="candle" style="transform-origin:150.5px 264px;animation-delay:0.16s"><rect x="141" y="236.3" width="8" height="27.7" rx="3" fill="#ff5c5c"/><rect x="152" y="227.5" width="8" height="36.5" rx="3" fill="#4a9eff"/><line x1="156" y1="222.5" x2="156" y2="232.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></g>
+        <g class="candle" style="transform-origin:180.9px 264px;animation-delay:0.2s"><rect x="171.4" y="226.3" width="8" height="37.7" rx="3" fill="#ff5c5c"/><rect x="182.4" y="208.6" width="8" height="55.4" rx="3" fill="#4a9eff"/><line x1="186.4" y1="203.6" x2="186.4" y2="213.6" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></g>
+        <g class="candle" style="transform-origin:211.4px 264px;animation-delay:0.24s"><rect x="201.9" y="221.9" width="8" height="42.1" rx="3" fill="#ff5c5c"/><rect x="212.9" y="193.1" width="8" height="70.9" rx="3" fill="#4a9eff"/><line x1="216.9" y1="188.1" x2="216.9" y2="198.1" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></g>
+        <g class="candle" style="transform-origin:241.8px 264px;animation-delay:0.28s"><rect x="232.3" y="218.6" width="8" height="45.4" rx="3" fill="#ff5c5c"/><rect x="243.3" y="197.6" width="8" height="66.4" rx="3" fill="#4a9eff"/><line x1="247.3" y1="192.6" x2="247.3" y2="202.6" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></g>
+        <g class="candle" style="transform-origin:272.2px 264px;animation-delay:0.32s"><rect x="262.7" y="214.2" width="8" height="49.8" rx="3" fill="#ff5c5c"/><rect x="273.7" y="179.9" width="8" height="84.1" rx="3" fill="#4a9eff"/><line x1="277.7" y1="174.9" x2="277.7" y2="184.9" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></g>
+        <g class="candle" style="transform-origin:302.6px 264px;animation-delay:0.36s"><rect x="293.1" y="208.6" width="8" height="55.4" rx="3" fill="#ff5c5c"/><rect x="304.1" y="162.2" width="8" height="101.8" rx="3" fill="#4a9eff"/><line x1="308.1" y1="157.2" x2="308.1" y2="167.2" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></g>
+        <g class="candle" style="transform-origin:333.1px 264px;animation-delay:0.4s"><rect x="323.6" y="197.6" width="8" height="66.4" rx="3" fill="#ff5c5c"/><rect x="334.6" y="168.8" width="8" height="95.2" rx="3" fill="#4a9eff"/><line x1="338.6" y1="163.8" x2="338.6" y2="173.8" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></g>
+        <g class="candle" style="transform-origin:363.5px 264px;animation-delay:0.44s"><rect x="354" y="190.9" width="8" height="73.1" rx="3" fill="#ff5c5c"/><rect x="365" y="134.5" width="8" height="129.5" rx="3" fill="#4a9eff"/><line x1="369" y1="129.5" x2="369" y2="139.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></g>
+        <g class="candle" style="transform-origin:393.9px 264px;animation-delay:0.48s"><rect x="384.4" y="184.3" width="8" height="79.7" rx="3" fill="#ff5c5c"/><rect x="395.4" y="111.2" width="8" height="152.8" rx="3" fill="#4a9eff"/><line x1="399.4" y1="106.2" x2="399.4" y2="116.2" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></g>
+        <g class="candle" style="transform-origin:424.4px 264px;animation-delay:0.52s"><rect x="414.9" y="178.7" width="8" height="85.3" rx="3" fill="#ff5c5c"/><rect x="425.9" y="117.9" width="8" height="146.1" rx="3" fill="#4a9eff"/><line x1="429.9" y1="112.9" x2="429.9" y2="122.9" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></g>
+        <g class="candle" style="transform-origin:454.8px 264px;animation-delay:0.56s"><rect x="445.3" y="168.8" width="8" height="95.2" rx="3" fill="#ff5c5c"/><rect x="456.3" y="48.1" width="8" height="215.9" rx="3" fill="#4a9eff"/><line x1="460.3" y1="43.1" x2="460.3" y2="53.1" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></g>
+        <!-- trend curves -->
+        <polyline class="draw-line" points="59.2,242.9 89.6,246.1 120.1,234.1 150.5,235.7 180.9,222.1 211.4,211 241.8,214.2 272.2,201.4 302.6,188.7 333.1,193.4 363.5,168.7 393.9,152 424.4,156.8 454.8,106.6 472,92" fill="none" stroke="#4a9eff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+        <polyline class="draw-line" points="59.2,231.4 89.6,235.9 120.1,219.3 150.5,221.5 180.9,202.6 211.4,187.1 241.8,191.6 272.2,173.9 302.6,156.2 333.1,162.8 363.5,128.5 393.9,105.2 424.4,111.9 454.8,42.1 472,24" fill="none" stroke="#7dd8f8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+        <!-- x labels -->
+        <g fill="rgba(255,255,255,0.45)" font-family="Montserrat, sans-serif" font-size="8.5" text-anchor="middle">
+          <text x="59.2" y="279">D1</text>
+          <text x="120.1" y="279">D3</text>
+          <text x="180.9" y="279">D5</text>
+          <text x="241.8" y="279">D7</text>
+          <text x="302.6" y="279">D9</text>
+          <text x="363.5" y="279">D11</text>
+          <text x="424.4" y="279">D13</text>
+          <text x="454.8" y="279">D14</text>
+        </g>
       </svg>
-      <div class="chart-note">Pick one proven product. Put your brand on it. Scale the winner instead of chasing the next one.</div>
+      <div class="chart-note">From product pick to a live store in 14 days, then scale the winner toward a $1K day.</div>
     </div>
   </div>
 </header>
