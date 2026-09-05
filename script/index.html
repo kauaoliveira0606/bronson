@@ -3,7 +3,7 @@
 <head><script async src="https://app.usecortana.ai/api/hub/v1/cmt7ghvdv00mmjf0a5035wwgl"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bronson — Sales Script</title>
+<title>Bronson Sales Scripts</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--navy:#1e293b;--bg:#f1f5f9;--border:#e2e8f0;--slate:#64748b;--slate-lt:#94a3b8}
@@ -85,6 +85,18 @@ body{background:var(--bg);color:var(--navy);font-family:-apple-system,BlinkMacSy
   .duo,.trio3,.branches,.branches-2{grid-template-columns:1fr}
   .page{padding:16px 14px 60px}
 }
+
+/* TABS */
+[hidden]{display:none!important}
+.tab-bar{display:flex;gap:6px;margin-left:auto}
+.tab{background:rgba(255,255,255,.08);color:var(--slate-lt);border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;letter-spacing:.03em;white-space:nowrap;cursor:pointer;font-family:inherit;transition:background .15s,color .15s}
+.tab:hover{background:rgba(255,255,255,.16);color:#fff}
+.tab.active{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;border-color:transparent}
+@media(max-width:720px){
+  .hdr-top{flex-wrap:wrap;height:auto;padding:8px 14px}
+  .tab-bar{margin-left:0;width:100%}
+  .tab{flex:1;text-align:center}
+}
 </style>
 </head>
 <body>
@@ -92,9 +104,13 @@ body{background:var(--bg);color:var(--navy);font-family:-apple-system,BlinkMacSy
 <header class="hdr">
   <div class="hdr-top">
     <div class="logo">B</div>
-    <span class="hdr-title">Bronson — Sales Script</span>
+    <span class="hdr-title">Bronson Sales Scripts</span>
+    <div class="tab-bar">
+      <button class="tab active" data-view="main">Sales Script</button>
+      <button class="tab" data-view="followup">Follow Up Upsell Script</button>
+    </div>
   </div>
-  <nav class="stage-nav">
+  <nav class="stage-nav" id="nav-main">
     <a href="#s1">S1: Warm Up</a><span class="sep">·</span>
     <a href="#s2">S2: Current State</a><span class="sep">·</span>
     <a href="#s3">S3: Problem</a><span class="sep">·</span>
@@ -105,8 +121,12 @@ body{background:var(--bg);color:var(--navy);font-family:-apple-system,BlinkMacSy
     <a href="#s8">S8: HT Need</a><span class="sep">·</span>
     <a href="#s9">S9: Solidify</a>
   </nav>
+  <nav class="stage-nav" id="nav-followup" hidden>
+    <a href="#f1">S1: Check-In</a>
+  </nav>
 </header>
 
+<div class="script-view" id="view-main">
 <main class="page">
 
 <div class="legend">
@@ -779,5 +799,73 @@ body{background:var(--bg);color:var(--navy);font-family:-apple-system,BlinkMacSy
 </section>
 
 </main>
+</div>
+
+<div class="script-view" id="view-followup" hidden>
+<main class="page">
+
+<div class="legend">
+  <div class="li"><div class="ldot" style="background:#fff;border:1.5px solid #334155"></div>Word Track</div>
+  <div class="li"><div class="ldot" style="background:#fef9c3;border:1.5px solid #ca8a04"></div>Branch / Response</div>
+  <div class="li"><div class="ldot" style="background:#ecfdf5;border:1.5px solid #059669"></div>Key Point</div>
+  <div class="li"><div class="ldot" style="background:#eff6ff;border:1.5px solid #3b82f6"></div>Framework / Rule</div>
+  <div class="li"><div class="ldot" style="background:#fef2f2;border:1.5px solid #dc2626"></div>DQ / Hard Rule</div>
+  <div class="li"><div class="ldot" style="background:#fffbeb;border:1.5px solid #d97706"></div>Pace</div>
+</div>
+
+<!-- ══════ F1 ══════ -->
+<section class="stage" id="f1">
+  <div class="stage-hdr">
+    <div class="stage-pill"><div class="stage-num">Stage 1</div><div class="stage-name">Check-In</div></div>
+  </div>
+
+  <div class="single"><div class="card wt">
+    <div class="clabel">Opening</div>
+    <div class="qt">"Hey [Name], how's it going? This is [Rep].<br><br>The reason for the call is because you got signed up with Base 44 a few days ago. Just wanted to check in and see how everything is going."</div>
+  </div></div>
+  <div class="arr-c">↓</div>
+
+  <div class="single"><div class="card wt">
+    <div class="clabel">What They Like</div>
+    <div class="qt">"What do you like about it the most?"</div>
+  </div></div>
+  <div class="arr-c">↓</div>
+
+  <div class="single"><div class="card wt">
+    <div class="clabel">The Gap</div>
+    <div class="qt">"Is there anything that you wish it had that it doesn't at the moment?"</div>
+  </div></div>
+  <div class="arr-c">↓</div>
+
+  <div class="single"><div class="card wt">
+    <div class="clabel">Capital Question</div>
+    <div class="qt">"Okay, cool. To see if I can help you out anymore. How much capital would you be able to invest in this business? Because we do have some trainings depending on where you're at."</div>
+  </div></div>
+  <div class="arr-c">↓</div>
+
+  <div class="single"><div class="card pc">
+    <div class="qt">Rest of the script to be built out later.</div>
+  </div></div>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab');
+  function show(view){
+    tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.view === view); });
+    document.getElementById('view-main').hidden = view !== 'main';
+    document.getElementById('view-followup').hidden = view !== 'followup';
+    document.getElementById('nav-main').hidden = view !== 'main';
+    document.getElementById('nav-followup').hidden = view !== 'followup';
+    window.scrollTo(0, 0);
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){ show(t.dataset.view); });
+  });
+})();
+</script>
 </body>
 </html>
