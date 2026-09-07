@@ -592,9 +592,23 @@
       margin-bottom: 16px;
       width: 100%;
       max-width: 380px;
+      white-space: nowrap;
     }
 
     .cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    #inline-form button[type="submit"],
+    #modal-form button[type="submit"] { white-space: nowrap; }
+
+    @media (max-width: 480px) {
+      .cta-btn,
+      #inline-form button[type="submit"],
+      #modal-form button[type="submit"] {
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+        font-size: 0.95rem !important;
+      }
+    }
 
     .cta-note {
       font-size: 0.8rem;
