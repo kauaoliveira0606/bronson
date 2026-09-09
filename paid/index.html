@@ -579,20 +579,32 @@
     }
 
     .cta-btn {
-      background: var(--green);
+      background: linear-gradient(180deg, #3ba85f 0%, #2f8049 100%);
       color: #fff;
       font-weight: 800;
       font-size: 1.05rem;
-      padding: 16px 40px;
-      border-radius: 12px;
-      border: none;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      line-height: 1.25;
+      padding: 14px 40px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.18);
       cursor: pointer;
       display: inline-block;
       transition: opacity .15s, transform .15s;
       margin-bottom: 16px;
       width: 100%;
       max-width: 380px;
-      white-space: nowrap;
+    }
+
+    .cta-btn-sub {
+      display: block;
+      margin-top: 3px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: 0;
+      opacity: 0.9;
     }
 
     .cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
@@ -1085,7 +1097,7 @@
 
   <!-- CTA (outside card) -->
   <div style="margin-top:20px;text-align:center;">
-    <button class="cta-btn" style="width:100%;max-width:420px;font-size:1rem;" onclick="openModal()">Claim Your Free Access →</button>
+    <button class="cta-btn" style="width:100%;max-width:420px;font-size:1rem;" onclick="openModal()">GET MY SYSTEM <span aria-hidden="true">→</span><span class="cta-btn-sub">(AI Tools + Free Course)</span></button>
   </div>
 </div>
 
@@ -1396,7 +1408,7 @@
 
   </div>
   <div style="text-align:center;margin-top:32px;">
-    <button class="cta-btn" style="max-width:380px;width:100%;" onclick="openModal()">Claim Your Free Access →</button>
+    <button class="cta-btn" style="max-width:380px;width:100%;" onclick="openModal()">GET MY SYSTEM <span aria-hidden="true">→</span><span class="cta-btn-sub">(AI Tools + Free Course)</span></button>
   </div>
 </div>
 
@@ -1483,7 +1495,7 @@
     </div>
   </div>
   <div style="text-align:center;margin-top:32px;">
-    <button class="cta-btn" style="max-width:380px;width:100%;" onclick="openModal()">Claim Your Free Access →</button>
+    <button class="cta-btn" style="max-width:380px;width:100%;" onclick="openModal()">GET MY SYSTEM <span aria-hidden="true">→</span><span class="cta-btn-sub">(AI Tools + Free Course)</span></button>
   </div>
 </div>
 

@@ -584,19 +584,32 @@
     }
 
     .cta-btn {
-      background: var(--green);
+      background: linear-gradient(180deg, #3ba85f 0%, #2f8049 100%);
       color: #fff;
       font-weight: 800;
       font-size: 1.05rem;
-      padding: 16px 40px;
-      border-radius: 12px;
-      border: none;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      line-height: 1.25;
+      padding: 14px 40px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.18);
       cursor: pointer;
       display: inline-block;
       transition: opacity .15s, transform .15s;
       margin-bottom: 16px;
       width: 100%;
       max-width: 380px;
+    }
+
+    .cta-btn-sub {
+      display: block;
+      margin-top: 3px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: 0;
+      opacity: 0.9;
     }
 
     .cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
@@ -795,7 +808,7 @@
 </div>
 
 <div style="padding:0 24px 28px;text-align:center;">
-  <button class="cta-btn" onclick="openModal()" style="width:100%;max-width:380px;font-size:1.05rem;">Get Your Free Course &amp; Store →</button>
+  <button class="cta-btn" onclick="openModal()" style="width:100%;max-width:380px;font-size:1.05rem;">GET MY SYSTEM <span aria-hidden="true">→</span><span class="cta-btn-sub">(AI Tools + Free Course)</span></button>
   <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;">
     <div style="display:flex;">
       <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face" style="width:32px;height:32px;border-radius:50%;border:2px solid #1a1a1a;object-fit:cover;margin-right:-8px;" />
@@ -1071,7 +1084,7 @@
 
   <!-- CTA (outside card) -->
   <div style="margin-top:20px;text-align:center;">
-    <button class="cta-btn" style="width:100%;max-width:420px;font-size:1rem;" onclick="openModal()">Get Your Free Course &amp; Store →</button>
+    <button class="cta-btn" style="width:100%;max-width:420px;font-size:1rem;" onclick="openModal()">GET MY SYSTEM <span aria-hidden="true">→</span><span class="cta-btn-sub">(AI Tools + Free Course)</span></button>
     <p style="font-size:0.8rem;color:#6b7280;margin-top:10px;line-height:1.5;">⏰ Once we start charging, the course alone goes back to $3,000.</p>
   </div>
 </div>
@@ -1275,7 +1288,7 @@
     </div>
 
     <button class="cta-btn" onclick="openModal()">
-      Get Your Free Course &amp; Store →
+      GET MY SYSTEM <span aria-hidden="true">→</span><span class="cta-btn-sub">(AI Tools + Free Course)</span>
     </button>
     <p class="cta-note"></p>
   </div>
@@ -1448,7 +1461,7 @@
 
   </div>
   <div style="text-align:center;margin-top:32px;">
-    <button class="cta-btn" style="max-width:380px;width:100%;" onclick="openModal()">Get Your Free Course &amp; Store →</button>
+    <button class="cta-btn" style="max-width:380px;width:100%;" onclick="openModal()">GET MY SYSTEM <span aria-hidden="true">→</span><span class="cta-btn-sub">(AI Tools + Free Course)</span></button>
   </div>
 </div>
 
@@ -1544,7 +1557,7 @@
     </div>
   </div>
   <div style="text-align:center;margin-top:32px;">
-    <button class="cta-btn" style="max-width:380px;width:100%;" onclick="openModal()">Get Your Free Course &amp; Store →</button>
+    <button class="cta-btn" style="max-width:380px;width:100%;" onclick="openModal()">GET MY SYSTEM <span aria-hidden="true">→</span><span class="cta-btn-sub">(AI Tools + Free Course)</span></button>
   </div>
 </div>
 
