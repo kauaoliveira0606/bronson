@@ -93,7 +93,7 @@
     .hero {
       max-width: 1040px;
       margin: 0 auto;
-      padding: 12px 24px 16px;
+      padding: 32px 24px 16px;
       text-align: center;
     }
 
@@ -194,14 +194,9 @@
       width: 100%;
       border-radius: 16px;
       overflow: hidden;
+      border: 1px solid var(--border);
     }
 
-    vturb-smartplayer iframe,
-    vturb-smartplayer video,
-    .video-wrapper iframe,
-    .video-wrapper .vid-placeholder {
-      border-radius: 16px !important;
-    }
     .video-wrapper iframe,
     .video-wrapper .vid-placeholder {
       position: absolute;
@@ -621,6 +616,19 @@
 
     .cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
 
+    #inline-form button[type="submit"],
+    #modal-form button[type="submit"] { white-space: nowrap; }
+
+    @media (max-width: 480px) {
+      .cta-btn,
+      #inline-form button[type="submit"],
+      #modal-form button[type="submit"] {
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+        font-size: 0.95rem !important;
+      }
+    }
+
     .cta-note {
       font-size: 0.8rem;
       color: var(--text2);
@@ -774,8 +782,11 @@
 
     /* ── SCROLL CTA ── */
     @media (max-width: 600px) {
-      .hero { padding: 4px 16px 8px; }
-      .hero-sub { margin-bottom: 8px; }
+      .hero { padding: 20px 16px 8px; }
+      .hero h1 { font-size: 1.4rem; }
+      .hero-sub { font-size: 0.9rem; margin-bottom: 8px; }
+      .badge-row { flex-wrap: nowrap !important; gap: 6px; }
+      .obj-badge { font-size: 0.55rem; padding: 5px 8px; gap: 4px; }
       .section { padding: 40px 16px; }
       .cta-box { padding: 40px 20px; }
       .value-card { padding: 20px; }
@@ -796,8 +807,9 @@
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-badge">
-    <span>&#10022;</span> Free E-commerce Program
+  <div style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e8ded0;border-radius:100px;padding:8px 18px;margin-bottom:20px;">
+    <span style="color:#f97316;font-size:0.9rem;">&#10022;</span>
+    <span style="font-size:0.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#111;">Free E-commerce Program</span>
   </div>
   <h1>I'll Help You Build A Successful E&#8209;commerce Business Completely For <span style="color:var(--green);">FREE</span></h1>
   <p class="hero-sub" style="color:#374151;">Watch the short video below. I show you exactly what this is, why I'm giving it away, and how my team gets you set up. No experience and no degree needed.</p>
@@ -816,7 +828,56 @@
 </div>
 
 <div style="padding:0 24px 28px;text-align:center;">
-  <button class="cta-btn" onclick="openModal()" style="width:100%;max-width:380px;font-size:1.05rem;">GET MY SYSTEM <span aria-hidden="true">→</span><span class="cta-btn-sub">(AI Tools + Free Course)</span></button>
+  <div style="background:#fff;border:1.5px solid #eee;border-radius:24px;max-width:480px;width:100%;margin:0 auto;padding:32px 28px 26px;">
+
+    <img src="/paid/logo.png" alt="the inner table" style="display:block;height:74px;width:auto;margin:0 auto 14px;" />
+
+    <h2 style="text-align:center;font-size:1.7rem;font-weight:900;color:#0a0a0a;letter-spacing:-0.5px;margin-bottom:10px;">Claim Your Free Access</h2>
+
+    <p style="text-align:center;color:#666;font-size:0.95rem;line-height:1.55;margin-bottom:24px;">Drop your info below and a coach will call you to onboard you.</p>
+
+  <form id="inline-form" onsubmit="handleInlineForm(event)" style="display:flex;flex-direction:column;gap:12px;max-width:420px;margin:0 auto;text-align:left;">
+    <input id="i-name" type="text" placeholder="First name" required style="background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 20px;font-size:0.95rem;font-family:'Inter',sans-serif;outline:none;transition:border .15s;color:#111;" onfocus="this.style.borderColor='#22c55e'" onblur="this.style.borderColor='#e5e7eb'" />
+    <input id="i-email" type="email" placeholder="Email" required style="background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 20px;font-size:0.95rem;font-family:'Inter',sans-serif;outline:none;transition:border .15s;color:#111;" onfocus="this.style.borderColor='#22c55e'" onblur="this.style.borderColor='#e5e7eb'" />
+    <div style="display:flex;gap:10px;">
+      <select id="i-country" style="background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 16px;font-size:0.9rem;font-family:'Inter',sans-serif;color:#333;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;min-width:110px;text-align:center;">
+        <option value="+1">🇺🇸 +1</option>
+        <option value="+1">🇨🇦 +1</option>
+        <option value="+44">🇬🇧 +44</option>
+        <option value="+61">🇦🇺 +61</option>
+        <option value="+64">🇳🇿 +64</option>
+        <option value="+49">🇩🇪 +49</option>
+        <option value="+33">🇫🇷 +33</option>
+        <option value="+39">🇮🇹 +39</option>
+        <option value="+34">🇪🇸 +34</option>
+        <option value="+31">🇳🇱 +31</option>
+        <option value="+32">🇧🇪 +32</option>
+        <option value="+41">🇨🇭 +41</option>
+        <option value="+43">🇦🇹 +43</option>
+        <option value="+46">🇸🇪 +46</option>
+        <option value="+47">🇳🇴 +47</option>
+        <option value="+45">🇩🇰 +45</option>
+        <option value="+358">🇫🇮 +358</option>
+        <option value="+353">🇮🇪 +353</option>
+        <option value="+351">🇵🇹 +351</option>
+        <option value="+81">🇯🇵 +81</option>
+        <option value="+82">🇰🇷 +82</option>
+        <option value="+65">🇸🇬 +65</option>
+        <option value="+852">🇭🇰 +852</option>
+        <option value="+971">🇦🇪 +971</option>
+        <option value="+972">🇮🇱 +972</option>
+        <option value="+55">🇧🇷 +55</option>
+        <option value="+52">🇲🇽 +52</option>
+      </select>
+      <input id="i-phone" type="tel" required placeholder="Phone number" style="flex:1;background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 20px;font-size:0.95rem;font-family:'Inter',sans-serif;outline:none;transition:border .15s;color:#111;" onfocus="this.style.borderColor='#22c55e'" onblur="this.style.borderColor='#e5e7eb'" />
+    </div>
+    <label for="i-agree" style="display:flex;align-items:flex-start;gap:10px;font-size:0.8rem;line-height:1.5;color:#666;cursor:pointer;padding:2px 4px;">
+      <input id="i-agree" type="checkbox" required style="margin-top:2px;width:16px;height:16px;flex-shrink:0;accent-color:#22c55e;cursor:pointer;" />
+      <span>By checking this box you understand that it is a requirement to have at least <mark style="background:#dcfce7;color:#15803d;font-weight:700;padding:0 5px;border-radius:5px;">$50</mark> to be able to access these tools. If that's not possible for you, please LEAVE this page now.</span>
+    </label>
+    <button type="submit" class="cta-btn" style="width:100%;font-size:1.05rem;margin-top:2px;color:#fff;">Claim Your Free Access</button>
+  </form>
+  </div>
   <div style="display:inline-flex;align-items:center;gap:10px;margin-top:14px;background:#0a0a0a;border-radius:100px;padding:8px 18px 8px 8px;box-shadow:0 4px 16px rgba(0,0,0,0.12);">
     <div style="width:30px;height:30px;border-radius:8px;overflow:hidden;flex-shrink:0;">
       <img src="/paid/whop-icon.png" alt="Whop" style="width:100%;height:100%;object-fit:cover;display:block;" />
@@ -833,14 +894,12 @@
     </div>
   </div>
 </div>
-
-
 <hr class="divider" />
 
 <!-- WHAT'S INCLUDED -->
 <div class="section">
-  <h2 class="section-title" style="text-align:center;">You Don't Just Get A Store. You Get Everything You Need To Succeed.</h2>
-  <p style="text-align:center;font-size:1rem;color:#374151;line-height:1.7;margin-top:12px;margin-bottom:0;">Other platforms give you a store and leave you on your own. We give you the store, the education, the tools, the community, and the support to actually make it work.</p>
+  <h2 class="section-title" style="text-align:center;">You're Not Just Getting A Store. You're Getting The Whole Blueprint And The Tools To Build It.</h2>
+  <p style="text-align:center;font-size:1rem;color:#374151;line-height:1.7;margin-top:12px;margin-bottom:0;">Other platforms hand you a store and disappear. We stay with you until it works.</p>
 
   <!-- Card -->
   <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;overflow:hidden;margin-top:24px;">
@@ -859,25 +918,16 @@
           </div>
           <span style="font-size:0.9rem;font-weight:600;color:#111;">Fully Built AI Online Store</span>
         </div>
-        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$2,000 value</span>
+        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$1,000 value</span>
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
         <div style="display:flex;align-items:center;gap:10px;">
           <div style="width:22px;height:22px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <span style="font-size:0.9rem;font-weight:600;color:#111;">Step-by-Step Course (50+ Lessons)</span>
+          <span style="font-size:0.9rem;font-weight:600;color:#111;">Step-by-Step Course (Follow-Along Format)</span>
         </div>
-        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$3,000 value</span>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:22px;height:22px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <span style="font-size:0.9rem;font-weight:600;color:#111;">Weekly Live Mentorship Calls</span>
-        </div>
-        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$4,000 value</span>
+        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$1,200 value</span>
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
         <div style="display:flex;align-items:center;gap:10px;">
@@ -886,25 +936,16 @@
           </div>
           <span style="font-size:0.9rem;font-weight:600;color:#111;">Personal Onboarding Call</span>
         </div>
+        <span style="font-size:0.8rem;font-weight:800;color:#16a34a;white-space:nowrap;margin-left:12px;">FREE</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:22px;height:22px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span style="font-size:0.9rem;font-weight:600;color:#111;">AI Tools</span>
+        </div>
         <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$500 value</span>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:22px;height:22px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <span style="font-size:0.9rem;font-weight:600;color:#111;">Community of Members (Lifetime Access)</span>
-        </div>
-        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$1,000 value</span>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:22px;height:22px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <span style="font-size:0.9rem;font-weight:600;color:#111;">Product Research Software</span>
-        </div>
-        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$1,500 value</span>
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
         <div style="display:flex;align-items:center;gap:10px;">
@@ -913,7 +954,7 @@
           </div>
           <span style="font-size:0.9rem;font-weight:600;color:#111;">Exclusive Partner Deals</span>
         </div>
-        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$500+ value</span>
+        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$200 value</span>
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid #f3f4f6;">
         <div style="display:flex;align-items:center;gap:10px;">
@@ -922,7 +963,7 @@
           </div>
           <span style="font-size:0.9rem;font-weight:600;color:#111;">Business Tools (Calculators &amp; Planners)</span>
         </div>
-        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$500 value</span>
+        <span style="font-size:0.8rem;font-weight:700;color:#6b7280;white-space:nowrap;margin-left:12px;">$100 value</span>
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;">
         <div style="display:flex;align-items:center;gap:10px;">
@@ -939,7 +980,7 @@
     <div style="background:#f9fafb;border-top:1.5px solid #e5e7eb;padding:16px 20px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
         <span style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6b7280;">Total Value</span>
-        <span style="font-size:0.95rem;font-weight:800;color:#9ca3af;text-decoration:line-through;">$13,000+</span>
+        <span style="font-size:0.95rem;font-weight:800;color:#9ca3af;text-decoration:line-through;">$3,000</span>
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
         <span style="font-size:0.95rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#111;">Your Price</span>
@@ -952,7 +993,6 @@
   <!-- CTA (outside card) -->
   <div style="margin-top:20px;text-align:center;">
     <button class="cta-btn" style="width:100%;max-width:420px;font-size:1rem;" onclick="openModal()">GET MY SYSTEM <span aria-hidden="true">→</span><span class="cta-btn-sub">(AI Tools + Free Course)</span></button>
-    <p style="font-size:0.8rem;color:#6b7280;margin-top:10px;line-height:1.5;">⏰ Once we start charging, the course alone goes back to $3,000.</p>
   </div>
 </div>
 
@@ -963,14 +1003,17 @@
   <p class="section-label">No Catch</p>
   <h2 class="section-title">Wait, <span style="color:var(--green);">Who Are You and How Is This Free?</span></h2>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 32px;max-width:640px;margin:0 auto;text-align:left;">
-    <p style="font-size:1rem;color:#374151;line-height:1.75;margin-bottom:16px;">If you don't know me yet, here's a short version. I'm Bronson. I went to college and worked construction like most regular people my age. Then I figured out how to build an e-commerce business. I've had hundreds of people pay me to learn how to do it.</p>
-    <p style="font-size:1rem;color:#374151;line-height:1.75;margin-bottom:16px;">So why give it away for free? We partnered up with a billion dollar AI company that pays me when you start using your tool instead of you paying me $3,000 for this. They cover it. All you need is that one AI tool, and my coach gets you set up with it on your call.</p>
-    <p style="font-size:1rem;color:#374151;line-height:1.75;margin-bottom:24px;">This is the exact tool that's helped me scale my business to <span style="color:var(--green);">$500k/month as of July 2026.</span></p>
+    <p style="font-size:1rem;color:#374151;line-height:1.75;margin-bottom:16px;">If you don't know me yet, here's a short version. I'm Bronson. I went to college and worked construction like most people do. Then I figured out how to build an e-commerce business. And I've had hundreds of people pay me to learn how to do it.</p>
+    <p style="font-size:1rem;color:#374151;line-height:1.75;margin-bottom:16px;">I used to charge $3,000 for this. Now a billion-dollar AI company covers it because they want you using their tool. They pay me, you get the course for free, and the only thing you need is the AI tool itself.</p>
+    <p style="font-size:1rem;color:#374151;line-height:1.75;margin-bottom:24px;">This is the exact tool that's helped me. Within my first year, I was making more from my store than I was on <span style="color:var(--green);">the job site.</span></p>
     <div style="display:flex;align-items:center;gap:16px;padding-top:20px;border-top:1px solid var(--border);">
       <span style="font-family:'Georgia',serif;font-style:italic;font-size:1.4rem;color:var(--text);white-space:nowrap;">Bronson</span>
       <span style="width:1px;height:28px;background:var(--border);flex-shrink:0;"></span>
       <span style="font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text2);">Founder, AI Dropshipping Store</span>
     </div>
+  </div>
+  <div style="max-width:640px;margin:24px auto 0;border-radius:16px;overflow:hidden;">
+    <img src="/paid/ecom.png" alt="How you get access" style="width:100%;display:block;" />
   </div>
 </div>
 
@@ -1006,7 +1049,7 @@
       </div>
       <div class="why-body">
         <strong>Work From Anywhere</strong>
-        <p>All you need is a laptop and internet connection. Run your store from your bedroom, a coffee shop, or a beach in Bali.</p>
+        <p>Run your store from your couch after work, from the truck on your lunch break, or wherever you've got your laptop.</p>
       </div>
     </div>
     <div class="why-item">
@@ -1033,7 +1076,7 @@
       </div>
       <div class="why-body">
         <strong>Recurring Demand</strong>
-        <p>Get returning customers to your store using our Monthly Recurring Revenue model.</p>
+        <p>Supplements and consumables mean customers come back every month without you doing anything.</p>
       </div>
     </div>
     <div class="why-item">
@@ -1042,7 +1085,7 @@
       </div>
       <div class="why-body">
         <strong>AI Helps You</strong>
-        <p>AI helps you find leads and handle the busy work so you move faster.</p>
+        <p>AI finds products, builds the store, makes ads, handles marketing, connects suppliers. The busy work gets done fast.</p>
       </div>
     </div>
     <div class="why-item">
@@ -1059,123 +1102,55 @@
 
 <hr class="divider" />
 
-<!-- SLOT MACHINE TOOLS -->
-<div class="section" style="text-align:center;">
-  <h2 class="section-title">All The Built-In Tools</h2>
-
-  <div style="position:relative;height:220px;overflow:hidden;margin-top:28px;" id="slot-machine">
-    <div id="slot-track" style="display:flex;flex-direction:column;align-items:center;gap:28px;transition:transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94);">
-      <div class="slot-item">Product Scorecard</div>
-      <div class="slot-item">ROAS Calculator</div>
-      <div class="slot-item">Breakeven Calculator</div>
-      <div class="slot-item">Profit Margin Calculator</div>
-      <div class="slot-item">Product Research Software</div>
-      <!-- duplicates for seamless loop -->
-      <div class="slot-item">Product Scorecard</div>
-      <div class="slot-item">ROAS Calculator</div>
-      <div class="slot-item">Breakeven Calculator</div>
-      <div class="slot-item">Profit Margin Calculator</div>
-      <div class="slot-item">Product Research Software</div>
+<!-- FULL PROGRAM -->
+<div class="section" style="max-width:1100px;">
+  <p class="section-label">What's inside</p>
+  <h2 class="section-title">The Full Program You Just Unlocked</h2>
+  <style>@media(max-width:640px){.program-modules-grid{grid-template-columns:1fr!important;}}</style>
+  <div class="program-modules-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;">
+    <div style="border-radius:16px;overflow:hidden;border:1px solid var(--border);">
+      <img src="/paid/e1.png" alt="Module 1" style="width:100%;display:block;" />
     </div>
-    <!-- fade masks top and bottom -->
-    <div style="position:absolute;top:0;left:0;right:0;height:70px;background:linear-gradient(to bottom,var(--bg),transparent);pointer-events:none;"></div>
-    <div style="position:absolute;bottom:0;left:0;right:0;height:70px;background:linear-gradient(to top,var(--bg),transparent);pointer-events:none;"></div>
+    <div style="border-radius:16px;overflow:hidden;border:1px solid var(--border);">
+      <img src="/paid/e2.png" alt="Module 2" style="width:100%;display:block;" />
+    </div>
+    <div style="border-radius:16px;overflow:hidden;border:1px solid var(--border);">
+      <img src="/paid/e3.png" alt="Module 3" style="width:100%;display:block;" />
+    </div>
+    <div style="border-radius:16px;overflow:hidden;border:1px solid var(--border);">
+      <img src="/paid/e4.png" alt="Module 4" style="width:100%;display:block;" />
+    </div>
+    <div style="border-radius:16px;overflow:hidden;border:1px solid var(--border);">
+      <img src="/paid/e5.png" alt="Module 5" style="width:100%;display:block;" />
+    </div>
+    <div style="border-radius:16px;overflow:hidden;border:1px solid var(--border);">
+      <img src="/paid/e6.png" alt="Module 6" style="width:100%;display:block;" />
+    </div>
   </div>
 </div>
 
-<style>
-  .slot-item {
-    font-size: clamp(1.1rem, 3.5vw, 1.5rem);
-    font-weight: 700;
-    color: #d1d5db;
-    transition: color 0.3s, font-size 0.3s;
-    white-space: nowrap;
-    line-height: 1;
-  }
-  .slot-item.active {
-    color: #22c55e;
-    font-size: clamp(1.3rem, 4vw, 1.75rem);
-  }
-</style>
-
-<script>
-(function() {
-  const ITEMS = 5;
-  const ITEM_HEIGHT = 56; // px per slot item (font + gap)
-  let current = 0;
-  const track = document.getElementById('slot-track');
-  const items = track ? track.querySelectorAll('.slot-item') : [];
-
-  function update() {
-    const offset = current * ITEM_HEIGHT;
-    // center the active item in the 220px container: (220/2) - (item/2) ≈ 110 - 28 = 82
-    track.style.transform = `translateY(${82 - offset}px)`;
-    items.forEach((el, i) => {
-      el.classList.toggle('active', i === current || i === current + ITEMS);
-    });
-    current = (current + 1) % ITEMS;
-  }
-
-  update();
-  setInterval(update, 1800);
-})();
-</script>
-
-<!-- FINAL CTA -->
-<div class="section" id="apply">
-  <div class="cta-box">
-    <div class="urgency">
-      <span class="dot"></span>
-      This won't be free forever
-    </div>
-    <h2>Get Your Free Course<br>&amp; Store Today</h2>
-    <p>Everything you need to build a real branded dropshipping store.</p>
-
-    <div class="cta-includes">
-      <div class="cta-include-item">
-        <span class="cta-check">✓</span>
-        Complete AI Branded Dropshipping System ($1,000 value)
-      </div>
-      <div class="cta-include-item">
-        <span class="cta-check">✓</span>
-        All 6 Course Phases ($1,200 value)
-      </div>
-      <div class="cta-include-item">
-        <span class="cta-check">✓</span>
-        Meta Ads Mastery ($200 value)
-      </div>
-      <div class="cta-include-item">
-        <span class="cta-check">✓</span>
-        1-on-1 Onboarding Call ($100 value)
-      </div>
-      <div class="cta-include-item">
-        <span class="cta-check">✓</span>
-        Brand-to-Exit Roadmap ($200 value)
-      </div>
-    </div>
-
-    <button class="cta-btn" onclick="openModal()">
-      GET MY SYSTEM <span aria-hidden="true">→</span><span class="cta-btn-sub">(AI Tools + Free Course)</span>
-    </button>
-    <p class="cta-note"></p>
-  </div>
-</div>
-
-<hr class="divider" />
-
-<!-- STORE EXAMPLES -->
+<!-- WHAT HAPPENS NEXT -->
 <div class="section">
-  <p style="text-align:center;font-size:0.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Built By AI</p>
-  <h2 class="section-title" style="text-align:center;">E-Com Stores That Our AI Has Built.</h2>
-  <p style="text-align:center;font-size:0.95rem;color:#374151;line-height:1.65;margin-top:10px;margin-bottom:28px;">Product research, copy, design, supplier setup — all handled. These are real stores built in under 10 minutes.</p>
+  <p class="section-label">What happens next</p>
+  <h2 class="section-title">Here's Exactly What To Do <span style="color:var(--green);font-style:italic;">Now.</span></h2>
 
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-    <div style="border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;height:220px;"><img src="/lt/store04.png" alt="AI built store" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
-    <div style="border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;height:220px;"><img src="/lt/store01.png" alt="AI built store" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
-    <div style="border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;height:220px;"><img src="/lt/store06.png" alt="AI built store" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
-    <div style="border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;height:220px;"><img src="/lt/store03.png" alt="AI built store" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
-    <div style="border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;height:220px;"><img src="/lt/store02.png" alt="AI built store" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
-    <div style="border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;height:220px;"><img src="/lt/store05.png" alt="AI built store" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" /></div>
+  <style>@media(max-width:640px){.next-steps-grid{grid-template-columns:1fr!important;}}</style>
+  <div class="next-steps-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;">
+    <div>
+      <div style="width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;margin-bottom:16px;">1</div>
+      <strong style="display:block;font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:8px;">Fill Out The Short Form</strong>
+      <p style="font-size:0.9rem;color:var(--text2);line-height:1.6;">It takes two minutes to fill it out.</p>
+    </div>
+    <div>
+      <div style="width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;margin-bottom:16px;">2</div>
+      <strong style="display:block;font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:8px;">Get Access To The AI Ecommerce Tools Library</strong>
+      <p style="font-size:0.9rem;color:var(--text2);line-height:1.6;">On the call, your coach sets you up with the one AI tool that runs the whole system.</p>
+    </div>
+    <div>
+      <div style="width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;margin-bottom:16px;">3</div>
+      <strong style="display:block;font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:8px;">Get Your Free Course Access</strong>
+      <p style="font-size:0.9rem;color:var(--text2);line-height:1.6;">You get instant access to the private portal — every module and all the content.</p>
+    </div>
   </div>
 </div>
 
@@ -1319,7 +1294,7 @@
 <div class="section">
   <p class="section-label">Common questions</p>
   <h2 class="section-title">Got questions? We've got answers.</h2>
-  <p class="section-desc" style="margin-bottom:32px;">Everything people ask before they claim access.</p>
+  <p class="section-desc" style="margin-bottom:32px;">Everything people ask before they get started.</p>
 
   <div class="faq-list">
     <div class="faq-item">
@@ -1355,7 +1330,7 @@
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-a">
-        <p class="faq-a-inner">Your startup costs are minimal. The program itself is free. You'll need a small budget for your store and ads - but your onboarding call will map out a plan that fits where you're starting from.</p>
+        <p class="faq-a-inner">You need a laptop and the AI tool subscription to get started, and down the line, a few hundred dollars for ads. But on your onboarding call, you can let us know a bit more about your situation, and we can give you personalized resources based on where you're currently at.</p>
       </div>
     </div>
     <div class="faq-item">
@@ -1369,11 +1344,11 @@
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
-        What if I have more questions before I apply?
+        How much time does this take per day?
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-a">
-        <p class="faq-a-inner">Apply first - your onboarding call is where you get every question answered by a real coach before you spend a dollar. That call alone is worth it.</p>
+        <p class="faq-a-inner">An hour or two in the evening is plenty. The AI handles the store build, the product research, and most of the busy work. Your job is to follow the steps and stay consistent.</p>
       </div>
     </div>
     <div class="faq-item">
@@ -1382,7 +1357,7 @@
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-a">
-        <p class="faq-a-inner">Inside the free $3,000 course, we teach you exactly how. We cover paid ads (Facebook, Instagram, Tiktok), organic marketing (free traffic methods), email/SMS marketing, and more. Our goal is to help you get your first sale within a few days.</p>
+        <p class="faq-a-inner">Inside the free $3,000 course, we teach you exactly how. We cover paid ads (Facebook, Instagram, Tiktok), organic marketing (free traffic methods), email/SMS marketing, and more. We walk you through exactly how to get your first sale, step by step.</p>
       </div>
     </div>
     <div class="faq-item">
@@ -1396,20 +1371,11 @@
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
-        How much can I realistically earn?
+        Is this legit or is it another scam?
         <span class="faq-icon">+</span>
       </button>
       <div class="faq-a">
-        <p class="faq-a-inner">That depends entirely on the effort you put in. Some of our students make a few hundred dollars a day. Others have scaled to six figures and beyond. We have countless success stories in our community. There's no limit - it comes down to you following the training and putting in the work.</p>
-      </div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        Why do you need my phone number?
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a">
-        <p class="faq-a-inner">Because a real coach calls to get you set up. This isn't a download-and-good-luck course. Someone actually walks you through it.</p>
+        <p class="faq-a-inner">Fair question. It's legit. You get a real store, a real course that used to sell for $3,000, and a real coach who gets on a call with you. Nothing is hidden. A billion-dollar AI company covers the cost because they want you using their tool. That's the whole catch.</p>
       </div>
     </div>
   </div>
@@ -1425,22 +1391,14 @@
     <!-- Close -->
     <button onclick="closeModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#888;line-height:1;">&times;</button>
 
-    <!-- Slots badge -->
-    <div style="text-align:center;margin-bottom:16px;">
-      <span id="slots-badge" style="display:inline-flex;align-items:center;gap:8px;background:#fff0f0;border:1px solid #fecaca;color:#dc2626;font-size:0.85rem;font-weight:700;padding:7px 18px;border-radius:100px;">
-        <span style="width:8px;height:8px;border-radius:50%;background:#dc2626;display:inline-block;flex-shrink:0;"></span>
-        <span id="slots-text">7 free slots remaining</span>
-      </span>
-    </div>
-
     <!-- Eyebrow -->
-    <p style="text-align:center;font-size:0.78rem;font-weight:700;letter-spacing:1.5px;color:#888;text-transform:uppercase;margin-bottom:8px;">Free Access &nbsp;·&nbsp; $3,000 Value</p>
+    <img src="/paid/logo.png" alt="the inner table" style="display:block;height:74px;width:auto;margin:0 auto 14px;" />
 
     <!-- Heading -->
-    <h2 style="text-align:center;font-size:1.7rem;font-weight:900;color:#0a0a0a;letter-spacing:-0.5px;margin-bottom:10px;">Get Your Free Course &amp; Store</h2>
+    <h2 style="text-align:center;font-size:1.7rem;font-weight:900;color:#0a0a0a;letter-spacing:-0.5px;margin-bottom:10px;">Claim Your Free Access</h2>
 
     <!-- Sub -->
-    <p style="text-align:center;color:#666;font-size:0.95rem;line-height:1.55;margin-bottom:28px;">Put your details and a coach will reach out to get you set up.</p>
+    <p style="text-align:center;color:#666;font-size:0.95rem;line-height:1.55;margin-bottom:28px;">Drop your info below and a coach will call you to onboard you.</p>
 
     <!-- Form -->
     <form id="modal-form" onsubmit="handleModal(event)" style="display:flex;flex-direction:column;gap:12px;">
@@ -1478,7 +1436,11 @@
         </select>
         <input id="m-phone" type="tel" required placeholder="Phone number" style="flex:1;background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 20px;font-size:0.95rem;font-family:'Inter',sans-serif;outline:none;transition:border .15s;color:#111;" onfocus="this.style.borderColor='#22c55e'" onblur="this.style.borderColor='#e5e7eb'" />
       </div>
-      <button type="submit" style="background:var(--green);color:#000;font-weight:800;font-size:1.05rem;padding:17px;border-radius:50px;border:none;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px;transition:opacity .15s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">Get Your Free Course &amp; Store</button>
+      <label for="m-agree" style="display:flex;align-items:flex-start;gap:10px;font-size:0.8rem;line-height:1.5;color:#666;cursor:pointer;padding:2px 4px;">
+        <input id="m-agree" type="checkbox" required style="margin-top:2px;width:16px;height:16px;flex-shrink:0;accent-color:#22c55e;cursor:pointer;" />
+        <span>By checking this box you understand that it is a requirement to have at least <mark style="background:#dcfce7;color:#15803d;font-weight:700;padding:0 5px;border-radius:5px;">$50</mark> to be able to access these tools. If that's not possible for you, please LEAVE this page now.</span>
+      </label>
+      <button type="submit" style="background:var(--green);color:#fff;font-weight:800;font-size:1.05rem;padding:17px;border-radius:50px;border:none;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px;transition:opacity .15s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">Claim Your Free Access</button>
     </form>
 
     <div id="modal-success" style="display:none;text-align:center;padding:16px 0;">
@@ -1600,34 +1562,12 @@
     const country = document.getElementById('m-country').value;
     const phone = document.getElementById('m-phone').value.trim();
     if (!name || !email || phone.replace(/\D/g, '').length < 7) return;
+    if (!document.getElementById('m-agree').checked) return;
 
     const btn = e.target.querySelector('button[type="submit"]');
     btn.textContent = 'Sending...';
     btn.disabled = true;
 
-    decrementSlot();
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/api/collect-lead', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onloadend = function() {
-      window.location.href = '/receiveaccess?name=' + encodeURIComponent(name);
-    };
-    xhr.onerror = function() {
-      window.location.href = '/receiveaccess?name=' + encodeURIComponent(name);
-    };
-    xhr.send(JSON.stringify({ name: name, email: email, phone: phone.startsWith('+') ? phone : country + phone, webhook: 'lt' }));
-  }
-
-  function handleInlineForm(e) {
-    e.preventDefault();
-    const name = document.getElementById('i-name').value.trim();
-    const email = document.getElementById('i-email').value.trim();
-    const country = document.getElementById('i-country').value;
-    const phone = document.getElementById('i-phone').value.trim();
-    if (!name || !email || phone.replace(/\D/g, '').length < 7) return;
-    const btn = e.target.querySelector('button[type="submit"]');
-    btn.textContent = 'Sending...';
-    btn.disabled = true;
     decrementSlot();
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/api/collect-lead', true);
@@ -1642,6 +1582,30 @@
   }
 
   updateSlotsDisplay();
+
+  function handleInlineForm(e) {
+    e.preventDefault();
+    const name = document.getElementById('i-name').value.trim();
+    const email = document.getElementById('i-email').value.trim();
+    const country = document.getElementById('i-country').value;
+    const phone = document.getElementById('i-phone').value.trim();
+    if (!name || !email || phone.replace(/\D/g, '').length < 7) return;
+    if (!document.getElementById('i-agree').checked) return;
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    decrementSlot();
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/collect-lead', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onloadend = function() {
+      window.location.href = '/receiveaccess?name=' + encodeURIComponent(name);
+    };
+    xhr.onerror = function() {
+      window.location.href = '/receiveaccess?name=' + encodeURIComponent(name);
+    };
+    xhr.send(JSON.stringify({ name: name, email: email, phone: phone.startsWith('+') ? phone : country + phone, webhook: 'lt' }));
+  }
 </script>
 
 </body>
