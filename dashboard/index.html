@@ -380,11 +380,79 @@
 </div>
 
 <div class="tab-nav">
+  <button class="tab-btn" id="tab-overview" onclick="switchTab('overview')">Overview</button>
   <button class="tab-btn active" id="tab-funnel" onclick="switchTab('funnel')">Funnel Dashboard</button>
   <button class="tab-btn" id="tab-ads" onclick="switchTab('ads')">Ads Analysis</button>
   <button class="tab-btn" id="tab-model" onclick="switchTab('model')">Financial Model</button>
 <button class="tab-btn" id="tab-activity" onclick="switchTab('activity')">Sales Activity</button>
 <button class="tab-btn" id="tab-forecasts" onclick="switchTab('forecasts')">Forecasts</button>
+</div>
+
+<div id="view-overview">
+<div class="main">
+
+  <div class="chart-card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+      <div class="chart-title" style="margin-bottom:0;">Overview</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        <button class="sc-filter-btn" data-ov-f="Today"        onclick="setOverviewRange('Today')">Today</button>
+        <button class="sc-filter-btn active" data-ov-f="Yesterday" onclick="setOverviewRange('Yesterday')">Yesterday</button>
+        <button class="sc-filter-btn" data-ov-f="This Week"    onclick="setOverviewRange('This Week')">This Week</button>
+        <button class="sc-filter-btn" data-ov-f="Last 7 Days"  onclick="setOverviewRange('Last 7 Days')">Last 7 Days</button>
+        <button class="sc-filter-btn" data-ov-f="Last 30 Days" onclick="setOverviewRange('Last 30 Days')">Last 30 Days</button>
+        <button class="sc-filter-btn" data-ov-f="All Time"     onclick="setOverviewRange('All Time')">All Time</button>
+        <div class="sc-filter-sep"></div>
+        <input class="sc-date-input" type="date" id="ov-from" onchange="setOverviewRange('Custom')" title="From">
+        <span style="color:var(--text2);font-size:.8rem;">→</span>
+        <input class="sc-date-input" type="date" id="ov-to" onchange="setOverviewRange('Custom')" title="To">
+      </div>
+    </div>
+    <div id="ov-metric-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;">
+      <div class="sc-card"><div class="sc-metric">Loading</div><div class="sc-value">—</div></div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Recent Changes — Day by Day</div>
+    <div style="overflow-x:auto;">
+      <table class="sc-table" id="ov-recent-table">
+        <thead><tr><th style="text-align:left;">Metric</th></tr></thead>
+        <tbody><tr><td class="act-empty">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="chart-card" id="ov-lead-source-card">
+    <div class="chart-title">Lead Sources</div>
+    <div id="ov-ls-mismatch" style="display:none;margin-bottom:14px;padding:10px 14px;border-radius:8px;background:var(--yellow-bg);color:var(--yellow);font-size:.75rem;font-weight:700;">
+      ⚠ Tracked lead counts don't match manually-typed opt-ins for this range — check for a broken webhook/Zap.
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:16px;">
+      <div class="sc-card"><div class="sc-metric">Paid Leads</div><div class="sc-value" id="ov-ls-paid" style="color:var(--blue);">—</div></div>
+      <div class="sc-card"><div class="sc-metric">Organic Leads</div><div class="sc-value" id="ov-ls-organic" style="color:var(--green);">—</div></div>
+      <div class="sc-card"><div class="sc-metric">Ad Spend (Meta)</div><div class="sc-value" id="ov-ls-adspend" style="color:#fff;">—</div></div>
+      <div class="sc-card"><div class="sc-metric">Paid ROAS</div><div class="sc-value" id="ov-ls-roas" style="color:var(--yellow);">—</div></div>
+      <div class="sc-card"><div class="sc-metric">Cost Per Paid Lead</div><div class="sc-value" id="ov-ls-cpl" style="color:var(--yellow);">—</div></div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="sc-table">
+        <thead><tr><th style="text-align:left;">Date</th><th style="color:var(--blue);">Paid</th><th style="color:var(--green);">Organic</th><th>Total</th></tr></thead>
+        <tbody id="ov-ls-tbody"><tr><td colspan="4" class="act-empty">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">Leaderboard</div>
+    <div style="overflow-x:auto;">
+      <table class="sc-table">
+        <thead><tr><th style="text-align:left;">Rep</th><th>Software Closed</th><th>Outbound Dials</th><th>Cash Collected</th></tr></thead>
+        <tbody id="ov-lb-tbody"><tr><td colspan="4" class="act-empty">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
 </div>
 
 <div id="view-funnel" class="active">
@@ -1821,13 +1889,184 @@
 
   // ── Tab switching ────────────────────────────────────────────────────────────
   function switchTab(tab) {
-    ['funnel','ads','model','activity','forecasts'].forEach(t => {
+    ['overview','funnel','ads','model','activity','forecasts'].forEach(t => {
       document.getElementById('view-' + t).classList.toggle('active', tab === t);
       document.getElementById('tab-'  + t).classList.toggle('active', tab === t);
     });
     if (tab === 'model')     fmPopulateCurrentStats();
     if (tab === 'activity')  loadActivity();
     if (tab === 'forecasts') fcBuild();
+    if (tab === 'overview')  { loadOverview(); loadOverviewRecentChanges(); }
+  }
+
+  // ── Overview ─────────────────────────────────────────────────────────────
+  let overviewRange = 'Yesterday';
+
+  function money(n) {
+    if (n === null || n === undefined) return '—';
+    return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function pct(n) {
+    if (n === null || n === undefined) return '—';
+    return (Number(n) * 100).toFixed(1) + '%';
+  }
+  function intFmt(n) {
+    if (n === null || n === undefined) return '—';
+    return String(n);
+  }
+
+  const OV_METRIC_ITEMS = [
+    { key: 'sales',                   label: 'Sales',                                             color: 'var(--blue)',   fmt: intFmt },
+    { key: 'totalCashCollected',      label: 'Total Cash Collected',                               color: 'var(--green)',  fmt: money },
+    { key: 'cashCollectedLowTicket',  label: 'Cash Collected - Low Ticket',                        color: 'var(--green)',  fmt: money },
+    { key: 'cashCollectedHighTicket', label: 'Cash Collected - High Ticket',                       color: 'var(--green)',  fmt: money },
+    { key: 'pickupRate',              label: 'Pickup Rate (for total dials)',                      color: 'var(--yellow)', fmt: pct },
+    { key: 'connectionRate',          label: 'Connection Rate',                                    color: 'var(--yellow)', fmt: pct },
+    { key: 'pickups',                 label: 'Pickups',                                            color: 'var(--blue)',   fmt: intFmt },
+    { key: 'softwarePitched',         label: 'Software Pitched',                                   color: 'var(--purple)', fmt: intFmt },
+    { key: 'pitchRate',               label: 'Pitch Rate',                                         color: 'var(--yellow)', fmt: pct },
+    { key: 'cashPerOptInPaid',        label: 'Cash per Opt-in (Paid) - Low Ticket Only',            color: 'var(--green)',  fmt: money },
+    { key: 'aovLowTicket',            label: 'Low Ticket AOV',                                     color: 'var(--green)',  fmt: money },
+    { key: 'aovHighTicket',           label: 'High Ticket AOV',                                    color: 'var(--green)',  fmt: money },
+    { key: 'htPitchRate',             label: 'High Ticket Pitch Rate',                              color: 'var(--purple)', fmt: pct },
+    { key: 'upsellBookingRate',       label: 'Upsell Booking Rate',                                color: 'var(--purple)', fmt: pct },
+    { key: 'costPerLeadMeta',         label: 'Cost per Lead (Meta)',                                color: 'var(--yellow)', fmt: money },
+    { key: 'landingPageConnectRate',  label: 'Landing Page Connect Rate',                           color: 'var(--yellow)', fmt: pct },
+    { key: 'optInRate',               label: 'Opt in Rate (Opt Ins vs Views)',                      color: 'var(--yellow)', fmt: pct },
+    { key: 'vslViews',                label: 'VSL Views',                                           color: 'var(--blue)',   fmt: intFmt },
+    { key: 'vslPlayRate',             label: 'VSL Play Rate',                                       color: 'var(--yellow)', fmt: pct },
+    { key: 'vslEngagementRate',       label: 'VSL Engagement Rate',                                 color: 'var(--yellow)', fmt: pct },
+    { key: 'confirmationEmailOpenRate', label: 'Confirmation Email Open Rate',                      color: 'var(--yellow)', fmt: pct },
+    { key: 'connectionRateOnDials',   label: 'Connection Rate (On Total Dials)',                    color: 'var(--yellow)', fmt: pct },
+    { key: 'closeRateLowTicket',      label: 'Close Rate - Low Ticket',                             color: 'var(--yellow)', fmt: pct },
+    { key: 'funnelConversionRate',    label: 'Funnel Conversion Rate (LT Sales / Opt Ins)',         color: 'var(--yellow)', fmt: pct },
+  ];
+
+  const OV_RECENT_LABELS = [
+    { key: 'sales',                   label: 'Sales',                               fmt: intFmt },
+    { key: 'totalCashCollected',      label: 'Total Cash Collected',                fmt: money },
+    { key: 'cashCollectedLowTicket',  label: 'Cash Collected - Low Ticket',         fmt: money },
+    { key: 'cashCollectedHighTicket', label: 'Cash Collected - High Ticket',        fmt: money },
+    { key: 'pickupRate',              label: 'Pickup Rate (for total dials)',       fmt: pct },
+    { key: 'connectionRate',          label: 'Connection Rate',                     fmt: pct },
+    { key: 'pickups',                 label: 'Pickups',                             fmt: intFmt },
+    { key: 'softwarePitched',         label: 'Software Pitched',                    fmt: intFmt },
+    { key: 'pitchRate',               label: 'Pitch Rate',                          fmt: pct },
+    { key: 'aovLowTicket',            label: 'Low Ticket AOV',                      fmt: money },
+    { key: 'aovHighTicket',           label: 'High Ticket AOV',                     fmt: money },
+    { key: 'htPitchRate',             label: 'High Ticket Pitch Rate',              fmt: pct },
+    { key: 'upsellBookingRate',       label: 'Upsell Booking Rate',                 fmt: pct },
+    { key: 'costPerLeadMeta',         label: 'Cost per Lead (Meta)',                fmt: money },
+    { key: 'landingPageConnectRate',  label: 'Landing Page Connect Rate',           fmt: pct },
+    { key: 'optInRate',               label: 'Opt in Rate (Opt Ins vs Views)',      fmt: pct },
+    { key: 'vslViews',                label: 'VSL Views',                          fmt: intFmt },
+    { key: 'vslPlayRate',             label: 'VSL Play Rate',                       fmt: pct },
+    { key: 'vslEngagementRate',       label: 'VSL Engagement Rate',                 fmt: pct },
+    { key: 'confirmationEmailOpenRate', label: 'Confirmation Email Open Rate',      fmt: pct },
+    { key: 'connectionRateOnDials',   label: 'Connection Rate (On Total Dials)',    fmt: pct },
+    { key: 'closeRateLowTicket',      label: 'Close Rate - Low Ticket',             fmt: pct },
+    { key: 'funnelConversionRate',    label: 'Funnel Conversion Rate (LT Sales / Opt Ins)', fmt: pct },
+  ];
+
+  function setOverviewRange(r) {
+    overviewRange = r;
+    document.querySelectorAll('[data-ov-f]').forEach(b => b.classList.toggle('active', b.dataset.ovF === r));
+    loadOverview();
+  }
+
+  async function loadOverview() {
+    const grid = document.getElementById('ov-metric-grid');
+    try {
+      let url = '/api/overview-metrics?range=' + encodeURIComponent(overviewRange) + '&t=' + Date.now();
+      if (overviewRange === 'Custom') {
+        const from = document.getElementById('ov-from').value;
+        const to   = document.getElementById('ov-to').value;
+        if (from) url += '&start=' + from;
+        if (to)   url += '&end=' + to;
+      }
+      const r = await fetch(url);
+      const data = await r.json();
+      if (data.error) throw new Error(data.error);
+      const m = data.metrics;
+      grid.innerHTML = OV_METRIC_ITEMS.map(item => `
+        <div class="sc-card">
+          <div class="sc-metric">${item.label}</div>
+          <div class="sc-value" style="color:${item.color};">${item.fmt(m[item.key])}</div>
+        </div>`).join('');
+    } catch (e) {
+      grid.innerHTML = `<div class="sc-card"><div class="sc-metric">Error</div><div class="sc-value" style="color:var(--red);font-size:.85rem;">${e.message}</div></div>`;
+    }
+
+    // Lead Sources panel shares the same range
+    const lsBody = document.getElementById('ov-ls-tbody');
+    try {
+      let lsUrl = '/api/overview-leads-source?range=' + encodeURIComponent(overviewRange) + '&t=' + Date.now();
+      if (overviewRange === 'Custom') {
+        const from = document.getElementById('ov-from').value;
+        const to   = document.getElementById('ov-to').value;
+        if (from) lsUrl += '&start=' + from;
+        if (to)   lsUrl += '&end=' + to;
+      }
+      const r = await fetch(lsUrl);
+      const d = await r.json();
+      if (d.error) throw new Error(d.error);
+      document.getElementById('ov-ls-paid').textContent    = intFmt(d.paidLeads);
+      document.getElementById('ov-ls-organic').textContent = intFmt(d.organicLeads);
+      document.getElementById('ov-ls-adspend').textContent = money(d.adSpendMeta);
+      document.getElementById('ov-ls-roas').textContent    = d.paidRoas == null ? '—' : Number(d.paidRoas).toFixed(2) + 'x';
+      document.getElementById('ov-ls-cpl').textContent     = money(d.costPerPaidLead);
+      document.getElementById('ov-ls-mismatch').style.display = d.mismatch ? 'block' : 'none';
+      const rows = d.rows || [];
+      lsBody.innerHTML = rows.length
+        ? rows.map(row => `<tr><td style="text-align:left;">${row.date}</td><td>${row.paid}</td><td>${row.organic}</td><td>${row.total}</td></tr>`).join('')
+        : '<tr><td colspan="4" class="act-empty">No leads for this range.</td></tr>';
+    } catch (e) {
+      lsBody.innerHTML = `<tr><td colspan="4" class="act-empty">Error: ${e.message}</td></tr>`;
+    }
+
+    // Leaderboard shares the same range
+    const lbBody = document.getElementById('ov-lb-tbody');
+    try {
+      let lbUrl = '/api/overview-leaderboard?range=' + encodeURIComponent(overviewRange) + '&t=' + Date.now();
+      if (overviewRange === 'Custom') {
+        const from = document.getElementById('ov-from').value;
+        const to   = document.getElementById('ov-to').value;
+        if (from) lbUrl += '&start=' + from;
+        if (to)   lbUrl += '&end=' + to;
+      }
+      const r = await fetch(lbUrl);
+      const d = await r.json();
+      if (d.error) throw new Error(d.error);
+      const board = d.leaderboard || [];
+      lbBody.innerHTML = board.length
+        ? board.map(row => `<tr><td style="text-align:left;">${row.rep}</td><td>${row.softwareClosed}</td><td>${row.outboundDials}</td><td>${money(row.cashCollected)}</td></tr>`).join('')
+        : '<tr><td colspan="4" class="act-empty">No submissions for this range.</td></tr>';
+    } catch (e) {
+      lbBody.innerHTML = `<tr><td colspan="4" class="act-empty">Error: ${e.message}</td></tr>`;
+    }
+  }
+
+  async function loadOverviewRecentChanges() {
+    const table = document.getElementById('ov-recent-table');
+    try {
+      const r = await fetch('/api/overview-recent-changes?t=' + Date.now());
+      const data = await r.json();
+      if (data.error) throw new Error(data.error);
+      const days = data.days || [];
+      const baseline = data.baseline;
+      const cols = [...days, baseline];
+      const thead = '<tr><th style="text-align:left;">Metric</th>' + cols.map((d, i) =>
+        `<th>${d.date}${i === cols.length - 1 ? ' (baseline)' : ''}${d.hasSubmission ? '' : ' — no submission'}</th>`
+      ).join('') + '</tr>';
+      const tbody = OV_RECENT_LABELS.map(item => {
+        const cells = cols.map(d => `<td>${item.fmt(d.metrics[item.key])}</td>`).join('');
+        return `<tr><td style="text-align:left;">${item.label}</td>${cells}</tr>`;
+      }).join('');
+      table.querySelector('thead').innerHTML = thead;
+      table.querySelector('tbody').innerHTML = tbody;
+    } catch (e) {
+      table.querySelector('tbody').innerHTML = `<tr><td class="act-empty">Error: ${e.message}</td></tr>`;
+    }
   }
 
   // ── Sales Activity ────────────────────────────────────────────────────────
