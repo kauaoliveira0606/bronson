@@ -824,53 +824,8 @@
 </div>
 
 <div style="padding:0 24px 28px;text-align:center;">
-  <div style="background:#fff;border:1.5px solid #eee;border-radius:24px;max-width:480px;width:100%;margin:0 auto;padding:32px 28px 26px;">
-
-    <img src="/paid/logo.png" alt="the inner table" style="display:block;height:74px;width:auto;margin:0 auto 14px;" />
-
-    <h2 style="text-align:center;font-size:1.7rem;font-weight:900;color:#0a0a0a;letter-spacing:-0.5px;margin-bottom:10px;">Claim Your Free Access</h2>
-
-    <p style="text-align:center;color:#666;font-size:0.95rem;line-height:1.55;margin-bottom:24px;">Drop your info below and a coach will call you to onboard you.</p>
-
-  <form id="inline-form" onsubmit="handleInlineForm(event)" style="display:flex;flex-direction:column;gap:12px;max-width:420px;margin:0 auto;text-align:left;">
-    <input id="i-name" type="text" placeholder="First name" required style="background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 20px;font-size:0.95rem;font-family:'Inter',sans-serif;outline:none;transition:border .15s;color:#111;" onfocus="this.style.borderColor='#22c55e'" onblur="this.style.borderColor='#e5e7eb'" />
-    <input id="i-email" type="email" placeholder="Email" required style="background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 20px;font-size:0.95rem;font-family:'Inter',sans-serif;outline:none;transition:border .15s;color:#111;" onfocus="this.style.borderColor='#22c55e'" onblur="this.style.borderColor='#e5e7eb'" />
-    <div style="display:flex;gap:10px;">
-      <select id="i-country" style="background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 16px;font-size:0.9rem;font-family:'Inter',sans-serif;color:#333;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;min-width:110px;text-align:center;">
-        <option value="+1">🇺🇸 +1</option>
-        <option value="+1">🇨🇦 +1</option>
-        <option value="+44">🇬🇧 +44</option>
-        <option value="+61">🇦🇺 +61</option>
-        <option value="+64">🇳🇿 +64</option>
-        <option value="+49">🇩🇪 +49</option>
-        <option value="+33">🇫🇷 +33</option>
-        <option value="+39">🇮🇹 +39</option>
-        <option value="+34">🇪🇸 +34</option>
-        <option value="+31">🇳🇱 +31</option>
-        <option value="+32">🇧🇪 +32</option>
-        <option value="+41">🇨🇭 +41</option>
-        <option value="+43">🇦🇹 +43</option>
-        <option value="+46">🇸🇪 +46</option>
-        <option value="+47">🇳🇴 +47</option>
-        <option value="+45">🇩🇰 +45</option>
-        <option value="+358">🇫🇮 +358</option>
-        <option value="+353">🇮🇪 +353</option>
-        <option value="+351">🇵🇹 +351</option>
-        <option value="+81">🇯🇵 +81</option>
-        <option value="+82">🇰🇷 +82</option>
-        <option value="+65">🇸🇬 +65</option>
-        <option value="+852">🇭🇰 +852</option>
-        <option value="+971">🇦🇪 +971</option>
-        <option value="+972">🇮🇱 +972</option>
-        <option value="+55">🇧🇷 +55</option>
-        <option value="+52">🇲🇽 +52</option>
-      </select>
-      <input id="i-phone" type="tel" required placeholder="Phone number" style="flex:1;background:#f5f5f5;border:1.5px solid #e5e7eb;border-radius:50px;padding:15px 20px;font-size:0.95rem;font-family:'Inter',sans-serif;outline:none;transition:border .15s;color:#111;" onfocus="this.style.borderColor='#22c55e'" onblur="this.style.borderColor='#e5e7eb'" />
-    </div>
-    <p id="i-err" role="alert" style="display:none;color:#dc2626;font-size:0.85rem;font-weight:600;line-height:1.4;margin:0 6px;text-align:left;"></p>
-    <button type="submit" class="cta-btn" style="width:100%;font-size:1.05rem;margin-top:2px;color:#fff;">Claim Your Free Access</button>
-  </form>
-  </div>
+  <button class="cta-btn" style="max-width:380px;width:100%;" onclick="openModal()">GET MY SYSTEM <span aria-hidden="true">→</span><span class="cta-btn-sub">(AI Tools + Free Course)</span></button>
+  <br />
   <div style="display:inline-flex;align-items:center;gap:10px;margin-top:14px;background:#0a0a0a;border-radius:100px;padding:8px 18px 8px 8px;box-shadow:0 4px 16px rgba(0,0,0,0.12);">
     <div style="width:30px;height:30px;border-radius:8px;overflow:hidden;flex-shrink:0;">
       <img src="/paid/whop-icon.png" alt="Whop" style="width:100%;height:100%;object-fit:cover;display:block;" />
@@ -1611,32 +1566,6 @@
   }
 
   updateSlotsDisplay();
-
-  function handleInlineForm(e) {
-    e.preventDefault();
-    const name = document.getElementById('i-name').value.trim();
-    const email = document.getElementById('i-email').value.trim();
-    const country = document.getElementById('i-country').value;
-    const phone = document.getElementById('i-phone').value.trim();
-    if (!name) return formError('i', 'Please enter your first name.', 'i-name');
-    if (!email) return formError('i', 'Please enter your email address.', 'i-email');
-    if (!phoneOk(country, phone)) return formError('i', phoneMsg(country), 'i-phone');
-    document.getElementById('i-err').style.display = 'none';
-    const btn = e.target.querySelector('button[type="submit"]');
-    btn.textContent = 'Sending...';
-    btn.disabled = true;
-    decrementSlot();
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/api/collect-lead', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onloadend = function() {
-      window.location.href = '/receiveaccess?name=' + encodeURIComponent(name);
-    };
-    xhr.onerror = function() {
-      window.location.href = '/receiveaccess?name=' + encodeURIComponent(name);
-    };
-    xhr.send(JSON.stringify({ name: name, email: email, phone: phone.startsWith('+') ? phone : country + phone, webhook: 'lt' }));
-  }
 </script>
 
 </body>
