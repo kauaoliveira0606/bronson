@@ -202,6 +202,32 @@
     }
     .phone-row input { flex: 1; }
 
+    .sms-consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #f9fafb;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      color: var(--text2);
+      text-align: left;
+      cursor: pointer;
+    }
+    form.optin .sms-consent input {
+      flex: none;
+      width: 18px;
+      height: 18px;
+      margin: 1px 0 0;
+      padding: 0;
+      border-radius: 4px;
+      accent-color: var(--green-dark);
+      cursor: pointer;
+    }
+    .sms-consent a { color: var(--green-dark); text-decoration: underline; }
+
     .form-err {
       display: none;
       color: #dc2626;
@@ -896,8 +922,16 @@
         <option value="+55">🇧🇷 +55</option>
         <option value="+52">🇲🇽 +52</option>
       </select>
-      <input type="tel" data-field="phone" placeholder="Phone number" autocomplete="tel-national" aria-label="Phone number" required />
+      <input type="tel" data-field="phone" placeholder="Phone (optional)" autocomplete="tel-national" aria-label="Phone number (optional)" />
     </div>
+    <label class="sms-consent">
+      <input type="checkbox" data-field="smsMarketing" />
+      <span>I agree to receive Marketing SMS messages from Adventur. Message frequency varies. Message and data rates may apply. Reply STOP to unsubscribe or HELP for assistance. View our <a href="/privacy" target="_blank">Privacy Policy</a> and <a href="/terms" target="_blank">Terms of Service</a>.</span>
+    </label>
+    <label class="sms-consent">
+      <input type="checkbox" data-field="smsTransactional" />
+      <span>I agree to receive Transactional SMS messages from Adventur. Message frequency varies. Message and data rates may apply. Reply STOP to unsubscribe or HELP for assistance. View our <a href="/privacy" target="_blank">Privacy Policy</a> and <a href="/terms" target="_blank">Terms of Service</a>.</span>
+    </label>
     <p class="form-err" role="alert"></p>
     <button type="submit" class="cta-btn">Save My Free Seat <span aria-hidden="true">&rarr;</span></button>
   </form>
@@ -1111,7 +1145,7 @@
     var phone = field(card, 'phone').value.trim();
     if (!name) return formError(card, 'Please enter your first name.', 'name');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return formError(card, 'Please enter a valid email address.', 'email');
-    if (!phoneOk(country, phone)) return formError(card, phoneMsg(country), 'phone');
+    if (phone && !phoneOk(country, phone)) return formError(card, phoneMsg(country), 'phone');
     card.querySelector('.form-err').style.display = 'none';
 
     var btn = card.querySelector('button[type="submit"]');
@@ -1125,7 +1159,9 @@
     xhr.send(JSON.stringify({
       name: name,
       email: email,
-      phone: phone.charAt(0) === '+' ? phone : country + phone,
+      phone: !phone || phone.charAt(0) === '+' ? phone : country + phone,
+      smsMarketingConsent: field(card, 'smsMarketing').checked,
+      smsTransactionalConsent: field(card, 'smsTransactional').checked,
       webhook: 'masterclass',
       masterclassDate: session.toISOString(),
       pageUrl: window.location.href

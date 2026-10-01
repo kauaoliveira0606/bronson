@@ -9,7 +9,8 @@ module.exports = async function handler(req, res) {
   const { name, email, phone, webhook } = body;
   console.log('collect-lead:', JSON.stringify({ name, email, phone, webhook }));
 
-  if (!email || !name || !phone) {
+  // Phone is optional on the masterclass form only.
+  if (!email || !name || (!phone && webhook !== 'masterclass')) {
     console.log('Rejected: missing required fields');
     return res.status(400).json({ error: 'Missing required fields' });
   }
@@ -34,7 +35,12 @@ module.exports = async function handler(req, res) {
   }
 
   const payload = webhook === 'masterclass'
-    ? { name, email, phone, masterclassDate: body.masterclassDate, pageUrl: body.pageUrl, source: 'masterclass' }
+    ? {
+        name, email, phone: phone || '',
+        smsMarketingConsent: !!body.smsMarketingConsent,
+        smsTransactionalConsent: !!body.smsTransactionalConsent,
+        masterclassDate: body.masterclassDate, pageUrl: body.pageUrl, source: 'masterclass',
+      }
     : { name, email, phone };
 
   try {
