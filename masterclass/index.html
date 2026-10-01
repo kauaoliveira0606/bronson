@@ -114,6 +114,53 @@
     }
     .hero-sub + .hero-sub { margin-top: 8px; }
 
+    .hero-subhead {
+      font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--body);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .discover {
+      max-width: 640px;
+      margin: 28px auto 0;
+      background: var(--card);
+      border: 1.5px solid rgba(34,197,94,0.35);
+      border-radius: 20px;
+      padding: 26px 28px;
+      text-align: left;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .discover-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--green-dark);
+      margin-bottom: 8px;
+    }
+    .discover-intro { font-size: 1.05rem; font-weight: 600; color: var(--text); line-height: 1.5; }
+    .discover-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin: 18px 0 0; }
+    .discover-list li { display: flex; gap: 12px; align-items: flex-start; font-size: 1rem; color: var(--body); line-height: 1.5; }
+    .discover-list li strong { color: var(--text); font-weight: 700; }
+    .discover-num {
+      flex: none;
+      width: 26px;
+      height: 26px;
+      margin-top: 1px;
+      border-radius: 50%;
+      background: var(--green-dark);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .discover-foot { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 0.95rem; color: var(--body); }
+
     /* ── REGISTER ── */
     .register-block { margin-top: 36px; scroll-margin-top: 24px; }
 
@@ -576,6 +623,8 @@
       .hero { padding: 24px 16px 40px; }
       .hero h1 { font-size: 1.5rem; }
       .hero-sub { font-size: 0.95rem; }
+      .discover { padding: 20px 18px; }
+      .discover-list li { font-size: 0.95rem; }
       .section { padding: 40px 16px; }
       .form-card { padding: 20px; }
       .meet-card { padding: 20px; }
@@ -598,8 +647,18 @@
 <div class="hero">
   <div class="hero-badge"><span class="dot" style="margin-right:0;"></span>For People Already In E&#8209;commerce, Or Who've Tried It Before</div>
   <h1>Discover How You Can <span class="green">Finally Find Success</span> In E&#8209;commerce By Following The <span class="green">Subscription&#8209;First</span> Dropshipping Model</h1>
-  <p class="hero-sub">You'll discover the exact system that hundreds of people are using to build a $1K+ revenue a day MRR (monthly recurring revenue) e&#8209;commerce business.</p>
-  <p class="hero-sub">So your income stops resetting to zero and you get your freedom back.</p>
+  <p class="hero-subhead">Without Testing Tens Of Different Products, Even If You've Tried E&#8209;commerce Before And Failed Or You're A Beginner To This</p>
+
+  <div class="discover">
+    <div class="discover-label">You'll Discover</div>
+    <p class="discover-intro">The exact system that hundreds of people are using to build a $1K+ revenue a day MRR (monthly recurring revenue) e&#8209;commerce business.</p>
+    <ul class="discover-list">
+      <li><span class="discover-num">1</span><span><strong>How to pick the one product customers reorder every month</strong>, even if every product you've tested before flopped</span></li>
+      <li><span class="discover-num">2</span><span><strong>The exact method for turning one sale into income that comes back every month</strong>, without having to find a brand new customer every day</span></li>
+      <li><span class="discover-num">3</span><span><strong>How AI can build your whole store and your first ads for you</strong>, even if you're not a tech person, and without buying a single product upfront</span></li>
+    </ul>
+    <p class="discover-foot">So your income stops resetting to zero and you get your freedom back.</p>
+  </div>
 
   <div class="register-block" id="register">
     <div class="step-label">Free Live Masterclass. Happening <span class="js-event-short">Wednesday at 7 PM EST</span></div>
@@ -739,7 +798,7 @@
       <div>
         <div class="cover-num">02</div>
         <h3>The Subscription&#8209;First Dropshipping Model</h3>
-        <p>Supplements and consumables mean customers come back every month without you doing anything.</p>
+        <p>You sell products people use up and reorder, like supplements, so customers come back every month without you doing anything.</p>
         <p>I'll walk through the exact system hundreds of people are using to build $1K+ revenue a day in MRR (monthly recurring revenue).</p>
       </div>
     </div>
@@ -753,19 +812,19 @@
           <rect x="52" y="112" width="74" height="46" fill="#22c55e"/>
           <text x="89" y="141" font-family="Inter, sans-serif" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">YOUR</text>
           <g font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#111">
-            <circle cx="176" cy="92" r="11" fill="#dcfce7"/><path d="M171 92l4 4 7-7" fill="none" stroke="#16a34a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><text x="198" y="97">Proven demand</text>
+            <circle cx="176" cy="92" r="11" fill="#dcfce7"/><path d="M171 92l4 4 7-7" fill="none" stroke="#16a34a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><text x="198" y="97">Already selling</text>
             <circle cx="176" cy="132" r="11" fill="#dcfce7"/><path d="M171 132l4 4 7-7" fill="none" stroke="#16a34a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><text x="198" y="137">Reordered monthly</text>
             <circle cx="176" cy="172" r="11" fill="#dcfce7"/><path d="M171 172l4 4 7-7" fill="none" stroke="#16a34a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><text x="198" y="177">Your brand on it</text>
           </g>
           <text x="40" y="38" font-family="Inter, sans-serif" font-size="15" font-weight="800" fill="#111">One Product</text>
         </svg>
-        <div class="caption">One Product, Picked On Data</div>
+        <div class="caption">One Product People Already Buy</div>
       </div>
       <div>
         <div class="cover-num">03</div>
         <h3>How To Pick One Product People Reorder</h3>
         <p>No more testing a new product every week.</p>
-        <p>I'll show you how to find one product with proven demand and put your own brand on it.</p>
+        <p>I'll show you how to find one product people are already buying and put your own brand on it.</p>
       </div>
     </div>
 
@@ -792,7 +851,7 @@
       <div>
         <div class="cover-num">04</div>
         <h3>How AI Sets It Up Without You Buying Inventory</h3>
-        <p>AI finds products, builds the store, makes ads, and connects suppliers.</p>
+        <p>AI finds products, builds the store, makes ads, and connects you with suppliers.</p>
         <p>You only pay for a product after a customer buys it, and your supplier ships it for you.</p>
       </div>
     </div>
@@ -885,7 +944,7 @@
       </div>
       <div class="why-body">
         <strong>Recurring Demand</strong>
-        <p>Supplements and consumables mean customers come back every month without you doing anything.</p>
+        <p>Supplements and other products people use up mean customers come back every month without you doing anything.</p>
       </div>
     </div>
     <div class="why-item">
@@ -1039,11 +1098,11 @@
     { img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee8a07f504aeaca49f2f7f.jpeg', tag: 'From Zero', title: 'Daniel', sub: '"1 month in and look at that spike. Zero sales before."' },
     { img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee8b33585902432f7f8a20.jpeg', tag: 'Ads Success', title: 'Micah', sub: '"The 1-on-1 help with running the ads has been so awesome."' },
     { img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee920b8f6c2c4ed1a2d580.png', tag: '$30k in 23 Days', title: '$30,000 revenue', sub: 'In the last 23 days' },
-    { img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee9318918308897e0d8c9b.png', tag: '8.79x ROAS', title: 'Skin care niche', sub: 'TikTok ads crushing it' },
-    { img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee939558590276507f9c6c.png', tag: '3.59x ROAS', title: 'New student, under 1 month in', sub: 'Already scaling' },
+    { img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee9318918308897e0d8c9b.png', tag: '8.79x Return On Ad Spend', title: 'Skin care niche', sub: 'TikTok ads crushing it' },
+    { img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee939558590276507f9c6c.png', tag: '3.59x Return On Ad Spend', title: 'New student, under 1 month in', sub: 'Already scaling' },
     { img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee946b918308652f0d8de4.png', tag: 'Live Results', title: 'Current results', sub: 'No old screenshots here' },
-    { img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95224930c4210b003576.png', tag: 'Clothing Niche', title: 'First drop sold out', sub: 'Clothing brand, strong ROAS on first run' },
-    { img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95b6e416f131f1a415da.png', tag: '3.61x ROAS', title: 'Organic hair &amp; skin care brand', sub: 'Ripping sales with Meta ads' },
+    { img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95224930c4210b003576.png', tag: 'Clothing Niche', title: 'First drop sold out', sub: 'Clothing brand, ads paid for themselves on the first run' },
+    { img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95b6e416f131f1a415da.png', tag: '3.61x Return On Ad Spend', title: 'Organic hair &amp; skin care brand', sub: 'Ripping sales with Meta ads' },
     { img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee96518f6c2cb9f8a2da5b.png', tag: 'Supplement Niche', title: '$100k+ months incoming', sub: 'Getting into the big numbers' }
   ];
 
