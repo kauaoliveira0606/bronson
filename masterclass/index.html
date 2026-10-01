@@ -1153,6 +1153,43 @@
     field(card, name).focus();
   }
 
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  /* ---------- Partial submissions ---------- */
+  // Once there's a valid email, save whatever is filled in so the lead isn't lost
+  // if they leave before submitting. Re-sent only when something changed.
+  var submitted = false;
+  var lastPartial = '';
+  function sendPartial(card) {
+    if (submitted) return;
+    var email = field(card, 'email').value.trim();
+    if (!EMAIL_RE.test(email)) return;
+    var country = field(card, 'country').value;
+    var phone = field(card, 'phone').value.trim();
+    if (phone && !phoneOk(country, phone)) phone = '';
+    var capital = card.querySelector('[data-group="capital"]:checked');
+    var data = JSON.stringify({
+      name: field(card, 'name').value.trim(),
+      email: email,
+      phone: !phone || phone.charAt(0) === '+' ? phone : country + phone,
+      capital: capital ? capital.value : '',
+      webhook: 'masterclass',
+      partial: true,
+      masterclassDate: session.toISOString(),
+      masterclassLabel: formatSession(session),
+      pageUrl: window.location.href
+    });
+    if (data === lastPartial) return;
+    lastPartial = data;
+    try {
+      fetch('/api/collect-lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: data, keepalive: true }).catch(function () {});
+    } catch (err) {}
+  }
+  cards.forEach(function (card) {
+    card.querySelector('form').addEventListener('change', function () { sendPartial(card); });
+  });
+  window.addEventListener('pagehide', function () { cards.forEach(sendPartial); });
+
   function handleOptin(e, card) {
     e.preventDefault();
     var name = field(card, 'name').value.trim();
@@ -1160,7 +1197,7 @@
     var country = field(card, 'country').value;
     var phone = field(card, 'phone').value.trim();
     if (!name) return formError(card, 'Please enter your first name.', 'name');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return formError(card, 'Please enter a valid email address.', 'email');
+    if (!EMAIL_RE.test(email)) return formError(card, 'Please enter a valid email address.', 'email');
     if (phone && !phoneOk(country, phone)) return formError(card, phoneMsg(country), 'phone');
     var capital = card.querySelector('[data-group="capital"]:checked');
     if (!capital) {
@@ -1170,6 +1207,7 @@
       return;
     }
     card.querySelector('.form-err').style.display = 'none';
+    submitted = true;
 
     var btn = card.querySelector('button[type="submit"]');
     btn.textContent = 'Saving Your Seat...';
