@@ -326,6 +326,27 @@
       text-align: left;
     }
 
+    .trust-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 4px; }
+    .trust-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 100px;
+      padding: 6px 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--body);
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    .trust-badge svg { color: var(--green-dark); flex: none; }
+    .trust-badge.dark { background: #0a0a0a; border-color: #0a0a0a; color: #fff; padding: 5px 12px 5px 5px; }
+    .trust-badge.dark img { width: 22px; height: 22px; border-radius: 6px; display: block; }
+    .trust-badge.dark > span { display: flex; flex-direction: column; align-items: flex-start; }
+    .trust-stars { color: #facc15; font-size: 0.6rem; letter-spacing: 1px; }
+
     .form-note {
       text-align: center;
       font-size: 0.72rem;
@@ -666,13 +687,6 @@
     <div class="countdown js-countdown"></div>
     <p class="fill-note"><span class="dot"></span>Register before it fills.</p>
     <div class="form-card" id="form-card-top"></div>
-    <div class="whop-pill">
-      <img src="/paid/whop-icon.png" alt="Whop" />
-      <div class="whop-text">
-        <span class="whop-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-        <span class="whop-label">4.8-Star Rated on Whop</span>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -713,7 +727,7 @@
     </div>
   </div>
   <div class="cta-row">
-    <a href="#register" class="cta-btn">Save My Free Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
+    <a href="#register" class="cta-btn">Reserve My Spot <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
 
@@ -737,7 +751,7 @@
     </div>
   </div>
   <div class="cta-row">
-    <a href="#register" class="cta-btn">Save My Free Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
+    <a href="#register" class="cta-btn">Yes, I'm In <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
 
@@ -881,7 +895,7 @@
   </div>
 
   <div class="cta-row">
-    <a href="#register" class="cta-btn">Save My Free Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
+    <a href="#register" class="cta-btn">Save My Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
 
@@ -967,7 +981,7 @@
     </div>
   </div>
   <div class="cta-row">
-    <a href="#register" class="cta-btn">Save My Free Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
+    <a href="#register" class="cta-btn">Reserve My Spot <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
 
@@ -980,7 +994,7 @@
   <p class="section-desc">No hype. Just outcomes from students running the same model I'm teaching live.</p>
   <div class="win-cols js-wins"></div>
   <div class="cta-row">
-    <a href="#register" class="cta-btn">Save My Free Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
+    <a href="#register" class="cta-btn">Yes, I'm In <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
 
@@ -1078,9 +1092,14 @@
       <span>I agree to receive Transactional SMS messages from Adventur. Message frequency varies. Message and data rates may apply. Reply STOP to unsubscribe or HELP for assistance. View our <a href="/privacy" target="_blank">Privacy Policy</a> and <a href="/terms" target="_blank">Terms of Service</a>.</span>
     </label>
     <p class="form-err" role="alert"></p>
-    <button type="submit" class="cta-btn">Save My Free Seat <span aria-hidden="true">&rarr;</span></button>
+    <button type="submit" class="cta-btn"><span class="js-submit-label">Save My Seat</span> <span aria-hidden="true">&rarr;</span></button>
+    <div class="trust-row">
+      <span class="trust-badge dark"><img src="/paid/whop-icon.png" alt="" /><span><span class="trust-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>4.7-Star Rated on Whop</span></span>
+      <span class="trust-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Hundreds Of Students</span>
+      <span class="trust-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>100% Secure</span>
+    </div>
   </form>
-  <p class="form-note">Your information is 100% secure.<br>By submitting you agree to our <a href="/terms" target="_blank">terms</a> and <a href="/privacy" target="_blank">policies</a>.</p>
+  <p class="form-note">By submitting you agree to our <a href="/terms" target="_blank">terms</a> and <a href="/privacy" target="_blank">policies</a>.</p>
 </template>
 
 <script>
@@ -1112,6 +1131,7 @@
     var card = document.getElementById(id);
     card.appendChild(template.content.cloneNode(true));
     card.querySelectorAll('[data-group="capital"]').forEach(function (r) { r.name = id + '-capital'; });
+    if (id === 'form-card-bottom') card.querySelector('.js-submit-label').textContent = "Yes, I'm In";
     card.querySelector('form').addEventListener('submit', function (e) { handleOptin(e, card); });
     return card;
   });
