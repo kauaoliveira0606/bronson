@@ -18,18 +18,11 @@ module.exports = async function handler(req, res) {
   const urls = {
     lt:   'https://kauaoliveira06.app.n8n.cloud/webhook/free-course-lt-optin',
     paid: 'https://kauaoliveira06.app.n8n.cloud/webhook/free-course-paid-optin',
+    masterclass: 'https://kauaoliveira06.app.n8n.cloud/webhook/masterclass-optin',
   };
-
-  // Masterclass registrations: no destination wired yet. Until MASTERCLASS_WEBHOOK_URL
-  // is set, registrations are only written to the function logs.
-  if (webhook === 'masterclass') urls.masterclass = process.env.MASTERCLASS_WEBHOOK_URL;
 
   const url = urls[webhook];
   if (!url) {
-    if (webhook === 'masterclass') {
-      console.log('MASTERCLASS LEAD (no webhook set):', JSON.stringify(body));
-      return res.status(200).json({ ok: true });
-    }
     console.log('Unknown webhook:', webhook);
     return res.status(400).json({ error: 'Unknown webhook' });
   }
@@ -37,9 +30,10 @@ module.exports = async function handler(req, res) {
   const payload = webhook === 'masterclass'
     ? {
         name, email, phone: phone || '',
+        capital: body.capital || '',
         smsMarketingConsent: !!body.smsMarketingConsent,
         smsTransactionalConsent: !!body.smsTransactionalConsent,
-        masterclassDate: body.masterclassDate, pageUrl: body.pageUrl, source: 'masterclass',
+        masterclassDate: body.masterclassDate, masterclassLabel: body.masterclassLabel, pageUrl: body.pageUrl, source: 'masterclass',
       }
     : { name, email, phone };
 
