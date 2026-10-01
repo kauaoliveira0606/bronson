@@ -278,33 +278,6 @@
     }
     .phone-row input { flex: 1; }
 
-    .radio-group { display: flex; flex-direction: column; gap: 8px; text-align: left; }
-    .radio-label { font-size: 0.9rem; font-weight: 700; color: var(--text); margin: 4px 6px 2px; }
-    .radio-opt {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: #f5f5f5;
-      border: 1.5px solid #e5e7eb;
-      border-radius: 50px;
-      padding: 13px 20px;
-      font-size: 0.95rem;
-      color: #111;
-      cursor: pointer;
-      transition: border .15s;
-    }
-    .radio-opt:hover { border-color: var(--green); }
-    .radio-opt:has(input:checked) { border-color: var(--green); background: rgba(34,197,94,0.08); }
-    form.optin .radio-opt input {
-      flex: none;
-      width: 18px;
-      height: 18px;
-      margin: 0;
-      padding: 0;
-      accent-color: var(--green-dark);
-      cursor: pointer;
-    }
-
     .sms-consent {
       display: flex;
       align-items: flex-start;
@@ -1102,13 +1075,6 @@
       </select>
       <input type="tel" data-field="phone" placeholder="Phone (optional)" autocomplete="tel-national" aria-label="Phone number (optional)" />
     </div>
-    <div class="radio-group">
-      <div class="radio-label">How Much Capital Do You Have To Invest In The Business?</div>
-      <label class="radio-opt"><input type="radio" data-group="capital" value="$500-$1,000" /> $500 to $1,000</label>
-      <label class="radio-opt"><input type="radio" data-group="capital" value="$1,000-$3,000" /> $1,000 to $3,000</label>
-      <label class="radio-opt"><input type="radio" data-group="capital" value="$3,000-$6,000" /> $3,000 to $6,000</label>
-      <label class="radio-opt"><input type="radio" data-group="capital" value="$6,000-$10,000+" /> $6,000 to $10,000+</label>
-    </div>
     <label class="sms-consent">
       <input type="checkbox" data-field="smsMarketing" />
       <span>I agree to receive Marketing SMS messages from Adventur. Message frequency varies. Message and data rates may apply. Reply STOP to unsubscribe or HELP for assistance. View our <a href="/privacy" target="_blank">Privacy Policy</a> and <a href="/terms" target="_blank">Terms of Service</a>.</span>
@@ -1156,7 +1122,6 @@
   var cards = ['form-card-top', 'form-card-bottom'].map(function (id) {
     var card = document.getElementById(id);
     card.appendChild(template.content.cloneNode(true));
-    card.querySelectorAll('[data-group="capital"]').forEach(function (r) { r.name = id + '-capital'; });
     if (id === 'form-card-bottom') card.querySelector('.js-submit-label').textContent = "Yes, I'm In";
     card.querySelector('form').addEventListener('submit', function (e) { handleOptin(e, card); });
     return card;
@@ -1331,12 +1296,10 @@
     var country = field(card, 'country').value;
     var phone = field(card, 'phone').value.trim();
     if (phone && !phoneOk(country, phone)) phone = '';
-    var capital = card.querySelector('[data-group="capital"]:checked');
     var data = JSON.stringify({
       name: field(card, 'name').value.trim(),
       email: email,
       phone: !phone || phone.charAt(0) === '+' ? phone : country + phone,
-      capital: capital ? capital.value : '',
       webhook: 'masterclass',
       partial: true,
       masterclassDate: session.toISOString(),
@@ -1363,13 +1326,6 @@
     if (!name) return formError(card, 'Please enter your first name.', 'name');
     if (!EMAIL_RE.test(email)) return formError(card, 'Please enter a valid email address.', 'email');
     if (phone && !phoneOk(country, phone)) return formError(card, phoneMsg(country), 'phone');
-    var capital = card.querySelector('[data-group="capital"]:checked');
-    if (!capital) {
-      var err = card.querySelector('.form-err');
-      err.textContent = 'Please pick how much capital you have to invest.';
-      err.style.display = 'block';
-      return;
-    }
     card.querySelector('.form-err').style.display = 'none';
     submitted = true;
 
@@ -1388,7 +1344,6 @@
       name: name,
       email: email,
       phone: !phone || phone.charAt(0) === '+' ? phone : country + phone,
-      capital: capital.value,
       smsMarketingConsent: field(card, 'smsMarketing').checked,
       smsTransactionalConsent: field(card, 'smsTransactional').checked,
       webhook: 'masterclass',
