@@ -19,17 +19,29 @@ module.exports = async function handler(req, res) {
     paid: 'https://kauaoliveira06.app.n8n.cloud/webhook/free-course-paid-optin',
   };
 
+  // Masterclass registrations: no destination wired yet. Until MASTERCLASS_WEBHOOK_URL
+  // is set, registrations are only written to the function logs.
+  if (webhook === 'masterclass') urls.masterclass = process.env.MASTERCLASS_WEBHOOK_URL;
+
   const url = urls[webhook];
   if (!url) {
+    if (webhook === 'masterclass') {
+      console.log('MASTERCLASS LEAD (no webhook set):', JSON.stringify(body));
+      return res.status(200).json({ ok: true });
+    }
     console.log('Unknown webhook:', webhook);
     return res.status(400).json({ error: 'Unknown webhook' });
   }
+
+  const payload = webhook === 'masterclass'
+    ? { name, email, phone, masterclassDate: body.masterclassDate, pageUrl: body.pageUrl, source: 'masterclass' }
+    : { name, email, phone };
 
   try {
     const zRes = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, phone }),
+      body: JSON.stringify(payload),
     });
     console.log('Zapier response:', zRes.status, url);
   } catch (e) {
