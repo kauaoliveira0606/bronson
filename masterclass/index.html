@@ -247,11 +247,6 @@
     }
     .form-note a { color: #555; text-decoration: underline; }
 
-    .form-success { display: none; text-align: center; padding: 12px 0; }
-    .form-success strong { display: block; font-size: 1.3rem; font-weight: 900; color: var(--green-dark); margin-bottom: 8px; }
-    .form-success p { font-size: 0.95rem; color: var(--body); }
-    .form-success p + p { margin-top: 6px; }
-
     .cta-btn {
       background: linear-gradient(180deg, #3ba85f 0%, #2f8049 100%);
       color: #fff;
@@ -935,11 +930,6 @@
     <p class="form-err" role="alert"></p>
     <button type="submit" class="cta-btn">Save My Free Seat <span aria-hidden="true">&rarr;</span></button>
   </form>
-  <div class="form-success">
-    <strong>You're In!</strong>
-    <p>Your seat is saved for <span class="js-event-date"></span>.</p>
-    <p>We'll send you the details before we go live.</p>
-  </div>
   <p class="form-note">Your information is 100% secure.<br>By submitting you agree to our <a href="/terms" target="_blank">terms</a> and <a href="/privacy" target="_blank">policies</a>.</p>
 </template>
 
@@ -1128,15 +1118,6 @@
     field(card, name).focus();
   }
 
-  function showSuccess() {
-    cards.forEach(function (card) {
-      card.querySelector('form').style.display = 'none';
-      card.querySelector('.form-note').style.display = 'none';
-      card.querySelector('.form-success').style.display = 'block';
-    });
-    if (window.fbq) fbq('track', 'CompleteRegistration');
-  }
-
   function handleOptin(e, card) {
     e.preventDefault();
     var name = field(card, 'name').value.trim();
@@ -1155,7 +1136,10 @@
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/api/collect-lead', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onloadend = showSuccess;
+    xhr.onloadend = function () {
+      var params = new URLSearchParams({ fname: name, email: email, when: formatSession(session) });
+      window.location.href = '/masterclass-confirmation?' + params.toString();
+    };
     xhr.send(JSON.stringify({
       name: name,
       email: email,
