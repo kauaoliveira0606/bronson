@@ -68,6 +68,48 @@
       <p>Check promotions or spam, then drag it into your main inbox so you get every reminder.</p>
     </div>
   </div>
+
+  <div class="done-faq">
+    <h2>Got <span>Questions?</span></h2>
+    <p class="done-faq-sub">We have answers. Check out a couple of the most frequently asked questions.</p>
+    <div class="done-bk-grid">
+      <!-- PLACEHOLDER: breakout video 1 -->
+      <div class="done-bk">
+        <div class="done-bk-video"><div class="done-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="done-video-label">Video Coming Soon</div></div>
+        <div class="done-bk-title">The Treadmill Versus The Machine</div>
+      </div>
+      <!-- PLACEHOLDER: breakout video 2 -->
+      <div class="done-bk">
+        <div class="done-bk-video"><div class="done-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="done-video-label">Video Coming Soon</div></div>
+        <div class="done-bk-title">Tokyo Versus The Small City</div>
+      </div>
+      <!-- PLACEHOLDER: breakout video 3 -->
+      <div class="done-bk">
+        <div class="done-bk-video"><div class="done-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="done-video-label">Video Coming Soon</div></div>
+        <div class="done-bk-title">What 10 Subscribers A Day Actually Looks Like</div>
+      </div>
+      <!-- PLACEHOLDER: breakout video 4 -->
+      <div class="done-bk">
+        <div class="done-bk-video"><div class="done-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="done-video-label">Video Coming Soon</div></div>
+        <div class="done-bk-title">"I'm Not Ready Yet"</div>
+      </div>
+      <!-- PLACEHOLDER: breakout video 5 -->
+      <div class="done-bk">
+        <div class="done-bk-video"><div class="done-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="done-video-label">Video Coming Soon</div></div>
+        <div class="done-bk-title">Why I Don't Record These</div>
+      </div>
+      <!-- PLACEHOLDER: breakout video 6 -->
+      <div class="done-bk">
+        <div class="done-bk-video"><div class="done-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="done-video-label">Video Coming Soon</div></div>
+        <div class="done-bk-title">The Three Numbers That Tell You Everything (Ads Are Simple)</div>
+      </div>
+      <!-- PLACEHOLDER: breakout video 7 -->
+      <div class="done-bk">
+        <div class="done-bk-video"><div class="done-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="done-video-label">Video Coming Soon</div></div>
+        <div class="done-bk-title">The Part That Nobody Talks About</div>
+      </div>
+    </div>
+  </div>
 `;
   document.querySelectorAll('.js-done-shared').forEach(function (el) { el.innerHTML = html; });
 

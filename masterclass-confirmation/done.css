@@ -66,8 +66,21 @@
 .done-cal-menu a:hover { background: #f0fdf4; }
 .done-form { margin-top: 18px; min-height: 360px; }
 
+.done-faq { margin-top: 64px; }
+.done-faq h2 { font-family: 'Manrope', sans-serif; font-size: clamp(1.9rem, 6vw, 2.7rem); font-weight: 600; line-height: 1.18; letter-spacing: -0.5px; color: #0b1b26; }
+.done-faq h2 span { color: #16a34a; }
+.done .done-faq-sub { font-size: 1.15rem; color: #5b5d6b; margin-top: 12px; }
+.done-bk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 26px; text-align: left; }
+.done-bk { background: #fff; border-radius: 8px; box-shadow: 0 6px 24px -8px rgba(15,23,42,0.14); overflow: hidden; }
+.done-bk-video { aspect-ratio: 16 / 9; background: #0a0a0a; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.done-bk-video .done-play { width: 64px; height: 42px; }
+.done-bk-video .done-play svg { width: 22px; height: 22px; }
+.done-bk-video .done-video-label { font-size: 0.75rem; }
+.done-bk-title { padding: 12px 14px 14px; font-family: 'Manrope', sans-serif; font-size: 1rem; font-weight: 700; line-height: 1.3; color: #0b1b26; }
+
 @media (max-width: 600px) {
   .done { padding: 28px 16px 56px; }
   .done-step-card { padding: 18px 20px; }
-  .done .done-sub, .done .done-lead, .done-step-card p { font-size: 1.05rem; }
+  .done .done-sub, .done .done-lead, .done-step-card p, .done .done-faq-sub { font-size: 1.05rem; }
+  .done-bk-grid { grid-template-columns: 1fr; }
 }
