@@ -55,8 +55,7 @@
     <h2>Fill Out This Short Masterclass <span>Intake Form</span></h2>
     <div class="done-step-card">
       <p>Before we go live, I want to know exactly where you're at so I can cover what you actually need. It takes two minutes.</p>
-      <!-- PLACEHOLDER: the intake form embed goes here -->
-      <div class="done-slot">Intake form coming soon</div>
+      <div class="done-form" data-tf-live="01M453GA9Q861X9SJ62YMKE8NJ"></div>
     </div>
   </div>
 
@@ -71,6 +70,15 @@
   </div>
 `;
   document.querySelectorAll('.js-done-shared').forEach(function (el) { el.innerHTML = html; });
+
+  // Intake form (Typeform). Only load it when the confirmed view is actually showing,
+  // so the hidden copy on the offer page doesn't count as a form view.
+  var formShowing = Array.prototype.some.call(document.querySelectorAll('.done-form'), function (el) { return !el.closest('[hidden]'); });
+  if (formShowing) {
+    var tf = document.createElement('script');
+    tf.src = 'https://embed.typeform.com/next/embed.js';
+    document.body.appendChild(tf);
+  }
 
   /* ---------- Next session (New York time) ---------- */
   function nyParts(date) {
