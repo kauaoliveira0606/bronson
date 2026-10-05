@@ -1311,7 +1311,7 @@
     xhr.open('POST', '/api/collect-lead', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onloadend = function () {
-      var params = new URLSearchParams({ fname: name, email: email, when: formatSession(session) });
+      var params = new URLSearchParams({ fname: name, email: email, when: formatSession(session), at: session.toISOString() });
       window.location.href = '/masterclass-confirmation?' + params.toString();
     };
     xhr.send(JSON.stringify({

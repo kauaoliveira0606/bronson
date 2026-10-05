@@ -253,7 +253,7 @@
 
 <!-- CONFIRMED (after purchase or no thanks) -->
 <div class="done" id="done" hidden>
-  <div class="done-pill">Your Seat Is Saved</div>
+  <p class="done-top">You're Officially Registered!</p>
   <h1>Wait, You're <span>Not Done Yet</span></h1>
 
   <div class="js-done-shared"></div>
@@ -551,6 +551,7 @@
 
   // The masterclass page passes the session label; keep it for the confirmed view.
   if (params.get('when')) store.set('mc_when', params.get('when'));
+  if (params.get('at')) store.set('mc_at', params.get('at'));
   (function () {
     var sh = document.createElement('script');
     sh.src = '/masterclass-confirmation/done-shared.js';
@@ -671,7 +672,7 @@
 
   /* ---------- Registration tracking (once per session) ---------- */
   (function () {
-    var keys = ['fname', 'email', 'when'];
+    var keys = ['fname', 'email', 'when', 'at'];
     var arrived = keys.some(function (k) { return params.has(k); });
     if (arrived) {
       var clean = new URLSearchParams(window.location.search);

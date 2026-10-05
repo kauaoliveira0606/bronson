@@ -51,8 +51,6 @@
     a { color: inherit; text-decoration: none; }
     [hidden] { display: none !important; }
     .eyebrow { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--green-dark); }
-    .done .done-sub { max-width: 560px; margin: 0 auto; }
-    .done .done-sub + .done-sub { margin-top: 8px; }
 
     footer { background: #000; color: #a3a3a3; text-align: center; padding: 36px 24px; font-size: 0.95rem; }
     footer a { color: #a3a3a3; margin: 0 8px; font-size: 0.85rem; }
@@ -65,10 +63,10 @@
 <!-- Same structure as /masterclass-confirmation?done=1. Only the headline block differs;
      everything below it comes from /masterclass-confirmation/done-shared.js. -->
 <div class="done">
-  <div class="done-pill">Purchase Confirmed</div>
-  <h1>Congratulations, Your <span>Order Is Confirmed!</span></h1>
+  <p class="done-top">Purchase Confirmed!</p>
+  <h1>Congratulations, Your <span>Order Is Confirmed</span></h1>
   <p class="done-sub">You're locked in for the masterclass and your Starter Kit is yours.</p>
-  <p class="done-sub">We're sending everything over to your email.</p>
+  <p class="done-sub"><b>We're sending everything over to your email.</b></p>
 
   <div class="js-done-shared"></div>
 </div>

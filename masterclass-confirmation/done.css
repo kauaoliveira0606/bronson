@@ -1,36 +1,73 @@
 /* Shared by /masterclass-confirmation (?done=1) and /masterclass-confirmation-purchase. */
-/* ── DONE STATE ── */
-.done { max-width: 760px; margin: 0 auto; padding: 48px 24px 72px; text-align: center; }
-.done-pill {
-  display: inline-block;
-  background: rgba(34,197,94,0.12);
-  border: 1px solid rgba(34,197,94,0.3);
-  color: var(--green-dark);
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 5px 14px;
-  border-radius: 100px;
-  margin-bottom: 18px;
-}
-.done h1 { font-size: clamp(1.9rem, 5vw, 3rem); font-weight: 900; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 16px; }
-.done h1 span { color: var(--green); }
-.done p { font-size: 1.1rem; color: var(--body); }
-.done-video { margin: 24px auto 0; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: #0a0a0a; }
+.done { max-width: 598px; margin: 0 auto; padding: 40px 24px 80px; text-align: center; }
+.done-top { font-family: 'Manrope', sans-serif; font-size: 1.2rem; font-weight: 700; color: #0b1b26; margin-bottom: 22px; }
+.done h1 { font-family: 'Manrope', sans-serif; font-size: clamp(2rem, 6.4vw, 2.9rem); font-weight: 600; line-height: 1.16; letter-spacing: -0.5px; color: #0b1b26; }
+.done h1 span { color: #16a34a; }
+.done .done-sub { font-size: 1.15rem; color: #5b5d6b; margin-top: 18px; }
+.done .done-sub + .done-sub { margin-top: 6px; }
+.done .done-sub b { color: #000; }
+.done .done-lead { font-size: 1.15rem; color: #5b5d6b; margin-top: 18px; }
+.done .done-lead b { color: #000; }
+
+.done-video { margin: 22px auto 0; overflow: hidden; background: #0a0a0a; }
 .done-video-inner { aspect-ratio: 16 / 9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
-.done-play { width: 64px; height: 64px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; }
-.done-play svg { width: 28px; height: 28px; fill: #0a0a0a; margin-left: 3px; }
+.done-play { width: 108px; height: 68px; background: #16a34a; display: flex; align-items: center; justify-content: center; }
+.done-play svg { width: 34px; height: 34px; fill: #fff; }
 .done-video-label { font-size: 0.9rem; font-weight: 600; color: rgba(255,255,255,0.7); }
-.done .done-lead { max-width: 600px; margin: 28px auto 0; font-size: 1.2rem; font-weight: 700; color: var(--text); line-height: 1.45; }
-.done .done-card { max-width: 480px; margin: 24px auto 0; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
-.done .done-card .when { font-size: 1.25rem; font-weight: 800; margin-top: 6px; }
-.done-steps { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; text-align: left; }
-.done-step { display: flex; gap: 16px; align-items: flex-start; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 22px 24px; }
-.done-step-num { flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--green-dark); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; }
-.done-step-tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: var(--green-dark); }
-.done-step h3 { font-size: 1.15rem; font-weight: 800; line-height: 1.3; margin: 2px 0 4px; }
-.done .done-step p { font-size: 0.97rem; color: var(--text2); }
+.done-arrow { display: block; margin: 14px auto 0; }
+
+.done-step { margin-top: 34px; }
+.done-step-pill {
+  display: inline-block;
+  min-width: 124px;
+  border: 1.5px solid #16a34a;
+  border-radius: 100px;
+  padding: 2px 22px;
+  font-family: 'Geist', 'Inter', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #000;
+  background: #fff;
+}
+.done-step-icon { display: block; margin: 18px auto 0; }
+.done-step h2 { font-family: 'Manrope', sans-serif; font-size: clamp(1.9rem, 6vw, 2.7rem); font-weight: 600; line-height: 1.18; letter-spacing: -0.5px; color: #0b1b26; margin-top: 12px; }
+.done-step h2 span { color: #16a34a; }
+.done-step-card {
+  margin-top: 24px;
+  background: #fff;
+  border-top: 5px solid #16a34a;
+  border-radius: 8px;
+  box-shadow: 0 6px 24px -8px rgba(15,23,42,0.14);
+  padding: 22px 30px 22px;
+  text-align: left;
+}
+.done-step-card p { font-size: 1.15rem; color: #5b5d6b; }
+.done-step-card p + p { margin-top: 26px; }
+.done-step-card .done-when { text-align: center; font-family: 'Manrope', sans-serif; font-size: 1.2rem; font-weight: 800; color: #000; margin-top: 22px; }
+.done-cal { position: relative; text-align: center; margin-top: 14px; }
+.done-btn {
+  display: inline-block;
+  background: linear-gradient(180deg, #22c55e 0%, #15803d 100%);
+  color: #fff;
+  font-family: 'Geist', 'Inter', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 13px 32px;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px -8px rgba(22,163,74,0.6);
+}
+.done-cal-menu { display: none; margin: 12px auto 0; max-width: 292px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 28px -10px rgba(15,23,42,0.25); }
+.done-cal-menu.open { display: block; }
+.done-cal-menu a { display: flex; align-items: center; gap: 10px; padding: 12px 16px; font-size: 1rem; font-weight: 600; color: #0b1b26; border-top: 1px solid #f1f1f1; cursor: pointer; text-align: left; }
+.done-cal-menu a:first-child { border-top: 0; }
+.done-cal-menu a:hover { background: #f0fdf4; }
+.done-slot { margin-top: 18px; border: 2px dashed #cbd5e1; border-radius: 8px; padding: 28px 18px; text-align: center; font-size: 1rem; font-weight: 600; color: #94a3b8; background: #f9fafb; }
 
 @media (max-width: 600px) {
-  .done { padding: 32px 16px 48px; }
-  .done-step { padding: 18px 16px; gap: 12px; }
+  .done { padding: 28px 16px 56px; }
+  .done-step-card { padding: 18px 20px; }
+  .done .done-sub, .done .done-lead, .done-step-card p { font-size: 1.05rem; }
 }
