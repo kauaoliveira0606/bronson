@@ -92,9 +92,8 @@
         <div class="done-bk-player"><vturb-smartplayer id="vid-6ac7b9a7b98fae02374aa098" data-vturb="6ac7b9a7b98fae02374aa098" style="display: block; margin: 0 auto; width: 100%;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer></div>
         <div class="done-bk-title">Why I Don't Record These</div>
       </div>
-      <!-- PLACEHOLDER: breakout video 6 -->
       <div class="done-bk">
-        <div class="done-bk-video"><div class="done-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="done-video-label">Video Coming Soon</div></div>
+        <div class="done-bk-player"><vturb-smartplayer id="vid-6ac7b9b3b6a475f6154788aa" data-vturb="6ac7b9b3b6a475f6154788aa" style="display: block; margin: 0 auto; width: 100%;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer></div>
         <div class="done-bk-title">The Three Numbers That Tell You Everything (Ads Are Simple)</div>
       </div>
       <!-- PLACEHOLDER: breakout video 7 -->
