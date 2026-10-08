@@ -529,11 +529,14 @@
 
     .zoom { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
 
+    /* WebinarJam's floating "Webinar" bubble is hidden; the page's own buttons open its sign-up popup. */
+    .wj_embed_circle_wrapper { display: none !important; }
+
     /* ── FLOATING PROOF ── */
     .float-proof {
       display: none;
       position: fixed;
-      right: 16px;
+      left: 16px;
       bottom: 16px;
       z-index: 40;
       width: 320px;
