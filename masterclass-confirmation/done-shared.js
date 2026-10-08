@@ -22,12 +22,8 @@
   var html = `
   <p class="done-lead">Before you close this tab, complete these three steps to make sure you're <b>fully set up for the masterclass</b></p>
 
-  <!-- PLACEHOLDER VIDEO: swap this block for the real player embed -->
   <div class="done-video">
-    <div class="done-video-inner">
-      <div class="done-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-      <div class="done-video-label">Video Coming Soon</div>
-    </div>
+    <vturb-smartplayer id="vid-6ac7b9d6e1c65eaf9183ec88" data-vturb="6ac7b9d6e1c65eaf9183ec88" style="display: block; margin: 0 auto; width: 100%;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>
   </div>
   <svg class="done-arrow" width="26" height="46" viewBox="0 0 26 46" fill="none" aria-hidden="true"><path d="M13 2v40M3 31l10 11 10-11" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
 
@@ -113,6 +109,17 @@
   </div>
 `;
   document.querySelectorAll('.js-done-shared').forEach(function (el) { el.innerHTML = html; });
+
+  // VTurb videos. Any <vturb-smartplayer data-vturb="PLAYER_ID"> in the markup above gets its
+  // player script here (a script tag inside innerHTML would not run). Skipped while the
+  // confirmed view is hidden on the offer page, so those loads don't count as video views.
+  document.querySelectorAll('vturb-smartplayer[data-vturb]').forEach(function (el) {
+    if (el.closest('[hidden]')) return;
+    var v = document.createElement('script');
+    v.src = 'https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/' + el.getAttribute('data-vturb') + '/v4/player.js';
+    v.async = true;
+    document.head.appendChild(v);
+  });
 
   // Intake form (Typeform). Only load it when the confirmed view is actually showing,
   // so the hidden copy on the offer page doesn't count as a form view.
