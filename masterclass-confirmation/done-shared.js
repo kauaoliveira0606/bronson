@@ -9,7 +9,8 @@
   var MASTERCLASS_TIME_LABEL = '7PM EST';
   var MASTERCLASS_MINUTES = 90;
   var EVENT_TITLE = 'Live Masterclass: Subscription Based E-commerce with Bronson';
-  var EVENT_DETAILS = 'Your link to join is in your confirmation email.';
+  var JOIN_URL = 'https://event.webinarjam.com/8wgzn9/register/13q192ty';
+  var EVENT_DETAILS = 'Join the masterclass here: ' + JOIN_URL;
 
   var ICON = '<svg class="done-step-icon" width="52" height="58" viewBox="0 0 52 58" fill="none" aria-hidden="true">' +
     '<rect x="3" y="8" width="46" height="47" rx="6" stroke="#16a34a" stroke-width="5"/>' +
@@ -163,16 +164,18 @@
   var google = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
     '&text=' + encodeURIComponent(EVENT_TITLE) +
     '&dates=' + stamp(start) + '/' + stamp(end) +
-    '&details=' + encodeURIComponent(EVENT_DETAILS);
+    '&details=' + encodeURIComponent(EVENT_DETAILS) +
+    '&location=' + encodeURIComponent(JOIN_URL);
   var outlook = 'https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent' +
     '&subject=' + encodeURIComponent(EVENT_TITLE) +
     '&startdt=' + encodeURIComponent(start.toISOString()) +
     '&enddt=' + encodeURIComponent(end.toISOString()) +
-    '&body=' + encodeURIComponent(EVENT_DETAILS);
+    '&body=' + encodeURIComponent(EVENT_DETAILS) +
+    '&location=' + encodeURIComponent(JOIN_URL);
   var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//The Inner Table//Masterclass//EN', 'BEGIN:VEVENT',
     'UID:masterclass-' + stamp(start) + '@ad-ventur.com', 'DTSTAMP:' + stamp(new Date()),
     'DTSTART:' + stamp(start), 'DTEND:' + stamp(end),
-    'SUMMARY:' + EVENT_TITLE, 'DESCRIPTION:' + EVENT_DETAILS,
+    'SUMMARY:' + EVENT_TITLE, 'DESCRIPTION:' + EVENT_DETAILS, 'LOCATION:' + JOIN_URL, 'URL:' + JOIN_URL,
     'BEGIN:VALARM', 'TRIGGER:-PT30M', 'ACTION:DISPLAY', 'DESCRIPTION:' + EVENT_TITLE, 'END:VALARM',
     'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
   var icsHref = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
