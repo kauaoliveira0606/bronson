@@ -70,9 +70,8 @@
     <h2>Got <span>Questions?</span></h2>
     <p class="done-faq-sub">We have answers. Check out a couple of the most frequently asked questions.</p>
     <div class="done-bk-grid">
-      <!-- PLACEHOLDER: breakout video 1 -->
       <div class="done-bk">
-        <div class="done-bk-video"><div class="done-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="done-video-label">Video Coming Soon</div></div>
+        <div class="done-bk-player"><vturb-smartplayer id="vid-6ac7b9bc70a7736cd8a231bf" data-vturb="6ac7b9bc70a7736cd8a231bf" style="display: block; margin: 0 auto; width: 100%;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer></div>
         <div class="done-bk-title">The Treadmill Versus The Machine</div>
       </div>
       <div class="done-bk">
@@ -95,9 +94,8 @@
         <div class="done-bk-player"><vturb-smartplayer id="vid-6ac7b9b3b6a475f6154788aa" data-vturb="6ac7b9b3b6a475f6154788aa" style="display: block; margin: 0 auto; width: 100%;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer></div>
         <div class="done-bk-title">The Three Numbers That Tell You Everything (Ads Are Simple)</div>
       </div>
-      <!-- PLACEHOLDER: breakout video 7 -->
       <div class="done-bk">
-        <div class="done-bk-video"><div class="done-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="done-video-label">Video Coming Soon</div></div>
+        <div class="done-bk-player"><vturb-smartplayer id="vid-6ac7b9c1d0f722600e1de0fc" data-vturb="6ac7b9c1d0f722600e1de0fc" style="display: block; margin: 0 auto; width: 100%;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer></div>
         <div class="done-bk-title">The Part That Nobody Talks About</div>
       </div>
     </div>
