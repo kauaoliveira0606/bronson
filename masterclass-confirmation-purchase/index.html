@@ -60,6 +60,15 @@
 </head>
 <body>
 
+<script>
+  // Whop sends the buyer here after an off-site payment step whatever its outcome,
+  // with ?status=succeeded|failed|canceled. Only a success belongs on this page.
+  (function () {
+    var status = new URLSearchParams(window.location.search).get('status');
+    if (status && status !== 'succeeded') window.location.replace('/masterclass-confirmation#checkout');
+  })();
+</script>
+
 <!-- Same structure as /masterclass-confirmation?done=1. Only the headline block differs;
      everything below it comes from /masterclass-confirmation/done-shared.js. -->
 <div class="done">

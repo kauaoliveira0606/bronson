@@ -210,7 +210,7 @@
     .co-product .radio { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 2px solid #0b1b26; display: flex; align-items: center; justify-content: center; }
     .co-product .radio::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #0b1b26; }
     .co-product span.name { flex: 1; text-align: left; }
-    .checkout-embed { min-height: 420px; margin-top: 12px; }
+    .checkout-embed { min-height: 420px; }
     .checkout-embed iframe { width: 100%; border: 0; }
     .checkout-pending { margin-top: 12px; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: #f9fafb; color: var(--body); font-size: 0.95rem; }
     .co-note { text-align: center; font-family: 'Open Sans', 'Geist', sans-serif; font-size: 0.72rem; color: #0b1b26; margin-top: 12px; }
@@ -466,11 +466,8 @@
         </ul>
       </div>
       <div class="co-card">
-        <div class="co-label">Select Product</div>
-        <div class="co-product"><span class="radio"></span><span class="name">The Subscription Store Starter Kit</span><span>$27</span></div>
-        <div class="co-label">Billing &amp; Payment Information</div>
         <div class="checkout-embed" id="whop-checkout"></div>
-        <div class="checkout-pending" id="checkout-pending" hidden>Checkout is being set up. Check back shortly.</div>
+        <div class="checkout-pending" id="checkout-pending" hidden>The checkout didn't load. Refresh the page to try again.</div>
         <div class="co-note">We Never Share Your Information With Anyone</div>
       </div>
     </div>
@@ -530,7 +527,7 @@
 </div>
 
 <script>
-  /* ---------- Whop embedded checkout ($27 order bump) ---------- */
+  /* ---------- Whop Elements checkout ($27 order bump) ---------- */
   var WHOP_PLAN_ID = 'plan_7n3adDtLqsk8s';
   var AFTER_PURCHASE_URL = 'https://www.ad-ventur.com/masterclass-confirmation-purchase';
 
@@ -569,25 +566,53 @@
     window.scrollTo(0, 0);
   }
 
-  /* ---------- Checkout ---------- */
+  /* ---------- Checkout (Whop Elements) ---------- */
   if (!isDone) (function () {
-    var embed = document.getElementById('whop-checkout');
-    if (!WHOP_PLAN_ID) {
-      embed.hidden = true;
+    var target = document.getElementById('whop-checkout');
+    function fail() {
+      target.hidden = true;
       document.getElementById('checkout-pending').hidden = false;
-      return;
     }
-    embed.setAttribute('data-whop-checkout-plan-id', WHOP_PLAN_ID);
-    embed.setAttribute('data-whop-checkout-theme', 'light');
-    embed.setAttribute('data-whop-checkout-theme-accent-color', 'green');
-    embed.setAttribute('data-whop-checkout-return-url', AFTER_PURCHASE_URL);
-    if (params.get('email')) embed.setAttribute('data-whop-checkout-prefill-email', params.get('email'));
-    if (params.get('fname')) embed.setAttribute('data-whop-checkout-prefill-name', params.get('fname'));
-    var loader = document.createElement('script');
-    loader.src = 'https://js.whop.com/static/checkout/loader.js';
-    loader.async = true;
-    loader.defer = true;
-    document.body.appendChild(loader);
+    if (!WHOP_PLAN_ID) return fail();
+
+    // Campaign parameters on the link the buyer arrived on, recorded against the order.
+    var attribution = { source: 'masterclass-confirmation' };
+    [['utm_source', 'utmSource'], ['utm_medium', 'utmMedium'], ['utm_campaign', 'utmCampaign'], ['utm_term', 'utmTerm'], ['utm_content', 'utmContent']].forEach(function (k) {
+      if (params.get(k[0])) attribution[k[1]] = params.get(k[0]);
+    });
+    var buyerEmail = params.get('email') || '';
+
+    var sdk = document.createElement('script');
+    sdk.src = 'https://cdn.whop.com/elements/amber/elements.js';
+    sdk.setAttribute('data-whop-elements', '');
+    sdk.onerror = fail;
+    sdk.onload = function () {
+      try {
+        var whop = window.WhopElements({
+          appearance: {
+            theme: { appearance: 'light', accentColor: 'green' },
+            classes: { 'whop-CheckoutPayButton': { backgroundColor: '#16a34a', color: '#ffffff' } }
+          }
+        });
+        var checkout = whop.checkout.create({
+          plan: WHOP_PLAN_ID,
+          returnUrl: AFTER_PURCHASE_URL,
+          metadata: { funnel: 'masterclass' },
+          attribution: attribution,
+          // Fires before the redirect to returnUrl. It can fire again for the same payment
+          // on a restored checkout, so the pixel event is recorded once per payment.
+          onComplete: function (done) {
+            if (done.result !== 'payment' || store.get('mc_paid_' + done.paymentId)) return;
+            store.set('mc_paid_' + done.paymentId, '1');
+            if (window.fbq) fbq('track', 'Purchase', { value: 27, currency: 'USD' });
+          }
+        });
+        checkout.create('checkout', { buyerEmail: buyerEmail, onError: fail }).mount(target);
+      } catch (e) {
+        fail();
+      }
+    };
+    document.head.appendChild(sdk);
   })();
 
   document.querySelectorAll('.js-today').forEach(function (el) {
