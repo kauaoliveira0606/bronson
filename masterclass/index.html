@@ -805,7 +805,7 @@
   </div>
 
   <div class="cta-row">
-    <a href="#register" class="cta-btn">Save My Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
+    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
 
@@ -846,7 +846,7 @@
     </div>
   </div>
   <div class="cta-row">
-    <a href="#register" class="cta-btn">Reserve My Spot <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
+    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Reserve My Spot <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
 
@@ -883,7 +883,7 @@
     </div>
   </div>
   <div class="cta-row">
-    <a href="#register" class="cta-btn">Yes, I'm In <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
+    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Yes, I'm In <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
 
@@ -969,7 +969,7 @@
     </div>
   </div>
   <div class="cta-row">
-    <a href="#register" class="cta-btn">Reserve My Spot <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
+    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Reserve My Spot <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
 
@@ -982,7 +982,7 @@
   <p class="section-desc">No hype. Just outcomes from students running the same model I'm teaching live.</p>
   <div class="win-cols js-wins"></div>
   <div class="cta-row">
-    <a href="#register" class="cta-btn">Yes, I'm In <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
+    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Yes, I'm In <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
 
@@ -1084,7 +1084,9 @@
     var card = document.getElementById(id);
     card.appendChild(template.content.cloneNode(true));
     if (id === 'form-card-bottom') card.querySelector('.js-submit-label').textContent = "Yes, I'm In";
-    card.querySelector('.js-wj-open').addEventListener('click', function (e) {
+  });
+  document.querySelectorAll('.js-wj-open').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
       // Keep the session they signed up for, for the confirmation pages.
       try {
         window.sessionStorage.setItem('mc_when', formatSession(session));
