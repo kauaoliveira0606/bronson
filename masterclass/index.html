@@ -28,7 +28,7 @@
   <link rel="icon" type="image/png" href="/base44/img/aids.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -628,31 +628,259 @@
       .win-cols { columns: 1; }
       .phone-row select { flex-basis: 96px; padding-left: 10px; padding-right: 10px; }
     }
+  
+
+    /* ════════════════════════════════════════════════════════════════════
+       REDESIGN (Oct 2026): soft tinted hero with a floating top bar, pill
+       date badge, light two-tone Manrope headings, countdown tiles and
+       rounded shadowed cards. Brand green throughout.
+       ════════════════════════════════════════════════════════════════════ */
+    :root {
+      --ink: #0f172a;
+      --green: #16a34a;        /* accent text */
+      --green-bright: #22c55e; /* fills */
+      --green-dark: #15803d;
+      --tint: #f1f8f3;
+      --line: rgba(15,23,42,0.08);
+      --shadow: 0 10px 30px rgba(15,23,42,0.07), 0 1px 2px rgba(15,23,42,0.04);
+      --text2: #64748b;
+      --body: #475569;
+    }
+    body { background: #fcfdfc; background-image: none; color: var(--ink); }
+    h1, h2, h3, .section-title, .cd-num, .nav-btn, .cta-btn, .meet-stat b { font-family: 'Manrope', 'Inter', sans-serif; }
+    .divider { display: none; }
+
+    /* Bands */
+    .band { background: #ffffff; }
+    .band.tint { background: linear-gradient(180deg, #f3f9f5 0%, #f7f9f8 100%); }
+    .band .section { padding-top: 84px; padding-bottom: 84px; }
+
+    /* Hero band: pale green wash with faint diagonal streaks */
+    .hero-band {
+      position: relative;
+      overflow: hidden;
+      padding: 16px 20px 0;
+      background:
+        radial-gradient(900px 480px at 18% 0%, rgba(34,197,94,0.20), transparent 62%),
+        radial-gradient(760px 520px at 100% 30%, rgba(22,163,74,0.14), transparent 60%),
+        linear-gradient(180deg, #f2faf5 0%, #f8faf9 100%);
+    }
+    .hero-band::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(118deg, transparent 0 150px, rgba(22,163,74,0.07) 150px 152px);
+      pointer-events: none;
+    }
+    .hero-band > * { position: relative; }
+
+    .nav-bar {
+      max-width: 1170px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 10px 12px 10px 22px;
+      box-shadow: 0 6px 24px rgba(15,23,42,0.06);
+    }
+    .nav-label { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: var(--green); white-space: nowrap; }
+    .nav-mid { font-size: 0.9rem; color: var(--body); text-align: center; }
+    .nav-btn, .cta-btn {
+      display: inline-block;
+      text-align: center;
+      background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%);
+      color: #ffffff;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      border: 0;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(22,163,74,0.28);
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+      cursor: pointer;
+    }
+    .nav-btn { font-size: 0.85rem; padding: 11px 20px; white-space: nowrap; }
+    .cta-btn { font-size: 1rem; padding: 16px 40px; width: auto; }
+    .nav-btn:hover, .cta-btn:hover { transform: translateY(-1px); filter: brightness(1.04); box-shadow: 0 12px 26px rgba(22,163,74,0.34); background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); }
+    .cta-btn-sub { display: block; margin-top: 4px; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0; text-transform: none; opacity: 0.92; }
+    .cta-row { margin-top: 44px; text-align: center; }
+
+    .hero { max-width: 1040px; padding: 56px 4px 84px; }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid rgba(22,163,74,0.28);
+      border-radius: 999px;
+      padding: 9px 26px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 22px;
+    }
+    .hero-pill .dot { margin-right: 0; background: var(--green-bright); }
+    .hero h1 {
+      font-size: clamp(2.05rem, 5.6vw, 4.1rem);
+      font-weight: 500;
+      line-height: 1.04;
+      letter-spacing: -1.6px;
+      margin-bottom: 26px;
+      color: var(--ink);
+    }
+    .green { color: var(--green); }
+    .hero-subhead { font-size: clamp(1.02rem, 2vw, 1.22rem); font-weight: 400; color: var(--body); max-width: 640px; margin: 0 auto; line-height: 1.55; }
+
+    /* Countdown + sign-up, sitting straight on the hero (no card) */
+    .register-block { margin-top: 30px; }
+    .hero .form-card, .cta-box .form-card { background: transparent; border: 0; box-shadow: none; padding: 0; max-width: none; }
+    .form-head { display: block; text-align: center; border: 0; padding: 0; margin: 0; }
+    .countdown, .form-head .countdown { display: flex; justify-content: center; gap: 10px; margin: 0 auto 16px; width: 100%; max-width: none; }
+    .cd-cell, .form-head .cd-cell {
+      width: 88px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 14px 6px 12px;
+      box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+    }
+    .cd-num { font-size: 2.2rem; font-weight: 400; line-height: 1; color: var(--ink); letter-spacing: -1px; }
+    .cd-lbl { margin-top: 8px; font-size: 0.6rem; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text2); }
+    .fill-note { font-size: 0.85rem; color: var(--body); margin-bottom: 18px; }
+    .optin { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .optin .cta-btn { width: auto; min-width: 250px; border-radius: 8px; }
+    .optin { border: 0; padding: 0; margin: 0; }
+    .event-date { font-family: 'Manrope', sans-serif; font-weight: 700; color: var(--ink); }
+
+    /* Section headings */
+    .section-label { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.9px; text-transform: uppercase; color: var(--green); text-align: center; margin-bottom: 14px; }
+    .section-title { font-size: clamp(1.9rem, 4.6vw, 3.5rem); font-weight: 500; line-height: 1.06; letter-spacing: -1.3px; color: var(--ink); text-align: center; }
+    .section-desc { text-align: center; color: var(--body); margin-top: 16px; }
+
+    /* What we'll cover: same four cards, same order, same pictures */
+    .cover-list { gap: 26px; margin-top: 52px; }
+    .cover-row { border: 1px solid var(--line); border-radius: 22px; padding: 30px; gap: 40px; box-shadow: var(--shadow); background: #ffffff; }
+    .cover-media { border-radius: 16px; border: 1px solid var(--line); background: var(--tint); }
+    .cover-media .caption { color: var(--green-dark); background: #ffffff; border-top: 1px solid var(--line); }
+    .cover-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+      height: 34px;
+      padding: 0 10px;
+      border-radius: 10px;
+      background: rgba(34,197,94,0.14);
+      color: var(--green-dark);
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.86rem;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+    .cover-row h3 { font-size: clamp(1.3rem, 2.6vw, 1.7rem); font-weight: 700; line-height: 1.18; letter-spacing: -0.5px; margin: 18px 0 14px; color: var(--ink); }
+    .cover-row p { color: var(--body); font-size: 1.02rem; }
+
+    /* Who it's for / why this model: a grid of cards */
+    .why-list { background: transparent; border: 0; border-radius: 0; overflow: visible; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 46px; }
+    .why-item, .why-item:last-child { background: #ffffff; border: 1px solid var(--line); border-radius: 20px; padding: 26px; box-shadow: var(--shadow); gap: 16px; }
+    .why-icon { background: rgba(34,197,94,0.14); border-radius: 12px; }
+    .why-icon svg { stroke: var(--green-dark); }
+    .for-check { background: rgba(34,197,94,0.14); border-color: transparent; }
+    .why-body strong { font-family: 'Manrope', sans-serif; font-size: 1.08rem; font-weight: 700; letter-spacing: -0.2px; color: var(--ink); }
+    .why-body p { color: var(--body); margin-top: 6px; }
+
+    /* Host */
+    .meet-card { background: #ffffff; border: 1px solid var(--line); border-radius: 24px; padding: 44px 48px; box-shadow: var(--shadow); margin-top: 46px; }
+    .meet-card p { color: var(--body); }
+    .meet-card p strong { color: var(--ink); }
+    .meet-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 32px 0 6px; }
+    .meet-stat { background: #eef4f1; border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+    .meet-stat b { display: block; font-size: 1.45rem; font-weight: 700; letter-spacing: -0.5px; color: var(--ink); }
+    .meet-stat span { display: block; margin-top: 2px; font-size: 0.78rem; color: var(--text2); }
+
+    /* Wins */
+    .win-cols { margin-top: 46px; column-gap: 18px; }
+    .win-card { border: 1px solid var(--line); border-radius: 20px; margin-bottom: 18px; box-shadow: var(--shadow); }
+    .win-card .win-tag { color: var(--green); }
+
+    /* Final call to action */
+    .cta-box {
+      background:
+        radial-gradient(520px 300px at 15% 0%, rgba(34,197,94,0.18), transparent 65%),
+        linear-gradient(180deg, #f2faf5 0%, #ffffff 100%);
+      border: 1px solid rgba(22,163,74,0.22);
+      border-radius: 28px;
+      padding: 56px 28px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .cta-box h2 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 500; letter-spacing: -1.3px; line-height: 1.05; color: var(--ink); }
+    .cta-box > p { color: var(--body); }
+    .cta-box .form-card { margin-top: 26px; }
+    .cta-box .event-date { font-size: 1.05rem; margin-bottom: 16px; }
+
+    /* Footer */
+    footer { background: #000000; color: rgba(255,255,255,0.62); border-top: 0; }
+    footer a { color: rgba(255,255,255,0.8); }
+    footer a:hover { color: #ffffff; }
+    .footer-disclaimer { color: rgba(255,255,255,0.45); }
+
+    @media (max-width: 860px) {
+      .nav-mid { display: none; }
+      .why-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .hero-band { padding: 12px 14px 0; }
+      .nav-bar { padding: 8px 8px 8px 16px; }
+      .nav-btn { font-size: 0.78rem; padding: 10px 14px; }
+      .hero { padding: 38px 2px 60px; }
+      .hero h1 { letter-spacing: -0.9px; line-height: 1.08; }
+      .hero-pill { padding: 8px 16px; font-size: 0.72rem; }
+      .cd-cell, .form-head .cd-cell { width: 72px; padding: 12px 4px 10px; }
+      .cd-num { font-size: 1.8rem; }
+      .band .section { padding-top: 60px; padding-bottom: 60px; }
+      .section-title { letter-spacing: -0.8px; }
+      .cover-row { padding: 20px; gap: 22px; border-radius: 18px; }
+      .meet-card { padding: 28px 22px; border-radius: 20px; }
+      .meet-stats { grid-template-columns: 1fr; }
+      .cta-btn { padding: 15px 26px; width: 100%; }
+      .optin .cta-btn { width: 100%; }
+      .cta-box { padding: 40px 18px; border-radius: 22px; }
+    }
   </style>
 </head>
 <body>
 
-<div class="sticky-bar">Join 100+ People Building A 6-Figure Subscription&#8209;First E&#8209;commerce Business</div>
+<div class="hero-band">
+  <div class="nav-bar">
+    <span class="nav-label">Live Masterclass</span>
+    <span class="nav-mid">Join 100+ People Building A 6-Figure Subscription&#8209;First E&#8209;commerce Business</span>
+    <a class="nav-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span></a>
+  </div>
 
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-pill"><span class="dot"></span>Live Masterclass: <span class="js-event-date">Wednesday &middot; 7:00 PM EST</span></div>
+    <h1>Learn How to Build a <span class="green">Subscription Based E&#8209;commerce</span> Brand That Pays You Consistently Every Month</h1>
+    <p class="hero-subhead">Without Needing Ecom Experience, Testing Tens Of Different Products, Or Quitting Your Job. Even If You've Tried E&#8209;commerce Before And Couldn't Figure It Out.</p>
 
-<!-- HERO -->
-<div class="hero">
-  <h1>Learn How to Build a <span class="green">Subscription Based E&#8209;commerce</span> Brand That Pays You Consistently Every Month</h1>
-  <p class="hero-subhead">Without Needing Ecom Experience, Testing Tens Of Different Products, Or Quitting Your Job. Even If You've Tried E&#8209;commerce Before And Couldn't Figure It Out.</p>
-
-  <div class="register-block" id="register">
-    <div class="form-card" id="form-card-top">
-      <div class="form-head">
-        <div class="event-date js-event-date">Wednesday &middot; 7:00 PM EST</div>
-        <div class="countdown js-countdown"></div>
-        <p class="fill-note"><span class="dot"></span>Register before it fills.</p>
+    <div class="register-block" id="register">
+      <div class="form-card" id="form-card-top">
+        <div class="form-head">
+          <div class="countdown js-countdown"></div>
+          <p class="fill-note"><span class="dot"></span>Register before it fills.</p>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<hr class="divider" />
-
+<div class="band">
 <!-- WHAT WE'LL COVER -->
 <div class="section wide">
   <p class="section-label">On This Live Masterclass</p>
@@ -808,9 +1036,9 @@
     <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
+</div>
 
-<hr class="divider" />
-
+<div class="band tint">
 <!-- WHO THIS IS FOR -->
 <div class="section">
   <p class="section-label">Who This Is For</p>
@@ -849,9 +1077,9 @@
     <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Reserve My Spot <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
+</div>
 
-<hr class="divider" />
-
+<div class="band">
 <!-- MEET BRONSON -->
 <div class="section">
   <p class="section-label">Who's Teaching This</p>
@@ -876,6 +1104,11 @@
     <p>I built this business while still in college, still working construction, and juggling a personal life.</p>
     <p>So if I did it, you have no excuses not to take action on this now.</p>
     <p>And now I'm helping people like you learn the business model that changed my life.</p>
+    <div class="meet-stats">
+      <div class="meet-stat"><b>$600K+</b><span>A month, my subscription brand</span></div>
+      <div class="meet-stat"><b>&lt; 3 Years</b><span>From zero to multimillion-dollar</span></div>
+      <div class="meet-stat"><b>100+</b><span>People building with this model</span></div>
+    </div>
     <div class="meet-sign">
       <span class="sig">Bronson</span>
       <span class="bar"></span>
@@ -886,9 +1119,9 @@
     <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Yes, I'm In <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
+</div>
 
-<hr class="divider" />
-
+<div class="band tint">
 <!-- WHY THIS MODEL -->
 <div class="section">
   <p class="section-label">Why This Model</p>
@@ -972,9 +1205,9 @@
     <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Reserve My Spot <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
+</div>
 
-<hr class="divider" />
-
+<div class="band">
 <!-- STUDENT WINS -->
 <div class="section wide">
   <p class="section-label">Student Wins</p>
@@ -985,9 +1218,9 @@
     <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Yes, I'm In <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Register Before It Fills)</span></a>
   </div>
 </div>
+</div>
 
-<hr class="divider" />
-
+<div class="band tint">
 <!-- FINAL CTA -->
 <div class="section">
   <div class="cta-box">
@@ -1002,6 +1235,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <!-- FOOTER -->

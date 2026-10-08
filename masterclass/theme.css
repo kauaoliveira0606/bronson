@@ -1,0 +1,61 @@
+/*
+ * Shared look for the masterclass funnel's follow-on pages (confirmation,
+ * purchase, replay, application), matching /masterclass: pale green wash with
+ * faint diagonal streaks at the top of the page, light Manrope headings with
+ * a green accent, green gradient buttons, rounded shadowed cards. Loaded last
+ * in each page's head so it layers over that page's own styles.
+ */
+:root {
+  --green: #16a34a;
+  --green-dark: #15803d;
+  --text: #0f172a;
+  --body: #475569;
+  --tint: #f1f8f3;
+  --mc-line: rgba(15, 23, 42, 0.08);
+  --mc-shadow: 0 10px 30px rgba(15, 23, 42, 0.07), 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+body {
+  background-color: #fcfdfc;
+  background-image:
+    repeating-linear-gradient(118deg, transparent 0 150px, rgba(22, 163, 74, 0.06) 150px 152px),
+    radial-gradient(900px 480px at 18% 0%, rgba(34, 197, 94, 0.18), transparent 62%),
+    radial-gradient(760px 520px at 100% 6%, rgba(22, 163, 74, 0.12), transparent 60%),
+    linear-gradient(180deg, #f2faf5 0%, #fcfdfc 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 760px, 100% 760px, 100% 760px, 100% 760px;
+  color: var(--text);
+}
+
+h1, h2, .co-title {
+  font-family: 'Manrope', 'Inter', sans-serif;
+  font-weight: 500;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  color: var(--text);
+}
+h3 { font-family: 'Manrope', 'Inter', sans-serif; letter-spacing: -0.3px; }
+
+/* Buttons */
+.btn, .done-btn {
+  background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%);
+  border-radius: 8px;
+  font-family: 'Manrope', 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.28);
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+.btn:hover, .done-btn:hover { transform: translateY(-1px); filter: brightness(1.04); box-shadow: 0 12px 26px rgba(22, 163, 74, 0.34); }
+.btn small { letter-spacing: 0; }
+
+/* Cards */
+.card, .co-card, .panel, .done-step-card, .win-card, .vcard, .apply-card, .intro-card {
+  border: 1px solid var(--mc-line);
+  border-radius: 20px;
+  box-shadow: var(--mc-shadow);
+}
+.win-card, .vcard { overflow: hidden; }
+
+footer { background: #000000; }
