@@ -75,9 +75,8 @@
         <div class="done-bk-video"><div class="done-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="done-video-label">Video Coming Soon</div></div>
         <div class="done-bk-title">The Treadmill Versus The Machine</div>
       </div>
-      <!-- PLACEHOLDER: breakout video 2 -->
       <div class="done-bk">
-        <div class="done-bk-video"><div class="done-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="done-video-label">Video Coming Soon</div></div>
+        <div class="done-bk-player"><vturb-smartplayer id="vid-6ac7b9acb7192639646ee158" data-vturb="6ac7b9acb7192639646ee158" style="display: block; margin: 0 auto; width: 100%;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer></div>
         <div class="done-bk-title">Tokyo Versus The Small City</div>
       </div>
       <!-- PLACEHOLDER: breakout video 3 -->
