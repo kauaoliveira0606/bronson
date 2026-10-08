@@ -250,7 +250,7 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.06);
     }
 
-    form.optin { display: flex; flex-direction: column; gap: 12px; }
+    .optin { display: flex; flex-direction: column; gap: 12px; }
 
     form.optin input,
     form.optin select {
@@ -354,7 +354,7 @@
       opacity: 0.9;
     }
 
-    form.optin .cta-btn { max-width: none; border-radius: 50px; margin-top: 4px; }
+    .optin .cta-btn { max-width: none; border-radius: 50px; margin-top: 4px; }
 
     .cta-row { text-align: center; margin-top: 32px; }
 
@@ -533,7 +533,7 @@
     .float-proof {
       display: none;
       position: fixed;
-      left: 16px;
+      right: 16px;
       bottom: 16px;
       z-index: 40;
       width: 320px;
@@ -1030,48 +1030,12 @@
 </div>
 
 <template id="optin-template">
-  <form class="optin" novalidate>
-    <input type="text" data-field="name" placeholder="First name" autocomplete="given-name" aria-label="First name" required />
-    <input type="email" data-field="email" placeholder="Email" autocomplete="email" aria-label="Email" required />
-    <div class="phone-row">
-      <select data-field="country" aria-label="Country code">
-        <option value="+1">🇺🇸 +1</option>
-        <option value="+1">🇨🇦 +1</option>
-        <option value="+44">🇬🇧 +44</option>
-        <option value="+61">🇦🇺 +61</option>
-        <option value="+64">🇳🇿 +64</option>
-        <option value="+49">🇩🇪 +49</option>
-        <option value="+33">🇫🇷 +33</option>
-        <option value="+39">🇮🇹 +39</option>
-        <option value="+34">🇪🇸 +34</option>
-        <option value="+31">🇳🇱 +31</option>
-        <option value="+32">🇧🇪 +32</option>
-        <option value="+41">🇨🇭 +41</option>
-        <option value="+43">🇦🇹 +43</option>
-        <option value="+46">🇸🇪 +46</option>
-        <option value="+47">🇳🇴 +47</option>
-        <option value="+45">🇩🇰 +45</option>
-        <option value="+358">🇫🇮 +358</option>
-        <option value="+353">🇮🇪 +353</option>
-        <option value="+351">🇵🇹 +351</option>
-        <option value="+81">🇯🇵 +81</option>
-        <option value="+82">🇰🇷 +82</option>
-        <option value="+65">🇸🇬 +65</option>
-        <option value="+852">🇭🇰 +852</option>
-        <option value="+971">🇦🇪 +971</option>
-        <option value="+972">🇮🇱 +972</option>
-        <option value="+55">🇧🇷 +55</option>
-        <option value="+52">🇲🇽 +52</option>
-      </select>
-      <input type="tel" data-field="phone" placeholder="Phone number" autocomplete="tel-national" aria-label="Phone number" required />
-    </div>
-    <p class="form-err" role="alert"></p>
-    <button type="submit" class="cta-btn"><span class="js-submit-label">Save My Seat</span> <span aria-hidden="true">&rarr;</span></button>
+  <div class="optin">
+    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener"><span class="js-submit-label">Save My Seat</span> <span aria-hidden="true">&rarr;</span></a>
     <div class="trust-row">
       <span class="trust-badge dark"><img src="/paid/whop-icon.png" alt="" /><span><span class="trust-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>4.7-Star Rated on Whop</span></span>
     </div>
-  </form>
-  <p class="form-note">By submitting you agree to our <a href="/terms" target="_blank">terms</a> and <a href="/privacy" target="_blank">policies</a>.</p>
+  </div>
 </template>
 
 <script>
@@ -1108,14 +1072,24 @@
     { img: '/wins/win-347.jpg', tag: 'Making Progress', title: 'Trendyboym', sub: '&quot;Seeing each of you posting your process has made it so much easier to keep pushing.&quot;' }
   ];
 
-  /* ---------- Opt-in forms ---------- */
+  /* ---------- Registration (WebinarJam) ---------- */
+  // Registration is handled by the WebinarJam embed loaded at the bottom of the page. It
+  // opens its sign-up popup from any element carrying data-webinarHash, so these buttons
+  // and its own floating bubble all open the same form.
   var template = document.getElementById('optin-template');
-  var cards = ['form-card-top', 'form-card-bottom'].map(function (id) {
+  ['form-card-top', 'form-card-bottom'].forEach(function (id) {
     var card = document.getElementById(id);
     card.appendChild(template.content.cloneNode(true));
     if (id === 'form-card-bottom') card.querySelector('.js-submit-label').textContent = "Yes, I'm In";
-    card.querySelector('form').addEventListener('submit', function (e) { handleOptin(e, card); });
-    return card;
+    card.querySelector('.js-wj-open').addEventListener('click', function (e) {
+      // Keep the session they signed up for, for the confirmation pages.
+      try {
+        window.sessionStorage.setItem('mc_when', formatSession(session));
+        window.sessionStorage.setItem('mc_at', session.toISOString());
+      } catch (err) {}
+      // Popup when the embed has loaded; otherwise the link opens WebinarJam's own page.
+      if (document.getElementById('wj_registration_frame')) e.preventDefault();
+    });
   });
 
   /* ---------- Schedule + countdown ---------- */
@@ -1245,103 +1219,9 @@
     });
     timer = setTimeout(show, 8000);
   })();
-
-  /* ---------- Opt-in submit ---------- */
-  function phoneOk(country, raw) {
-    var d = raw.replace(/\D/g, '');
-    if (raw.trim().charAt(0) === '+') return d.length >= 8 && d.length <= 15;
-    if (country === '+1') {
-      if (d.length === 11 && d.charAt(0) === '1') d = d.slice(1);
-      return d.length === 10 && !/^[01]/.test(d);
-    }
-    d = d.replace(/^0+/, '');
-    return d.length >= 7 && d.length <= 13;
-  }
-
-  function phoneMsg(country) {
-    return country === '+1'
-      ? 'Please enter a 10 digit phone number including your area code. If your number is from another country, pick it in the dropdown.'
-      : 'Please enter a valid phone number for the country you selected.';
-  }
-
-  function field(card, name) { return card.querySelector('[data-field="' + name + '"]'); }
-
-  function formError(card, msg, name) {
-    var el = card.querySelector('.form-err');
-    el.textContent = msg;
-    el.style.display = 'block';
-    field(card, name).focus();
-  }
-
-  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  /* ---------- Partial submissions ---------- */
-  // Once there's a valid email, save whatever is filled in so the lead isn't lost
-  // if they leave before submitting. Re-sent only when something changed.
-  var submitted = false;
-  var lastPartial = '';
-  function sendPartial(card) {
-    if (submitted) return;
-    var email = field(card, 'email').value.trim();
-    if (!EMAIL_RE.test(email)) return;
-    var country = field(card, 'country').value;
-    var phone = field(card, 'phone').value.trim();
-    if (phone && !phoneOk(country, phone)) phone = '';
-    var data = JSON.stringify({
-      name: field(card, 'name').value.trim(),
-      email: email,
-      phone: !phone || phone.charAt(0) === '+' ? phone : country + phone,
-      webhook: 'masterclass',
-      partial: true,
-      masterclassDate: session.toISOString(),
-      masterclassLabel: formatSession(session),
-      pageUrl: window.location.href
-    });
-    if (data === lastPartial) return;
-    lastPartial = data;
-    try {
-      fetch('/api/collect-lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: data, keepalive: true }).catch(function () {});
-    } catch (err) {}
-  }
-  cards.forEach(function (card) {
-    card.querySelector('form').addEventListener('change', function () { sendPartial(card); });
-  });
-  window.addEventListener('pagehide', function () { cards.forEach(sendPartial); });
-
-  function handleOptin(e, card) {
-    e.preventDefault();
-    var name = field(card, 'name').value.trim();
-    var email = field(card, 'email').value.trim();
-    var country = field(card, 'country').value;
-    var phone = field(card, 'phone').value.trim();
-    if (!name) return formError(card, 'Please enter your first name.', 'name');
-    if (!EMAIL_RE.test(email)) return formError(card, 'Please enter a valid email address.', 'email');
-    if (!phoneOk(country, phone)) return formError(card, phoneMsg(country), 'phone');
-    card.querySelector('.form-err').style.display = 'none';
-    submitted = true;
-
-    var btn = card.querySelector('button[type="submit"]');
-    btn.textContent = 'Saving Your Seat...';
-    btn.disabled = true;
-
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/api/collect-lead', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onloadend = function () {
-      var params = new URLSearchParams({ fname: name, email: email, when: formatSession(session), at: session.toISOString() });
-      window.location.href = '/masterclass-confirmation?' + params.toString();
-    };
-    xhr.send(JSON.stringify({
-      name: name,
-      email: email,
-      phone: !phone || phone.charAt(0) === '+' ? phone : country + phone,
-      webhook: 'masterclass',
-      masterclassDate: session.toISOString(),
-      masterclassLabel: formatSession(session),
-      pageUrl: window.location.href
-    }));
-  }
 </script>
+
+<script src="https://event.webinarjam.com/register/13q192ty/embed-bar?buttonText=Yes%2C%20I%20Want%20To%20Attend&buttonBgColor=%2300ff25&buttonBgOpacity=0.95&barBgColor=%23ffffff&barBgOpacity=1&type=bubble&formTemplate=2&formColor=3"></script>
 
 </body>
 </html>
