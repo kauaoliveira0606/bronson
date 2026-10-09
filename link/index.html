@@ -226,7 +226,6 @@ src="https://www.facebook.com/tr?id=930673332466368&ev=PageView&noscript=1"
         const original = btn.textContent;
         btn.textContent = 'Copied!';
         btn.classList.add('copied');
-        if (typeof fbq === 'function') fbq('trackCustom', 'CopyLink');
         setTimeout(() => {
           btn.textContent = original;
           btn.classList.remove('copied');
