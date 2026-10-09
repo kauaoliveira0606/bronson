@@ -743,7 +743,6 @@ MOBILE: single column, sliders full width, results stack below inputs. Fully res
         const original = btn.textContent;
         btn.textContent = 'Copied!';
         btn.classList.add('copied');
-        if (typeof fbq === 'function') fbq('trackCustom', 'CopyPrompt');
         setTimeout(() => {
           btn.textContent = original;
           btn.classList.remove('copied');

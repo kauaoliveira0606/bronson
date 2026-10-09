@@ -618,14 +618,7 @@
           plan: WHOP_PLAN_ID,
           returnUrl: AFTER_PURCHASE_URL,
           metadata: { funnel: 'masterclass' },
-          attribution: attribution,
-          // Fires before the redirect to returnUrl. It can fire again for the same payment
-          // on a restored checkout, so the pixel event is recorded once per payment.
-          onComplete: function (done) {
-            if (done.result !== 'payment' || store.get('mc_paid_' + done.paymentId)) return;
-            store.set('mc_paid_' + done.paymentId, '1');
-            if (window.fbq) fbq('track', 'Purchase', { value: 27, currency: 'USD' });
-          }
+          attribution: attribution
         });
         checkout.create('checkout', { buyerEmail: buyerEmail, onError: fail }).mount(target);
       } catch (e) {
