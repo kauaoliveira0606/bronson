@@ -725,6 +725,9 @@
       margin-bottom: 22px;
     }
     .hero-pill .dot { margin-right: 0; background: var(--green-bright); }
+    .hero-pill-label { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .hero-pill .js-event-date { white-space: nowrap; }
+    .hero-pill-colon { margin-left: -8px; }
     .hero h1 {
       font-size: clamp(2.05rem, 5.6vw, 4.1rem);
       font-weight: 500;
@@ -848,7 +851,11 @@
       .nav-btn { font-size: 0.78rem; padding: 10px 14px; }
       .hero { padding: 38px 2px 60px; }
       .hero h1 { letter-spacing: -0.9px; line-height: 1.08; }
-      .hero-pill { padding: 8px 16px; font-size: 0.72rem; }
+      /* Two tidy centered lines on phones: the label, then the date. */
+      .hero-pill { flex-direction: column; gap: 3px; padding: 10px 18px; font-size: 0.72rem; border-radius: 18px; }
+      .hero-pill-label { font-weight: 700; }
+      .hero-pill-colon { display: none; }
+      @media (max-width: 360px) { .hero-pill { font-size: 0.64rem; } }
       .cd-cell, .form-head .cd-cell { width: 72px; padding: 12px 4px 10px; }
       .cd-num { font-size: 1.8rem; }
       .band .section { padding-top: 60px; padding-bottom: 60px; }
@@ -875,7 +882,7 @@
 
   <!-- HERO -->
   <div class="hero">
-    <div class="hero-pill"><span class="dot"></span>Live Masterclass: <span class="js-event-date">Wednesday &middot; 7:00 PM EST</span></div>
+    <div class="hero-pill"><span class="hero-pill-label"><span class="dot"></span>Live Masterclass<span class="hero-pill-colon">:</span></span> <span class="js-event-date">Wednesday &middot; 7:00 PM EST</span></div>
     <h1>Learn How to Build a <span class="green">Subscription Based E&#8209;commerce</span> Brand That Pays You Consistently Every Month</h1>
     <p class="hero-subhead">Without Needing Ecom Experience, Testing Tens Of Different Products, Or Quitting Your Job. Even If You've Tried E&#8209;commerce Before And Couldn't Figure It Out.</p>
 
