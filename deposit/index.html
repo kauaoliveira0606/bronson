@@ -169,6 +169,28 @@
       border-radius: 10px;
     }
 
+    /* Wall of wins: screenshots in a masonry of two columns, then student videos. */
+    .wins-grid { columns: 2; column-gap: 18px; }
+    .win-card, .vcard {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      text-align: left;
+    }
+    .win-card { break-inside: avoid; margin-bottom: 18px; }
+    .win-head, .vcard-header { padding: 14px 18px; }
+    .win-tag { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #4ade80; margin-bottom: 4px; }
+    .win-title { font-size: 0.95rem; font-weight: 700; color: #fff; line-height: 1.4; }
+    .win-sub { font-size: 0.82rem; color: rgba(255,255,255,0.65); margin-top: 2px; line-height: 1.45; }
+    .win-card img { width: 100%; display: block; }
+    .vwins-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .vcard-video { margin: 0 18px 18px; height: 280px; overflow: hidden; border-radius: 10px; }
+    @media (max-width: 640px) {
+      .wins-grid { columns: 1; }
+      .vwins-grid { grid-template-columns: 1fr; }
+    }
+
     footer {
       background: #000;
       border-top: 1px solid rgba(255,255,255,0.06);
@@ -259,21 +281,268 @@
 
   <!-- Results -->
   <p class="section-label" style="margin-top:48px;">Success Stories</p>
-  <h2 class="section-title">Here Are Just A Few Of Our Success Stories</h2>
+  <h2 class="section-title">Our Students Are Winning Every Single Day</h2>
   <p class="section-sub">Real students. Real results.</p>
 
-  <div class="results-grid">
-    <div class="result-item">
-      <p class="result-label">Ryan with a 20k/m personal record</p>
-      <img src="/13.png" alt="Ryan Result">
+  <div class="wins-grid">
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">Personal Record</div>
+        <div class="win-title">Ryan: $20k/month</div>
+        <div class="win-sub">Scaled from zero in first 90 days</div>
+      </div>
+      <img src="/13.png" alt="Ryan: $20k/month result" loading="eager">
     </div>
-    <div class="result-item">
-      <p class="result-label">Jaden with an $8k day</p>
-      <img src="/14.jpeg" alt="Jaden Result">
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">Best Day</div>
+        <div class="win-title">Jaden: $8k day</div>
+        <div class="win-sub">Six months into the program</div>
+      </div>
+      <img src="/14.jpeg" alt="Jaden: $8k day result" loading="eager">
     </div>
-    <div class="result-item">
-      <p class="result-label">Tyler with 100k in two weeks</p>
-      <img src="/15.jpeg" alt="Tyler Result">
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">Scaling Fast</div>
+        <div class="win-title">Tyler: $100k in 2 weeks</div>
+        <div class="win-sub">No prior e-com experience</div>
+      </div>
+      <img src="/15.jpeg" alt="Tyler: $100k in 2 weeks result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">Consistent Growth</div>
+        <div class="win-title">Kaleb</div>
+        <div class="win-sub">"The month over month growth has been nuts!"</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/68e955a65db7d666d86e6e1e.png" alt="Kaleb result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">From Zero</div>
+        <div class="win-title">Daniel</div>
+        <div class="win-sub">"1 month in and look at that spike. Zero sales before."</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee8a07f504aeaca49f2f7f.jpeg" alt="Daniel result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">Ads Success</div>
+        <div class="win-title">Micah</div>
+        <div class="win-sub">"The 1-on-1 help with running the ads has been so awesome."</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee8b33585902432f7f8a20.jpeg" alt="Micah result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">$30k in 23 Days</div>
+        <div class="win-title">$30,000 revenue</div>
+        <div class="win-sub">In the last 23 days</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee920b8f6c2c4ed1a2d580.png" alt="$30,000 revenue result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">8.79x ROAS</div>
+        <div class="win-title">Skin care niche</div>
+        <div class="win-sub">TikTok ads crushing it</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee9318918308897e0d8c9b.png" alt="Skin care niche result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">3.59x ROAS</div>
+        <div class="win-title">New student: under 1 month in</div>
+        <div class="win-sub">Already scaling</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee939558590276507f9c6c.png" alt="New student: under 1 month in result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">Live Results</div>
+        <div class="win-title">Current results</div>
+        <div class="win-sub">No old screenshots here</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee946b918308652f0d8de4.png" alt="Current results result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">Clothing Niche</div>
+        <div class="win-title">First drop sold out</div>
+        <div class="win-sub">Clothing brand, strong ROAS on first run</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95224930c4210b003576.png" alt="First drop sold out result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">3.61x ROAS</div>
+        <div class="win-title">Organic hair & skin care brand</div>
+        <div class="win-sub">Ripping sales with Meta ads</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95b6e416f131f1a415da.png" alt="Organic hair &amp; skin care brand result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">Supplement Niche</div>
+        <div class="win-title">$100k+ months incoming</div>
+        <div class="win-sub">Getting into the big numbers</div>
+      </div>
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee96518f6c2cb9f8a2da5b.png" alt="$100k+ months incoming result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">$2.5k In MRR</div>
+        <div class="win-title">Layman: $5,137 in 90 days</div>
+        <div class="win-sub">105 orders after starting e-com on Feb 1st</div>
+      </div>
+      <img src="/wins/win-349.jpg" alt="Layman: $5,137 in 90 days result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">$1,020 In 30 Days</div>
+        <div class="win-title">Shock</div>
+        <div class="win-sub">18 orders in the last 30 days</div>
+      </div>
+      <img src="/wins/win-357.jpg" alt="Shock result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">$968 By Midday</div>
+        <div class="win-title">Ryan</div>
+        <div class="win-sub">"I was exactly where all of you are now less than 7 months ago."</div>
+      </div>
+      <img src="/wins/win-352.jpg" alt="Ryan result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">Best Day So Far</div>
+        <div class="win-title">Layman: $184 day</div>
+        <div class="win-sub">After bumping the ad budget to $72 a day</div>
+      </div>
+      <img src="/wins/win-353.jpg" alt="Layman: $184 day result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">Day 3 Of Ads</div>
+        <div class="win-title">Armen: $112 day</div>
+        <div class="win-sub">"This is how we finished day 3 of running ads!"</div>
+      </div>
+      <img src="/wins/win-354.jpg" alt="Armen: $112 day result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">First Sale</div>
+        <div class="win-title">Armen</div>
+        <div class="win-sub">"After a few weeks of hard work, I'm happy to now post about my first sale."</div>
+      </div>
+      <img src="/wins/win-355.jpg" alt="Armen result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">First Sale</div>
+        <div class="win-title">Logan</div>
+        <div class="win-sub">"First sale came through!!! Can't wait to see how the future of this brand will grow."</div>
+      </div>
+      <img src="/wins/win-348.jpg" alt="Logan result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">First Sale</div>
+        <div class="win-title">AkatsukiShinobi</div>
+        <div class="win-sub">"First sale came thru! It can only be up from here"</div>
+      </div>
+      <img src="/wins/win-351.jpg" alt="AkatsukiShinobi result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">2 Weeks In</div>
+        <div class="win-title">Alex</div>
+        <div class="win-sub">"Finally got my first couple orders"</div>
+      </div>
+      <img src="/wins/win-356.jpg" alt="Alex result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">First Orders</div>
+        <div class="win-title">Grif</div>
+        <div class="win-sub">"God did!!!"</div>
+      </div>
+      <img src="/wins/win-350.jpg" alt="Grif result" loading="eager">
+    </div>
+    <div class="win-card">
+      <div class="win-head">
+        <div class="win-tag">Making Progress</div>
+        <div class="win-title">Trendyboym</div>
+        <div class="win-sub">"Seeing each of you posting your process has made it so much easier to keep pushing."</div>
+      </div>
+      <img src="/wins/win-347.jpg" alt="Trendyboym result" loading="eager">
+    </div>
+  </div>
+
+  <p class="section-label" style="margin-top:56px;">In Their Own Words</p>
+  <h2 class="section-title">Hear It From The Students</h2>
+  <p class="section-sub">Unscripted, unedited student recordings.</p>
+
+  <div class="vwins-grid">
+    <div class="vcard">
+      <div class="vcard-header">
+        <div class="win-tag">Zach</div>
+        <div class="win-title">"I'm already doing $500/day in sales"</div>
+      </div>
+      <div class="vcard-video">
+        <vturb-smartplayer id="vid-6a06402316c0af42e4012ebf" style="display:block;width:100%;border-radius:10px;overflow:hidden;"></vturb-smartplayer>
+        <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a06402316c0af42e4012ebf/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+      </div>
+    </div>
+    <div class="vcard">
+      <div class="vcard-header">
+        <div class="win-tag">Landon</div>
+        <div class="win-title">"I'm building a business I can sell one day, that's the best part"</div>
+      </div>
+      <div class="vcard-video">
+        <vturb-smartplayer id="vid-6a064036def534041ec3fb81" style="display:block;width:100%;border-radius:10px;overflow:hidden;"></vturb-smartplayer>
+        <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a064036def534041ec3fb81/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+      </div>
+    </div>
+    <div class="vcard">
+      <div class="vcard-header">
+        <div class="win-tag">Carlee</div>
+        <div class="win-title">"I went from the biggest hater to someone who will actually vouch for Bronson"</div>
+      </div>
+      <div class="vcard-video">
+        <vturb-smartplayer id="vid-6a06402c89e22adb559d8427" style="display:block;width:100%;border-radius:10px;overflow:hidden;"></vturb-smartplayer>
+        <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a06402c89e22adb559d8427/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+      </div>
+    </div>
+    <div class="vcard">
+      <div class="vcard-header">
+        <div class="win-tag">Johnathan</div>
+        <div class="win-title">"The community is great, I love seeing how other members succeed"</div>
+      </div>
+      <div class="vcard-video">
+        <vturb-smartplayer id="vid-6a064046f1bab801cdce6723" style="display:block;width:100%;border-radius:10px;overflow:hidden;"></vturb-smartplayer>
+        <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a064046f1bab801cdce6723/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+      </div>
+    </div>
+    <div class="vcard">
+      <div class="vcard-header">
+        <div class="win-tag">Ryan</div>
+        <div class="win-title">"Bronson really does give you all the information you need to succeed"</div>
+      </div>
+      <div class="vcard-video">
+        <vturb-smartplayer id="vid-6a06404116c0af42e4012f45" style="display:block;width:100%;border-radius:10px;overflow:hidden;"></vturb-smartplayer>
+        <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a06404116c0af42e4012f45/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+      </div>
+    </div>
+    <div class="vcard">
+      <div class="vcard-header">
+        <div class="win-tag">Dan</div>
+        <div class="win-title">"I've made over $16,000 since I started, not that long ago"</div>
+      </div>
+      <div class="vcard-video">
+        <vturb-smartplayer id="vid-6a0640174d688ba705672fa5" style="display:block;width:100%;border-radius:10px;overflow:hidden;"></vturb-smartplayer>
+        <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a0640174d688ba705672fa5/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
+      </div>
     </div>
   </div>
 
@@ -289,6 +558,23 @@
   <br>
   <p class="footer-disc">© 2025 Ad Ventur. All Rights Reserved.</p>
 </footer>
+
+<script>
+(function() {
+  // Student videos are vertical; each card is cropped to the same height.
+  var VIDEO_H = 280;
+  function fixCards() {
+    document.querySelectorAll('.vcard').forEach(function(card) {
+      var header = card.querySelector('.vcard-header');
+      if (!header) return;
+      var headerH = header.getBoundingClientRect().height;
+      if (headerH === 0) return;
+      card.style.height = (Math.ceil(headerH) + VIDEO_H + 18) + 'px';
+    });
+  }
+  [500, 1500, 3000, 5000].forEach(function(t) { setTimeout(fixCards, t); });
+})();
+</script>
 
 </body>
 </html>
