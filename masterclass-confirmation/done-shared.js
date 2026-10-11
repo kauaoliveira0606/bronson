@@ -4,9 +4,9 @@
 (function () {
   // Masterclass schedule: weekly, day of week (0 = Sunday) at HOUR:00 New York time.
   // Keep in step with the constants in /masterclass/index.html.
-  var MASTERCLASS_DAY = 3;
-  var MASTERCLASS_HOUR = 19;
-  var MASTERCLASS_TIME_LABEL = '7PM EST';
+  var MASTERCLASS_DAY = 0;
+  var MASTERCLASS_HOUR = 15;
+  var MASTERCLASS_TIME_LABEL = '3PM EST';
   var MASTERCLASS_MINUTES = 90;
   var EVENT_TITLE = 'Live Masterclass: Subscription Based E-commerce with Bronson';
   var JOIN_URL = 'https://event.webinarjam.com/8wgzn9/register/13q192ty';
