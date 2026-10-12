@@ -292,6 +292,8 @@
       text-align: left;
     }
 
+    .seat-note { margin: 12px 0 10px; text-align: center; font-size: 0.88rem; color: var(--body); }
+    .seat-note b { color: var(--ink); font-weight: 800; }
     .trust-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 4px; }
     .trust-badge {
       display: inline-flex;
@@ -694,13 +696,6 @@
     .nav-label-top { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; color: var(--green); white-space: nowrap; }
     .nav-label .dot { margin-right: 0; background: var(--green-bright); }
     .nav-label-colon { margin-left: -8px; }
-    .nav-mid { font-size: 0.9rem; color: var(--body); text-align: center; white-space: nowrap; }
-    .nav-mid b { color: var(--ink); font-weight: 800; }
-    /* Below desktop width the seat count drops to its own line under the label and button. */
-    @media (max-width: 1020px) {
-      .nav-bar { flex-wrap: wrap; }
-      .nav-mid { order: 3; flex: 0 0 100%; padding-top: 8px; border-top: 1px solid #eef2f0; font-size: 0.82rem; }
-    }
     .nav-date { font-weight: 500; letter-spacing: 0.3px; color: var(--ink); white-space: nowrap; }
     .nav-btn, .cta-btn {
       display: inline-block;
@@ -887,7 +882,6 @@
 <div class="hero-band">
   <div class="nav-bar">
     <span class="nav-label"><span class="nav-label-top"><span class="dot"></span>Live Masterclass<span class="nav-label-colon">:</span></span> <span class="nav-date js-event-date"><span>Sunday</span><span class="nav-date-sep"> &middot; </span><span>3:00 PM EST</span></span></span>
-    <span class="nav-mid"><b class="js-seat-count">264</b> People already saved their seat</span>
     <a class="nav-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span></a>
   </div>
 
@@ -1303,6 +1297,7 @@
 <template id="optin-template">
   <div class="optin">
     <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener"><span class="js-submit-label">Save My Seat</span> <span aria-hidden="true">&rarr;</span></a>
+    <p class="seat-note"><b class="js-seat-count">264</b> People already saved their seat</p>
     <div class="trust-row">
       <span class="trust-badge dark"><img src="/paid/whop-icon.webp" alt="" /><span><span class="trust-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>4.7-Star Rated on Whop</span></span>
       <span class="trust-badge dark helped"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2l2.4 1.8 3-.2 1 2.8 2.5 1.6-.8 2.9.8 2.9-2.5 1.6-1 2.8-3-.2L12 22l-2.4-1.8-3 .2-1-2.8-2.5-1.6.8-2.9-.8-2.9 2.5-1.6 1-2.8 3 .2z"/><path fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M8.2 12.3l2.6 2.6 5-5.4"/></svg><span><span class="trust-kicker">Verified by Whop</span>251 Students Helped</span></span>
