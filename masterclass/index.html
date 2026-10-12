@@ -824,6 +824,14 @@
     .win-card .win-tag { color: var(--green); }
 
     /* Final call to action */
+    .faq { max-width: 760px; margin: 40px auto 0; display: grid; gap: 12px; }
+    .faq-item { background: #ffffff; border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; }
+    .faq-item summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; font-family: 'Manrope', 'Inter', sans-serif; font-size: 1.02rem; font-weight: 700; color: var(--ink); }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { content: "+"; flex: none; width: 26px; height: 26px; border-radius: 50%; background: rgba(22,163,74,0.12); color: var(--green); font-size: 1.1rem; font-weight: 700; line-height: 26px; text-align: center; }
+    .faq-item[open] summary::after { content: "\2212"; }
+    .faq-item p { padding: 0 22px 20px; color: var(--body); line-height: 1.6; }
+    @media (max-width: 600px) { .faq-item summary { padding: 16px 18px; font-size: 0.96rem; } .faq-item p { padding: 0 18px 18px; } }
     .cta-box {
       background:
         radial-gradient(520px 300px at 15% 0%, rgba(34,197,94,0.18), transparent 65%),
@@ -1054,7 +1062,7 @@
   </div>
 
   <div class="cta-row">
-    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Sunday at 3 PM EST</span>. Register Before It Fills)</span></a>
+    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Sunday at 3 PM EST</span>. Live Only)</span></a>
   </div>
 </div>
 </div>
@@ -1095,7 +1103,7 @@
     </div>
   </div>
   <div class="cta-row">
-    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Reserve My Spot <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Sunday at 3 PM EST</span>. Register Before It Fills)</span></a>
+    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Reserve My Spot <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Sunday at 3 PM EST</span>. Live Only)</span></a>
   </div>
 </div>
 </div>
@@ -1144,7 +1152,7 @@
   </div>
   </div>
   <div class="cta-row">
-    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Yes, I'm In <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Sunday at 3 PM EST</span>. Register Before It Fills)</span></a>
+    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Yes, I'm In <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Sunday at 3 PM EST</span>. Live Only)</span></a>
   </div>
 </div>
 </div>
@@ -1230,7 +1238,7 @@
     </div>
   </div>
   <div class="cta-row">
-    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Reserve My Spot <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Sunday at 3 PM EST</span>. Register Before It Fills)</span></a>
+    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Reserve My Spot <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Sunday at 3 PM EST</span>. Live Only)</span></a>
   </div>
 </div>
 </div>
@@ -1243,7 +1251,73 @@
   <p class="section-desc">No hype. Just outcomes from students running the same model I'm teaching live.</p>
   <div class="win-cols js-wins"></div>
   <div class="cta-row">
-    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Yes, I'm In <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Sunday at 3 PM EST</span>. Register Before It Fills)</span></a>
+    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Yes, I'm In <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Sunday at 3 PM EST</span>. Live Only)</span></a>
+  </div>
+</div>
+</div>
+
+<div class="band">
+<!-- FAQ -->
+<div class="section">
+  <p class="section-label">FAQ</p>
+  <h2 class="section-title">Questions People Ask Before They Register</h2>
+  <div class="faq">
+    <details class="faq-item">
+      <summary>How long is the masterclass?</summary>
+      <p>About 90 minutes, and that includes the live Q&amp;A at the end. Block the full time so you don't miss the part where I answer questions.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Will there be a replay?</summary>
+      <p>No. This one is live only. Show up on time, because once it's over, it's over.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What do I need to bring?</summary>
+      <p>Something to take notes with and your questions. That's it. You don't need to buy or set up anything before we start.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Do I need to have a store or product already?</summary>
+      <p>No. We start from zero. I'll show you how to find a product people already buy every month and how to build the store around it.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Is the masterclass actually free?</summary>
+      <p>Yes. It costs nothing to register and nothing to attend.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How much money do I need to start?</summary>
+      <p>A few hundred dollars for your store and a small daily ad budget. You don't buy any inventory upfront. You only pay for a product after a customer orders it from you.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How much should I plan for ads?</summary>
+      <p>Start small. A small daily budget is enough to get your first sales, and you only raise it once the numbers work. I'll walk you through the exact starting budget live.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Is this dropshipping?</summary>
+      <p>The shipping side works the same way. Your supplier packs and ships, and you never touch a product. The difference is you put your own brand on something people reorder every month, so you're building a subscription brand, not a one-off product store.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How is this different from the ecom stuff I've already tried?</summary>
+      <p>Most ecom is one-time sales. You sell something once, then you have to go find a brand new customer. Here the same customers pay you again every month, so you're not starting from zero every time.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Who is Bronson and why should I trust him?</summary>
+      <p>I'm from a small town in Michigan and I used to work 10 to 12 hour construction shifts. I built my own subscription brand to over $600,000 a month in under 3 years. I don't just teach this, I run it every day.</p>
+    </details>
+    <details class="faq-item">
+      <summary>I work 60 hours a week. Can I actually do this?</summary>
+      <p>Yes. I built mine while I was in college and working construction. One to two hours a day is enough, after your shift or on the weekends.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Do I need any tech or computer experience?</summary>
+      <p>No. If you can use a phone and a laptop, you're fine. AI builds your store, makes your images, and writes your copy.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How fast until I see my first sale?</summary>
+      <p>It depends on how fast you get your store and ads live. Some of my students got their first orders in a week or two. Others took longer, and that's normal.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Is this a get rich quick thing?</summary>
+      <p>No. It took me about 2.5 years to get to where I am now. Plan on a few weeks to get your store live and your first sales, then months of showing up every day to build real monthly income.</p>
+    </details>
   </div>
 </div>
 </div>
