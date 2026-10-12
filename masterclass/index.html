@@ -701,14 +701,30 @@
       letter-spacing: 0.4px;
       text-transform: uppercase;
       border: 0;
-      border-radius: 8px;
-      box-shadow: 0 8px 20px rgba(22,163,74,0.28);
-      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+      border-radius: 999px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(6,78,35,0.35), 0 1px 2px rgba(0,0,0,0.25), 0 10px 24px -8px rgba(22,163,74,0.5);
+      transition: transform .15s ease, box-shadow .24s cubic-bezier(.16,1,.3,1), filter .2s ease;
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
+    /* Shine: a soft band of light sweeps across the button every few seconds. */
+    .nav-btn::before, .cta-btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      background-image: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.38) 50%, transparent 70%);
+      transform: translateX(-100%);
+      animation: cta-shine 3.6s linear infinite;
+    }
+    @keyframes cta-shine { 0% { transform: translateX(-100%); } 60%, 100% { transform: translateX(100%); } }
+    @media (prefers-reduced-motion: reduce) { .nav-btn::before, .cta-btn::before { animation: none; } }
     .nav-btn { font-size: 0.85rem; padding: 11px 20px; white-space: nowrap; }
     .cta-btn { font-size: 1rem; padding: 16px 40px; width: auto; }
-    .nav-btn:hover, .cta-btn:hover { transform: translateY(-1px); filter: brightness(1.04); box-shadow: 0 12px 26px rgba(22,163,74,0.34); background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); }
+    .nav-btn:hover, .cta-btn:hover { opacity: 1; transform: translateY(-1px); filter: brightness(1.04); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(6,78,35,0.35), 0 1px 2px rgba(0,0,0,0.25), 0 14px 30px -8px rgba(22,163,74,0.58); background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); }
     .cta-btn-sub { display: block; margin-top: 4px; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0; text-transform: none; opacity: 0.92; }
     .cta-row { margin-top: 44px; text-align: center; }
 
@@ -741,7 +757,7 @@
     .cd-lbl { margin-top: 8px; font-size: 0.6rem; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text2); }
     .fill-note { font-size: 0.85rem; color: var(--body); margin-bottom: 18px; }
     .optin { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-    .optin .cta-btn { width: auto; min-width: 250px; border-radius: 8px; }
+    .optin .cta-btn { width: auto; min-width: 250px; border-radius: 999px; }
     .optin { border: 0; padding: 0; margin: 0; }
     .event-date { font-family: 'Manrope', sans-serif; font-weight: 700; color: var(--ink); }
 
