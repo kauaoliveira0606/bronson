@@ -210,6 +210,9 @@
     .co-product .radio { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 2px solid #0b1b26; display: flex; align-items: center; justify-content: center; }
     .co-product .radio::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #0b1b26; }
     .co-product span.name { flex: 1; text-align: left; }
+    .co-trust { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 14px; margin: 16px 0 14px; padding: 0; }
+    .co-trust li { display: inline-flex; align-items: center; gap: 5px; font-size: 0.76rem; font-weight: 500; color: var(--body); white-space: nowrap; }
+    .co-trust svg { flex: none; color: var(--ink, #111827); }
     .checkout-embed { min-height: 420px; }
     .checkout-embed iframe { width: 100%; border: 0; }
     .checkout-pending { margin-top: 12px; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: #f9fafb; color: var(--body); font-size: 0.95rem; }
@@ -486,6 +489,11 @@
         </ul>
       </div>
       <div class="co-card">
+        <ul class="co-trust" id="co-trust">
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11L10 22l8.5-11.5H12z"/></svg>Instant Access</li>
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.4-2.9 8-7 9.5-4.1-1.500-7-5.100-7-9.500V6z"/><path d="m8.8 12.200 2.300 2.300 4.200-4.500"/></svg>14-Day Guarantee</li>
+          <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10.500" width="14" height="10" rx="2"/><path d="M8 10.500V7.500a4 4 0 0 1 8 0v3"/></svg>Secure Checkout</li>
+        </ul>
         <div class="checkout-embed" id="whop-checkout"></div>
         <div class="checkout-pending" id="checkout-pending" hidden>The checkout didn't load. Refresh the page to try again.</div>
         <div class="co-note">We Never Share Your Information With Anyone</div>
