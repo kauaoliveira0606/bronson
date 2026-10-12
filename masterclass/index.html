@@ -694,6 +694,13 @@
     .nav-label-top { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; color: var(--green); white-space: nowrap; }
     .nav-label .dot { margin-right: 0; background: var(--green-bright); }
     .nav-label-colon { margin-left: -8px; }
+    .nav-mid { font-size: 0.9rem; color: var(--body); text-align: center; white-space: nowrap; }
+    .nav-mid b { color: var(--ink); font-weight: 800; }
+    /* Below desktop width the seat count drops to its own line under the label and button. */
+    @media (max-width: 1020px) {
+      .nav-bar { flex-wrap: wrap; }
+      .nav-mid { order: 3; flex: 0 0 100%; padding-top: 8px; border-top: 1px solid #eef2f0; font-size: 0.82rem; }
+    }
     .nav-date { font-weight: 500; letter-spacing: 0.3px; color: var(--ink); white-space: nowrap; }
     .nav-btn, .cta-btn {
       display: inline-block;
@@ -880,6 +887,7 @@
 <div class="hero-band">
   <div class="nav-bar">
     <span class="nav-label"><span class="nav-label-top"><span class="dot"></span>Live Masterclass<span class="nav-label-colon">:</span></span> <span class="nav-date js-event-date"><span>Sunday</span><span class="nav-date-sep"> &middot; </span><span>3:00 PM EST</span></span></span>
+    <span class="nav-mid"><b class="js-seat-count">264</b> People already saved their seat</span>
     <a class="nav-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span></a>
   </div>
 
@@ -1309,6 +1317,11 @@
   var MASTERCLASS_HOUR = 15;
   var MASTERCLASS_TIME_LABEL = '3:00 PM EST';
   var MASTERCLASS_SHORT_LABEL = 'Sunday at 3 PM EST';
+  // Seats saved: starts at SEATS_BASE on SEATS_SINCE (New York date) and goes up by
+  // SEATS_PER_DAY each day. Reset both whenever the webinar is updated.
+  var SEATS_BASE = 264;
+  var SEATS_SINCE = '2026-10-12';
+  var SEATS_PER_DAY = 24;
 
   var WINS = [
     { img: 'https://www.ad-ventur.com/13.webp', tag: 'Personal Record', title: 'Ryan: $20k/month', sub: 'Scaled from zero in first 90 days' },
@@ -1402,6 +1415,14 @@
   }
 
   var session = nextSession(new Date());
+  function paintSeats() {
+    var today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
+    var days = Math.max(0, Math.round((Date.parse(today) - Date.parse(SEATS_SINCE)) / 86400000));
+    var count = (SEATS_BASE + days * SEATS_PER_DAY).toLocaleString('en-US');
+    document.querySelectorAll('.js-seat-count').forEach(function (el) { el.textContent = count; });
+  }
+  paintSeats();
+
   function paintDate() {
     document.querySelectorAll('.js-event-date').forEach(function (el) {
       el.textContent = formatSession(session);
