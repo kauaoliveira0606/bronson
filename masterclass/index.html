@@ -690,12 +690,11 @@
       padding: 10px 12px 10px 22px;
       box-shadow: 0 6px 24px rgba(15,23,42,0.06);
     }
-    .nav-label { display: inline-flex; align-items: center; gap: 8px; min-width: 0; font-size: 0.78rem; letter-spacing: 0.6px; text-transform: uppercase; }
+    .nav-label { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; row-gap: 2px; min-width: 0; font-size: 0.78rem; letter-spacing: 0.6px; text-transform: uppercase; }
     .nav-label-top { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; color: var(--green); white-space: nowrap; }
     .nav-label .dot { margin-right: 0; background: var(--green-bright); }
     .nav-label-colon { margin-left: -8px; }
     .nav-date { font-weight: 500; letter-spacing: 0.3px; color: var(--ink); white-space: nowrap; }
-    .nav-mid { font-size: 0.9rem; color: var(--body); text-align: center; }
     .nav-btn, .cta-btn {
       display: inline-block;
       text-align: center;
@@ -847,7 +846,6 @@
     @media (max-width: 860px) {
       .meet-grid { grid-template-columns: 1fr; gap: 22px; }
       .meet-side { position: static; max-width: 460px; margin: 0 auto; width: 100%; }
-      .nav-mid { display: none; }
       .why-list { grid-template-columns: 1fr; }
     }
     @media (max-width: 600px) {
@@ -882,7 +880,6 @@
 <div class="hero-band">
   <div class="nav-bar">
     <span class="nav-label"><span class="nav-label-top"><span class="dot"></span>Live Masterclass<span class="nav-label-colon">:</span></span> <span class="nav-date js-event-date"><span>Sunday</span><span class="nav-date-sep"> &middot; </span><span>3:00 PM EST</span></span></span>
-    <span class="nav-mid">Join 100+ People Building A 6-Figure Subscription&#8209;First E&#8209;commerce Business</span>
     <a class="nav-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span></a>
   </div>
 
