@@ -686,7 +686,11 @@
       padding: 10px 12px 10px 22px;
       box-shadow: 0 6px 24px rgba(15,23,42,0.06);
     }
-    .nav-label { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: var(--green); white-space: nowrap; }
+    .nav-label { display: inline-flex; align-items: center; gap: 8px; min-width: 0; font-size: 0.78rem; letter-spacing: 0.6px; text-transform: uppercase; }
+    .nav-label-top { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; color: var(--green); white-space: nowrap; }
+    .nav-label .dot { margin-right: 0; background: var(--green-bright); }
+    .nav-label-colon { margin-left: -8px; }
+    .nav-date { font-weight: 500; letter-spacing: 0.3px; color: var(--ink); white-space: nowrap; }
     .nav-mid { font-size: 0.9rem; color: var(--body); text-align: center; }
     .nav-btn, .cta-btn {
       display: inline-block;
@@ -709,25 +713,6 @@
     .cta-row { margin-top: 44px; text-align: center; }
 
     .hero { max-width: 1040px; padding: 56px 4px 84px; }
-    .hero-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #ffffff;
-      border: 1px solid rgba(22,163,74,0.28);
-      border-radius: 999px;
-      padding: 9px 26px;
-      font-size: 0.82rem;
-      font-weight: 500;
-      letter-spacing: 0.3px;
-      text-transform: uppercase;
-      color: var(--ink);
-      margin-bottom: 22px;
-    }
-    .hero-pill .dot { margin-right: 0; background: var(--green-bright); }
-    .hero-pill-label { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
-    .hero-pill .js-event-date { white-space: nowrap; }
-    .hero-pill-colon { margin-left: -8px; }
     .hero h1 {
       font-size: clamp(2.05rem, 5.6vw, 4.1rem);
       font-weight: 500;
@@ -851,11 +836,12 @@
       .nav-btn { font-size: 0.78rem; padding: 10px 14px; }
       .hero { padding: 38px 2px 60px; }
       .hero h1 { letter-spacing: -0.9px; line-height: 1.08; }
-      /* Two tidy centered lines on phones: the label, then the date. */
-      .hero-pill { flex-direction: column; gap: 3px; padding: 10px 18px; font-size: 0.72rem; border-radius: 18px; }
-      .hero-pill-label { font-weight: 700; }
-      .hero-pill-colon { display: none; }
-      @media (max-width: 360px) { .hero-pill { font-size: 0.64rem; } }
+      /* Two tidy lines on phones: the label, then the date. */
+      .nav-label { flex-direction: column; align-items: flex-start; gap: 2px; font-size: 0.7rem; }
+      .nav-label-colon { display: none; }
+      .nav-date { font-size: 0.66rem; letter-spacing: 0.2px; line-height: 1.35; }
+      .nav-date > span { display: block; }
+      .nav-date > .nav-date-sep { display: none; }
       .cd-cell, .form-head .cd-cell { width: 72px; padding: 12px 4px 10px; }
       .cd-num { font-size: 1.8rem; }
       .band .section { padding-top: 60px; padding-bottom: 60px; }
@@ -875,14 +861,13 @@
 
 <div class="hero-band">
   <div class="nav-bar">
-    <span class="nav-label">Live Masterclass</span>
+    <span class="nav-label"><span class="nav-label-top"><span class="dot"></span>Live Masterclass<span class="nav-label-colon">:</span></span> <span class="nav-date js-event-date"><span>Sunday</span><span class="nav-date-sep"> &middot; </span><span>3:00 PM EST</span></span></span>
     <span class="nav-mid">Join 100+ People Building A 6-Figure Subscription&#8209;First E&#8209;commerce Business</span>
     <a class="nav-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span></a>
   </div>
 
   <!-- HERO -->
   <div class="hero">
-    <div class="hero-pill"><span class="hero-pill-label"><span class="dot"></span>Live Masterclass<span class="hero-pill-colon">:</span></span> <span class="js-event-date">Sunday &middot; 3:00 PM EST</span></div>
     <h1>Learn How to Build a <span class="green">Subscription Based E&#8209;commerce</span> Brand That Pays You Consistently Every Month</h1>
     <p class="hero-subhead">Without Needing Ecom Experience, Testing Tens Of Different Products, Or Quitting Your Job. Even If You've Tried E&#8209;commerce Before And Couldn't Figure It Out.</p>
 
@@ -1394,7 +1379,16 @@
 
   var session = nextSession(new Date());
   function paintDate() {
-    document.querySelectorAll('.js-event-date').forEach(function (el) { el.textContent = formatSession(session); });
+    document.querySelectorAll('.js-event-date').forEach(function (el) {
+      el.textContent = formatSession(session);
+      // The top bar splits day and time into two lines on phones.
+      if (el.classList.contains('nav-date')) {
+        var parts = el.textContent.split(' · ');
+        el.innerHTML = '<span></span><span class="nav-date-sep"> · </span><span></span>';
+        el.firstChild.textContent = parts[0];
+        el.lastChild.textContent = parts[1];
+      }
+    });
   }
   paintDate();
   document.querySelectorAll('.js-event-short').forEach(function (el) { el.textContent = MASTERCLASS_SHORT_LABEL; });
