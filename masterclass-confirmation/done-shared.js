@@ -9,7 +9,7 @@
   var MASTERCLASS_TIME_LABEL = '3PM EST';
   var MASTERCLASS_MINUTES = 90;
   var EVENT_TITLE = 'Live Masterclass: Subscription Based E-commerce with Bronson';
-  var JOIN_URL = 'https://event.webinarjam.com/8wgzn9/register/13q192ty';
+  var JOIN_URL = 'https://event.webinarjam.com/8wgzn9/go/live/13q192tyipsxs4';
   var EVENT_DETAILS = 'Join the masterclass here: ' + JOIN_URL;
 
   var ICON = '<svg class="done-step-icon" width="52" height="58" viewBox="0 0 52 58" fill="none" aria-hidden="true">' +
