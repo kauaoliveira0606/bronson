@@ -20,7 +20,7 @@
     '<rect x="12" y="39" width="7" height="6" rx="1"/><rect x="22.5" y="39" width="7" height="6" rx="1"/><rect x="33" y="39" width="7" height="6" rx="1"/></g></svg>';
 
   var html = `
-  <p class="done-lead">Before you close this tab, complete these three steps to make sure you're <b>fully set up for the masterclass</b></p>
+  <p class="done-lead">Before you close this tab, complete these __STEPS__ steps to make sure you're <b>fully set up for the masterclass</b></p>
 
   <div class="done-video">
     <vturb-smartplayer id="vid-6ac7b9d6e1c65eaf9183ec88" data-vturb="6ac7b9d6e1c65eaf9183ec88" style="display: block; margin: 0 auto; width: 100%;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>
@@ -67,6 +67,7 @@
   </div>
 
   <div class="done-faq">
+    __FAQ_STEP__
     <h2>Got <span>Questions?</span></h2>
     <p class="done-faq-sub">We have answers. Check out a couple of the most frequently asked questions.</p>
     <div class="done-bk-grid">
@@ -101,7 +102,16 @@
     </div>
   </div>
 `;
-  document.querySelectorAll('.js-done-shared').forEach(function (el) { el.innerHTML = html; });
+  // A page can add its own steps after these (data-extra-steps). When it does, the FAQ
+  // becomes Step 4 and the count in the lead line includes the extra steps.
+  var STEP_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven'];
+  document.querySelectorAll('.js-done-shared').forEach(function (el) {
+    var extra = +el.getAttribute('data-extra-steps') || 0;
+    var steps = extra ? 4 + extra : 3;
+    el.innerHTML = html
+      .replace('__STEPS__', STEP_WORDS[steps] || steps)
+      .replace('__FAQ_STEP__', extra ? '<div class="done-step-pill">STEP 4:</div>' + ICON : '');
+  });
 
   // VTurb videos. Any <vturb-smartplayer data-vturb="PLAYER_ID"> in the markup above gets its
   // player script here (a script tag inside innerHTML would not run). Skipped while the

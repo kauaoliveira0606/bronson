@@ -67,6 +67,7 @@
 .done-form { margin-top: 18px; min-height: 360px; }
 
 .done-faq { margin-top: 64px; }
+.done-faq .done-step-pill + .done-step-icon + h2 { margin-top: 12px; }
 .done-faq h2 { font-family: 'Manrope', sans-serif; font-size: clamp(1.9rem, 6vw, 2.7rem); font-weight: 600; line-height: 1.18; letter-spacing: -0.5px; color: #0b1b26; }
 .done-faq h2 span { color: #16a34a; }
 .done .done-faq-sub { font-size: 1.15rem; color: #5b5d6b; margin-top: 12px; }

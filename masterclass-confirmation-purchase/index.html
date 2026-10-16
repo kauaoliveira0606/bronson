@@ -56,6 +56,24 @@
     footer a { color: #a3a3a3; margin: 0 8px; font-size: 0.85rem; }
     footer a:hover { color: #fff; }
     .footer-disclaimer { max-width: 700px; margin: 14px auto 0; font-size: 0.72rem; line-height: 1.6; color: #8a8a8a; }
+
+    .done-sub-link { color: #16a34a; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+    #step-5 { scroll-margin-top: 24px; }
+    .whop-card {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      margin-top: 24px; padding: 34px 28px 30px;
+      background: radial-gradient(120% 90% at 50% 0%, #fff4ee 0%, #ffffff 60%);
+      border: 1.5px solid #fa4616; border-radius: 14px;
+      box-shadow: 0 14px 34px -14px rgba(250,70,22,0.45);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .whop-card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -14px rgba(250,70,22,0.55); }
+    .whop-card-logo { width: 72px; height: 72px; border-radius: 18px; box-shadow: 0 8px 20px -6px rgba(250,70,22,0.55); }
+    .whop-card-label { margin-top: 6px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #fa4616; }
+    .whop-card-title { font-family: 'Manrope', sans-serif; font-size: 1.45rem; font-weight: 700; line-height: 1.25; color: #0b1b26; }
+    .whop-card-text { font-size: 1.05rem; color: #5b5d6b; max-width: 420px; }
+    .whop-card-btn { margin-top: 10px; }
+    @media (max-width: 600px) { .whop-card { padding: 28px 18px 24px; } .whop-card-title { font-size: 1.25rem; } }
   </style>
   <script>!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);</script>
   <link rel="preload" href="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6ac7b9d6e1c65eaf9183ec88/v4/player.js" as="script">
@@ -86,8 +104,22 @@
   <p class="done-sub">You're locked in for the masterclass and your Starter Kit is yours.</p>
   <p class="done-sub"><b>Access to everything will land in your email within 15 minutes.</b></p>
   <p class="done-sub">Check your inbox, spam, and All Mail to make sure you don't miss it.</p>
+  <p class="done-sub">Or scroll all the way down to <a class="done-sub-link" href="#step-5">Step 5</a> and click the link to access your Starter Kit right now.</p>
 
-  <div class="js-done-shared"></div>
+  <div class="js-done-shared" data-extra-steps="1"></div>
+
+  <!-- Buyers only: Starter Kit access on Whop. -->
+  <div class="done-step" id="step-5">
+    <div class="done-step-pill">STEP 5:</div>
+    <h2 style="margin-top:18px;">Access Your Subscription Store <span>Starter Kit</span></h2>
+    <a class="whop-card" href="https://whop.com/the-inner-table/exp_Q3aAGHrIKmsK5k/app/" target="_blank" rel="noopener">
+      <img class="whop-card-logo" src="/masterclass-confirmation-purchase/whop-icon.webp" alt="Whop" width="72" height="72" />
+      <span class="whop-card-label">Hosted on Whop</span>
+      <span class="whop-card-title">Your Starter Kit Is Ready</span>
+      <span class="whop-card-text">The mini course, the store templates and the Winner Debrief are all inside.</span>
+      <span class="done-btn whop-card-btn">Access My Starter Kit &rarr;</span>
+    </a>
+  </div>
 </div>
 
 <!-- FOOTER -->
