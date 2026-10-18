@@ -24,7 +24,7 @@
   <meta name="description" content="Live masterclass: how to build a subscription e-commerce brand that pays you consistently every month, without needing ecom experience or quitting your job." />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Live Masterclass | Build a Subscription E-commerce Brand" />
-  <meta property="og:description" content="How to build a subscription e-commerce brand that pays you consistently every month. Wednesday, October 28 at 7 PM EST. Live only. Receive FREE VIP Gift." />
+  <meta property="og:description" content="How to build a subscription e-commerce brand that pays you consistently every month. Wednesdays at 7 PM EST. Live only. Receive FREE VIP Gift." />
   <link rel="icon" type="image/png" href="/logo-180.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1383,7 +1383,7 @@
   var MASTERCLASS_DAY = 3;
   var MASTERCLASS_HOUR = 19;
   var MASTERCLASS_TIME_LABEL = '7:00 PM EST';
-  var MASTERCLASS_SHORT_LABEL = 'Wednesday, October 28 at 7 PM EST';
+  var MASTERCLASS_SHORT_TIME = '7 PM EST';
   // Seats saved: starts at SEATS_BASE on SEATS_SINCE (New York date) and goes up by
   // SEATS_PER_DAY each day. Reset both whenever the webinar is updated.
   var SEATS_BASE = 264;
@@ -1516,7 +1516,10 @@
     });
   }
   paintDate();
-  document.querySelectorAll('.js-event-short').forEach(function (el) { el.textContent = MASTERCLASS_SHORT_LABEL; });
+  var shortLabel = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric'
+  }).format(session) + ' at ' + MASTERCLASS_SHORT_TIME;
+  document.querySelectorAll('.js-event-short').forEach(function (el) { el.textContent = shortLabel; });
 
   var countdowns = document.querySelectorAll('.js-countdown');
   function pad(n) { return String(n).padStart(2, '0'); }
