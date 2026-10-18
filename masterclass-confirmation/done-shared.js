@@ -3,8 +3,10 @@
 // Only the headline block above this differs between the two.
 (function () {
   // Masterclass schedule: weekly, day of week (0 = Sunday) at HOUR:00 New York time.
+  // MASTERCLASS_DATE (New York date) pins the next session to that day until it starts.
   // Keep in step with the constants in /masterclass/index.html.
-  var MASTERCLASS_DAY = 0;
+  var MASTERCLASS_DATE = '2026-10-28';
+  var MASTERCLASS_DAY = 3;
   var MASTERCLASS_HOUR = 15;
   var MASTERCLASS_TIME_LABEL = '3PM EST';
   var MASTERCLASS_MINUTES = 90;
@@ -149,7 +151,20 @@
     var asUtc = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second);
     return asUtc - Math.floor(date.getTime() / 1000) * 1000;
   }
+  // New York wall-clock time on a YYYY-MM-DD date, as a real instant.
+  function nyWall(ymd, hour) {
+    var d = ymd.split('-');
+    var wallUtc = Date.UTC(+d[0], +d[1] - 1, +d[2], hour, 0, 0);
+    var guess = new Date(wallUtc - nyOffset(new Date(wallUtc)));
+    return new Date(wallUtc - nyOffset(guess));
+  }
+
   function nextSession(now) {
+    // A set date wins until it has started; after that the weekly schedule takes over.
+    if (MASTERCLASS_DATE) {
+      var fixed = nyWall(MASTERCLASS_DATE, MASTERCLASS_HOUR);
+      if (fixed.getTime() > now.getTime()) return fixed;
+    }
     var p = nyParts(now);
     var dow = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday);
     var days = (MASTERCLASS_DAY - dow + 7) % 7;

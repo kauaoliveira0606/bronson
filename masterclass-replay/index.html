@@ -301,7 +301,9 @@
 <script>
   // Masterclass schedule: weekly, day of week (0 = Sunday) at HOUR:00 New York time.
   // The replay comes down REPLAY_HOURS after the most recent session started.
-  var MASTERCLASS_DAY = 0;
+  // MASTERCLASS_DATES (New York dates) are one-off sessions outside the weekly schedule.
+  var MASTERCLASS_DATES = ['2026-10-18', '2026-10-28'];
+  var MASTERCLASS_DAY = 3;
   var MASTERCLASS_HOUR = 15;
   var REPLAY_HOURS = 48;
 
@@ -365,7 +367,14 @@
     if (back === 0 && secsIntoDay < MASTERCLASS_HOUR * 3600) back = 7;
     var wallUtc = Date.UTC(+p.year, +p.month - 1, +p.day - back, MASTERCLASS_HOUR, 0, 0);
     var guess = new Date(wallUtc - nyOffset(new Date(wallUtc)));
-    return new Date(wallUtc - nyOffset(guess));
+    var last = new Date(wallUtc - nyOffset(guess));
+    MASTERCLASS_DATES.forEach(function (ymd) {
+      var d = ymd.split('-');
+      var w = Date.UTC(+d[0], +d[1] - 1, +d[2], MASTERCLASS_HOUR, 0, 0);
+      var at = new Date(w - nyOffset(new Date(w - nyOffset(new Date(w)))));
+      if (at.getTime() <= now.getTime() && at.getTime() > last.getTime()) last = at;
+    });
+    return last;
   }
 
   var deadline = new Date(lastSession(new Date()).getTime() + REPLAY_HOURS * 3600000);
