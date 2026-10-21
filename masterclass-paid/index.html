@@ -741,7 +741,7 @@
       font-family: 'Inter', sans-serif;
       font-size: clamp(2rem, 5.2vw, 3.7rem);
       font-weight: 800;
-      line-height: 1.08;
+      line-height: 1.16;
       letter-spacing: -1.4px;
       margin-bottom: 26px;
       color: var(--ink);
@@ -869,7 +869,7 @@
       .nav-bar { padding: 8px 8px 8px 16px; }
       .nav-btn { font-size: 0.78rem; padding: 10px 14px; }
       .hero { padding: 38px 2px 60px; }
-      .hero h1 { letter-spacing: -0.8px; line-height: 1.1; }
+      .hero h1 { letter-spacing: -0.8px; line-height: 1.18; }
       /* Two tidy lines on phones: the label, then the date. */
       .nav-label { flex-direction: column; align-items: flex-start; gap: 2px; font-size: 0.7rem; }
       .nav-label-colon { display: none; }
@@ -888,6 +888,17 @@
       .cta-btn { padding: 15px 26px; width: 100%; }
       .optin .cta-btn { width: 100%; }
       .cta-box { padding: 40px 18px; border-radius: 22px; }
+    }
+    /* Headline highlight: glossy green pill behind the key phrase, one pill per wrapped line. */
+    .hl-pill {
+      color: #fff;
+      background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%);
+      padding: 0 0.2em 0.04em;
+      border-radius: 0.2em;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 0 rgba(6,78,35,0.3), 0 10px 24px -8px rgba(22,163,74,0.55);
+      text-shadow: 0 1px 1px rgba(6,78,35,0.25);
     }
   </style>
 <script type="text/javascript">
@@ -908,7 +919,7 @@
 
   <!-- HERO -->
   <div class="hero">
-    <h1>Build an <span class="green">Subscription Based E&#8209;commerce</span> Business Where Customers Pay You Every Month</h1>
+    <h1>Build an <span class="hl-pill">Subscription Based E&#8209;commerce</span> Business Where Customers Pay You Every Month</h1>
     <p class="hero-subhead">For people who've <b>tried e&#8209;commerce before</b> and <b>couldn't figure it out</b>, and people actively looking to <b class="underline">start the right way</b></p>
 
     <div class="register-block" id="register">
