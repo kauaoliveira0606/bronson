@@ -541,32 +541,6 @@
     .form-card .wj-embed-wrapper { margin: 0 auto; border-radius: 14px; overflow: hidden; }
     .form-card .form-head-below { margin-top: 22px; }
 
-    /* ── FLOATING PROOF ── */
-    .float-proof {
-      display: none;
-      position: fixed;
-      left: 16px;
-      bottom: 16px;
-      z-index: 40;
-      width: 320px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 34px 12px 12px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.16);
-      opacity: 0;
-      transform: translateY(12px);
-      transition: opacity .45s ease, transform .45s ease;
-      pointer-events: none;
-    }
-    .float-proof.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
-    .float-proof .fp-body { display: flex; gap: 12px; align-items: center; width: 100%; font-family: 'Inter', sans-serif; }
-    .float-proof .fp-avatar { flex: none; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); color: #fff; font-weight: 800; font-size: 1.05rem; }
-    .float-proof .fp-text { font-size: 0.86rem; line-height: 1.35; color: var(--body); }
-    .float-proof .fp-text b { color: var(--ink); font-weight: 700; }
-    .float-proof .fp-text small { display: block; margin-top: 2px; font-size: 0.72rem; color: var(--text2); }
-    .float-proof .fp-close { position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border: 0; border-radius: 50%; background: none; color: var(--text2); font-size: 16px; cursor: pointer; }
-    @media (min-width: 900px) { .float-proof { display: block; } }
 
     /* ── LIGHTBOX ── */
     .lightbox {
@@ -1355,13 +1329,6 @@
   <p style="margin-top:12px;">&copy; 2026 The Inner Table. All rights reserved.</p>
 </footer>
 
-<div class="float-proof js-float" aria-live="polite">
-  <button type="button" class="fp-close js-float-close" aria-label="Dismiss">&times;</button>
-  <div class="fp-body">
-    <span class="fp-avatar js-float-initial" aria-hidden="true"></span>
-    <span class="fp-text"><b class="js-float-name"></b> registered for the masterclass<small class="js-float-when"></small></span>
-  </div>
-</div>
 
 <div class="lightbox js-lightbox" role="dialog" aria-modal="true">
   <button type="button" class="lightbox-close" aria-label="Close">&times;</button>
@@ -1579,54 +1546,6 @@
       '</div>';
   }).join('');
 
-  /* ---------- Floating registrations (desktop) ---------- */
-  // Real registrants, newest first, from WebinarJam via /api/recent-registrants.
-  // No popup at all if that request fails or comes back empty.
-  function timeAgo(at) {
-    var mins = Math.max(0, Math.round((Date.now() - at) / 60000));
-    if (mins < 2) return 'Just now';
-    if (mins < 60) return mins + ' minutes ago';
-    var hours = Math.round(mins / 60);
-    if (hours < 24) return hours === 1 ? '1 hour ago' : hours + ' hours ago';
-    var days = Math.round(hours / 24);
-    return days === 1 ? '1 day ago' : days + ' days ago';
-  }
-  fetch('/api/recent-registrants').then(function (r) { return r.json(); }).then(function (data) {
-    var order = (data && data.registrants) || [];
-    if (order.length) startFloat(order);
-  }).catch(function () {});
-  function startFloat(order) {
-    var box = document.querySelector('.js-float');
-    var initial = box.querySelector('.js-float-initial');
-    var name = box.querySelector('.js-float-name');
-    var when = box.querySelector('.js-float-when');
-    var idx = 0;
-    var timer = null;
-    var hovering = false;
-    function show() {
-      var r = order[idx % order.length];
-      initial.textContent = r.name.charAt(0);
-      name.textContent = r.name;
-      when.textContent = timeAgo(r.at);
-      box.classList.add('show');
-      timer = setTimeout(hide, 7000);
-    }
-    function hide() {
-      if (hovering) { timer = setTimeout(hide, 1500); return; }
-      box.classList.remove('show');
-      idx++;
-      timer = setTimeout(show, 8000);
-    }
-    box.addEventListener('mouseenter', function () { hovering = true; });
-    box.addEventListener('mouseleave', function () { hovering = false; });
-    box.querySelector('.js-float-close').addEventListener('click', function () {
-      clearTimeout(timer);
-      box.classList.remove('show');
-      idx++;
-      timer = setTimeout(show, 30000);
-    });
-    timer = setTimeout(show, 8000);
-  }
 </script>
 
 <script src="https://event.webinarjam.com/register/13q192ty/embed-bar?buttonText=Yes%2C%20I%20Want%20To%20Attend&buttonBgColor=%2300ff25&buttonBgOpacity=0.95&barBgColor=%23ffffff&barBgOpacity=1&type=bubble&formTemplate=2&formColor=3"></script>
