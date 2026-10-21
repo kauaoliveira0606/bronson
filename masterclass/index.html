@@ -537,6 +537,8 @@
 
     /* WebinarJam's floating "Webinar" bubble is hidden; the page's own buttons open its sign-up popup. */
     .wj_embed_circle_wrapper { display: none !important; }
+    /* WebinarJam's embedded sign-up form in the hero card (it sets its own max-width). */
+    .form-card .wj-embed-wrapper { margin: 0 auto; border-radius: 14px; overflow: hidden; }
 
     /* ── FLOATING PROOF ── */
     .float-proof {
@@ -911,6 +913,9 @@
           <div class="countdown js-countdown"></div>
           <p class="fill-note"><span class="dot"></span>Live only. &#127873; Receive FREE VIP Gift</p>
         </div>
+        <div class="wj-embed-wrapper" data-webinar-hash="13q192ty">
+<script src="https://event.webinarjam.com/register/13q192ty/embed-form?formButtonText=Register&formAccentColor=%2329b6f6&formAccentOpacity=0.95&formBgColor=%23ffffff&formBgOpacity=1"></script>
+</div>
       </div>
     </div>
   </div>
@@ -1432,7 +1437,10 @@
   var template = document.getElementById('optin-template');
   ['form-card-top', 'form-card-bottom'].forEach(function (id) {
     var card = document.getElementById(id);
-    card.appendChild(template.content.cloneNode(true));
+    var optin = template.content.cloneNode(true);
+    // The top card has the WebinarJam embedded form in place of the button.
+    if (id === 'form-card-top') optin.querySelector('.cta-btn').remove();
+    card.appendChild(optin);
     if (id === 'form-card-bottom') card.querySelector('.js-submit-label').textContent = "Yes, I'm In";
   });
   document.querySelectorAll('.js-wj-open').forEach(function (btn) {
@@ -1498,6 +1506,11 @@
   }
 
   var session = nextSession(new Date());
+  // The embedded form submits without a button click, so store the session up front too.
+  try {
+    window.sessionStorage.setItem('mc_when', formatSession(session));
+    window.sessionStorage.setItem('mc_at', session.toISOString());
+  } catch (err) {}
   function paintSeats() {
     var today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
     var days = Math.max(0, Math.round((Date.parse(today) - Date.parse(SEATS_SINCE)) / 86400000));
