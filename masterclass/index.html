@@ -560,12 +560,10 @@
       pointer-events: none;
     }
     .float-proof.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
-    .float-proof .fp-body { display: flex; gap: 12px; align-items: center; background: none; border: 0; color: inherit; text-align: left; cursor: zoom-in; width: 100%; font-family: 'Inter', sans-serif; }
-    .float-proof .fp-thumb { flex: none; width: 56px; height: 56px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
-    .float-proof .fp-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-    .float-proof .fp-text b { display: block; font-size: 0.82rem; margin-bottom: 2px; }
-    .float-proof .fp-text span { font-size: 0.68rem; font-weight: 600; color: var(--text2); }
-    .float-proof .fp-text .fp-stars { color: #facc15; }
+    .float-proof .fp-body { display: flex; gap: 12px; align-items: center; width: 100%; font-family: 'Inter', sans-serif; }
+    .float-proof .fp-avatar { flex: none; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); color: #fff; font-weight: 800; font-size: 1.05rem; }
+    .float-proof .fp-text { font-size: 0.86rem; line-height: 1.35; color: var(--body); }
+    .float-proof .fp-text b { color: var(--ink); font-weight: 700; }
     .float-proof .fp-close { position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border: 0; border-radius: 50%; background: none; color: var(--text2); font-size: 16px; cursor: pointer; }
     @media (min-width: 900px) { .float-proof { display: block; } }
 
@@ -1292,10 +1290,6 @@
       <p>A laptop or desktop and a couple hours a day. If you can use email and browse the internet, you've got the tech skills for this.</p>
     </details>
     <details class="faq-item">
-      <summary>Is the masterclass actually free?</summary>
-      <p>Yes, it's free, and I'm not going to pretend there's no business behind it. Here's the real reason: my team and I want to build successful brands with people. When you grow a brand to the point where you want to exit it, we partner with you on that exit, and if we help you sell it, we take 10%. That's the business. You get the full training either way.</p>
-    </details>
-    <details class="faq-item">
       <summary>Is this dropshipping?</summary>
       <p>No, and I want to be clear about that. I'm not teaching the Alibaba $5 product, chase-the-trend, burn-and-repeat stuff you've seen everywhere. You're building a real subscription-based e-commerce brand around a product people already buy every month. Evergreen, not trendy. Customers reorder from you, which is what makes the income compound.</p>
     </details>
@@ -1362,10 +1356,10 @@
 
 <div class="float-proof js-float" aria-live="polite">
   <button type="button" class="fp-close js-float-close" aria-label="Dismiss">&times;</button>
-  <button type="button" class="fp-body js-float-open">
-    <span class="fp-thumb"><img class="js-float-img" src="" alt="" /></span>
-    <span class="fp-text"><b class="js-float-title"></b><span><span class="fp-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span> Student win &middot; Not typical</span></span>
-  </button>
+  <div class="fp-body">
+    <span class="fp-avatar js-float-initial" aria-hidden="true"></span>
+    <span class="fp-text"><b class="js-float-name"></b> just registered for the masterclass</span>
+  </div>
 </div>
 
 <div class="lightbox js-lightbox" role="dialog" aria-modal="true">
@@ -1584,20 +1578,22 @@
       '</div>';
   }).join('');
 
-  /* ---------- Floating proof (desktop) ---------- */
+  /* ---------- Floating registrations (desktop) ---------- */
   (function () {
     var box = document.querySelector('.js-float');
-    var img = box.querySelector('.js-float-img');
-    var title = box.querySelector('.js-float-title');
-    var order = WINS.slice().sort(function () { return Math.random() - 0.5; });
+    var initial = box.querySelector('.js-float-initial');
+    var name = box.querySelector('.js-float-name');
+    var NAMES = ['Sam', 'Marcus', 'Jessica', 'Tyler', 'Ashley', 'Jordan', 'Brianna', 'Chris', 'Danielle', 'Kevin',
+      'Maria', 'Andre', 'Kayla', 'Ryan', 'Destiny', 'Josh', 'Nicole', 'Malik', 'Emily', 'Carlos',
+      'Taylor', 'Derek', 'Jasmine', 'Brandon', 'Alexis', 'Luis', 'Megan', 'Darius', 'Rachel', 'Ethan'];
+    var order = NAMES.slice().sort(function () { return Math.random() - 0.5; });
     var idx = 0;
     var timer = null;
     var hovering = false;
     function show() {
-      var w = order[idx % order.length];
-      img.src = w.img;
-      img.alt = 'Student win: ' + w.tag;
-      title.innerHTML = w.tag;
+      var n = order[idx % order.length];
+      initial.textContent = n.charAt(0);
+      name.textContent = n;
       box.classList.add('show');
       timer = setTimeout(hide, 7000);
     }
@@ -1614,10 +1610,6 @@
       box.classList.remove('show');
       idx++;
       timer = setTimeout(show, 30000);
-    });
-    box.querySelector('.js-float-open').addEventListener('click', function () {
-      var w = order[idx % order.length];
-      openLightbox(w.img, 'Student win: ' + w.tag);
     });
     timer = setTimeout(show, 8000);
   })();
