@@ -760,6 +760,8 @@
   });
 
   /* ---------- Registration tracking (once per session) ---------- */
+  // Fires on any visit to this page (offer or ?done=1 view), since WebinarJam's redirect
+  // doesn't carry our old form params. The session flag stops double counts between views.
   (function () {
     var keys = ['fname', 'email', 'when', 'at'];
     var arrived = keys.some(function (k) { return params.has(k); });
@@ -769,7 +771,7 @@
       var qs = clean.toString();
       window.history.replaceState(window.history.state, '', window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
     }
-    if (!arrived || store.get('mc_registered') === '1') return;
+    if (store.get('mc_registered') === '1') return;
     if (window.fbq) fbq('track', 'CompleteRegistration');
     store.set('mc_registered', '1');
   })();
