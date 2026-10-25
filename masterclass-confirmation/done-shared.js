@@ -42,8 +42,6 @@
         <div class="done-cal-menu js-cal-menu">
           <a class="js-cal-google" target="_blank" rel="noopener">&#128197; Google</a>
           <a class="js-cal-ics">&#127822; Apple</a>
-          <a class="js-cal-outlook" target="_blank" rel="noopener">&#128231; Outlook</a>
-          <a class="js-cal-ics">&#11015;&#65039; .ICS Download</a>
         </div>
       </div>
     </div>
@@ -201,12 +199,6 @@
     '&dates=' + stamp(start) + '/' + stamp(end) +
     '&details=' + encodeURIComponent(EVENT_DETAILS) +
     '&location=' + encodeURIComponent(JOIN_URL);
-  var outlook = 'https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent' +
-    '&subject=' + encodeURIComponent(EVENT_TITLE) +
-    '&startdt=' + encodeURIComponent(start.toISOString()) +
-    '&enddt=' + encodeURIComponent(end.toISOString()) +
-    '&body=' + encodeURIComponent(EVENT_DETAILS) +
-    '&location=' + encodeURIComponent(JOIN_URL);
   var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//The Inner Table//Masterclass//EN', 'BEGIN:VEVENT',
     'UID:masterclass-' + stamp(start) + '@ad-ventur.com', 'DTSTAMP:' + stamp(new Date()),
     'DTSTART:' + stamp(start), 'DTEND:' + stamp(end),
@@ -216,7 +208,6 @@
   var icsHref = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
 
   document.querySelectorAll('.js-cal-google').forEach(function (a) { a.href = google; });
-  document.querySelectorAll('.js-cal-outlook').forEach(function (a) { a.href = outlook; });
   document.querySelectorAll('.js-cal-ics').forEach(function (a) { a.href = icsHref; a.setAttribute('download', 'masterclass.ics'); });
   document.querySelectorAll('.js-cal-toggle').forEach(function (btn) {
     btn.addEventListener('click', function () { btn.parentNode.querySelector('.js-cal-menu').classList.toggle('open'); });
