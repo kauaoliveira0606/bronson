@@ -483,6 +483,30 @@
     .cover-row p { font-size: 1rem; color: var(--body); line-height: 1.65; }
     .cover-row p + p { margin-top: 10px; }
 
+    /* ── MODEL COMPARISON ── */
+    .cmp { margin-top: 28px; background: var(--card); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; }
+    .cmp-row { display: grid; grid-template-columns: 0.8fr 1fr 1fr; border-bottom: 1px solid var(--line); }
+    .cmp-row:last-child { border-bottom: none; }
+    .cmp-row > div { padding: 18px 22px; }
+    .cmp-label { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text2); display: flex; align-items: center; }
+    .cmp-old { color: var(--body); }
+    .cmp-new { background: var(--tint); color: var(--ink); }
+    .cmp-cell b { display: block; font-family: 'Manrope', 'Inter', sans-serif; font-size: 1.15rem; font-weight: 800; line-height: 1.25; }
+    .cmp-old b { color: #b91c1c; }
+    .cmp-new b { color: var(--green-dark); }
+    .cmp-cell span { display: block; font-size: 0.88rem; margin-top: 4px; line-height: 1.45; }
+    .cmp-head > div { font-family: 'Manrope', 'Inter', sans-serif; font-weight: 800; font-size: 1rem; color: var(--ink); }
+    .cmp-head .cmp-old { color: var(--text2); }
+    .cmp-head .cmp-new { color: var(--green-dark); }
+    @media (max-width: 600px) {
+      .cmp-row { grid-template-columns: 1fr 1fr; }
+      .cmp-row > div { padding: 14px 16px; }
+      .cmp-label { grid-column: 1 / -1; padding-bottom: 0 !important; background: none; }
+      .cmp-head .cmp-label { display: none; }
+      .cmp-cell b { font-size: 1rem; }
+      .cmp-cell span { font-size: 0.82rem; }
+    }
+
     /* ── WHY SECTION ── */
     .why-list {
       background: var(--card);
@@ -1148,6 +1172,29 @@
 <div class="section">
   <p class="section-label">Why This Model</p>
   <h2 class="section-title">Why People Are Choosing This Online Business</h2>
+
+  <div class="cmp" role="table" aria-label="Traditional dropshipping vs subscription model">
+    <div class="cmp-row cmp-head" role="row">
+      <div class="cmp-label" role="columnheader"></div>
+      <div class="cmp-old" role="columnheader">Traditional Dropshipping</div>
+      <div class="cmp-new" role="columnheader">Subscription Model</div>
+    </div>
+    <div class="cmp-row" role="row">
+      <div class="cmp-label" role="rowheader">Monthly Revenue</div>
+      <div class="cmp-cell cmp-old" role="cell"><b>Resets To $0 On The 1st</b><span>Every month you start over and chase new sales.</span></div>
+      <div class="cmp-cell cmp-new" role="cell"><b>Compounding MRR</b><span>Last month's customers renew, new ones stack on top.</span></div>
+    </div>
+    <div class="cmp-row" role="row">
+      <div class="cmp-label" role="rowheader">Customer Lifetime Value</div>
+      <div class="cmp-cell cmp-old" role="cell"><b>$20 LTV</b><span>One-time purchase, then they're gone.</span></div>
+      <div class="cmp-cell cmp-new" role="cell"><b>$180+ LTV</b><span>The same customer pays you month after month.</span></div>
+    </div>
+    <div class="cmp-row" role="row">
+      <div class="cmp-label" role="rowheader">Shipping</div>
+      <div class="cmp-cell cmp-old" role="cell"><b>20-Day China Shipping</b><span>Slow delivery, refunds and angry emails.</span></div>
+      <div class="cmp-cell cmp-new" role="cell"><b>3-Day US Shipping</b><span>Fast delivery that keeps customers subscribed.</span></div>
+    </div>
+  </div>
 
   <div class="why-list">
     <div class="why-item">
