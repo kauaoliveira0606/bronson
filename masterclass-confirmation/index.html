@@ -279,10 +279,9 @@
 
 <!-- CONFIRMED (after purchase or no thanks) -->
 <div class="done" id="done" hidden>
-  <p class="done-top">You're Officially Registered!</p>
-  <h1>Wait, You're <span>Not Done Yet</span></h1>
+  <h1>You're Officially Registered<span class="js-fname"></span>!</h1>
 
-  <div class="js-done-shared"></div>
+  <div class="js-done-shared" data-lead="Complete These 3 Quick Steps To Lock In Your VIP Seat &amp; Be Fully Set Up For The Masterclass"></div>
 </div>
 
 <div id="offer">
@@ -589,6 +588,20 @@
   /* ---------- Confirmed view (after purchase or no thanks) ---------- */
   // Old purchase links land on the dedicated purchase page.
   if (params.has('purchased')) window.location.replace('/masterclass-confirmation-purchase');
+
+  // First name from the WebinarJam redirect (key name not confirmed yet, so accept the
+  // usual ones), kept for refreshes. Without one the headline just ends at "Registered!".
+  (function () {
+    var keys = ['fname', 'first_name', 'firstname', 'firstName', 'wj_lead_first_name', 'wj_first_name', 'name'];
+    var name = '';
+    keys.some(function (k) { name = (params.get(k) || '').trim().split(/\s+/)[0]; return !!name; });
+    if (name) store.set('mc_fname', name); else name = store.get('mc_fname') || '';
+    if (!name) return;
+    name = name.charAt(0).toUpperCase() + name.slice(1);
+    var el = document.querySelector('.js-fname');
+    el.textContent = name;
+    el.before(', ');
+  })();
 
   var isDone = params.has('done');
   if (isDone) {

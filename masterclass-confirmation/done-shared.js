@@ -22,7 +22,7 @@
     '<rect x="12" y="39" width="7" height="6" rx="1"/><rect x="22.5" y="39" width="7" height="6" rx="1"/><rect x="33" y="39" width="7" height="6" rx="1"/></g></svg>';
 
   var html = `
-  <p class="done-lead">Before you close this tab, complete these __STEPS__ steps to make sure you're <b>fully set up for the masterclass</b></p>
+  <p class="done-lead">__LEAD__</p>
 
   <div class="done-video">
     <vturb-smartplayer id="vid-6ac7b9d6e1c65eaf9183ec88" data-vturb="6ac7b9d6e1c65eaf9183ec88" style="display: block; margin: 0 auto; width: 100%;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>
@@ -61,7 +61,7 @@
   <div class="done-step">
     <div class="done-step-pill">STEP 3:</div>
     ${ICON}
-    <h2>Check Your <span>Inbox</span></h2>
+    <h2>Check Your <span>Email</span></h2>
     <div class="done-step-card">
       <p>Find the email from me with your masterclass details. Don't see it in the next few minutes?</p>
       <p>Check promotions or spam, then drag it into your main inbox so you get every reminder.</p>
@@ -110,7 +110,11 @@
   document.querySelectorAll('.js-done-shared').forEach(function (el) {
     var extra = +el.getAttribute('data-extra-steps') || 0;
     var steps = extra ? 4 + extra : 3;
+    // A page can set its own lead line with data-lead.
+    var lead = el.getAttribute('data-lead') ||
+      "Before you close this tab, complete these __STEPS__ steps to make sure you're <b>fully set up for the masterclass</b>";
     el.innerHTML = html
+      .replace('__LEAD__', lead)
       .replace('__STEPS__', STEP_WORDS[steps] || steps)
       .replace('__FAQ_STEP__', extra ? '<div class="done-step-pill">STEP 4:</div>' + ICON : '');
   });
