@@ -15,6 +15,7 @@
   s.parentNode.insertBefore(t,s)}(window, document,'script',
   'https://connect.facebook.net/en_US/fbevents.js');
   fbq('init', '930673332466368', {em: '', ph: ''});
+  fbq('track', 'CompleteRegistration');
   </script>
   <!-- End Meta Pixel Code -->
   <title>Wait! Before You Go | Live Masterclass</title>
@@ -758,9 +759,8 @@
     lightbox.classList.add('open');
   });
 
-  /* ---------- Registration tracking (once per session) ---------- */
-  // Fires on any visit to this page (offer or ?done=1 view), since WebinarJam's redirect
-  // doesn't carry our old form params. The session flag stops double counts between views.
+  /* ---------- Clean registration params out of the URL ---------- */
+  // CompleteRegistration fires from the Meta Pixel code in the head.
   (function () {
     var keys = ['fname', 'email', 'when', 'at'];
     var arrived = keys.some(function (k) { return params.has(k); });
@@ -770,9 +770,6 @@
       var qs = clean.toString();
       window.history.replaceState(window.history.state, '', window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
     }
-    if (store.get('mc_registered') === '1') return;
-    if (window.fbq) fbq('track', 'CompleteRegistration');
-    store.set('mc_registered', '1');
   })();
 </script>
 
