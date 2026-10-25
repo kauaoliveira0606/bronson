@@ -6,7 +6,7 @@
 .done .done-sub { font-size: 1.15rem; color: #5b5d6b; margin-top: 18px; }
 .done .done-sub + .done-sub { margin-top: 6px; }
 .done .done-sub b { color: #000; }
-.done .done-lead { font-size: 1.15rem; color: #5b5d6b; margin-top: 18px; }
+.done .done-lead { font-size: 1.15rem; font-weight: 500; color: #1e293b; margin-top: 18px; }
 .done .done-lead b { color: #000; }
 
 .done-video { margin: 22px auto 0; overflow: hidden; background: #0a0a0a; }
