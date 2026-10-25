@@ -29,6 +29,7 @@
   </div>
   <svg class="done-arrow" width="26" height="46" viewBox="0 0 26 46" fill="none" aria-hidden="true"><path d="M13 2v40M3 31l10 11 10-11" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
 
+  __BEFORE_STEP1__
   <div class="done-step" style="margin-top:18px;">
     <div class="done-step-pill">STEP 1:</div>
     ${ICON}
@@ -110,11 +111,15 @@
   document.querySelectorAll('.js-done-shared').forEach(function (el) {
     var extra = +el.getAttribute('data-extra-steps') || 0;
     var steps = extra ? 4 + extra : 3;
+    // A page can put its own block above Step 1 with <template id="done-before-step1">.
+    var tpl = document.getElementById('done-before-step1');
+    var before = tpl ? tpl.innerHTML : '';
     // A page can set its own lead line with data-lead.
     var lead = el.getAttribute('data-lead') ||
       "Before you close this tab, complete these __STEPS__ steps to make sure you're <b>fully set up for the masterclass</b>";
     el.innerHTML = html
       .replace('__LEAD__', lead)
+      .replace('__BEFORE_STEP1__', before)
       .replace('__STEPS__', STEP_WORDS[steps] || steps)
       .replace('__FAQ_STEP__', extra ? '<div class="done-step-pill">STEP 4:</div>' + ICON : '');
   });

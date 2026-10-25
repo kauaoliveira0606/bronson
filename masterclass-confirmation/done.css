@@ -86,3 +86,28 @@
   .done .done-sub, .done .done-lead, .done-step-card p, .done .done-faq-sub { font-size: 1.05rem; }
   .done-bk-grid { grid-template-columns: 1fr; }
 }
+
+/* VIP gift card (only /masterclass-confirmation?done=1 uses it) */
+.vip-lock { margin: 26px auto 0; border-radius: 14px; overflow: hidden; text-align: left; background: #fff; box-shadow: 0 14px 40px -14px rgba(15,23,42,0.28); border: 1px solid rgba(15,23,42,0.08); }
+.vip-lock-head { display: flex; align-items: center; gap: 14px; padding: 20px 24px; background: linear-gradient(135deg, #0b1b26 0%, #12352a 100%); color: #fff; }
+.vip-lock-icon { flex-shrink: 0; width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: rgba(245,158,11,0.16); color: #f5b73b; border: 1px solid rgba(245,158,11,0.35); }
+.vip-lock-eyebrow { font-family: 'Manrope', sans-serif; font-size: 0.78rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #f5b73b; }
+.vip-lock h3 { font-family: 'Manrope', sans-serif; font-size: 1.32rem; font-weight: 700; line-height: 1.25; margin-top: 2px; }
+.vip-lock-body { padding: 20px 24px 22px; }
+.vip-lock-status { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 100px; background: #fef3c7; color: #92400e; font-size: 0.92rem; }
+.vip-lock-status b { color: #78350f; }
+.vip-lock-label { font-family: 'Manrope', sans-serif; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.9px; text-transform: uppercase; color: #64748b; margin-top: 18px; }
+.vip-lock-list { list-style: none; margin: 10px 0 0; padding: 0; }
+.vip-lock-list li { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-top: 1px solid #eef2ef; font-size: 1.04rem; line-height: 1.45; color: #374151; }
+.vip-lock-list li:first-child { border-top: 0; }
+.vip-lock-list li b { color: #0b1b26; }
+.vip-lock-list i { flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px; border-radius: 50%; background: #16a34a; display: flex; align-items: center; justify-content: center; }
+.vip-lock-foot { margin-top: 14px; padding: 13px 16px; border-radius: 10px; background: #f1f8f3; border: 1px dashed rgba(22,163,74,0.45); text-align: center; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.02rem; color: #15803d; }
+@media (max-width: 600px) {
+  .vip-lock-head { padding: 18px; }
+  .vip-lock-icon { width: 44px; height: 44px; border-radius: 12px; }
+  .vip-lock h3 { font-size: 1.14rem; }
+  .vip-lock-body { padding: 18px; }
+  .vip-lock-status { font-size: 0.84rem; }
+  .vip-lock-list li { font-size: 0.97rem; }
+}
