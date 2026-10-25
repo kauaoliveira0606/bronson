@@ -171,17 +171,24 @@
     return new Date(wallUtc - nyOffset(guess));
   }
 
+  // Midnight New York time at the end of the day a session runs on.
+  function nyDayAfter(date) {
+    var p = nyParts(date);
+    var wallUtc = Date.UTC(+p.year, +p.month - 1, +p.day + 1, 0, 0, 0);
+    var guess = new Date(wallUtc - nyOffset(new Date(wallUtc)));
+    return new Date(wallUtc - nyOffset(guess));
+  }
   function nextSession(now) {
-    // A set date wins until it has started; after that the weekly schedule takes over.
+    // A session stays "next" through the whole day it runs, so people who are late still
+    // get today's session; it rolls to the following week at midnight New York time.
+    // A set date wins until that point; after that the weekly schedule takes over.
     if (MASTERCLASS_DATE) {
       var fixed = nyWall(MASTERCLASS_DATE, MASTERCLASS_HOUR);
-      if (fixed.getTime() > now.getTime()) return fixed;
+      if (nyDayAfter(fixed).getTime() > now.getTime()) return fixed;
     }
     var p = nyParts(now);
     var dow = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday);
     var days = (MASTERCLASS_DAY - dow + 7) % 7;
-    var secsIntoDay = (+p.hour) * 3600 + (+p.minute) * 60 + (+p.second);
-    if (days === 0 && secsIntoDay >= MASTERCLASS_HOUR * 3600) days = 7;
     var wallUtc = Date.UTC(+p.year, +p.month - 1, +p.day + days, MASTERCLASS_HOUR, 0, 0);
     var guess = new Date(wallUtc - nyOffset(new Date(wallUtc)));
     return new Date(wallUtc - nyOffset(guess));
@@ -190,7 +197,7 @@
   // The masterclass page passes the session they registered for; fall back to the next one.
   var start = null;
   try { start = new Date(window.sessionStorage.getItem('mc_at') || ''); } catch (e) {}
-  if (!start || isNaN(start.getTime()) || start.getTime() < Date.now()) start = nextSession(new Date());
+  if (!start || isNaN(start.getTime()) || nyDayAfter(start).getTime() <= Date.now()) start = nextSession(new Date());
   var end = new Date(start.getTime() + MASTERCLASS_MINUTES * 60000);
 
   var dayLabel = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric' }).format(start);
