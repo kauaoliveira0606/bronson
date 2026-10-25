@@ -65,6 +65,10 @@
       <p>Find the email from me with your masterclass details. Don't see it in the next few minutes?</p>
       <p>Check promotions or spam, then drag it into your main inbox so you get every reminder.</p>
       <p>I will be sending exclusive pre-training breakdowns. So you get the most out of the masterclass.</p>
+      <div class="done-mail">
+        <a class="done-btn js-mail-gmail" href="https://mail.google.com/mail/u/0/#search/masterclass+in%3Aanywhere" target="_blank" rel="noopener">Open Gmail</a>
+        <a class="done-btn done-btn-alt js-mail-apple" href="message://">Open Apple Mail</a>
+      </div>
     </div>
   </div>
 
@@ -205,6 +209,23 @@
 
   document.querySelectorAll('.js-cal-google').forEach(function (a) { a.href = google; });
   document.querySelectorAll('.js-cal-ics').forEach(function (a) { a.href = icsHref; });
+  /* ---------- Open email buttons ---------- */
+  // Phones open the mail app itself; desktop Gmail opens the web inbox searched for the email.
+  // Apple Mail (message://) only exists on iPhone, iPad and Mac, so it's hidden elsewhere.
+  var ua = navigator.userAgent;
+  var isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var isAndroid = /Android/.test(ua);
+  var isMac = !isIOS && /Macintosh/.test(ua);
+  document.querySelectorAll('.js-mail-gmail').forEach(function (a) {
+    if (isIOS) { a.href = 'googlegmail://'; a.removeAttribute('target'); }
+    else if (isAndroid) {
+      a.href = 'intent://#Intent;package=com.google.android.gm;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;S.browser_fallback_url=' +
+        encodeURIComponent('https://mail.google.com/mail/u/0/#inbox') + ';end';
+      a.removeAttribute('target');
+    }
+  });
+  if (!isIOS && !isMac) document.querySelectorAll('.js-mail-apple').forEach(function (a) { a.remove(); });
+
   document.querySelectorAll('.js-cal-toggle').forEach(function (btn) {
     btn.addEventListener('click', function () { btn.parentNode.querySelector('.js-cal-menu').classList.toggle('open'); });
   });
