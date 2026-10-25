@@ -199,16 +199,12 @@
     '&dates=' + stamp(start) + '/' + stamp(end) +
     '&details=' + encodeURIComponent(EVENT_DETAILS) +
     '&location=' + encodeURIComponent(JOIN_URL);
-  var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//The Inner Table//Masterclass//EN', 'BEGIN:VEVENT',
-    'UID:masterclass-' + stamp(start) + '@ad-ventur.com', 'DTSTAMP:' + stamp(new Date()),
-    'DTSTART:' + stamp(start), 'DTEND:' + stamp(end),
-    'SUMMARY:' + EVENT_TITLE, 'DESCRIPTION:' + EVENT_DETAILS, 'LOCATION:' + JOIN_URL, 'URL:' + JOIN_URL,
-    'BEGIN:VALARM', 'TRIGGER:-PT30M', 'ACTION:DISPLAY', 'DESCRIPTION:' + EVENT_TITLE, 'END:VALARM',
-    'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
-  var icsHref = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+  // A real .ics URL (not a data: link) so iPhone Safari opens its Add to Calendar sheet.
+  var icsHref = '/api/masterclass-ics?start=' + encodeURIComponent(start.toISOString()) +
+    '&end=' + encodeURIComponent(end.toISOString());
 
   document.querySelectorAll('.js-cal-google').forEach(function (a) { a.href = google; });
-  document.querySelectorAll('.js-cal-ics').forEach(function (a) { a.href = icsHref; a.setAttribute('download', 'masterclass.ics'); });
+  document.querySelectorAll('.js-cal-ics').forEach(function (a) { a.href = icsHref; });
   document.querySelectorAll('.js-cal-toggle').forEach(function (btn) {
     btn.addEventListener('click', function () { btn.parentNode.querySelector('.js-cal-menu').classList.toggle('open'); });
   });
