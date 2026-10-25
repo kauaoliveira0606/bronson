@@ -66,6 +66,7 @@
     <div class="done-step-card">
       <p>Find the email from me with your masterclass details. Don't see it in the next few minutes?</p>
       <p>Check promotions or spam, then drag it into your main inbox so you get every reminder.</p>
+      <p>I will be sending exclusive pre-training breakdowns. So you get the most out of the masterclass.</p>
     </div>
   </div>
 
