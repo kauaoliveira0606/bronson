@@ -35,17 +35,17 @@ function fromNyWall(wallUtc) {
   const guess = new Date(wallUtc - nyOffset(new Date(wallUtc)));
   return new Date(wallUtc - nyOffset(guess));
 }
+// The session stays "next" through the whole day it runs (New York time), so people
+// who are late still get today's session; it rolls to the following week at midnight.
 function nextSession(now) {
   if (MASTERCLASS_DATE) {
     const d = MASTERCLASS_DATE.split('-');
-    const fixed = fromNyWall(Date.UTC(+d[0], +d[1] - 1, +d[2], MASTERCLASS_HOUR, 0, 0));
-    if (fixed > now) return fixed;
+    const dayAfter = fromNyWall(Date.UTC(+d[0], +d[1] - 1, +d[2] + 1, 0, 0, 0));
+    if (now < dayAfter) return fromNyWall(Date.UTC(+d[0], +d[1] - 1, +d[2], MASTERCLASS_HOUR, 0, 0));
   }
   const p = nyParts(now);
   const dow = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday);
-  let days = (MASTERCLASS_DAY - dow + 7) % 7;
-  const secsIntoDay = (+p.hour) * 3600 + (+p.minute) * 60 + (+p.second);
-  if (days === 0 && secsIntoDay >= MASTERCLASS_HOUR * 3600) days = 7;
+  const days = (MASTERCLASS_DAY - dow + 7) % 7;
   return fromNyWall(Date.UTC(+p.year, +p.month - 1, +p.day + days, MASTERCLASS_HOUR, 0, 0));
 }
 
