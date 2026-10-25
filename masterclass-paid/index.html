@@ -484,27 +484,39 @@
     .cover-row p + p { margin-top: 10px; }
 
     /* ── MODEL COMPARISON ── */
-    .cmp { margin-top: 28px; background: var(--card); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; }
-    .cmp-row { display: grid; grid-template-columns: 0.8fr 1fr 1fr; border-bottom: 1px solid var(--line); }
+    .cmp { margin-top: 32px; background: var(--card); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); overflow: hidden; }
+    .cmp-row { display: grid; grid-template-columns: 0.78fr 1fr 1fr; border-bottom: 1px solid var(--line); }
     .cmp-row:last-child { border-bottom: none; }
-    .cmp-row > div { padding: 18px 22px; }
-    .cmp-label { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text2); display: flex; align-items: center; }
-    .cmp-old { color: var(--body); }
-    .cmp-new { background: var(--tint); color: var(--ink); }
-    .cmp-cell b { display: block; font-family: 'Manrope', 'Inter', sans-serif; font-size: 1.15rem; font-weight: 800; line-height: 1.25; }
-    .cmp-old b { color: #b91c1c; }
-    .cmp-new b { color: var(--green-dark); }
-    .cmp-cell span { display: block; font-size: 0.88rem; margin-top: 4px; line-height: 1.45; }
-    .cmp-head > div { font-family: 'Manrope', 'Inter', sans-serif; font-weight: 800; font-size: 1rem; color: var(--ink); }
-    .cmp-head .cmp-old { color: var(--text2); }
-    .cmp-head .cmp-new { color: var(--green-dark); }
-    @media (max-width: 600px) {
+    .cmp-row > div { padding: 20px 24px; }
+    .cmp-new { background: var(--tint); border-left: 1px solid rgba(22,163,74,0.18); }
+    .cmp-label { display: flex; align-items: center; font-family: 'Manrope', 'Inter', sans-serif; font-size: 0.98rem; font-weight: 700; line-height: 1.3; color: var(--ink); }
+    .cmp-cell { display: flex; gap: 12px; align-items: flex-start; }
+    .cmp-mark { flex-shrink: 0; width: 24px; height: 24px; margin-top: 1px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .cmp-old .cmp-mark { background: #fee2e2; color: #dc2626; }
+    .cmp-new .cmp-mark { background: var(--green-bright); color: #fff; }
+    .cmp-cell b { display: block; font-family: 'Manrope', 'Inter', sans-serif; font-size: 1.08rem; font-weight: 800; line-height: 1.3; }
+    .cmp-old b { color: #475569; }
+    .cmp-new b { color: var(--ink); }
+    .cmp-cell span { display: block; font-size: 0.9rem; line-height: 1.45; margin-top: 3px; color: var(--body); }
+    .cmp-old span { color: var(--text2); }
+    .cmp-head > div { padding-top: 22px; padding-bottom: 22px; }
+    .cmp-head .cmp-label { font-size: 0.74rem; font-weight: 800; letter-spacing: 0.9px; text-transform: uppercase; color: var(--text2); }
+    .cmp-title { font-family: 'Manrope', 'Inter', sans-serif; font-size: 1.12rem; font-weight: 800; line-height: 1.25; }
+    .cmp-old .cmp-title { color: #dc2626; }
+    .cmp-new .cmp-title { color: var(--green-dark); }
+    .cmp-sub { font-size: 0.84rem; color: var(--text2); margin-top: 2px; }
+    .cmp-pill { display: inline-block; margin-bottom: 8px; padding: 3px 10px; border-radius: 999px; background: var(--green-bright); color: #fff; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; }
+    @media (max-width: 680px) {
       .cmp-row { grid-template-columns: 1fr 1fr; }
-      .cmp-row > div { padding: 14px 16px; }
-      .cmp-label { grid-column: 1 / -1; padding-bottom: 0 !important; background: none; }
+      .cmp-row > div { padding: 14px 14px 16px; }
+      .cmp-label { grid-column: 1 / -1; padding: 14px 16px 10px !important; background: #f8fafc; font-size: 0.82rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text2); border-bottom: 1px solid var(--line); }
       .cmp-head .cmp-label { display: none; }
-      .cmp-cell b { font-size: 1rem; }
-      .cmp-cell span { font-size: 0.82rem; }
+      .cmp-cell { flex-direction: column; gap: 8px; }
+      .cmp-mark { width: 22px; height: 22px; }
+      .cmp-cell b { font-size: 0.98rem; }
+      .cmp-cell span { font-size: 0.84rem; }
+      .cmp-title { font-size: 0.98rem; }
+      .cmp-sub { font-size: 0.78rem; }
     }
 
     /* ── WHY SECTION ── */
@@ -1173,26 +1185,36 @@
   <p class="section-label">Why This Model</p>
   <h2 class="section-title">Why People Are Choosing This Online Business</h2>
 
-  <div class="cmp" role="table" aria-label="Traditional dropshipping vs subscription model">
+  <div class="cmp" role="table" aria-label="Old-school dropshipping vs subscription e-commerce">
     <div class="cmp-row cmp-head" role="row">
-      <div class="cmp-label" role="columnheader"></div>
-      <div class="cmp-old" role="columnheader">Traditional Dropshipping</div>
-      <div class="cmp-new" role="columnheader">Subscription Model</div>
+      <div class="cmp-label" role="columnheader">Side By Side</div>
+      <div class="cmp-old" role="columnheader"><div class="cmp-title">Old-School Dropshipping</div><div class="cmp-sub">One-time sales</div></div>
+      <div class="cmp-new" role="columnheader"><span class="cmp-pill">The Better Way</span><div class="cmp-title">Subscription E&#8209;Commerce</div><div class="cmp-sub">Products people reorder</div></div>
     </div>
     <div class="cmp-row" role="row">
-      <div class="cmp-label" role="rowheader">Monthly Revenue</div>
-      <div class="cmp-cell cmp-old" role="cell"><b>Resets To $0 On The 1st</b><span>Every month you start over and chase new sales.</span></div>
-      <div class="cmp-cell cmp-new" role="cell"><b>Compounding MRR</b><span>Last month's customers renew, new ones stack on top.</span></div>
+      <div class="cmp-label" role="rowheader">Your Monthly Income</div>
+      <div class="cmp-cell cmp-old" role="cell"><i class="cmp-mark"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M7 7l10 10M17 7L7 17"/></svg></i><div><b>Starts Over At $0</b><span>On the 1st of every month, you're back to zero.</span></div></div>
+      <div class="cmp-cell cmp-new" role="cell"><i class="cmp-mark"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg></i><div><b>Keeps Stacking Up</b><span>Last month's customers pay you again, all on their own.</span></div></div>
     </div>
     <div class="cmp-row" role="row">
-      <div class="cmp-label" role="rowheader">Customer Lifetime Value</div>
-      <div class="cmp-cell cmp-old" role="cell"><b>$20 LTV</b><span>One-time purchase, then they're gone.</span></div>
-      <div class="cmp-cell cmp-new" role="cell"><b>$180+ LTV</b><span>The same customer pays you month after month.</span></div>
+      <div class="cmp-label" role="rowheader">What You Sell</div>
+      <div class="cmp-cell cmp-old" role="cell"><i class="cmp-mark"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M7 7l10 10M17 7L7 17"/></svg></i><div><b>Trendy Stuff That Dies Fast</b><span>Trends fade in 2 to 4 weeks, so you're always hunting for the next one.</span></div></div>
+      <div class="cmp-cell cmp-new" role="cell"><i class="cmp-mark"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg></i><div><b>Stuff People Use Every Day</b><span>When they run out, it reorders itself.</span></div></div>
+    </div>
+    <div class="cmp-row" role="row">
+      <div class="cmp-label" role="rowheader">What Each Customer Is Worth</div>
+      <div class="cmp-cell cmp-old" role="cell"><i class="cmp-mark"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M7 7l10 10M17 7L7 17"/></svg></i><div><b>$20 to $40</b><span>They buy once, then they're gone.</span></div></div>
+      <div class="cmp-cell cmp-new" role="cell"><i class="cmp-mark"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg></i><div><b>$180 to $350+</b><span>They keep paying you for 4 to 8 months.</span></div></div>
     </div>
     <div class="cmp-row" role="row">
       <div class="cmp-label" role="rowheader">Shipping</div>
-      <div class="cmp-cell cmp-old" role="cell"><b>20-Day China Shipping</b><span>Slow delivery, refunds and angry emails.</span></div>
-      <div class="cmp-cell cmp-new" role="cell"><b>3-Day US Shipping</b><span>Fast delivery that keeps customers subscribed.</span></div>
+      <div class="cmp-cell cmp-old" role="cell"><i class="cmp-mark"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M7 7l10 10M17 7L7 17"/></svg></i><div><b>15 to 25 Days From China</b><span>Slow shipping means angry customers and refunds.</span></div></div>
+      <div class="cmp-cell cmp-new" role="cell"><i class="cmp-mark"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg></i><div><b>3 to 5 Days In The US</b><span>Ships fast from cGMP and FDA certified US facilities.</span></div></div>
+    </div>
+    <div class="cmp-row" role="row">
+      <div class="cmp-label" role="rowheader">Can You Sell The Business?</div>
+      <div class="cmp-cell cmp-old" role="cell"><i class="cmp-mark"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M7 7l10 10M17 7L7 17"/></svg></i><div><b>Worth Almost Nothing</b><span>No repeat buyers means nobody wants to buy your store.</span></div></div>
+      <div class="cmp-cell cmp-new" role="cell"><i class="cmp-mark"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg></i><div><b>Worth 3 to 5x Your Yearly Profit</b><span>Steady monthly income makes it a real asset buyers pay for.</span></div></div>
     </div>
   </div>
 
