@@ -385,6 +385,21 @@
     .yes-banner p { color: var(--text-dim); font-size: 15.5px; max-width: 760px; }
     .yes-banner strong { color: var(--blue); font-weight: 700; }
 
+    /* WHAT YOU GET STACK */
+    .stack-block { margin-top: 72px; scroll-margin-top: 90px; }
+    .stack-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin: 48px 0 0; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .stack-head h3 { font-size: 22px; font-weight: 900; }
+    .stack-part { font-family: var(--mono); font-size: 11.5px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue); }
+    .stack-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 22px; }
+    @media (max-width: 900px) { .stack-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .stack-grid { grid-template-columns: 1fr; } }
+    .stack-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 22px 26px; box-shadow: var(--shadow); transition: transform 0.2s, border-color 0.2s; }
+    .stack-card:hover { transform: translateY(-3px); border-color: var(--blue); }
+    .stack-mark { font-size: 30px; font-weight: 900; line-height: 1; color: rgba(34,197,94,0.5); margin-bottom: 14px; }
+    .stack-mark.check { width: 32px; height: 32px; border-radius: 50%; background: rgba(34,197,94,0.14); color: var(--blue); font-size: 15px; display: flex; align-items: center; justify-content: center; }
+    .stack-card h3 { font-size: 17px; font-weight: 800; line-height: 1.35; margin-bottom: 8px; }
+    .stack-card p { font-size: 14.5px; color: var(--text-dim); line-height: 1.6; }
+
     /* RHYTHM */
     .rhythm-list { list-style: none; display: grid; gap: 12px; margin-top: 36px; max-width: 820px; }
     .rhythm-list li {
@@ -638,6 +653,7 @@
       <a href="#story">The Story</a>
       <a href="#model">The Model</a>
       <a href="#program">The Method</a>
+      <a href="#whats-included">What You Get</a>
       <a href="#roadmap">Roadmap</a>
       <a href="#proof">Proof</a>
       <a href="#faq-videos">FAQ Videos</a>
@@ -986,33 +1002,77 @@
       </div>
     </div>
 
-    <ul class="rhythm-list">
-      <li class="reveal d1"><span class="time">3x / Week</span><div class="what"><strong>Live Zoom calls with Bronson</strong><span>Q&amp;A and real-time insights pulled straight from his own brand, every week.</span></div></li>
-      <li class="reveal d2"><span class="time">24/7</span><div class="what"><strong>Text access to Bronson's personal phone</strong><span>Fast responses when you are stuck on a product, a supplier, a page, or an ad.</span></div></li>
-      <li class="reveal d3"><span class="time">Always On</span><div class="what"><strong>Curriculum, supplier and tools</strong><span>The full Inner Table curriculum, discounted software and AI, and direct access to the supplier Bronson uses for his own brand.</span></div></li>
-    </ul>
+    <div id="whats-included" class="stack-block">
+      <span class="eyebrow reveal">What You Get</span>
+      <h2 class="reveal">Everything Inside <span class="accent">The Inner Table</span></h2>
+      <p class="lead reveal d1">Six months of full access. Two parts: the tangible assets you build with, and direct mentorship from Bronson while you build.</p>
 
-    <h3 class="reveal" style="margin-top:56px; font-size:19px; font-weight:800;">More Inside The Program</h3>
-    <div class="pillars">
-      <div class="pillar-card reveal d1">
-        <div class="pillar-num">AI</div>
-        <h3>Bronson AI</h3>
-        <p>An AI version of Bronson trained on how he operates. Get instant feedback on your product, page, or ad, a 90 day scaling roadmap, and a 14 day store launch playbook, on demand.</p>
+      <div class="stack-head reveal"><span class="stack-part">Part 1</span><h3>The 6 Core Tangible Assets</h3></div>
+      <div class="stack-grid">
+      <div class="stack-card reveal d1">
+        <div class="stack-mark">01</div>
+        <h3>Winning Subscription Product Cheat Sheet</h3>
+        <p>A list of proven subscription products plus my exact criteria for picking ones that actually work on a subscription model so people reorder every 30 days.</p>
       </div>
-      <div class="pillar-card reveal d2">
-        <div class="pillar-num">&#9733;</div>
-        <h3>In-person events</h3>
-        <p>Get in the room with Bronson and other members. Work on your brand together, build real relationships, and leave with a plan instead of a feed of screenshots.</p>
+      <div class="stack-card reveal d2">
+        <div class="stack-mark">02</div>
+        <h3>Plug-and-Play Store Templates Proven To Convert</h3>
+        <p>The actual store layouts I use on my own brands. You plug your product in with AI, and your store is live in an afternoon.</p>
       </div>
-      <div class="pillar-card reveal d3">
-        <div class="pillar-num">&#10003;</div>
-        <h3>Monthly brand audits</h3>
-        <p>Every month your store, funnel, ads, and product get a full review against what is working right now, so you always know the one thing to fix next.</p>
+      <div class="stack-card reveal d3">
+        <div class="stack-mark">03</div>
+        <h3>DFY Supplier Connection</h3>
+        <p>The exact supplier I use on my $600k a month brand. They hold the products, put your label on the bottles, and ship in 3 to 5 days. Zero bulk inventory, and you never pack a box.</p>
       </div>
-      <div class="pillar-card reveal d4">
-        <div class="pillar-num">&#9679;</div>
-        <h3>The community</h3>
-        <p>An active group of members at every stage, all running the same framework. Trade what is working, get unstuck fast, and stay accountable to people doing the same thing.</p>
+      <div class="stack-card reveal d1">
+        <div class="stack-mark">04</div>
+        <h3>Winning Ads Swipe File And Plug-and-Play Ad Account Set Up</h3>
+        <p>The exact ads me and other big brands use, simple video hook scripts, and my exact ad account setup so you can start on a small budget without burning money.</p>
+      </div>
+      <div class="stack-card reveal d2">
+        <div class="stack-mark">05</div>
+        <h3>90-Day Step-by-Step Daily Actions Scaling Roadmap To 1K A Day</h3>
+        <p>Every single day for 90 days, one specific action. Built for people working full-time jobs. 1 to 2 hours a day to reach $1,000/day in recurring revenue.</p>
+      </div>
+      <div class="stack-card reveal d3">
+        <div class="stack-mark">06</div>
+        <h3>14-Day Launch Playbook</h3>
+        <p>Day by day, what to do and when to do it, so you get your store live, your supplier connected, and your first sales in within two weeks.</p>
+      </div>
+      </div>
+
+      <div class="stack-head reveal"><span class="stack-part">Part 2</span><h3>The Direct Mentorship Stack</h3></div>
+      <div class="stack-grid">
+      <div class="stack-card reveal d1">
+        <div class="stack-mark check">&#10003;</div>
+        <h3>1:1 Onboarding Call</h3>
+        <p>Getting inside the program, going through your setup, and building your personalized game plan.</p>
+      </div>
+      <div class="stack-card reveal d2">
+        <div class="stack-mark check">&#10003;</div>
+        <h3>AI Bronson</h3>
+        <p>24/7 access to my custom AI tool trained on my exact ad prompts, store frameworks, and copy so you never get stuck.</p>
+      </div>
+      <div class="stack-card reveal d3">
+        <div class="stack-mark check">&#10003;</div>
+        <h3>3 Coaching Calls A Week With Bronson</h3>
+        <p>Live weekly breakdown of my own brand, open Q&amp;A, and live student brand breakdowns directly with me (not a hired coach).</p>
+      </div>
+      <div class="stack-card reveal d1">
+        <div class="stack-mark check">&#10003;</div>
+        <h3>Monthly Brand Audit Looms</h3>
+        <p>Every 30 days, I personally record a video audit of your store, ads, funnels, and offer to show you exactly what to fix.</p>
+      </div>
+      <div class="stack-card reveal d2">
+        <div class="stack-mark check">&#10003;</div>
+        <h3>Quarterly Mastermind Weekend</h3>
+        <p>A full weekend in-person mastermind with Bronson to help top students grow their brand 1-on-1.</p>
+      </div>
+      <div class="stack-card reveal d3">
+        <div class="stack-mark check">&#10003;</div>
+        <h3>Exit Strategy (With A 10% Profit Split)</h3>
+        <p>We help you grow and sell your brand for 3x to 5x yearly profit. We partner with you on the exit with a 10% profit split.</p>
+      </div>
       </div>
     </div>
 
@@ -1269,7 +1329,7 @@
       </div>
       <div class="faq-item reveal">
         <button class="faq-q">Can my partner join the call?<span class="plus">+</span></button>
-        <div class="faq-a"><p>Yes, and it is encouraged. This is a household decision and it helps when everyone is on the same page about the time and the money involved.</p></div>
+        <div class="faq-a"><p>If you share finances, your partner MUST be on the call with you. We will not offer a spot if your decision-maker is not on the line</p></div>
       </div>
     </div>
   </div>
