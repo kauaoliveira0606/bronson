@@ -494,6 +494,8 @@
     .interview-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
     .interview-card .video-embed { border: 0; border-radius: 0; border-bottom: 1px solid var(--border); box-shadow: none; }
     .interview-card vturb-smartplayer { display: block; width: 100%; border-bottom: 1px solid var(--border); }
+    .faq-video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 40px; }
+    @media (max-width: 760px) { .faq-video-grid { grid-template-columns: 1fr; max-width: 520px; } }
     .interview-info { padding: 18px 20px; }
     .interview-info h3 { font-size: 15.5px; font-weight: 800; margin-bottom: 6px; }
     .interview-info h3 .accent { color: var(--blue); }
@@ -638,6 +640,7 @@
       <a href="#program">The Method</a>
       <a href="#roadmap">Roadmap</a>
       <a href="#proof">Proof</a>
+      <a href="#faq-videos">FAQ Videos</a>
       <a href="#interviews">Interviews</a>
       <a href="#students">Results</a>
       <a href="#faq">FAQ</a>
@@ -1124,8 +1127,51 @@
   </div>
 </section>
 
+<!-- ============ FAQ VIDEOS ============ -->
+<section class="alt" id="faq-videos">
+  <div class="wrap">
+    <span class="eyebrow reveal">Watch Before Your Call</span>
+    <h2 class="reveal">FAQ <span class="accent">Videos</span></h2>
+    <p class="lead reveal d1">Watch these before your call so we can skip the basics and get straight to your plan.</p>
+    <div class="faq-video-grid">
+      <div class="interview-card">
+        <vturb-smartplayer id="vid-6a9ad8a26da0a5d6529f2b17" style="display: block; margin: 0 auto; width: 100%; "><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>
+        <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a9ad8a26da0a5d6529f2b17/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
+        <div class="interview-info">
+          <span class="resource-num">FAQ video 1 of 4</span>
+          <h3>Can I still do this with a <span class="accent">full-time job?</span></h3>
+        </div>
+      </div>
+      <div class="interview-card">
+        <vturb-smartplayer id="vid-6a9ad8854aec89632d6bb643" style="display: block; margin: 0 auto; width: 100%; "><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>
+        <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a9ad8854aec89632d6bb643/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
+        <div class="interview-info">
+          <span class="resource-num">FAQ video 2 of 4</span>
+          <h3>Past <span class="accent">student results</span></h3>
+        </div>
+      </div>
+      <div class="interview-card">
+        <vturb-smartplayer id="vid-6a9ad87af1a29e85749dcf37" style="display: block; margin: 0 auto; width: 100%; "><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>
+        <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a9ad87af1a29e85749dcf37/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
+        <div class="interview-info">
+          <span class="resource-num">FAQ video 3 of 4</span>
+          <h3>Transparently showing our <span class="accent">transaction history</span></h3>
+        </div>
+      </div>
+      <div class="interview-card">
+        <vturb-smartplayer id="vid-6a9ad8959cf2cc1e3b21473c" style="display: block; margin: 0 auto; width: 100%; "><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>
+        <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a9ad8959cf2cc1e3b21473c/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
+        <div class="interview-info">
+          <span class="resource-num">FAQ video 4 of 4</span>
+          <h3>My <span class="accent">personal results</span></h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ STUDENT INTERVIEWS ============ -->
-<section class="alt" id="interviews">
+<section id="interviews">
   <div class="wrap">
     <span class="eyebrow reveal">In Their Own Words</span>
     <h2 class="reveal">Student <span class="accent">Interviews</span></h2>
@@ -1142,7 +1188,7 @@
 </section>
 
 <!-- ============ STUDENT TESTIMONIALS ============ -->
-<section id="students">
+<section class="alt" id="students">
   <div class="wrap">
     <span class="eyebrow reveal">Real Results</span>
     <h2 class="reveal">Student <span class="accent">Wins</span></h2>
@@ -1172,7 +1218,7 @@
 </section>
 
 <!-- ============ FAQ ============ -->
-<section class="alt" id="faq">
+<section id="faq">
   <div class="wrap">
     <div style="text-align:center;">
       <span class="eyebrow reveal">Before You Ask</span>
@@ -1230,7 +1276,7 @@
 </section>
 
 <!-- ============ EXECUTIVE SUMMARY ============ -->
-<section id="summary">
+<section class="alt" id="summary">
   <div class="wrap">
     <span class="eyebrow reveal">If You Only Read One Section</span>
     <h2 class="reveal">Executive <span class="accent">Summary</span></h2>
