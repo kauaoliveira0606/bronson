@@ -5,7 +5,7 @@
   // Masterclass schedule: weekly, day of week (0 = Sunday) at HOUR:00 New York time.
   // MASTERCLASS_DATE (New York date) pins the next session to that day until it starts.
   // Keep in step with the constants in /masterclass/index.html.
-  var MASTERCLASS_DATE = '2026-10-28';
+  var MASTERCLASS_DATE = '2026-11-11';
   var MASTERCLASS_DAY = 3;
   var MASTERCLASS_HOUR = 19;
   var MASTERCLASS_TIME_LABEL = '7PM EST';
