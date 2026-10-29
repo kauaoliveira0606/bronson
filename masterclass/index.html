@@ -710,7 +710,6 @@
     .nav-label .dot { margin-right: 0; background: var(--green-bright); }
     .nav-label-colon { margin-left: -8px; }
     .nav-date { font-weight: 500; letter-spacing: 0.3px; color: var(--ink); white-space: nowrap; }
-    .fill-note.nav-note { margin: 0; flex: 1 1 auto; text-align: center; font-size: 0.85rem; }
     .nav-btn, .cta-btn {
       display: inline-block;
       text-align: center;
@@ -892,7 +891,6 @@
       .nav-date > span { display: block; }
       .nav-date > .nav-date-sep { display: none; }
       .nav-bar { flex-wrap: wrap; }
-      .fill-note.nav-note { order: 3; flex-basis: 100%; text-align: left; font-size: 0.75rem; padding-bottom: 4px; }
       .trust-row { flex-wrap: nowrap; gap: 6px; }
       .trust-badge { font-size: 0.64rem; gap: 5px; }
       .trust-badge.dark { padding: 4px 10px 4px 4px; }
@@ -936,7 +934,6 @@
 <div class="hero-band">
   <div class="nav-bar">
     <span class="nav-label"><span class="nav-label-top"><span class="dot"></span>Live-Only Masterclass<span class="nav-label-colon">:</span></span> <span class="nav-date js-event-date"><span>Wednesday, October 28</span><span class="nav-date-sep"> &middot; </span><span>7:00 PM EST</span></span></span>
-    <p class="fill-note nav-note">&#127873; Receive FREE VIP Gift: Winning Product Research Checklist.</p>
     <a class="nav-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span></a>
   </div>
 
@@ -1346,6 +1343,8 @@
   ['form-card-top', 'form-card-bottom'].forEach(function (id) {
     var card = document.getElementById(id);
     var optin = template.content.cloneNode(true);
+    // The hero button carries the VIP gift line under its label.
+    if (id === 'form-card-top') optin.querySelector('.cta-btn').insertAdjacentHTML('beforeend', '<span class="cta-btn-sub">&#127873; Receive FREE VIP Gift: Winning Product Research Checklist.</span>');
     card.appendChild(optin);
   });
   document.querySelectorAll('.js-wj-open').forEach(function (btn) {
