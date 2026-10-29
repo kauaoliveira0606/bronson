@@ -692,6 +692,9 @@
       pointer-events: none;
     }
     .hero-band > * { position: relative; }
+    .nav-sticky { position: sticky; top: 0; z-index: 50; height: 0; padding: 0 20px; display: flow-root; }
+    .nav-sticky .nav-bar { margin-top: 16px; box-shadow: 0 8px 28px rgba(15,23,42,0.12); }
+    .hero-band { padding-top: calc(16px + var(--nav-h, 66px)); }
 
     .nav-bar {
       max-width: 1170px;
@@ -878,7 +881,9 @@
       .why-list.masonry { columns: 1; }
     }
     @media (max-width: 600px) {
-      .hero-band { padding: 12px 14px 0; }
+      .hero-band { padding: calc(12px + var(--nav-h, 76px)) 14px 0; }
+      .nav-sticky { padding: 0 14px; }
+      .nav-sticky .nav-bar { margin-top: 12px; }
       .nav-bar { padding: 8px 8px 8px 16px; }
       .nav-btn { font-size: 0.78rem; padding: 10px 14px; }
       .hero { padding: 38px 2px 60px; }
@@ -931,12 +936,15 @@
 </head>
 <body>
 
-<div class="hero-band">
+<!-- Sticky top bar: zero height so it floats over the hero; the hero pads itself by its height (--nav-h). -->
+<div class="nav-sticky">
   <div class="nav-bar">
     <span class="nav-label"><span class="nav-label-top"><span class="dot"></span>Live-Only Masterclass<span class="nav-label-colon">:</span></span> <span class="nav-date js-event-date"><span>Wednesday, October 28</span><span class="nav-date-sep"> &middot; </span><span>7:00 PM EST</span></span></span>
     <a class="nav-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span></a>
   </div>
+</div>
 
+<div class="hero-band">
   <!-- HERO -->
   <div class="hero">
     <h1>Build a Subscription E&#8209;Commerce Brand to Turn Every Customer Into <span class="hl-pill" style="white-space: nowrap;">Monthly Income</span></h1>
@@ -1290,6 +1298,15 @@
 </template>
 
 <script>
+  // Keep the hero padded by the sticky bar's real height.
+  (function () {
+    var bar = document.querySelector('.nav-sticky .nav-bar');
+    function setNavH() { document.documentElement.style.setProperty('--nav-h', bar.offsetHeight + 'px'); }
+    setNavH();
+    if (window.ResizeObserver) new ResizeObserver(setNavH).observe(bar);
+    else window.addEventListener('resize', setNavH);
+  })();
+
   // Masterclass schedule: weekly, day of week (0 = Sunday) at HOUR:00 New York time.
   // MASTERCLASS_DATE (New York date) pins the next session to that day until it starts.
   var MASTERCLASS_DATE = '2026-11-04';
