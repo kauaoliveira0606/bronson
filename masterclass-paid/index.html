@@ -1344,7 +1344,7 @@
     var card = document.getElementById(id);
     var optin = template.content.cloneNode(true);
     // The hero button carries the VIP gift line under its label.
-    if (id === 'form-card-top') optin.querySelector('.cta-btn').insertAdjacentHTML('beforeend', '<span class="cta-btn-sub">&#127873; Receive FREE VIP Gift: Winning Product Research Checklist.</span>');
+    if (id === 'form-card-top') optin.querySelector('.cta-btn').insertAdjacentHTML('beforeend', '<span class="cta-btn-sub">&#127873; Receive FREE VIP Gift:<br>Winning Product Research Checklist.</span>');
     card.appendChild(optin);
   });
   document.querySelectorAll('.js-wj-open').forEach(function (btn) {
