@@ -413,7 +413,7 @@
       font-family: Georgia, 'Times New Roman', serif;
       font-size: clamp(0.78rem, 2vw, 1.2rem);
       font-style: italic;
-      color: #7dd8f8;
+      color: #16a34a;
       text-align: center;
       margin-bottom: 16px;
     }
@@ -614,6 +614,34 @@
       color: rgba(255,255,255,0.6);
       margin: 10px 0 4px;
     }
+
+    /* Light green brand look (matches /masterclass) */
+    body { background: #fcfdfc; color: #0f172a; }
+    .bg {
+      position: absolute; inset: 0 0 auto 0; height: 900px;
+      background:
+        radial-gradient(900px 480px at 18% 0%, rgba(34,197,94,0.20), transparent 62%),
+        radial-gradient(760px 520px at 100% 30%, rgba(22,163,74,0.14), transparent 60%),
+        linear-gradient(180deg, #f2faf5 0%, #fcfdfc 100%);
+    }
+    .bg::before {
+      content: ""; position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(118deg, transparent 0 150px, rgba(22,163,74,0.07) 150px 152px);
+      -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent);
+      mask-image: linear-gradient(180deg, #000 55%, transparent);
+    }
+    .ray, .meteor { display: none; }
+    .questions-section h2, .q-title, .testimonials h2, .next-section h2 { color: #0f172a; }
+    .questions-section .q-sub, .step-text { color: #1e293b; }
+    .video-border-wrap { box-shadow: 0 10px 30px rgba(15,23,42,0.10); }
+    .video-border-wrap::before { background: conic-gradient(from 0deg, transparent 0deg, transparent 120deg, #16a34a 165deg, #4ade80 180deg, #16a34a 195deg, transparent 240deg, transparent 360deg); }
+    .q-video { background: #ffffff; box-shadow: 0 10px 30px rgba(15,23,42,0.07), 0 1px 2px rgba(15,23,42,0.04); border: 1px solid rgba(15,23,42,0.08); }
+    .t-card-inner { background: #ffffff; }
+    footer { background: #f3f9f5; border-top: 1px solid rgba(15,23,42,0.08); }
+    footer img { mix-blend-mode: normal; opacity: 0.8; }
+    .footer-links a { color: #0f172a; }
+    .footer-disc { color: #475569; }
+    .footer-disc strong { color: #1e293b; }
     :root { --contentfont: 'Montserrat' !important; }
     *:not(.fa):not(.fas):not(.far):not(.fal):not(.fab):not([class*="fa-"]) { font-family: 'Montserrat', sans-serif !important; }
   </style>
@@ -658,7 +686,7 @@
       </div>
     </div>
 
-    <h3 style="text-align:center; font-size: 2rem; font-weight: 800; color: #fff; margin: 40px 0 10px;">Resource #1: FAQ Videos</h3>
+    <h3 style="text-align:center; font-size: 2rem; font-weight: 800; color: #0f172a; margin: 40px 0 10px;">Resource #1: FAQ Videos</h3>
     <p class="q-sub" style="font-weight: 700;">Watch these before your call so we can skip the basics and get straight to your plan.</p>
 
     <div class="q-item">
@@ -701,37 +729,37 @@
 
   <!-- Full Guide CTA -->
   <section style="max-width:820px; margin:0 auto; padding:0 20px 40px;">
-    <div style="position:relative; border-radius:16px; padding:44px 32px 40px; text-align:center; background:linear-gradient(135deg,#07121f,#0d2240); border:1px solid rgba(74,158,255,0.28); box-shadow:0 0 50px rgba(30,80,255,0.14);">
-      <p style="font-size:0.68rem; font-weight:800; letter-spacing:0.22em; text-transform:uppercase; color:#4a9eff; margin-bottom:14px;">One More Thing</p>
-      <h2 style="font-size:clamp(1.6rem,4vw,2.4rem); font-weight:900; color:#fff; margin-bottom:14px; letter-spacing:-0.01em;">Ready for the <span style="color:#4a9eff; font-style:italic;">Full Guide?</span></h2>
-      <p style="font-size:clamp(0.9rem,1.8vw,1rem); color:rgba(255,255,255,0.7); max-width:540px; margin:0 auto 28px; line-height:1.7;">Open the Opportunity Guide to see the framework, the 14-day launch playbook, the 90-day scaling roadmap, the revenue proof, and every student story in one place.</p>
-      <a href="/guide" style="display:inline-block; background:linear-gradient(135deg,#1a3aff,#4a9eff); color:#fff; font-weight:800; font-size:0.95rem; letter-spacing:0.02em; padding:16px 34px; border-radius:999px; text-decoration:none; box-shadow:0 0 22px rgba(74,158,255,0.4); transition:opacity .15s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">Open The Full Guide &rarr;</a>
-      <p style="font-style:italic; font-weight:800; color:#fff; margin-top:30px; font-size:1.05rem;">See you on the call.</p>
-      <p style="font-size:0.64rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#4a9eff; margin-top:8px;">Bronson &middot; Founder, The Inner Table</p>
+    <div style="position:relative; border-radius:16px; padding:44px 32px 40px; text-align:center; background:#ffffff; border:1px solid rgba(15,23,42,0.08); box-shadow:0 10px 30px rgba(15,23,42,0.07), 0 1px 2px rgba(15,23,42,0.04);">
+      <p style="font-size:0.68rem; font-weight:800; letter-spacing:0.22em; text-transform:uppercase; color:#16a34a; margin-bottom:14px;">One More Thing</p>
+      <h2 style="font-size:clamp(1.6rem,4vw,2.4rem); font-weight:900; color:#0f172a; margin-bottom:14px; letter-spacing:-0.01em;">Ready for the <span style="color:#16a34a; font-style:italic;">Full Guide?</span></h2>
+      <p style="font-size:clamp(0.9rem,1.8vw,1rem); color:#1e293b; max-width:540px; margin:0 auto 28px; line-height:1.7;">Open the Opportunity Guide to see the framework, the 14-day launch playbook, the 90-day scaling roadmap, the revenue proof, and every student story in one place.</p>
+      <a href="/guide" style="display:inline-block; background:linear-gradient(180deg,#2bcf68 0%,#16a34a 100%); color:#fff; font-weight:800; font-size:0.95rem; letter-spacing:0.02em; padding:16px 34px; border-radius:999px; text-decoration:none; box-shadow:inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(6,78,35,0.35), 0 1px 2px rgba(0,0,0,0.25), 0 10px 24px -8px rgba(22,163,74,0.5); transition:opacity .15s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">Open The Full Guide &rarr;</a>
+      <p style="font-style:italic; font-weight:800; color:#0f172a; margin-top:30px; font-size:1.05rem;">See you on the call.</p>
+      <p style="font-size:0.64rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#16a34a; margin-top:8px;">Bronson &middot; Founder, The Inner Table</p>
     </div>
   </section>
 
   <!-- Testimonials -->
   <section class="testimonials">
     <h2 style="font-size:2rem;">Resource #2: Student success</h2>
-    <p style="text-align:center; font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 700; color: #7dd8f8; margin-bottom: 32px; letter-spacing: 0.02em;">Real screenshots, real results, real people</p>
+    <p style="text-align:center; font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 700; color: #16a34a; margin-bottom: 32px; letter-spacing: 0.02em;">Real screenshots, real results, real people</p>
 
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:24px;">Ryan with a 20k/m personal record</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#0f172a; margin-bottom:24px;">Ryan with a 20k/m personal record</p>
     <div style="text-align:center; padding: 0 20px 24px;">
       <img src="/13.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
     </div>
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:24px;">Jaden with an $8k day</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#0f172a; margin-bottom:24px;">Jaden with an $8k day</p>
     <div style="text-align:center; padding: 0 20px 24px;">
       <img src="/14.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
     </div>
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:24px;">Tyler with 100k in two weeks</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#0f172a; margin-bottom:24px;">Tyler with 100k in two weeks</p>
     <div style="text-align:center; padding: 0 20px 40px;">
       <img src="/15.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
     </div>
 
     <div class="t-card" style="max-width:800px; margin: 0 auto 48px;">
-      <p style="text-align:center; font-size:0.95rem; font-weight:700; color:rgba(255,255,255,0.75); margin-bottom:16px;">Ryan is making $20k/m after getting started three months ago</p>
-      <div style="position: relative; border-radius: 14px; padding: 3px; overflow: hidden; box-shadow: 0 0 60px rgba(30,80,255,0.45); background: linear-gradient(135deg, #1a3aff, #4a9eff, #1a3aff);">
+      <p style="text-align:center; font-size:0.95rem; font-weight:700; color:#1e293b; margin-bottom:16px;">Ryan is making $20k/m after getting started three months ago</p>
+      <div style="position: relative; border-radius: 14px; padding: 3px; overflow: hidden; box-shadow: 0 10px 30px rgba(15,23,42,0.10); background: linear-gradient(135deg, #16a34a, #22c55e, #16a34a);">
         <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #000;">
           <iframe src="https://www.youtube.com/embed/MiQ-4VLC-fo?modestbranding=1&rel=0&color=white" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 12px;" allowfullscreen></iframe>
         </div>
@@ -739,49 +767,49 @@
     </div>
 
     <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
-      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"I'm already doing $500/day in sales" - Zach</p>
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#0f172a; margin-bottom:12px;">"I'm already doing $500/day in sales" - Zach</p>
       <vturb-smartplayer id="vid-6a06402316c0af42e4012ebf" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
       <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a06402316c0af42e4012ebf/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
     </div>
 
     <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
-      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"I've learned a ton from this program and the fact that I'm building a business that I can sell one day is the best part" - Landon</p>
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#0f172a; margin-bottom:12px;">"I've learned a ton from this program and the fact that I'm building a business that I can sell one day is the best part" - Landon</p>
       <vturb-smartplayer id="vid-6a064036def534041ec3fb81" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
       <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a064036def534041ec3fb81/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
     </div>
 
     <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
-      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"I went from the biggest hater to someone who will actually vouch for Bronson" - Carlee</p>
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#0f172a; margin-bottom:12px;">"I went from the biggest hater to someone who will actually vouch for Bronson" - Carlee</p>
       <vturb-smartplayer id="vid-6a06402c89e22adb559d8427" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
       <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a06402c89e22adb559d8427/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
     </div>
 
     <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
-      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"The community inside of this program is great! I love bouncing ideas off of other members and seeing how they succeed." - Johnathan</p>
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#0f172a; margin-bottom:12px;">"The community inside of this program is great! I love bouncing ideas off of other members and seeing how they succeed." - Johnathan</p>
       <vturb-smartplayer id="vid-6a064046f1bab801cdce6723" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
       <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a064046f1bab801cdce6723/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
     </div>
 
     <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
-      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"Bronson really does give you all of the information and details that you need to succeed" - Ryan</p>
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#0f172a; margin-bottom:12px;">"Bronson really does give you all of the information and details that you need to succeed" - Ryan</p>
       <vturb-smartplayer id="vid-6a06404116c0af42e4012f45" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
       <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a06404116c0af42e4012f45/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
     </div>
 
     <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
-      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"I've made over $16,000 since I've started, not that long ago." - Dan</p>
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#0f172a; margin-bottom:12px;">"I've made over $16,000 since I've started, not that long ago." - Dan</p>
       <vturb-smartplayer id="vid-6a0640174d688ba705672fa5" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
       <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a0640174d688ba705672fa5/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
     </div>
 
     <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
-      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"I made my first thousands here" - Nate</p>
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#0f172a; margin-bottom:12px;">"I made my first thousands here" - Nate</p>
       <vturb-smartplayer id="vid-6a06404bc551db43115e3bab" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
       <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a06404bc551db43115e3bab/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
     </div>
 
     <div class="t-card" style="max-width:560px; margin: 0 auto 32px;">
-      <p style="text-align:center; font-size:1rem; font-weight:700; color:#fff; margin-bottom:12px;">"The whitelabel method has worked the best for me" - Wes</p>
+      <p style="text-align:center; font-size:1rem; font-weight:700; color:#0f172a; margin-bottom:12px;">"The whitelabel method has worked the best for me" - Wes</p>
       <vturb-smartplayer id="vid-6a064051c551db43115e3bd7" style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
       <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/6a064051c551db43115e3bd7/v4/player.js";s.async=!0;document.head.appendChild(s);</script>
     </div>
@@ -797,51 +825,51 @@
     </div>
 
     <h2 style="text-align:center; margin: 48px 0 16px;">Our Members Are Killing It With Our Paid Ads Strategy That They Have Access Too...</h2>
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">A member did $30k in the last 23 days!!</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#16a34a; margin-bottom:24px;">A member did $30k in the last 23 days!!</p>
     <div style="text-align:center; padding: 0 20px 24px;">
       <img src="/pre1on1prep/6.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
     </div>
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">Tiktok Ads crushing it for another member in the Skin Care Niche 8.79x ROAS</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#16a34a; margin-bottom:24px;">Tiktok Ads crushing it for another member in the Skin Care Niche 8.79x ROAS</p>
     <div style="text-align:center; padding: 0 20px 24px;">
       <img src="/pre1on1prep/7.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
     </div>
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">Another NEW student, less than 1 month into the group. Nice 3.59 ROAS and scaling!!</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#16a34a; margin-bottom:24px;">Another NEW student, less than 1 month into the group. Nice 3.59 ROAS and scaling!!</p>
     <div style="text-align:center; padding: 0 20px 24px;">
       <img src="/pre1on1prep/8.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
     </div>
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">I know you see the dates at the bottom. No old screenshots here!</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#16a34a; margin-bottom:24px;">I know you see the dates at the bottom. No old screenshots here!</p>
     <div style="text-align:center; padding: 0 20px 24px;">
       <img src="/pre1on1prep/9.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
     </div>
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">Clothing brand owner. First drop took some time to sell out but look at that ROAS.</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#16a34a; margin-bottom:24px;">Clothing brand owner. First drop took some time to sell out but look at that ROAS.</p>
     <div style="text-align:center; padding: 0 20px 24px;">
       <img src="/pre1on1prep/10.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
     </div>
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">Organic hair & skin care brand owner ripping sales with Meta ads. 3.61x ROAS</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#16a34a; margin-bottom:24px;">Organic hair & skin care brand owner ripping sales with Meta ads. 3.61x ROAS</p>
     <div style="text-align:center; padding: 0 20px 24px;">
       <img src="/pre1on1prep/11.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
     </div>
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">Supplement brand owner getting into the BIG numbers. $100k+ months incoming!!!</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#16a34a; margin-bottom:24px;">Supplement brand owner getting into the BIG numbers. $100k+ months incoming!!!</p>
     <div style="text-align:center; padding: 0 20px 24px;">
       <img src="/pre1on1prep/12.webp" alt="Member Result" style="width:100%; max-width:480px; border-radius:10px;">
     </div>
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">New member at a 6.5 ROI three weeks in. 237 orders</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#16a34a; margin-bottom:24px;">New member at a 6.5 ROI three weeks in. 237 orders</p>
     <div style="text-align:center; padding: 0 20px 24px;">
       <img src="/wins/win-358.webp" alt="Member Result" style="width:100%; max-width:360px; border-radius:10px;">
     </div>
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">New member with a $1,200 day at an 11 ROAS</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#16a34a; margin-bottom:24px;">New member with a $1,200 day at an 11 ROAS</p>
     <div style="text-align:center; padding: 0 20px 24px;">
       <img src="/wins/win-359.webp" alt="Member Result" style="width:100%; max-width:360px; border-radius:10px;">
     </div>
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">First sales coming in. &quot;Got another sale. $70 one this time&quot;</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#16a34a; margin-bottom:24px;">First sales coming in. &quot;Got another sale. $70 one this time&quot;</p>
     <div style="text-align:center; padding: 0 20px 24px;">
       <img src="/wins/win-360.webp" alt="Member Result" style="width:100%; max-width:360px; border-radius:10px;">
     </div>
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">Issac with his first order on his supplement brand</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#16a34a; margin-bottom:24px;">Issac with his first order on his supplement brand</p>
     <div style="text-align:center; padding: 0 20px 24px;">
       <img src="/wins/win-361.webp" alt="Member Result" style="width:100%; max-width:360px; border-radius:10px;">
     </div>
-    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#7dd8f8; margin-bottom:24px;">Darian with his first order only a week in</p>
+    <p style="text-align:center; font-size:1.1rem; font-weight:700; color:#16a34a; margin-bottom:24px;">Darian with his first order only a week in</p>
     <div style="text-align:center; padding: 0 20px 40px;">
       <img src="/wins/win-362.webp" alt="Member Result" style="width:100%; max-width:360px; border-radius:10px;">
     </div>
