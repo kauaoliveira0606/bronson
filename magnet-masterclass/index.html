@@ -944,12 +944,6 @@
     .pitch p.copy { font-size: 1.1rem; line-height: 1.6; color: #1e293b; margin-bottom: 16px; }
     .pitch .countdown { text-align: center; }
     .pitch .small { text-align: center; font-size: 0.88rem; color: #1e293b; margin-top: 12px; }
-    .vgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 18px; margin-top: 40px; }
-    .vcard { background: #fff; border: 1px solid rgba(15,23,42,0.08); border-radius: 20px; box-shadow: 0 10px 30px rgba(15,23,42,0.07), 0 1px 2px rgba(15,23,42,0.04); overflow: hidden; }
-    .vhead { padding: 16px 18px 12px; }
-    .vname { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #16a34a; margin-bottom: 4px; }
-    .vquote { font-weight: 700; color: #0f172a; line-height: 1.4; font-size: 0.95rem; }
-    .vframe { margin: 0 18px 18px; border-radius: 10px; overflow: hidden; }
     .cta-btn[disabled] { pointer-events: none; }
   </style>
 </head>
@@ -1196,21 +1190,6 @@
 </div>
 </div>
 
-
-<div class="band">
-<div class="section wide">
-  <p class="section-label">In Their Own Words</p>
-  <h2 class="section-title">Real students. Real results.</h2>
-  <div class="vgrid">
-      <div class="vcard"><div class="vhead"><div class="vname">Zach</div><div class="vquote">"I'm already doing $500/day in sales"</div></div><div class="vframe"><vturb-smartplayer id="vid-6a06402316c0af42e4012ebf" style="display:block;width:100%;"></vturb-smartplayer></div></div>
-      <div class="vcard"><div class="vhead"><div class="vname">Landon</div><div class="vquote">"I'm building a business I can sell one day, that's the best part"</div></div><div class="vframe"><vturb-smartplayer id="vid-6a064036def534041ec3fb81" style="display:block;width:100%;"></vturb-smartplayer></div></div>
-      <div class="vcard"><div class="vhead"><div class="vname">Carlee</div><div class="vquote">"I went from the biggest hater to someone who will actually vouch for Bronson"</div></div><div class="vframe"><vturb-smartplayer id="vid-6a06402c89e22adb559d8427" style="display:block;width:100%;"></vturb-smartplayer></div></div>
-      <div class="vcard"><div class="vhead"><div class="vname">Johnathan</div><div class="vquote">"The community is great, I love seeing how other members succeed"</div></div><div class="vframe"><vturb-smartplayer id="vid-6a064046f1bab801cdce6723" style="display:block;width:100%;"></vturb-smartplayer></div></div>
-      <div class="vcard"><div class="vhead"><div class="vname">Ryan</div><div class="vquote">"Bronson really does give you all the information you need to succeed"</div></div><div class="vframe"><vturb-smartplayer id="vid-6a06404116c0af42e4012f45" style="display:block;width:100%;"></vturb-smartplayer></div></div>
-      <div class="vcard"><div class="vhead"><div class="vname">Dan</div><div class="vquote">"I've made over $16,000 since I started, not that long ago"</div></div><div class="vframe"><vturb-smartplayer id="vid-6a0640174d688ba705672fa5" style="display:block;width:100%;"></vturb-smartplayer></div></div>
-    </div>
-</div>
-</div>
 
 <div class="band">
 <!-- FAQ -->
@@ -1507,13 +1486,6 @@
       '<button type="button" class="zoom js-zoom" data-src="' + w.img + '" aria-label="Student win: ' + w.tag + '"><img src="' + w.img + '" alt="Student win: ' + w.tag + '" /></button>' +
       '</div>';
   }).join('');
-
-  ['6a06402316c0af42e4012ebf','6a064036def534041ec3fb81','6a06402c89e22adb559d8427','6a064046f1bab801cdce6723','6a06404116c0af42e4012f45','6a0640174d688ba705672fa5'].forEach(function (id) {
-    var s = document.createElement('script');
-    s.src = 'https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/' + id + '/v4/player.js';
-    s.async = true;
-    document.head.appendChild(s);
-  });
 
   var lightbox = document.querySelector('.js-lightbox');
   var lightboxImg = lightbox.querySelector('img');
