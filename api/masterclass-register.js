@@ -60,7 +60,7 @@ export default async function handler(req, res) {
       first_name: firstName,
       email,
       phone_country_code: '+1',
-      phone_number: phone,
+      phone,
       schedule: String(session.schedule),
     };
     const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
