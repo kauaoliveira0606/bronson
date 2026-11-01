@@ -119,7 +119,6 @@
   var form = document.querySelector('.js-form');
   var submit = document.querySelector('.js-submit');
   var err = document.querySelector('.js-err');
-  var params = new URLSearchParams(window.location.search);
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -130,9 +129,6 @@
       phone: form.phone.value.trim(),
       email: form.email.value.trim()
     };
-    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(function (k) {
-      if (params.get(k)) lead[k] = params.get(k);
-    });
     var problem = '';
     if (!lead.firstName || !lead.lastName) problem = 'Please enter your first and last name.';
     else if (lead.phone.replace(/\D/g, '').length < 7) problem = 'Please enter a valid phone number.';
@@ -147,7 +143,7 @@
     try {
       window.sessionStorage.setItem('magnet_lead', JSON.stringify({ fname: lead.firstName, lname: lead.lastName, email: lead.email, phone: lead.phone }));
     } catch (x) {}
-    function go() { window.location.href = '/ab-test-access' + window.location.search; }
+    function go() { window.location.href = '/ab-test-access'; }
     var timer = setTimeout(go, 5000);
     fetch('/api/magnet-optin', {
       method: 'POST',

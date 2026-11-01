@@ -2,7 +2,6 @@
 // which handles GHL, the Lead Magnet pipeline, Discord and Kit.
 const WEBHOOK = 'https://kauaoliveira06.app.n8n.cloud/webhook/magnet-optin';
 const MAGNETS = ['ab-test', 'product-scorecard', 'profit-margin', 'subscription-vs-one-time', 'brand-name-generator'];
-const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
@@ -17,7 +16,6 @@ export default async function handler(req, res) {
     email: clean(body.email, 200),
     phone: clean(body.phone, 40),
   };
-  UTM_KEYS.forEach((k) => { if (body[k]) payload[k] = clean(body[k], 200); });
 
   const valid = MAGNETS.includes(payload.magnet) && payload.firstName && payload.lastName && payload.phone
     && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email);

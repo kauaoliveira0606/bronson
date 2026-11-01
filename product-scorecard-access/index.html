@@ -1334,9 +1334,6 @@
     email: stored.email || firstParam(['email']),
     phone: stored.phone || firstParam(['phone'])
   };
-  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(function (k) {
-    if (params.get(k)) lead[k] = params.get(k);
-  });
 
   // With name, email and phone in the link the buttons register in one click through the API.
   // Otherwise they open the WebinarJam embed's popup form, loaded at the bottom of the page,
