@@ -1359,7 +1359,7 @@
         body: JSON.stringify(lead)
       }).then(function (r) { return r.json(); }).then(function (data) {
         if (!data.ok) throw new Error('register failed');
-        window.location.href = '/masterclass-confirmation?fname=' + encodeURIComponent(lead.fname) + '&email=' + encodeURIComponent(lead.email);
+        window.location.href = '/masterclass-confirmation?done=1&fname=' + encodeURIComponent(lead.fname) + '&email=' + encodeURIComponent(lead.email);
       }).catch(function () {
         window.location.href = fallback;
       });
