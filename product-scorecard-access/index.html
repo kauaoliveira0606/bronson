@@ -571,7 +571,6 @@
     .zoom { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
 
     /* WebinarJam's floating "Webinar" bubble is hidden; the page's own buttons open its sign-up popup. */
-    .wj_embed_circle_wrapper { display: none !important; }
     /* WebinarJam's embedded sign-up form in the hero card (it sets its own max-width). */
     .form-card .wj-embed-wrapper { margin: 0 auto; border-radius: 14px; overflow: hidden; }
     .form-card .form-head-below { margin-top: 22px; }
@@ -975,7 +974,7 @@
     <p class="cd-label" style="margin-top:28px">Live Event Starts In...</p>
     <div class="countdown js-countdown" style="margin-top:0"></div>
     <div class="cta-row" style="margin-top:20px">
-      <a class="cta-btn js-register js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener"><span class="js-btn-label">Save My Seat</span> <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Live Only)</span></a>
+      <a class="cta-btn js-register" href="/product-scorecard"><span class="js-btn-label">Save My Seat</span> <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Live Only)</span></a>
     </div>
     <p class="small js-prefilled" hidden>Takes 10 seconds. Your info is already filled in.</p>
     <div class="trust-row">
@@ -1139,7 +1138,7 @@
   </div>
 
   <div class="cta-row">
-    <a class="cta-btn js-register js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener"><span class="js-btn-label">Save My Seat</span> <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Live Only)</span></a>
+    <a class="cta-btn js-register" href="/product-scorecard"><span class="js-btn-label">Save My Seat</span> <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Live Only)</span></a>
   </div>
 </div>
 </div>
@@ -1187,7 +1186,7 @@
   </div>
   </div>
   <div class="cta-row">
-    <a class="cta-btn js-register js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener"><span class="js-btn-label">Save My Seat</span> <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Live Only)</span></a>
+    <a class="cta-btn js-register" href="/product-scorecard"><span class="js-btn-label">Save My Seat</span> <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Live Only)</span></a>
   </div>
 </div>
 </div>
@@ -1260,7 +1259,7 @@
   <p class="section-desc">No hype. Just outcomes from students running the same model I'm teaching live.</p>
   <div class="win-cols js-wins"></div>
   <div class="cta-row">
-    <a class="cta-btn js-register js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener"><span class="js-btn-label">Save My Seat</span> <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Live Only)</span></a>
+    <a class="cta-btn js-register" href="/product-scorecard"><span class="js-btn-label">Save My Seat</span> <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday at 7 PM EST</span>. Live Only)</span></a>
   </div>
 </div>
 </div>
@@ -1335,36 +1334,31 @@
     phone: stored.phone || firstParam(['phone'])
   };
 
-  // With name, email and phone in the link the buttons register in one click through the API.
-  // Otherwise they open the WebinarJam embed's popup form, loaded at the bottom of the page,
-  // which picks up any element still carrying data-webinarHash.
+  // Each button posts the lead's details to our webhook, which registers them with WebinarJam.
+  // No saved details (page opened directly) = the button is a plain link back to the opt-in page.
+  // If registering fails they get WebinarJam's own form, so nobody is stuck.
+  var FALLBACK_URL = 'https://event.webinarjam.com/8wgzn9/register/13q192ty';
   var registerBtns = document.querySelectorAll('.js-register');
-  var oneClick = !!(lead.fname && lead.email && lead.phone);
-  if (oneClick) document.querySelector('.js-prefilled').hidden = false;
-  registerBtns.forEach(function (btn) {
-    if (oneClick) btn.removeAttribute('data-webinarHash');
-    btn.addEventListener('click', function (e) {
-      if (!oneClick) {
-        // Popup when the embed has loaded; otherwise the link opens WebinarJam's own page.
-        if (document.getElementById('wj_registration_frame')) e.preventDefault();
-        return;
-      }
-      e.preventDefault();
-      var fallback = btn.href;
-      registerBtns.forEach(function (b) { b.setAttribute('disabled', ''); });
-      btn.querySelector('.js-btn-label').textContent = 'Saving Your Seat';
-      fetch('/api/masterclass-register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(lead)
-      }).then(function (r) { return r.json(); }).then(function (data) {
-        if (!data.ok) throw new Error('register failed');
-        window.location.href = '/masterclass-confirmation?done=1&fname=' + encodeURIComponent(lead.fname) + '&email=' + encodeURIComponent(lead.email);
-      }).catch(function () {
-        window.location.href = fallback;
+  if (lead.fname && lead.email && lead.phone) {
+    document.querySelector('.js-prefilled').hidden = false;
+    registerBtns.forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        registerBtns.forEach(function (b) { b.setAttribute('disabled', ''); });
+        btn.querySelector('.js-btn-label').textContent = 'Saving Your Seat';
+        fetch('/api/magnet-register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ firstName: lead.fname, lastName: lead.lname, email: lead.email, phone: lead.phone })
+        }).then(function (r) { return r.json(); }).then(function (data) {
+          if (!data.ok) throw new Error('register failed');
+          window.location.href = '/masterclass-confirmation?done=1&fname=' + encodeURIComponent(lead.fname) + '&email=' + encodeURIComponent(lead.email);
+        }).catch(function () {
+          window.location.href = FALLBACK_URL;
+        });
       });
     });
-  });
+  }
 
   /* ---------- Schedule + countdown ---------- */
   // Keep in step with /masterclass/index.html.
@@ -1505,8 +1499,6 @@
     lightbox.classList.add('open');
   });
 </script>
-
-<script src="https://event.webinarjam.com/register/13q192ty/embed-bar?buttonText=Save%20My%20Seat%20%E2%86%92&buttonBgColor=%2300ff25&buttonBgOpacity=0.95&barBgColor=%23ffffff&barBgOpacity=1&type=bubble&formTemplate=2&formColor=3"></script>
 
 </body>
 </html>
