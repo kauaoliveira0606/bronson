@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A/B Test | Bronson Builds</title>
+  <meta name="description" content="Enter your visitors and conversions and see if your A/B test result is a real signal or just noise." />
+  <link rel="icon" type="image/png" href="/logo-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --ink: #0f172a; --body: #1e293b; --green: #16a34a; --green-dark: #15803d; --tint: #f3f9f5; --line: rgba(15,23,42,0.1); --shadow: 0 10px 30px rgba(15,23,42,0.07), 0 1px 2px rgba(15,23,42,0.04); }
+    body { background: #fcfdfc; color: var(--body); font-family: 'Inter', sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3 { font-family: 'Manrope', 'Inter', sans-serif; color: var(--ink); text-wrap: balance; }
+    .topbar { background: #fff; border-bottom: 1px solid var(--line); padding: 10px 20px; display: flex; justify-content: center; }
+    .topbar img { height: 68px; width: auto; display: block; }
+    .hero { position: relative; overflow: hidden; padding: 48px 20px 170px; text-align: center; background: radial-gradient(900px 480px at 18% 0%, rgba(34,197,94,0.20), transparent 62%), radial-gradient(760px 520px at 100% 30%, rgba(22,163,74,0.14), transparent 60%), linear-gradient(180deg, #f2faf5 0%, #fcfdfc 100%); }
+    .hero::before { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(118deg, transparent 0 150px, rgba(22,163,74,0.07) 150px 152px); -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent); mask-image: linear-gradient(180deg, #000 55%, transparent); pointer-events: none; }
+    .hero > * { position: relative; }
+    .icon { width: 56px; height: 56px; margin: 0 auto 18px; display: grid; place-items: center; border-radius: 16px; color: #fff; background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 20px rgba(22,163,74,0.28); }
+    h1 { font-size: clamp(2.1rem, 5.5vw, 3.4rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.12; }
+    h1 span { color: var(--green); }
+    .sub { font-size: clamp(1.05rem, 2vw, 1.25rem); margin-top: 12px; }
+    main { max-width: 980px; margin: -126px auto 0; padding: 0 20px 64px; position: relative; }
+    .calc { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 30px; }
+    .label { font-size: 0.78rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 14px; }
+    .variant + .variant { margin-top: 26px; }
+    label { display: block; font-size: 0.92rem; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+    input { display: block; width: 100%; font: 500 1rem 'Inter', sans-serif; color: var(--ink); background: #fff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; }
+    input:focus { outline: 2px solid rgba(22,163,74,0.35); border-color: var(--green); }
+    input.bad { border-color: #dc2626; }
+    .rate { background: var(--tint); border-radius: 10px; padding: 12px 14px; font-size: 0.95rem; }
+    .rate b { color: var(--ink); }
+    .panel { background: var(--tint); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+    .panel-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--body); margin-bottom: 8px; }
+    .pill { display: inline-block; padding: 6px 12px; border-radius: 999px; font: 800 0.8rem 'Manrope', sans-serif; letter-spacing: 0.4px; text-transform: uppercase; }
+    .pill.wait { background: #fef3c7; color: #92400e; }
+    .pill.win { background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); color: #fff; }
+    .pill.lose { background: #fee2e2; color: #991b1b; }
+    .pill.none { background: #e2e8f0; color: #334155; }
+    .row { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 0.95rem; }
+    .panel-title + .row { border-top: 0; }
+    .row b { color: var(--ink); font-variant-numeric: tabular-nums; }
+    .tip { border: 1px solid rgba(22,163,74,0.35); background: #fff; border-radius: 12px; padding: 14px 16px; font-size: 0.93rem; }
+    .tip b { color: var(--green-dark); }
+    .learn { margin-top: 64px; }
+    .learn h2 { font-size: clamp(1.6rem, 3.6vw, 2.25rem); font-weight: 600; letter-spacing: -0.03em; text-align: center; margin-bottom: 28px; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 22px; }
+    .card h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 8px; }
+    .card p + p { margin-top: 8px; }
+    footer { background: #000; color: #94a3b8; text-align: center; padding: 30px 20px; font-size: 0.78rem; }
+    footer p + p { margin-top: 8px; }
+    footer a { color: #cbd5e1; }
+    @media (max-width: 760px) {
+      .calc, .cards { grid-template-columns: 1fr; }
+      .calc { padding: 20px; gap: 26px; }
+      .hero { padding: 34px 16px 150px; }
+      main { padding-left: 16px; padding-right: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar"><img src="/magnet-masterclass/logo.webp" width="102" height="68" alt="The Inner Table" /></header>
+
+<section class="hero">
+  <div class="icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v6.5L4.6 18.2A1.8 1.8 0 0 0 6.1 21h11.8a1.8 1.8 0 0 0 1.5-2.8L14 9.5V3"/><path d="M7.5 15h9"/></svg></div>
+  <h1>A/B Test <span>Significance</span></h1>
+  <p class="sub">Real signal, or just noise?</p>
+</section>
+
+<main>
+  <section class="calc">
+    <div>
+      <div class="variant">
+        <div class="label">Variant A (Control)</div>
+        <label for="va">Visitors</label>
+        <input id="va" type="number" min="0" step="1" inputmode="numeric" value="2000" />
+        <label for="ca">Conversions</label>
+        <input id="ca" type="number" min="0" step="1" inputmode="numeric" value="60" />
+        <div class="rate">Conversion rate: <b id="ra"></b></div>
+      </div>
+      <div class="variant">
+        <div class="label">Variant B (Test)</div>
+        <label for="vb">Visitors</label>
+        <input id="vb" type="number" min="0" step="1" inputmode="numeric" value="2000" />
+        <label for="cb">Conversions</label>
+        <input id="cb" type="number" min="0" step="1" inputmode="numeric" value="78" />
+        <div class="rate">Conversion rate: <b id="rb"></b></div>
+      </div>
+    </div>
+    <div aria-live="polite">
+      <div class="label">Verdict (95% Confidence)</div>
+      <div class="panel">
+        <div class="panel-title">Result</div>
+        <span class="pill" id="pill"></span>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Stats</div>
+        <div class="row"><span>Absolute lift</span><b id="abs"></b></div>
+        <div class="row"><span>Relative lift</span><b id="rel"></b></div>
+        <div class="row"><span>Z-score</span><b id="z"></b></div>
+        <div class="row"><span>P-value</span><b id="p"></b></div>
+        <div class="row"><span>Confidence</span><b id="conf"></b></div>
+      </div>
+      <div class="tip"><b>Pro tip:</b> <span id="tip"></span></div>
+    </div>
+  </section>
+
+  <section class="learn">
+    <h2>How To Read Your Result</h2>
+    <div class="cards">
+      <div class="card"><h3>Lift</h3><p>How much better or worse B did than A.</p><p>Absolute lift is the gap in percentage points. Relative lift is that gap as a percent of A.</p></div>
+      <div class="card"><h3>P-value</h3><p>If A and B actually performed the same, this is the chance of seeing a gap this big anyway.</p><p>Lower is better. You want it under 0.05.</p></div>
+      <div class="card"><h3>Confidence</h3><p>This is 1 minus the p-value. At 95% or higher, the test calls a winner.</p><p>Under that, the gap could still be noise.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p><a href="https://www.ad-ventur.com/privacy">Privacy Policy</a> &nbsp;•&nbsp; <a href="https://www.ad-ventur.com/terms">Terms of Service</a></p>
+  <p>© 2026 Ad-Ventur Inc. · The Inner Table. All rights reserved.</p>
+</footer>
+
+<script>
+  // Two-tailed, two-proportion z-test with a pooled standard error.
+  function erfc(x) {
+    var t = 1 / (1 + 0.5 * Math.abs(x));
+    var r = t * Math.exp(-x * x - 1.26551223 + t * (1.00002368 + t * (0.37409196 + t * (0.09678418 + t * (-0.18628806 + t * (0.27886807 + t * (-1.13520398 + t * (1.48851587 + t * (-0.82215223 + t * 0.17087277)))))))));
+    return x >= 0 ? r : 2 - r;
+  }
+  function abTest(va, ca, vb, cb) {
+    var ra = ca / va, rb = cb / vb;
+    var pooled = (ca + cb) / (va + vb);
+    var se = Math.sqrt(pooled * (1 - pooled) * (1 / va + 1 / vb));
+    var z = se > 0 ? (rb - ra) / se : 0;
+    var p = se > 0 ? Math.min(1, erfc(Math.abs(z) / Math.SQRT2)) : 1;
+    return { ra: ra, rb: rb, z: z, p: p, confidence: 1 - p };
+  }
+
+  var fields = ['va', 'ca', 'vb', 'cb'].map(function (id) { return document.getElementById(id); });
+  function text(id, value) { document.getElementById(id).textContent = value; }
+  function pct(n) { return (n * 100).toFixed(2) + '%'; }
+  function verdict(cls, label, tip) {
+    var pill = document.getElementById('pill');
+    pill.className = 'pill ' + cls;
+    pill.textContent = label;
+    text('tip', tip);
+  }
+
+  function render() {
+    var n = fields.map(function (f) { return Number(f.value); });
+    var filled = fields.map(function (f, i) { return f.value !== '' && Number.isInteger(n[i]) && n[i] >= 0; });
+    var badA = filled[0] && filled[1] && n[1] > n[0];
+    var badB = filled[2] && filled[3] && n[3] > n[2];
+    fields[1].classList.toggle('bad', badA);
+    fields[3].classList.toggle('bad', badB);
+    text('ra', filled[0] && filled[1] && n[0] > 0 && !badA ? pct(n[1] / n[0]) : '-');
+    text('rb', filled[2] && filled[3] && n[2] > 0 && !badB ? pct(n[3] / n[2]) : '-');
+
+    if (!filled.every(Boolean) || n[0] === 0 || n[2] === 0 || badA || badB) {
+      ['abs', 'rel', 'z', 'p', 'conf'].forEach(function (id) { text(id, '-'); });
+      verdict('none', 'Check your numbers', 'Use whole numbers, with at least 1 visitor per variant and no more conversions than visitors.');
+      return;
+    }
+
+    var r = abTest(n[0], n[1], n[2], n[3]);
+    var diff = r.rb - r.ra;
+    text('abs', (diff * 100).toFixed(2) + ' pts');
+    text('rel', r.ra > 0 ? (diff / r.ra * 100).toFixed(1) + '%' : 'n/a');
+    text('z', r.z.toFixed(2));
+    text('p', r.p.toFixed(4));
+    text('conf', (r.confidence * 100).toFixed(1) + '%');
+
+    if (r.p < 0.05 && diff > 0) verdict('win', 'Significant: B wins', 'Roll out B, then keep watching the number. A winner on a small sample can settle lower once it gets more traffic.');
+    else if (r.p < 0.05) verdict('lose', 'Significant: A wins', 'Keep A and test a bigger change next. Losing tests still tell you what your buyers do not respond to.');
+    else verdict('wait', 'Not yet significant', 'Keep it running. Most tests need more traffic than you think before they clear 95%.');
+  }
+
+  fields.forEach(function (f) { f.addEventListener('input', render); });
+  render();
+</script>
+</body>
+</html>

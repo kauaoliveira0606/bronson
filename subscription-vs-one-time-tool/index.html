@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subscription vs One-Time | Bronson Builds</title>
+  <meta name="description" content="Why subscription beats one-time dropshipping, the 5 products I'll never touch, the math side by side, and a pricing ladder worksheet." />
+  <link rel="icon" type="image/png" href="/logo-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --ink: #0f172a; --body: #1e293b; --green: #16a34a; --green-dark: #15803d; --tint: #f3f9f5; --red: #b91c1c; --line: rgba(15,23,42,0.1); --shadow: 0 10px 30px rgba(15,23,42,0.07), 0 1px 2px rgba(15,23,42,0.04); }
+    body { background: #fcfdfc; color: var(--body); font-family: 'Inter', sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3 { font-family: 'Manrope', 'Inter', sans-serif; color: var(--ink); text-wrap: balance; }
+    .topbar { background: #fff; border-bottom: 1px solid var(--line); padding: 10px 20px; display: flex; justify-content: center; }
+    .topbar img { height: 68px; width: auto; display: block; }
+    .hero { position: relative; overflow: hidden; padding: 56px 20px 60px; text-align: center; background: radial-gradient(900px 480px at 18% 0%, rgba(34,197,94,0.20), transparent 62%), radial-gradient(760px 520px at 100% 30%, rgba(22,163,74,0.14), transparent 60%), linear-gradient(180deg, #f2faf5 0%, #fcfdfc 100%); }
+    .hero::before { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(118deg, transparent 0 150px, rgba(22,163,74,0.07) 150px 152px); -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent); mask-image: linear-gradient(180deg, #000 55%, transparent); pointer-events: none; }
+    .hero > * { position: relative; }
+    h1 { font-size: clamp(2.1rem, 5.5vw, 3.4rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.12; max-width: 880px; margin: 0 auto; }
+    h1 span { color: var(--green); }
+    .sub { font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 640px; margin: 16px auto 0; }
+    main { max-width: 1000px; margin: 0 auto; padding: 0 20px 72px; }
+    section + section { margin-top: 60px; }
+    .eyebrow { text-align: center; font-size: 0.78rem; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 8px; }
+    h2 { font-size: clamp(1.6rem, 3.6vw, 2.25rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; text-align: center; margin-bottom: 10px; }
+    .intro { text-align: center; max-width: 620px; margin: 0 auto 28px; }
+    .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .card, .box { background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); }
+    .card { padding: 22px; }
+    .card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; }
+    .card p + p { margin-top: 6px; }
+    .box { padding: 28px; }
+    .label { font-size: 0.78rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 14px; }
+    .math { display: grid; grid-template-columns: 300px 1fr; gap: 32px; }
+    label { display: block; font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+    .money { position: relative; margin-bottom: 14px; }
+    .money span { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); }
+    input[type=number] { display: block; width: 100%; font: 500 1rem 'Inter', sans-serif; color: var(--ink); background: #fff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 11px 14px; margin-bottom: 14px; }
+    .money input { margin: 0; padding-left: 30px; }
+    input:focus { outline: 2px solid rgba(22,163,74,0.35); border-color: var(--green); }
+    .top { display: flex; justify-content: space-between; align-items: baseline; }
+    .top b { color: var(--green-dark); }
+    input[type=range] { -webkit-appearance: none; appearance: none; display: block; width: 100%; height: 22px; background: transparent; cursor: pointer; }
+    input[type=range]::-webkit-slider-runnable-track { height: 8px; border-radius: 999px; background: linear-gradient(90deg, #16a34a var(--fill), #e7ece9 var(--fill)); }
+    input[type=range]::-moz-range-track { height: 8px; border-radius: 999px; background: linear-gradient(90deg, #16a34a var(--fill), #e7ece9 var(--fill)); }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -7px; border-radius: 50%; border: 3px solid #fff; background: #16a34a; box-shadow: 0 1px 5px rgba(15,23,42,0.35); }
+    input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; border: 3px solid #fff; background: #16a34a; box-shadow: 0 1px 5px rgba(15,23,42,0.35); }
+    .cmp { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 8px; padding: 11px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; align-items: center; }
+    .cmp > :not(:first-child) { text-align: right; font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+    .cmp.head { border-top: 0; padding-top: 0; font: 800 0.8rem 'Manrope', sans-serif; letter-spacing: 0.4px; text-transform: uppercase; }
+    .cmp .subcol { color: var(--green-dark); }
+    .cmp.total { font-size: 1.1rem; }
+    .pos { color: var(--green) !important; } .neg { color: var(--red) !important; }
+    .verdict { margin-top: 14px; background: var(--tint); border: 1px solid rgba(22,163,74,0.35); border-radius: 12px; padding: 14px 16px; }
+    .verdict b { color: var(--green-dark); }
+    .note { font-size: 0.85rem; margin-top: 12px; }
+    .ladder { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .tier { padding: 22px; }
+    .tier h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 2px; }
+    .tier .step { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); }
+    .tier .desc { font-size: 0.9rem; margin-bottom: 14px; min-height: 2.8em; }
+    .out { background: var(--tint); border-radius: 12px; padding: 4px 14px; margin-top: 2px; }
+    .row { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 0.92rem; }
+    .row:first-child { border-top: 0; }
+    .row b { color: var(--ink); font-variant-numeric: tabular-nums; }
+    .row.fixed-orders { margin-bottom: 14px; padding: 0 0 2px; border: 0; }
+    .blend { margin-top: 18px; text-align: center; background: var(--tint); border: 1px solid rgba(22,163,74,0.35); border-radius: 20px; padding: 24px; }
+    .blend .big { font: 800 2.6rem/1.15 'Manrope', sans-serif; letter-spacing: -0.03em; }
+    .print-row { text-align: center; margin-top: 22px; }
+    .btn { display: inline-block; padding: 15px 34px; border: 0; border-radius: 999px; cursor: pointer; color: #fff; font: 800 0.95rem 'Manrope', sans-serif; letter-spacing: 0.4px; text-transform: uppercase; background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 20px rgba(22,163,74,0.28); }
+    .products-list { max-width: 780px; margin: 0 auto; }
+    .item { background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 28px; margin-bottom: 18px; }
+    .item-head { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+    .ic { flex: none; width: 52px; height: 52px; display: grid; place-items: center; border-radius: 14px; color: #fff; background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 20px rgba(22,163,74,0.28); }
+    .num { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); }
+    .item h2 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; text-align: left; margin: 0; }
+    .item > p { font-size: 1.05rem; margin-bottom: 8px; }
+    .why { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .why > div { background: var(--tint); border-radius: 12px; padding: 14px 16px; }
+    .why b { display: block; font-size: 0.75rem; letter-spacing: 0.8px; text-transform: uppercase; color: var(--red); margin-bottom: 4px; }
+    .common { margin-top: 56px; }
+    .instead { margin-top: 18px; background: var(--tint); border: 1px solid rgba(22,163,74,0.35); border-radius: 20px; padding: 26px; text-align: center; }
+    .instead h3 { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .instead p + p { margin-top: 6px; }
+    footer { background: #000; color: #94a3b8; text-align: center; padding: 30px 20px; font-size: 0.78rem; }
+    footer p + p { margin-top: 8px; }
+    footer a { color: #cbd5e1; }
+    @media (max-width: 840px) {
+      .math, .ladder { grid-template-columns: 1fr; }
+      .tier .desc { min-height: 0; }
+    }
+    @media (max-width: 640px) {
+      .cards, .why { grid-template-columns: 1fr; }
+      .item { padding: 20px; }
+      .box { padding: 20px; }
+      .hero { padding: 36px 16px 44px; }
+      main { padding-left: 16px; padding-right: 16px; }
+      .cmp { font-size: 0.9rem; grid-template-columns: 1.2fr 1fr 1fr; }
+    }
+    @media print {
+      .topbar, .hero, footer, .print-row, #why, #products { display: none; }
+      .box, .card { box-shadow: none; break-inside: avoid; }
+      section + section { margin-top: 24px; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar"><img src="/magnet-masterclass/logo.webp" width="102" height="68" alt="The Inner Table" /></header>
+
+<div class="hero">
+  <h1>Why Subscription Beats One-Time Dropshipping <span>Every Single Time</span></h1>
+  <p class="sub">Why it works, the 5 products I'll never touch, the math side by side, and a pricing ladder you can fill in for your own product.</p>
+</div>
+
+<main>
+  <section id="why">
+    <p class="eyebrow">The Why</p>
+    <h2>One Model Starts Over. The Other Stacks.</h2>
+    <p class="intro">Same product. Same ads. The difference is what happens after the first order.</p>
+    <div class="cards">
+      <div class="card"><h3>You stop starting from zero</h3><p>With one-time sales, your revenue resets every month.</p><p>With subscription, last month's customers are still paying you when the new month starts.</p></div>
+      <div class="card"><h3>You only pay for the customer once</h3><p>A one-time store pays for ads on every single order.</p><p>A renewal costs you no ad spend, so it's your most profitable order.</p></div>
+      <div class="card"><h3>You can spend more to get a customer</h3><p>When a customer is worth several orders, you can break even on the first one and still make money.</p><p>A one-time store can't do that.</p></div>
+      <div class="card"><h3>You know what's coming next month</h3><p>MRR (monthly recurring revenue) gives you a number to plan around.</p><p>If ads stop, a subscription still gets paid. A one-time store goes to $0.</p></div>
+    </div>
+  </section>
+
+  <section id="products">
+    <p class="eyebrow">What To Avoid</p>
+    <h2>The 5 Products I'll Never Touch In 2026 And 2027, And Why</h2>
+    <p class="intro">They keep getting pushed as winning products. Here's why I'd stay away from every one of them.</p>
+    <div class="products-list">
+    <article class="item">
+      <div class="item-head">
+        <div class="ic" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h9l3-3h4a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-4l-3-3H3z"/><path d="M6 12h3"/></svg></div>
+        <div><div class="num">Product 01</div><h2>Tactical Flashlights</h2></div>
+      </div>
+      <p>Your phone already has a flashlight. That's the whole problem.</p><p>It sells because a video shows it lighting up an entire field. Nobody woke up that morning needing that.</p>
+      <div class="why">
+        <div><b>One-time sale</b><p>You buy one. It works for years. That customer never needs you again.</p></div>
+        <div><b>Won't last</b><p>The sales last as long as the video keeps getting views. Then you're back to looking for the next product.</p></div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        <div class="ic" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18h2"/></svg></div>
+        <div><div class="num">Product 02</div><h2>iPhone Gadgets</h2></div>
+      </div>
+      <p>Magnetic cases, chargers, car mounts. Every store has the same ones.</p><p>Your customer can get them from Apple or Amazon, usually with faster shipping.</p>
+      <div class="why">
+        <div><b>One-time sale</b><p>They buy it once, and might not come back until they get a new phone.</p></div>
+        <div><b>Won't last</b><p>Phones keep changing. Your best seller can turn into old stock with one new model.</p></div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        <div class="ic" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="5"/><path d="M12 2v1M4 10H3M21 10h-1M6 4l1 1M18 4l-1 1M9 19h6M10 22h4"/></svg></div>
+        <div><div class="num">Product 03</div><h2>LED And Sunset Lights</h2></div>
+      </div>
+      <p>They look great in a 15-second video.</p><p>A week later it's sitting on a shelf, unplugged. It decorates a room. It doesn't fix anything.</p>
+      <div class="why">
+        <div><b>One-time sale</b><p>One light per room, and most people stop at one. There's nothing to reorder.</p></div>
+        <div><b>Won't last</b><p>Room decor trends move fast. When the look changes, so does your revenue.</p></div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        <div class="ic" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h11a3 3 0 0 1 0 6H4z"/><path d="M9 14l-1 7h4l1-7"/><path d="M18 11h3"/></svg></div>
+        <div><div class="num">Product 04</div><h2>Mini Massage Guns</h2></div>
+      </div>
+      <p>This one gets closest to a real problem. It still doesn't work as a business.</p><p>Sore muscles get handled by a stretch, or a cheaper one from a big retailer.</p>
+      <div class="why">
+        <div><b>One-time sale</b><p>It lasts for years, so one sale is all you get.</p></div>
+        <div><b>Won't last</b><p>Once everyone is running the same product, the only thing left to compete on is price.</p></div>
+      </div>
+    </article>
+    <article class="item">
+      <div class="item-head">
+        <div class="ic" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3v8a3 3 0 0 0 3 3v7M7 3v6M10 3v8a3 3 0 0 1-3 3"/><path d="M17 3c-2 2-3 5-3 9h3v9"/></svg></div>
+        <div><div class="num">Product 05</div><h2>Viral Kitchen Gadgets</h2></div>
+      </div>
+      <p>Choppers, slicers and peelers that look amazing on camera.</p><p>A knife already does the job. By month two it's in the back of a drawer.</p>
+      <div class="why">
+        <div><b>One-time sale</b><p>Nobody buys a second vegetable chopper.</p></div>
+        <div><b>Won't last</b><p>It's a fun idea for a month. Fun ideas are how you end up looking for a new product every week.</p></div>
+      </div>
+    </article>
+      <div class="common">
+    <h2>What All 5 Have In Common</h2>
+    <div class="cards">
+      <div class="card"><h3>They're one-time sales</h3><p>Every month you start from zero and pay for brand new customers.</p></div>
+      <div class="card"><h3>They're trending products</h3><p>A trend brings everyone in at once. Then it moves on and takes your sales with it.</p></div>
+      <div class="card"><h3>There's no need for them</h3><p>They don't solve a real problem. People buy them on impulse, then forget about them.</p></div>
+      <div class="card"><h3>They won't last</h3><p>You can't build a brand on something people will stop caring about by next year.</p></div>
+    </div>
+    <div class="instead">
+      <h3>What I'd Sell Instead</h3>
+      <p>Stuff people use up and reorder.</p>
+      <p>So the same customer pays you again next month.</p>
+    </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="math">
+    <p class="eyebrow">The Math</p>
+    <h2>One-Time vs Subscription, Side By Side</h2>
+    <p class="intro">Put in your own numbers. This runs 12 months with the same customers and the same ad cost on both sides.</p>
+    <div class="box math">
+      <div>
+        <div class="label">Your Numbers</div>
+        <label for="pOne">One-Time Price</label>
+        <div class="money"><span>$</span><input id="pOne" type="number" min="0" step="0.01" inputmode="decimal" value="39.99" /></div>
+        <label for="pSub">Subscription Price</label>
+        <div class="money"><span>$</span><input id="pSub" type="number" min="0" step="0.01" inputmode="decimal" value="34.99" /></div>
+        <label for="cost">Product + Shipping Per Order</label>
+        <div class="money"><span>$</span><input id="cost" type="number" min="0" step="0.01" inputmode="decimal" value="20" /></div>
+        <label for="cpa">Ad Cost Per New Customer</label>
+        <div class="money"><span>$</span><input id="cpa" type="number" min="0" step="0.01" inputmode="decimal" value="15" /></div>
+        <label for="newC">New Customers Per Month</label>
+        <input id="newC" type="number" min="0" step="1" inputmode="numeric" value="100" />
+        <div class="top"><label for="renew">Monthly Renewal Rate</label><b id="renewN"></b></div>
+        <input id="renew" type="range" min="0" max="95" step="1" value="70" />
+      </div>
+      <div aria-live="polite">
+        <div class="label">After 12 Months</div>
+        <div class="cmp head"><span></span><span>One-Time</span><span class="subcol">Subscription</span></div>
+        <div id="rows"></div>
+        <div class="verdict" id="verdict"></div>
+        <p class="note">One-time assumes customers don't come back. Renewal rate is the share of subscribers who pay again each month.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="ladder">
+    <p class="eyebrow">The Worksheet</p>
+    <h2>Your Pricing Ladder</h2>
+    <p class="intro">Three ways to sell the same product. Fill in each one and see what a customer is worth. Ad cost and renewal rate come from the math above.</p>
+    <div class="ladder" id="tiers"></div>
+    <div class="blend">
+      <div class="label" style="margin-bottom:4px">Average Profit Per Customer</div>
+      <div class="big" id="blend"></div>
+      <p id="blendNote"></p>
+    </div>
+    <div class="print-row"><button class="btn" type="button" id="print">Print My Worksheet</button></div>
+  </section>
+</main>
+
+<footer>
+  <p><a href="https://www.ad-ventur.com/privacy">Privacy Policy</a> &nbsp;•&nbsp; <a href="https://www.ad-ventur.com/terms">Terms of Service</a></p>
+  <p>Numbers on this page are examples and your own estimates, not a promise of results.</p>
+  <p>© 2026 Ad-Ventur Inc. · The Inner Table. All rights reserved.</p>
+</footer>
+
+<script>
+  var MONTHS = 12;
+  function $(id) { return document.getElementById(id); }
+  function num(id) { var n = parseFloat($(id).value); return n > 0 ? n : 0; }
+  function usd(n, digits) {
+    var abs = Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+    return (n < 0 ? '-$' : '$') + abs;
+  }
+  function count(n) { return Math.round(n).toLocaleString('en-US'); }
+  function sign(n) { return n < 0 ? 'neg' : 'pos'; }
+
+  // Worksheet tiers. Subscription orders come from the renewal rate; the others are typed in.
+  var TIERS = [
+    { key: 'one', step: 'Step 1', name: 'One-Time', desc: 'One order at full price. The easiest yes, and the lowest value.', price: 39.99, cost: 20, units: 1, orders: 1, share: 40 },
+    { key: 'sub', step: 'Step 2', name: 'Subscription', desc: 'A lower price per order in exchange for renewing every month.', price: 34.99, cost: 20, units: 1, share: 40 },
+    { key: 'bun', step: 'Step 3', name: 'Bundle', desc: 'Several units paid up front. More cash on day one.', price: 89.97, cost: 50, units: 3, orders: 1, share: 20 }
+  ];
+  function field(id, label, value, isMoney, step) {
+    var input = '<input id="' + id + '" type="number" min="0" step="' + step + '" inputmode="decimal" value="' + value + '" />';
+    return '<label for="' + id + '">' + label + '</label>' + (isMoney ? '<div class="money"><span>$</span>' + input + '</div>' : input);
+  }
+  $('tiers').innerHTML = TIERS.map(function (t) {
+    return '<div class="box tier"><div class="step">' + t.step + '</div><h3>' + t.name + '</h3><p class="desc">' + t.desc + '</p>' +
+      field(t.key + 'Price', 'Price Per Order', t.price, true, '0.01') +
+      field(t.key + 'Cost', 'Cost Per Order', t.cost, true, '0.01') +
+      field(t.key + 'Units', 'Units Per Order', t.units, false, '1') +
+      (t.key === 'sub'
+        ? '<div class="row fixed-orders"><span>Orders Per Customer</span><b id="subOrders"></b></div>'
+        : field(t.key + 'Orders', 'Orders Per Customer', t.orders, false, '0.1')) +
+      field(t.key + 'Share', '% Of Buyers Who Pick This', t.share, false, '1') +
+      '<div class="out"><div class="row"><span>Price per unit</span><b id="' + t.key + 'PerUnit"></b></div>' +
+      '<div class="row"><span>Cash on day one</span><b id="' + t.key + 'Cash"></b></div>' +
+      '<div class="row"><span>Lifetime revenue</span><b id="' + t.key + 'Rev"></b></div>' +
+      '<div class="row"><span>Lifetime profit</span><b id="' + t.key + 'Profit"></b></div></div></div>';
+  }).join('');
+
+  function render() {
+    var pOne = num('pOne'), pSub = num('pSub'), cost = num('cost'), cpa = num('cpa');
+    var newC = Math.floor(num('newC')), r = +$('renew').value / 100;
+    $('renew').style.setProperty('--fill', r / 0.95 * 100 + '%');
+    $('renewN').textContent = $('renew').value + '%';
+
+    // Subscribers active in month n = new x (1 - r^n) / (1 - r). Orders = sum of those over 12 months.
+    function active(n) { return newC * (1 - Math.pow(r, n)) / (1 - r); }
+    var subOrders = 0;
+    for (var m = 1; m <= MONTHS; m++) subOrders += active(m);
+    var customers = newC * MONTHS, adSpend = customers * cpa;
+    var oneProfit = customers * (pOne - cost) - adSpend;
+    var subProfit = subOrders * (pSub - cost) - adSpend;
+    var month12One = newC * pOne, month12Sub = active(MONTHS) * pSub;
+    var nextOne = 0, nextSub = active(MONTHS) * r * pSub;
+    var lifeOne = pOne - cost - cpa, lifeSub = (pSub - cost) / (1 - r) - cpa;
+
+    var rows = [
+      ['Customers bought with ads', count(customers), count(customers)],
+      ['Total orders', count(customers), count(subOrders)],
+      ['Total revenue', usd(customers * pOne, 0), usd(subOrders * pSub, 0)],
+      ['Product + shipping', usd(customers * cost, 0), usd(subOrders * cost, 0)],
+      ['Ad spend', usd(adSpend, 0), usd(adSpend, 0)],
+      ['Revenue in month 12', usd(month12One, 0), usd(month12Sub, 0)],
+      ['Revenue next month if ads stop', usd(nextOne, 0), usd(nextSub, 0)],
+      ['Profit per customer', usd(lifeOne, 2), usd(lifeSub, 2)]
+    ];
+    $('rows').innerHTML = rows.map(function (x) {
+      return '<div class="cmp"><span>' + x[0] + '</span><span>' + x[1] + '</span><span>' + x[2] + '</span></div>';
+    }).join('') + '<div class="cmp total"><span><b>12-month profit</b></span><span class="' + sign(oneProfit) + '">' + usd(oneProfit, 0) + '</span><span class="' + sign(subProfit) + '">' + usd(subProfit, 0) + '</span></div>';
+
+    var gap = subProfit - oneProfit;
+    if (gap > 0) {
+      $('verdict').innerHTML = '<b>Subscription makes ' + usd(gap, 0) + ' more in 12 months</b>, on the same customers and the same ad spend.';
+    } else if (gap < 0) {
+      $('verdict').innerHTML = '<b>With these numbers, one-time comes out ' + usd(-gap, 0) + ' ahead.</b> Your renewal rate or subscription price is too low. Fix those before you launch.';
+    } else {
+      $('verdict').innerHTML = '<b>These numbers come out even.</b> Raise your renewal rate or subscription price to pull ahead.';
+    }
+
+    // Worksheet. Ad cost is charged once per customer; subscription orders = 1 / (1 - r).
+    var ordersEach = 1 / (1 - r);
+    $('subOrders').textContent = ordersEach.toFixed(1);
+    var shareTotal = 0, blended = 0;
+    TIERS.forEach(function (t) {
+      var price = num(t.key + 'Price'), c = num(t.key + 'Cost'), units = num(t.key + 'Units');
+      var orders = t.key === 'sub' ? ordersEach : num(t.key + 'Orders');
+      var share = num(t.key + 'Share');
+      var profit = (price - c) * orders - cpa;
+      $(t.key + 'PerUnit').textContent = units > 0 ? usd(price / units, 2) : '-';
+      $(t.key + 'Cash').textContent = usd(price, 2);
+      $(t.key + 'Rev').textContent = usd(price * orders, 2);
+      $(t.key + 'Profit').textContent = usd(profit, 2);
+      $(t.key + 'Profit').className = sign(profit);
+      shareTotal += share;
+      blended += profit * share;
+    });
+    if (Math.abs(shareTotal - 100) < 0.01) {
+      $('blend').textContent = usd(blended / 100, 2);
+      $('blend').className = 'big ' + sign(blended);
+      $('blendNote').textContent = 'This is what the average buyer is worth after product, shipping and ad cost.';
+    } else {
+      $('blend').textContent = '-';
+      $('blend').className = 'big';
+      $('blendNote').textContent = 'Your buyer percentages add up to ' + Math.round(shareTotal) + '%. Make them add up to 100%.';
+    }
+  }
+
+  document.addEventListener('input', function (e) { if (e.target.matches('input')) render(); });
+  $('print').addEventListener('click', function () { window.print(); });
+  render();
+</script>
+</body>
+</html>

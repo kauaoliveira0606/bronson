@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profit Margin | Bronson Builds</title>
+  <meta name="description" content="Calculate your profit per product and see potential earnings." />
+  <link rel="icon" type="image/png" href="/logo-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --ink: #0f172a; --body: #1e293b; --green: #16a34a; --green-dark: #15803d; --tint: #f3f9f5; --line: rgba(15,23,42,0.1); --shadow: 0 10px 30px rgba(15,23,42,0.07), 0 1px 2px rgba(15,23,42,0.04); }
+    body { background: #fcfdfc; color: var(--body); font-family: 'Inter', sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3 { font-family: 'Manrope', 'Inter', sans-serif; color: var(--ink); text-wrap: balance; }
+    .topbar { background: #fff; border-bottom: 1px solid var(--line); padding: 10px 20px; display: flex; justify-content: center; }
+    .topbar img { height: 68px; width: auto; display: block; }
+    .hero { position: relative; overflow: hidden; padding: 48px 20px 170px; text-align: center; background: radial-gradient(900px 480px at 18% 0%, rgba(34,197,94,0.20), transparent 62%), radial-gradient(760px 520px at 100% 30%, rgba(22,163,74,0.14), transparent 60%), linear-gradient(180deg, #f2faf5 0%, #fcfdfc 100%); }
+    .hero::before { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(118deg, transparent 0 150px, rgba(22,163,74,0.07) 150px 152px); -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent); mask-image: linear-gradient(180deg, #000 55%, transparent); pointer-events: none; }
+    .hero > * { position: relative; }
+    .icon { width: 56px; height: 56px; margin: 0 auto 18px; display: grid; place-items: center; border-radius: 16px; color: #fff; background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 20px rgba(22,163,74,0.28); }
+    h1 { font-size: clamp(2.1rem, 5.5vw, 3.4rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.12; }
+    h1 span { color: var(--green); }
+    .sub { font-size: clamp(1.05rem, 2vw, 1.25rem); margin-top: 12px; }
+    main { max-width: 980px; margin: -126px auto 0; padding: 0 20px 64px; position: relative; }
+    .calc { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 30px; }
+    .label { font-size: 0.78rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 14px; }
+    label { display: block; font-size: 0.92rem; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+    input { display: block; width: 100%; font: 500 1rem 'Inter', sans-serif; color: var(--ink); background: #fff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; }
+    input:focus { outline: 2px solid rgba(22,163,74,0.35); border-color: var(--green); }
+    input.bad { border-color: #dc2626; }
+    .panel { background: var(--tint); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+    .panel-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--body); margin-bottom: 8px; }
+    .pill { display: inline-block; padding: 6px 12px; border-radius: 999px; font: 800 0.8rem 'Manrope', sans-serif; letter-spacing: 0.4px; text-transform: uppercase; }
+    .row { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 0.95rem; }
+    .panel-title + .row { border-top: 0; }
+    .row b { color: var(--ink); font-variant-numeric: tabular-nums; }
+    .money { position: relative; margin-bottom: 14px; }
+    .money span { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--body); }
+    .money input { margin: 0; padding-left: 30px; }
+    .units-top { display: flex; justify-content: space-between; align-items: baseline; }
+    .units-top b { color: var(--green-dark); }
+    input[type=range] { -webkit-appearance: none; appearance: none; padding: 0; border: 0; margin: 0; height: 22px; background: transparent; cursor: pointer; }
+    input[type=range]::-webkit-slider-runnable-track { height: 8px; border-radius: 999px; background: linear-gradient(90deg, #16a34a var(--fill), #e7ece9 var(--fill)); }
+    input[type=range]::-moz-range-track { height: 8px; border-radius: 999px; background: linear-gradient(90deg, #16a34a var(--fill), #e7ece9 var(--fill)); }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -7px; border-radius: 50%; border: 3px solid #fff; background: #16a34a; box-shadow: 0 1px 5px rgba(15,23,42,0.35); }
+    input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; border: 3px solid #fff; background: #16a34a; box-shadow: 0 1px 5px rgba(15,23,42,0.35); }
+    input[type=range]:focus { outline: none; }
+    .ticks { display: flex; justify-content: space-between; font-size: 0.8rem; margin-top: 4px; }
+    .big { font: 800 2.6rem/1.1 'Manrope', sans-serif; letter-spacing: -0.03em; }
+    .margin-line { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+    .pos, .row b.pos { color: var(--green); } .neg, .row b.neg { color: #b91c1c; } .warn { color: #b45309; }
+    .pill.pos { color: #fff; background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); }
+    .pill.warn { background: #fef3c7; color: #92400e; }
+    .pill.neg { background: #fee2e2; color: #991b1b; }
+    .row.total b, .row.total span { font-weight: 700; color: var(--ink); }
+    .proj { border: 1px solid rgba(22,163,74,0.35); border-radius: 12px; padding: 16px; }
+    .proj .panel-title { color: var(--green-dark); margin-bottom: 12px; }
+    .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .tile { background: var(--tint); border-radius: 12px; padding: 12px 14px; }
+    .tile small { display: block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 2px; }
+    .tile b { font: 800 1.35rem/1.2 'Manrope', sans-serif; overflow-wrap: anywhere; }
+    .month-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+    .box { background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 24px; }
+    .box .label { margin-bottom: 12px; }
+    .box .row.net { margin-top: 4px; padding-top: 12px; font-size: 1.1rem; }
+    .net b { font: 800 1.6rem/1.1 'Manrope', sans-serif; }
+    .net span { font: 800 1.05rem 'Manrope', sans-serif; color: var(--ink); }
+    .add { display: flex; gap: 8px; }
+    .add .money { width: 118px; flex: none; margin: 0; }
+    .add > input { margin: 0; flex: 1; min-width: 0; }
+    .plus { flex: none; width: 46px; border: 0; border-radius: 10px; color: #fff; font: 800 1.3rem 'Manrope', sans-serif; cursor: pointer; background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 20px rgba(22,163,74,0.28); }
+    .note { font-size: 0.8rem; margin-top: 12px; }
+    #list { margin-top: 10px; }
+    #list .row { align-items: center; }
+    #list .row span { flex: 1; overflow-wrap: anywhere; }
+    .x { border: 0; background: none; color: #b91c1c; font-size: 1.2rem; line-height: 1; cursor: pointer; padding: 2px 4px; }
+    #err { color: #b91c1c; font-size: 0.85rem; margin-top: 8px; }
+    @media (max-width: 760px) { .month-grid { grid-template-columns: 1fr; } .box { padding: 20px; } .add .money { width: 96px; } }
+    .calc.mrr { margin-top: 18px; }
+    .slider-field { margin-bottom: 14px; }
+    .months { margin-top: 18px; }
+    .month-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 0.93rem; font-variant-numeric: tabular-nums; }
+    .month-row > :not(:first-child) { text-align: right; }
+    .month-row.head { border-top: 0; padding-top: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; }
+    .month-row b { color: var(--ink); }
+    .learn { margin-top: 64px; }
+    .learn h2 { font-size: clamp(1.6rem, 3.6vw, 2.25rem); font-weight: 600; letter-spacing: -0.03em; text-align: center; margin-bottom: 28px; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 22px; }
+    .card h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 8px; }
+    .card p + p { margin-top: 8px; }
+    footer { background: #000; color: #94a3b8; text-align: center; padding: 30px 20px; font-size: 0.78rem; }
+    footer p + p { margin-top: 8px; }
+    footer a { color: #cbd5e1; }
+    @media (max-width: 760px) {
+      .calc, .cards { grid-template-columns: 1fr; }
+      .calc { padding: 20px; gap: 26px; }
+      .hero { padding: 34px 16px 150px; }
+      main { padding-left: 16px; padding-right: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar"><img src="/magnet-masterclass/logo.webp" width="102" height="68" alt="The Inner Table" /></header>
+
+<section class="hero">
+  <div class="icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2.5" width="14" height="19" rx="2"/><path d="M8.5 6.5h7"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01M8.5 14.5h.01M12 14.5h.01M15.5 14.5h.01M8.5 18h.01M12 18h.01M15.5 18h.01"/></svg></div>
+  <h1>Profit Margin <span>Calculator</span></h1>
+  <p class="sub">Calculate your profit per product and see potential earnings</p>
+</section>
+
+<main>
+  <section class="calc">
+    <div>
+      <div class="label">Enter Your Numbers</div>
+        <label for="cost">Product Cost</label>
+        <div class="money"><span>$</span><input id="cost" type="number" min="0" step="0.01" inputmode="decimal" value="15" /></div>
+        <label for="price">Selling Price</label>
+        <div class="money"><span>$</span><input id="price" type="number" min="0" step="0.01" inputmode="decimal" value="39.99" /></div>
+        <label for="ship">Shipping Cost</label>
+        <div class="money"><span>$</span><input id="ship" type="number" min="0" step="0.01" inputmode="decimal" value="3" /></div>
+        <label for="ads">Advertising Cost</label>
+        <div class="money"><span>$</span><input id="ads" type="number" min="0" step="0.01" inputmode="decimal" value="3" /></div>
+        <label for="other">Other Expenses</label>
+        <div class="money"><span>$</span><input id="other" type="number" min="0" step="0.01" inputmode="decimal" value="2" /></div>
+        <div class="units-top"><label for="units">Units Sold</label><b id="unitsN"></b></div>
+        <input id="units" type="range" min="1" max="1000" step="1" value="100" />
+        <div class="ticks"><span>1</span><span>500</span><span>1000</span></div>
+    </div>
+    <div aria-live="polite">
+      <div class="label">Your Results</div>
+      <div class="panel">
+        <div class="panel-title">Profit Per Unit</div>
+        <div class="big" id="unit"></div>
+        <div class="margin-line"><span>Margin: <b id="margin"></b></span><span class="pill" id="pill"></span></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Cost Breakdown</div>
+        <div class="row"><span>Product Cost</span><b id="bCost"></b></div>
+        <div class="row"><span>Shipping</span><b id="bShip"></b></div>
+        <div class="row"><span>Advertising</span><b id="bAds"></b></div>
+        <div class="row"><span>Other Expenses</span><b id="bOther"></b></div>
+        <div class="row total"><span>Total Cost</span><b id="bTotal"></b></div>
+      </div>
+      <div class="proj">
+        <div class="panel-title">Projected Earnings (<span id="projUnits"></span> Units)</div>
+        <div class="tiles">
+          <div class="tile"><small>Revenue</small><b id="tRev"></b></div>
+          <div class="tile"><small>Total Costs</small><b id="tCost" class="neg"></b></div>
+          <div class="tile"><small>Net Profit</small><b id="tNet"></b></div>
+          <div class="tile"><small>ROI</small><b id="tRoi"></b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="calc mrr">
+    <div>
+      <div class="label">Your Subscription Numbers</div>
+      <label for="aov">AOV (Average Order Value)</label>
+      <div class="money"><span>$</span><input id="aov" type="number" min="0" step="0.01" inputmode="decimal" value="39.99" /></div>
+      <div class="slider-field">
+        <div class="units-top"><label for="renew">Monthly Renewal Rate</label><b id="renewN"></b></div>
+        <input id="renew" type="range" min="0" max="95" step="1" value="70" />
+        <div class="ticks"><span>0%</span><span>95%</span></div>
+      </div>
+      <label for="newSubs">New Customers Per Month</label>
+      <input id="newSubs" type="number" min="0" step="1" inputmode="numeric" value="100" />
+    </div>
+    <div aria-live="polite">
+      <div class="label">MRR (Monthly Recurring Revenue)</div>
+      <div class="panel">
+        <div class="panel-title">MRR At Month 12</div>
+        <div class="big" id="mrr12"></div>
+      </div>
+      <div class="proj">
+        <div class="tiles">
+          <div class="tile"><small>Max MRR</small><b id="mrrMax"></b></div>
+          <div class="tile"><small>Orders Per Customer</small><b id="ordersEach"></b></div>
+          <div class="tile"><small>Lifetime Revenue</small><b id="ltvRev"></b></div>
+          <div class="tile"><small>Lifetime Profit</small><b id="ltvProfit"></b></div>
+        </div>
+      </div>
+      <div class="months">
+        <div class="month-row head"><span>Month</span><span>Subscribers</span><span>MRR</span></div>
+        <div id="monthRows"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="month-grid">
+    <div class="box" aria-live="polite">
+      <div class="label">This Month · <span id="month"></span></div>
+      <div class="row"><span>Revenue</span><b id="mRev" class="pos"></b></div>
+      <div class="row"><span>Ad spend</span><b id="mAds" class="neg"></b></div>
+      <div class="row"><span>Product cost (COGS)</span><b id="mCogs" class="neg"></b></div>
+      <div class="row"><span>Fixed expenses</span><b id="mFixed" class="neg"></b></div>
+      <div class="row net"><span>Net profit</span><b id="mNet"></b></div>
+      <p class="note">Based on the units and costs in your calculator. COGS includes product cost, shipping and other expenses.</p>
+    </div>
+    <div class="box">
+      <div class="label">Monthly Fixed Expenses</div>
+      <form class="add" id="addForm">
+        <input id="fName" type="text" maxlength="60" placeholder="Expense name" aria-label="Expense name" />
+        <div class="money"><span>$</span><input id="fAmt" type="number" min="0" step="0.01" inputmode="decimal" aria-label="Monthly amount" /></div>
+        <button class="plus" type="submit" aria-label="Add expense">+</button>
+      </form>
+      <p id="err" hidden>Enter a name and an amount above $0.</p>
+      <div id="list"></div>
+    </div>
+  </section>
+
+  <section class="learn">
+    <h2>How To Read Your Numbers</h2>
+    <div class="cards">
+      <div class="card"><h3>Profit Per Unit</h3><p>What you keep from one sale after every cost per unit.</p><p>It is your selling price minus your total cost.</p></div>
+      <div class="card"><h3>Margin</h3><p>The share of each sale you keep as profit.</p><p>It is profit per unit divided by your selling price.</p></div>
+      <div class="card"><h3>ROI</h3><p>What you make back on the money you put in.</p><p>It is net profit divided by total costs.</p></div>
+      <div class="card"><h3>MRR</h3><p>Monthly recurring revenue: what your active subscribers pay you every month.</p><p>Max MRR is where it levels off, when new customers only replace the ones who cancel.</p></div>
+      <div class="card"><h3>Renewal Rate</h3><p>The share of subscribers who pay you again next month.</p><p>It sets how many orders you get per customer, so small changes add up.</p></div>
+      <div class="card"><h3>AOV</h3><p>Average order value: what a customer pays per order on average.</p><p>Lifetime revenue is AOV times orders per customer. Lifetime profit only counts ad cost on the first order.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p><a href="https://www.ad-ventur.com/privacy">Privacy Policy</a> &nbsp;•&nbsp; <a href="https://www.ad-ventur.com/terms">Terms of Service</a></p>
+  <p>© 2026 Ad-Ventur Inc. · The Inner Table. All rights reserved.</p>
+</footer>
+
+<script>
+  var STORE_KEY = 'profit-margin-fixed-expenses';
+  function $(id) { return document.getElementById(id); }
+  function num(id) { var n = parseFloat($(id).value); return n > 0 ? n : 0; }
+  function usd(n, digits) {
+    var abs = Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+    return (n < 0 ? '-$' : '$') + abs;
+  }
+  function signClass(n) { return n < 0 ? 'neg' : 'pos'; }
+  function marginBadge(m) {
+    if (m >= 40) return ['pos', 'Excellent'];
+    if (m >= 25) return ['pos', 'Good'];
+    if (m >= 10) return ['warn', 'Thin'];
+    if (m >= 0) return ['warn', 'Too Low'];
+    return ['neg', 'Losing Money'];
+  }
+
+  var expenses = [];
+  try { expenses = JSON.parse(localStorage.getItem(STORE_KEY)) || []; } catch (e) {}
+  function saveExpenses() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(expenses)); } catch (e) {}
+  }
+
+  function renderList() {
+    var list = $('list');
+    list.textContent = '';
+    if (!expenses.length) {
+      var empty = document.createElement('p');
+      empty.className = 'note';
+      empty.textContent = 'No fixed expenses added yet.';
+      list.appendChild(empty);
+    }
+    expenses.forEach(function (x, i) {
+      var row = document.createElement('div');
+      row.className = 'row';
+      var name = document.createElement('span');
+      name.textContent = x.name;
+      var amt = document.createElement('b');
+      amt.textContent = usd(x.amount, 2);
+      var del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'x';
+      del.textContent = '×';
+      del.setAttribute('aria-label', 'Remove ' + x.name);
+      del.addEventListener('click', function () {
+        expenses.splice(i, 1);
+        saveExpenses();
+        renderList();
+        render();
+      });
+      row.appendChild(name);
+      row.appendChild(amt);
+      row.appendChild(del);
+      list.appendChild(row);
+    });
+  }
+
+  function render() {
+    var cost = num('cost'), price = num('price'), ship = num('ship'), ads = num('ads'), other = num('other');
+    var units = +$('units').value;
+    var total = cost + ship + ads + other;
+    var profit = price - total;
+    var margin = price > 0 ? profit / price * 100 : null;
+
+    $('units').style.setProperty('--fill', (units - 1) / 999 * 100 + '%');
+    $('unitsN').textContent = units.toLocaleString('en-US');
+    $('projUnits').textContent = units.toLocaleString('en-US');
+
+    $('unit').textContent = usd(profit, 2);
+    $('unit').className = 'big ' + signClass(profit);
+    var pill = $('pill');
+    if (margin === null) {
+      $('margin').textContent = '-';
+      $('margin').className = '';
+      pill.hidden = true;
+    } else {
+      var badge = marginBadge(margin);
+      $('margin').textContent = margin.toFixed(1) + '%';
+      $('margin').className = badge[0];
+      pill.hidden = false;
+      pill.className = 'pill ' + badge[0];
+      pill.textContent = badge[1];
+    }
+
+    $('bCost').textContent = usd(cost, 2);
+    $('bShip').textContent = usd(ship, 2);
+    $('bAds').textContent = usd(ads, 2);
+    $('bOther').textContent = usd(other, 2);
+    $('bTotal').textContent = usd(total, 2);
+
+    var revenue = price * units, totalCosts = total * units, net = revenue - totalCosts;
+    $('tRev').textContent = usd(revenue, 0);
+    $('tCost').textContent = usd(totalCosts, 0);
+    $('tNet').textContent = usd(net, 0);
+    $('tNet').className = signClass(net);
+    $('tRoi').textContent = totalCosts > 0 ? Math.round(net / totalCosts * 100) + '%' : '-';
+    $('tRoi').className = signClass(net);
+
+    // Subscribers after n months = new per month x (1 - r^n) / (1 - r). Only first orders carry the ad cost.
+    var aov = num('aov'), r = +$('renew').value / 100, newSubs = Math.floor(num('newSubs'));
+    var ordersEach = 1 / (1 - r);
+    function subsAt(n) { return newSubs * (1 - Math.pow(r, n)) / (1 - r); }
+    $('renew').style.setProperty('--fill', r / 0.95 * 100 + '%');
+    $('renewN').textContent = $('renew').value + '%';
+    $('mrr12').textContent = usd(subsAt(12) * aov, 0);
+    $('mrr12').className = 'big pos';
+    $('mrrMax').textContent = usd(newSubs * ordersEach * aov, 0);
+    $('ordersEach').textContent = ordersEach.toFixed(1);
+    $('ltvRev').textContent = usd(aov * ordersEach, 2);
+    var ltvProfit = aov - total + (ordersEach - 1) * (aov - total + ads);
+    $('ltvProfit').textContent = usd(ltvProfit, 2);
+    $('ltvProfit').className = signClass(ltvProfit);
+    $('monthRows').innerHTML = [1, 3, 6, 12].map(function (n) {
+      return '<div class="month-row"><span>Month ' + n + '</span><span>' + Math.round(subsAt(n)).toLocaleString('en-US') + '</span><b>' + usd(subsAt(n) * aov, 0) + '</b></div>';
+    }).join('');
+
+    var fixed = expenses.reduce(function (sum, x) { return sum + x.amount; }, 0);
+    var adSpend = ads * units, cogs = (cost + ship + other) * units;
+    var monthNet = revenue - adSpend - cogs - fixed;
+    $('mRev').textContent = usd(revenue, 0);
+    $('mAds').textContent = '-' + usd(adSpend, 0);
+    $('mCogs').textContent = '-' + usd(cogs, 0);
+    $('mFixed').textContent = '-' + usd(fixed, 0);
+    $('mNet').textContent = usd(monthNet, 0);
+    $('mNet').className = signClass(monthNet);
+  }
+
+  $('month').textContent = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toUpperCase();
+  $('addForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = $('fName').value.trim(), amount = parseFloat($('fAmt').value);
+    if (!name || !(amount > 0)) { $('err').hidden = false; return; }
+    $('err').hidden = true;
+    expenses.push({ name: name, amount: amount });
+    saveExpenses();
+    $('fName').value = '';
+    $('fAmt').value = '';
+    renderList();
+    render();
+    $('fName').focus();
+  });
+  ['cost', 'price', 'ship', 'ads', 'other', 'units', 'aov', 'renew', 'newSubs'].forEach(function (id) { $(id).addEventListener('input', render); });
+  renderList();
+  render();
+</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Scorecard | Bronson Builds</title>
+  <meta name="description" content="Rate products before testing to find winners faster." />
+  <link rel="icon" type="image/png" href="/logo-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --ink: #0f172a; --body: #1e293b; --green: #16a34a; --green-dark: #15803d; --tint: #f3f9f5; --line: rgba(15,23,42,0.1); --shadow: 0 10px 30px rgba(15,23,42,0.07), 0 1px 2px rgba(15,23,42,0.04); }
+    body { background: #fcfdfc; color: var(--body); font-family: 'Inter', sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3 { font-family: 'Manrope', 'Inter', sans-serif; color: var(--ink); text-wrap: balance; }
+    .topbar { background: #fff; border-bottom: 1px solid var(--line); padding: 10px 20px; display: flex; justify-content: center; }
+    .topbar img { height: 68px; width: auto; display: block; }
+    .hero { position: relative; overflow: hidden; padding: 48px 20px 170px; text-align: center; background: radial-gradient(900px 480px at 18% 0%, rgba(34,197,94,0.20), transparent 62%), radial-gradient(760px 520px at 100% 30%, rgba(22,163,74,0.14), transparent 60%), linear-gradient(180deg, #f2faf5 0%, #fcfdfc 100%); }
+    .hero::before { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(118deg, transparent 0 150px, rgba(22,163,74,0.07) 150px 152px); -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent); mask-image: linear-gradient(180deg, #000 55%, transparent); pointer-events: none; }
+    .hero > * { position: relative; }
+    .icon { width: 56px; height: 56px; margin: 0 auto 18px; display: grid; place-items: center; border-radius: 16px; color: #fff; background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 20px rgba(22,163,74,0.28); }
+    h1 { font-size: clamp(2.1rem, 5.5vw, 3.4rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.12; }
+    h1 span { color: var(--green); }
+    .sub { font-size: clamp(1.05rem, 2vw, 1.25rem); margin-top: 12px; }
+    main { max-width: 980px; margin: -126px auto 0; padding: 0 20px 64px; position: relative; }
+    .calc { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 30px; }
+    .label { font-size: 0.78rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 14px; }
+    .panel { background: var(--tint); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+    .panel-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--body); margin-bottom: 8px; }
+    .pill { display: inline-block; padding: 6px 12px; border-radius: 999px; font: 800 0.8rem 'Manrope', sans-serif; letter-spacing: 0.4px; text-transform: uppercase; }
+    .slider { margin-bottom: 22px; }
+    .slider-top { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+    .slider-top label { flex: 1; font-size: 0.95rem; font-weight: 600; color: var(--ink); }
+    .slider-top span { font-size: 0.88rem; }
+    .slider-top b { color: var(--green-dark); min-width: 12px; text-align: right; }
+    input[type=range] { -webkit-appearance: none; appearance: none; display: block; width: 100%; height: 22px; background: transparent; cursor: pointer; }
+    input[type=range]::-webkit-slider-runnable-track { height: 8px; border-radius: 999px; background: linear-gradient(90deg, #16a34a var(--fill), #e7ece9 var(--fill)); }
+    input[type=range]::-moz-range-track { height: 8px; border-radius: 999px; background: linear-gradient(90deg, #16a34a var(--fill), #e7ece9 var(--fill)); }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -7px; border-radius: 50%; border: 3px solid #fff; background: #16a34a; box-shadow: 0 1px 5px rgba(15,23,42,0.35); }
+    input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; border: 3px solid #fff; background: #16a34a; box-shadow: 0 1px 5px rgba(15,23,42,0.35); }
+    input[type=range]:focus-visible { outline: 2px solid rgba(22,163,74,0.35); outline-offset: 2px; border-radius: 8px; }
+    .score { text-align: center; padding: 24px 16px; }
+    .score-num { font: 800 3.6rem/1 'Manrope', sans-serif; letter-spacing: -0.03em; }
+    .score-num small { font-size: 1.2rem; font-weight: 700; letter-spacing: 0; color: var(--body); }
+    .score .pill { margin-top: 12px; }
+    .good { color: var(--green); } .ok { color: #b45309; } .bad { color: #b91c1c; }
+    .pill.good { color: #fff; background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); }
+    .pill.ok { background: #fef3c7; color: #92400e; }
+    .pill.bad { background: #fee2e2; color: #991b1b; }
+    .bar-row { margin-top: 10px; }
+    .bar-top { display: flex; justify-content: space-between; gap: 12px; font-size: 0.92rem; margin-bottom: 4px; }
+    .bar-top b { color: var(--green-dark); }
+    .bar { height: 8px; border-radius: 999px; background: #dfe7e2; overflow: hidden; }
+    .bar i { display: block; height: 100%; border-radius: 999px; background: var(--green); }
+    .rec { border: 1px solid rgba(22,163,74,0.35); background: #fff; border-radius: 12px; padding: 14px 16px; font-size: 0.95rem; }
+    .rec div { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 4px; }
+    .learn { margin-top: 64px; }
+    .learn h2 { font-size: clamp(1.6rem, 3.6vw, 2.25rem); font-weight: 600; letter-spacing: -0.03em; text-align: center; margin-bottom: 28px; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 22px; }
+    .card h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 8px; }
+    .card p + p { margin-top: 8px; }
+    footer { background: #000; color: #94a3b8; text-align: center; padding: 30px 20px; font-size: 0.78rem; }
+    footer p + p { margin-top: 8px; }
+    footer a { color: #cbd5e1; }
+    @media (max-width: 760px) {
+      .calc, .cards { grid-template-columns: 1fr; }
+      .calc { padding: 20px; gap: 26px; }
+      .hero { padding: 34px 16px 150px; }
+      main { padding-left: 16px; padding-right: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar"><img src="/magnet-masterclass/logo.webp" width="102" height="68" alt="The Inner Table" /></header>
+
+<section class="hero">
+  <div class="icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/><path d="M7.5 5.5l9 5"/></svg></div>
+  <h1>Product <span>Scorecard</span></h1>
+  <p class="sub">Rate products before testing to find winners faster</p>
+</section>
+
+<main>
+  <section class="calc">
+    <div>
+      <div class="label">Rate Your Product (1-5)</div>
+      <div id="sliders"></div>
+    </div>
+    <div aria-live="polite">
+      <div class="label">Your Score</div>
+      <div class="panel score">
+        <div class="score-num"><span id="score"></span><small>/100</small></div>
+        <span class="pill" id="pill"></span>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Score Breakdown</div>
+        <div id="bars"></div>
+      </div>
+      <div class="rec"><div>Recommendation</div><span id="rec"></span></div>
+    </div>
+  </section>
+
+  <section class="learn">
+    <h2>How To Read Your Score</h2>
+    <div class="cards">
+      <div class="card"><h3>Over 90</h3><p>This is a good product to use.</p><p>Move it to testing.</p></div>
+      <div class="card"><h3>60 to 90</h3><p>Worth testing, but it has weak spots.</p><p>Watch your metrics closely and be ready to pivot.</p></div>
+      <div class="card"><h3>Under 60</h3><p>Too many weak spots.</p><p>Skip it and score the next product.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p><a href="https://www.ad-ventur.com/privacy">Privacy Policy</a> &nbsp;•&nbsp; <a href="https://www.ad-ventur.com/terms">Terms of Service</a></p>
+  <p>© 2026 Ad-Ventur Inc. · The Inner Table. All rights reserved.</p>
+</footer>
+
+<script>
+  // Score = sum of rating x weight. Weights add up to 20, so all 5s make 100.
+  var CRITERIA = [
+    { name: 'Profit Margin', weight: 5, levels: ['Under 20%', '20–30%', '30–40%', '40–50%', '50%+'] },
+    { name: 'Competition Level', weight: 4, levels: ['Saturated', 'High', 'Medium', 'Low', 'Very Low'] },
+    { name: 'Trend Strength', weight: 4, levels: ['Dying', 'Declining', 'Stable', 'Growing', 'Surging'] },
+    { name: 'Problem-Solving', weight: 3, levels: ['None', 'Nice To Have', 'Useful', 'Important', 'Must Have'] },
+    { name: 'Shipping Ease', weight: 2, levels: ['Very Hard', 'Hard', 'Moderate', 'Easy', 'Very Easy'] },
+    { name: 'Ad Potential', weight: 2, levels: ['Poor', 'Weak', 'Average', 'Strong', 'Excellent'] }
+  ];
+  function verdict(score) {
+    if (score > 90) return { cls: 'good', label: 'Good Product', rec: 'This is a good product to use. Move it to testing.' };
+    if (score >= 60) return { cls: 'ok', label: 'Worth Testing', rec: 'Worth testing, but watch your metrics closely. Be ready to pivot.' };
+    return { cls: 'bad', label: 'Skip It', rec: 'Too many weak spots. Skip it and score the next product.' };
+  }
+
+  document.getElementById('sliders').innerHTML = CRITERIA.map(function (c, i) {
+    return '<div class="slider"><div class="slider-top"><label for="s' + i + '">' + c.name + '</label><span id="l' + i + '"></span><b id="n' + i + '"></b></div>' +
+      '<input id="s' + i + '" type="range" min="1" max="5" step="1" value="3" /></div>';
+  }).join('');
+  var inputs = CRITERIA.map(function (c, i) { return document.getElementById('s' + i); });
+
+  function render() {
+    var total = 0;
+    var bars = '';
+    CRITERIA.forEach(function (c, i) {
+      var rating = +inputs[i].value;
+      var points = rating * c.weight;
+      var level = c.levels[rating - 1];
+      total += points;
+      inputs[i].style.setProperty('--fill', (rating - 1) * 25 + '%');
+      document.getElementById('l' + i).textContent = level;
+      document.getElementById('n' + i).textContent = rating;
+      bars += '<div class="bar-row"><div class="bar-top"><span>' + level + '</span><b>+' + points + '</b></div><div class="bar"><i style="width:' + rating * 20 + '%"></i></div></div>';
+    });
+    document.getElementById('bars').innerHTML = bars;
+    var v = verdict(total);
+    var score = document.getElementById('score');
+    score.textContent = total;
+    score.className = v.cls;
+    var pill = document.getElementById('pill');
+    pill.className = 'pill ' + v.cls;
+    pill.textContent = v.label;
+    document.getElementById('rec').textContent = v.rec;
+  }
+  inputs.forEach(function (el) { el.addEventListener('input', render); });
+  render();
+</script>
+</body>
+</html>

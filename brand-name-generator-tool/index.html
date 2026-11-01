@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Name Generator | Bronson Builds</title>
+  <meta name="description" content="A copy-and-paste AI prompt pack that helps you find a name for your store and brand." />
+  <link rel="icon" type="image/png" href="/logo-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --ink: #0f172a; --body: #1e293b; --green: #16a34a; --green-dark: #15803d; --tint: #f3f9f5; --line: rgba(15,23,42,0.1); --shadow: 0 10px 30px rgba(15,23,42,0.07), 0 1px 2px rgba(15,23,42,0.04); }
+    body { background: #fcfdfc; color: var(--body); font-family: 'Inter', sans-serif; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3 { font-family: 'Manrope', 'Inter', sans-serif; color: var(--ink); text-wrap: balance; }
+    .topbar { background: #fff; border-bottom: 1px solid var(--line); padding: 10px 20px; display: flex; justify-content: center; }
+    .topbar img { height: 68px; width: auto; display: block; }
+    .hero { position: relative; overflow: hidden; padding: 48px 20px 60px; text-align: center; background: radial-gradient(900px 480px at 18% 0%, rgba(34,197,94,0.20), transparent 62%), radial-gradient(760px 520px at 100% 30%, rgba(22,163,74,0.14), transparent 60%), linear-gradient(180deg, #f2faf5 0%, #fcfdfc 100%); }
+    .hero::before { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(118deg, transparent 0 150px, rgba(22,163,74,0.07) 150px 152px); -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent); mask-image: linear-gradient(180deg, #000 55%, transparent); pointer-events: none; }
+    .hero > * { position: relative; }
+    .icon { width: 56px; height: 56px; margin: 0 auto 18px; display: grid; place-items: center; border-radius: 16px; color: #fff; background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 20px rgba(22,163,74,0.28); }
+    h1 { font-size: clamp(2.1rem, 5.5vw, 3.4rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.12; }
+    h1 span { color: var(--green); }
+    .sub { font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 620px; margin: 14px auto 0; }
+    main { max-width: 820px; margin: 0 auto; padding: 0 20px 72px; }
+    section + section { margin-top: 56px; }
+    .eyebrow { text-align: center; font-size: 0.78rem; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 8px; }
+    h2 { font-size: clamp(1.6rem, 3.6vw, 2.25rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; text-align: center; margin-bottom: 10px; }
+    .intro { text-align: center; max-width: 600px; margin: 0 auto 26px; }
+    .box { background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 28px; }
+    .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+    label { display: block; font-size: 0.92rem; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+    input[type=text] { display: block; width: 100%; font: 500 1rem 'Inter', sans-serif; color: var(--ink); background: #fff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; }
+    input[type=text]::placeholder { color: #64748b; }
+    input:focus { outline: 2px solid rgba(22,163,74,0.35); border-color: var(--green); }
+    .btn { display: inline-block; padding: 12px 22px; border: 0; border-radius: 999px; cursor: pointer; color: #fff; font: 800 0.85rem 'Manrope', sans-serif; letter-spacing: 0.4px; text-transform: uppercase; background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 6px 16px rgba(22,163,74,0.26); white-space: nowrap; }
+    .copy-all { text-align: center; margin: 0 0 20px; }
+    .prompt { margin-bottom: 18px; }
+    .prompt-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+    .num { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); }
+    .prompt h3 { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; }
+    .prompt .use { margin-bottom: 12px; }
+    pre { background: var(--tint); border-radius: 12px; padding: 16px; font: 400 0.9rem/1.6 'Inter', sans-serif; color: var(--body); white-space: pre-wrap; overflow-wrap: anywhere; }
+    .check { display: flex; gap: 12px; padding: 14px 0; border-top: 1px solid var(--line); cursor: pointer; }
+    .check:first-child { border-top: 0; padding-top: 0; }
+    .check:last-child { padding-bottom: 0; }
+    .check input { flex: none; width: 20px; height: 20px; margin-top: 2px; accent-color: var(--green); }
+    .check b { color: var(--ink); display: block; }
+    .check a { color: var(--green-dark); font-weight: 600; }
+    .check div { font-weight: 400; }
+    .note { font-size: 0.85rem; margin-top: 16px; }
+    footer { background: #000; color: #94a3b8; text-align: center; padding: 30px 20px; font-size: 0.78rem; }
+    footer p + p { margin-top: 8px; }
+    footer a { color: #cbd5e1; }
+    @media (max-width: 640px) {
+      .fields { grid-template-columns: 1fr; }
+      .box { padding: 20px; }
+      .prompt-head { flex-direction: column; gap: 10px; }
+      .hero { padding: 34px 16px 44px; }
+      main { padding-left: 16px; padding-right: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar"><img src="/magnet-masterclass/logo.webp" width="102" height="68" alt="The Inner Table" /></header>
+
+<div class="hero">
+  <div class="icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></div>
+  <h1>Brand Name Generator <span>Prompt Pack</span></h1>
+  <p class="sub">Fill in your details once. Copy the prompts into ChatGPT or Claude. Walk away with a name for your store and your brand.</p>
+</div>
+
+<main>
+  <section>
+    <p class="eyebrow">Step 1</p>
+    <h2>Tell Me About Your Brand</h2>
+    <p class="intro">Your answers drop into every prompt below automatically.</p>
+    <div class="box fields">
+      <div><label for="product">What do you sell?</label><input id="product" type="text" maxlength="120" placeholder="Example: daily greens powder" /></div>
+      <div><label for="customer">Who is it for?</label><input id="customer" type="text" maxlength="120" placeholder="Example: busy moms in their 30s" /></div>
+      <div><label for="outcome">What do they want from it?</label><input id="outcome" type="text" maxlength="120" placeholder="Example: more energy without coffee" /></div>
+      <div><label for="vibe">How should the brand feel?</label><input id="vibe" type="text" maxlength="120" placeholder="Example: clean, calm and premium" /></div>
+      <div style="grid-column:1/-1"><label for="avoid">Any words or styles to avoid?</label><input id="avoid" type="text" maxlength="120" placeholder="Example: nothing with &quot;vita&quot; or &quot;nutri&quot;" /></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Step 2</p>
+    <h2>Run These Prompts In Order</h2>
+    <p class="intro">Keep them all in the same chat, so each one builds on the last.</p>
+    <div class="copy-all"><button class="btn js-copy-all" type="button">Copy All Prompts</button></div>
+    <div id="prompts"></div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Step 3</p>
+    <h2>Check Your Name Before You Commit</h2>
+    <p class="intro">AI can't confirm a name is available, so check these yourself.</p>
+    <div class="box">
+      <label class="check"><input type="checkbox" /><div><b>The .com is open</b>Search it at <a href="https://www.namecheap.com/domains/" target="_blank" rel="noopener">Namecheap</a>. If it's taken, try the variations from Prompt 7.</div></label>
+      <label class="check"><input type="checkbox" /><div><b>The handles are open</b>Search the name on Instagram, TikTok and Facebook.</div></label>
+      <label class="check"><input type="checkbox" /><div><b>Nobody in your space is using it</b>Search it on Google and Amazon, plus the word for your product.</div></label>
+      <label class="check"><input type="checkbox" /><div><b>It clears a trademark search</b>Search the <a href="https://tmsearch.uspto.gov/" target="_blank" rel="noopener">USPTO database</a> if you sell in the US. For anything you're unsure about, ask a trademark attorney.</div></label>
+      <label class="check"><input type="checkbox" /><div><b>It passes the phone test</b>Say it to a friend over the phone. If they can't spell it after hearing it once, keep looking.</div></label>
+      <label class="check"><input type="checkbox" /><div><b>It still works if you add products</b>You want a name that won't box you in when your customers want more from you.</div></label>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p><a href="https://www.ad-ventur.com/privacy">Privacy Policy</a> &nbsp;•&nbsp; <a href="https://www.ad-ventur.com/terms">Terms of Service</a></p>
+  <p>AI suggestions are a starting point, not legal advice. Check that a name is available before you use it.</p>
+  <p>© 2026 Ad-Ventur Inc. · The Inner Table. All rights reserved.</p>
+</footer>
+
+<script>
+  var CONTEXT = 'My brand details:\n- Product: {product}\n- Customer: {customer}\n- What they want: {outcome}\n- Brand feel: {vibe}\n- Avoid: {avoid}\n- Business model: subscription e-commerce, so customers reorder every month';
+  var PROMPTS = [
+    { title: 'Build Your Brand Brief', use: 'Start here. This gives the AI what it needs for every prompt after it.',
+      text: 'You are a brand strategist who names consumer brands.\n\n' + CONTEXT + '\n\nWrite me a short brand brief with:\n1. The one thing this brand stands for\n2. What my customer is frustrated by today\n3. How they want to feel after buying\n4. Five words that describe the brand\'s personality\n5. Three things this brand should never sound like\n\nThen ask me if anything is off before we start naming.' },
+    { title: 'Generate 30 Names', use: 'Get a wide list across different naming styles.',
+      text: 'Using my brand brief, give me 30 brand name ideas, 5 for each style:\n1. Real words used in a new way\n2. Two short words combined\n3. Invented words that are easy to say\n4. Names based on the outcome my customer wants\n5. Names that use a metaphor or image\n6. Names that sound like a person or a place\n\nRules:\n- 2 to 3 syllables when possible\n- Easy to spell after hearing it once\n- No generic words like "best", "pro", "shop" or "store"\n- Avoid: {avoid}\n\nFor each name, write one line on why it fits.' },
+    { title: 'Make It Subscription-Ready', use: 'Cut the names that lock you into one product or feel like a one-time buy.',
+      text: 'I run a subscription brand. My customer should feel like they belong to this brand and come back every month.\n\nFrom the list so far, pick the 10 names that:\n- Still work if I add more products later\n- Feel like a brand people stay with, not a one-time purchase\n- Would look natural on a monthly box, bottle or package\n\nThen write 10 new names that do this even better. Explain each pick in one line.' },
+    { title: 'Find Names From Your Customer\'s World', use: 'Get names that feel personal, not like every other AI list.',
+      text: 'Think about my customer: {customer}. They want: {outcome}.\n\nList the words, places, moments, routines and phrases that are part of their daily life.\n\nThen use that list to create 15 brand names that this customer would feel were made for them. Keep them short and easy to say.\n\nNext to each name, note the word or moment that inspired it.' },
+    { title: 'Stress Test Your Top 5', use: 'Pick your 5 favorite names and paste them in. Find the problems before your customers do.',
+      text: 'Here are my top 5 names:\n[PASTE YOUR 5 NAMES HERE]\n\nBe brutally honest and score each one from 1 to 10 on:\n1. Easy to say\n2. Easy to spell after hearing it\n3. Memorable\n4. Fits my brand brief\n5. Room to add more products\n6. Looks good on a package\n\nAlso flag:\n- Bad meanings or awkward sounds, including in Spanish and French\n- Words that imply a health, income or results claim, which could cause problems in ads\n- Any well-known brands it sounds too close to\n\nFinish by ranking them and telling me which one you would choose and why.' },
+    { title: 'Name Your Store And Your Brand', use: 'Your brand name and your store name can differ. Decide how they work together.',
+      text: 'My favorite name is:\n[PASTE YOUR NAME HERE]\n\nHelp me decide how to use it:\n1. Should my store and my product brand share this name? Give me your recommendation and why.\n2. Give me 5 product line names that fit under it, in case I add more products.\n3. Give me 5 names for my monthly subscription plan.\n4. Write 5 taglines of 6 words or less.\n5. Write a one-sentence description for my store\'s homepage.' },
+    { title: 'Get Domain And Handle Options', use: 'If your exact .com is taken, this gives you clean backups.',
+      text: 'My brand name is:\n[PASTE YOUR NAME HERE]\n\nGive me:\n1. 15 .com variations, from best to worst, using natural add-ons like "get", "try", "drink", "daily" or "co" that fit {product}\n2. 10 social media handle options\n\nRules:\n- No hyphens or numbers\n- Keep them short and easy to say out loud\n- Do not claim anything is available. I will check that myself.' }
+  ];
+
+  var FIELDS = ['product', 'customer', 'outcome', 'vibe', 'avoid'];
+  var FALLBACK = { product: '[YOUR PRODUCT]', customer: '[YOUR CUSTOMER]', outcome: '[WHAT THEY WANT]', vibe: '[BRAND FEEL]', avoid: 'nothing specific' };
+
+  function fill(text) {
+    return text.replace(/\{(\w+)\}/g, function (m, key) {
+      return document.getElementById(key).value.trim() || FALLBACK[key];
+    });
+  }
+
+  var list = document.getElementById('prompts');
+  PROMPTS.forEach(function (p, i) {
+    var card = document.createElement('article');
+    card.className = 'box prompt';
+    var head = document.createElement('div');
+    head.className = 'prompt-head';
+    var titles = document.createElement('div');
+    var num = document.createElement('div');
+    num.className = 'num';
+    num.textContent = 'Prompt ' + (i + 1);
+    var h3 = document.createElement('h3');
+    h3.textContent = p.title;
+    titles.appendChild(num);
+    titles.appendChild(h3);
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn js-copy';
+    btn.textContent = 'Copy Prompt';
+    head.appendChild(titles);
+    head.appendChild(btn);
+    var use = document.createElement('p');
+    use.className = 'use';
+    use.textContent = p.use;
+    var pre = document.createElement('pre');
+    pre.className = 'js-text';
+    pre.dataset.index = i;
+    card.appendChild(head);
+    card.appendChild(use);
+    card.appendChild(pre);
+    list.appendChild(card);
+    btn.addEventListener('click', function () { copy(pre.textContent, btn); });
+  });
+
+  function render() {
+    document.querySelectorAll('.js-text').forEach(function (pre) {
+      pre.textContent = fill(PROMPTS[+pre.dataset.index].text);
+    });
+  }
+
+  function flash(btn, label) {
+    var original = btn.dataset.label || btn.textContent;
+    btn.dataset.label = original;
+    btn.textContent = label;
+    setTimeout(function () { btn.textContent = original; }, 1600);
+  }
+  function legacyCopy(text) {
+    var area = document.createElement('textarea');
+    area.value = text;
+    area.style.position = 'fixed';
+    area.style.opacity = '0';
+    document.body.appendChild(area);
+    area.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    area.remove();
+    return ok;
+  }
+  function copy(text, btn) {
+    function done(ok) { flash(btn, ok ? 'Copied' : 'Select And Copy Instead'); }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(legacyCopy(text)); });
+    } else {
+      done(legacyCopy(text));
+    }
+  }
+
+  document.querySelector('.js-copy-all').addEventListener('click', function () {
+    var all = PROMPTS.map(function (p, i) { return 'PROMPT ' + (i + 1) + ': ' + p.title.toUpperCase() + '\n\n' + fill(p.text); }).join('\n\n----------\n\n');
+    copy(all, this);
+  });
+  FIELDS.forEach(function (id) { document.getElementById(id).addEventListener('input', render); });
+  render();
+</script>
+</body>
+</html>

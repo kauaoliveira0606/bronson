@@ -45,6 +45,7 @@ export default async function handler(req, res) {
 
   const body = req.body || {};
   const firstName = String(body.fname || '').trim().slice(0, 80);
+  const lastName = String(body.lname || '').trim().slice(0, 80);
   const email = String(body.email || '').trim().slice(0, 200);
   const phone = usPhone(body.phone);
   if (!firstName || !phone || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -58,6 +59,7 @@ export default async function handler(req, res) {
 
     const fields = {
       first_name: firstName,
+      ...(lastName ? { last_name: lastName } : {}),
       email,
       phone_country_code: '+1',
       phone,
