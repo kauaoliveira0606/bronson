@@ -25,6 +25,10 @@
     {
       "path": "/api/section8-discord-leaderboard",
       "schedule": "0 13 * * *"
+    },
+    {
+      "path": "/api/keep-alive",
+      "schedule": "0 12 * * *"
     }
   ],
   "headers": [
