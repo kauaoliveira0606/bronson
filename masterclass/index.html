@@ -584,7 +584,6 @@
     .seat-submit { width: 100%; min-height: 68px; padding: 12px 20px; border: 0; border-radius: 12px; background: linear-gradient(180deg, #22c55e, #15803d); box-shadow: 0 8px 22px rgba(22, 163, 74, 0.35); color: #ffffff; font-family: inherit; font-size: 1.3rem; font-weight: 800; cursor: pointer; }
     .seat-submit:disabled { opacity: 0.7; cursor: wait; }
     .seat-q-head { margin-top: 8px; }
-    .seat-form > .seat-q-head:first-child { margin-top: 0; }
     .seat-q-title { margin: 0 0 6px; font-family: 'Manrope', 'Inter', sans-serif; font-size: 1.6rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.3px; color: var(--ink); }
     .seat-q-sub { margin: 0; font-size: 0.95rem; line-height: 1.4; color: #475569; }
     .seat-error { margin: 0; color: #b91c1c; font-size: 0.9rem; line-height: 1.4; }
@@ -1307,15 +1306,7 @@
   <div class="seat-dialog">
     <button type="button" class="seat-close js-seat-close" aria-label="Close">&times;</button>
     <form class="seat-form js-seat-form" novalidate>
-      <div class="seat-q-head">
-        <p class="seat-q-title">What&rsquo;s your first name?</p>
-        <p class="seat-q-sub">We&rsquo;ll save this seat in your name.</p>
-      </div>
       <input type="text" name="first_name" placeholder="First Name*" aria-label="First name" autocomplete="given-name" maxlength="80" required />
-      <div class="seat-q-head">
-        <p class="seat-q-title">Where should we send your invite<span class="js-invite-name"></span>?</p>
-        <p class="seat-q-sub">Your private access link goes here, so use an email you check.</p>
-      </div>
       <input type="email" name="email" placeholder="Email For Access Link*" aria-label="Email" autocomplete="email" inputmode="email" maxlength="200" required />
       <div class="seat-q-head">
         <p class="seat-q-title">Where should we text your reminder?</p>
@@ -1411,13 +1402,6 @@
   var seatSubmit = document.querySelector('.js-seat-submit');
   var seatLabel = seatSubmit.textContent;
   var seatSending = false;
-
-  // The email heading greets them by the first name they typed.
-  var inviteName = document.querySelector('.js-invite-name');
-  seatForm.elements.first_name.addEventListener('input', function () {
-    var name = this.value.trim().split(/\s+/)[0];
-    inviteName.textContent = name ? ', ' + name : '';
-  });
 
   function closeSeatModal() { seatModal.classList.remove('open'); }
   function showSeatError(message) {
