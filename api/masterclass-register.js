@@ -3,22 +3,59 @@
 // scheduled session. The n8n poller (bVSWLTEH1cHOsNDH) picks them up from there.
 // WebinarJam requires first name, email and phone. Anything else failing here makes the page
 // show an error or fall back, so nobody gets stuck.
+// If WebinarJam stays down (or has no upcoming session) the lead goes in Masterclass Form Log and
+// still reaches the confirmation page. A Vercel cron GETs this route every 5 minutes to register them.
 // The WebinarJam API does not store UTMs, so they go to Airtable first and the poller merges
 // them in by email. That is what makes an ad sign-up count as paid.
 
 const WEBINAR_ID = '2';
 const UTM_TABLE = 'https://api.airtable.com/v0/appiMw8gpaLv2WITA/Masterclass%20Form%20UTMs';
+const LOG_TABLE = 'https://api.airtable.com/v0/appiMw8gpaLv2WITA/Masterclass%20Form%20Log';
+const GIVE_UP_AFTER = 2016; // 7 days of 5-minute retries
 const API = 'https://api.webinarjam.com/webinarjam';
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 
-async function wj(path, fields) {
-  const r = await fetch(API + path, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ api_key: process.env.WEBINARJAM_API_KEY, webinar_id: WEBINAR_ID, ...fields }),
+const wait = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
+
+// Runs fn up to 3 times. fn returns { ok } or throws; the last result is returned.
+async function withRetries(fn) {
+  let last = { ok: false, error: 'not_run' };
+  for (let i = 0; i < 3; i++) {
+    if (i) await wait(500 * i);
+    try {
+      last = await fn();
+      if (last.ok) return last;
+    } catch (err) {
+      last = { ok: false, error: err.message };
+    }
+  }
+  return last;
+}
+
+function wj(path, fields) {
+  return withRetries(async () => {
+    const r = await fetch(API + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ api_key: process.env.WEBINARJAM_API_KEY, webinar_id: WEBINAR_ID, ...fields }),
+      signal: AbortSignal.timeout(8000),
+    });
+    const data = await r.json().catch(() => ({}));
+    return { ok: r.ok && data.status === 'success', data, error: 'WebinarJam ' + r.status + ' ' + JSON.stringify(data.message || data.errors || '') };
   });
-  const data = await r.json().catch(() => ({}));
-  return { ok: r.ok && data.status === 'success', data };
+}
+
+function airtable(url, method, body) {
+  return withRetries(async () => {
+    const r = await fetch(url, {
+      method,
+      headers: { Authorization: 'Bearer ' + process.env.AIRTABLE_TOKEN, 'Content-Type': 'application/json' },
+      ...(body ? { body: JSON.stringify(body) } : {}),
+      signal: AbortSignal.timeout(8000),
+    });
+    const data = await r.json().catch(() => ({}));
+    return { ok: r.ok, data, error: 'Airtable ' + r.status };
+  });
 }
 
 // Schedule dates are New York wall-clock strings ("2026-11-04 19:00"), so they compare as text.
@@ -62,7 +99,9 @@ function parsePhone(raw, country) {
     if (!code) return null;
     digits = digits.slice(code.length);
   } else {
-    code = CALLING_CODES[country] || '1';
+    // A country we can't map must type the +, rather than getting a wrong +1 number.
+    code = country ? CALLING_CODES[country] : '1';
+    if (!code) return null;
     if (digits.length >= code.length + 10 && digits.startsWith(code)) digits = digits.slice(code.length);
   }
   if (code !== '1') digits = digits.replace(/^0+/, '');
@@ -74,20 +113,63 @@ function parsePhone(raw, country) {
 // A failure here must not cost the sign-up, so it only logs.
 async function saveUtms(email, utms, page) {
   if (!Object.keys(utms).length) return;
-  try {
-    const r = await fetch(UTM_TABLE, {
-      method: 'POST',
-      headers: { Authorization: 'Bearer ' + process.env.AIRTABLE_TOKEN, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ records: [{ fields: { Email: email.toLowerCase(), ...utms, Page: page, 'Created At': new Date().toISOString() } }] }),
-    });
-    if (!r.ok) console.error('Masterclass UTMs not saved', r.status, await r.text());
-  } catch (err) {
-    console.error('Masterclass UTMs not saved', err);
+  const saved = await airtable(UTM_TABLE, 'POST', {
+    records: [{ fields: { Email: email.toLowerCase(), ...utms, Page: page, 'Created At': new Date().toISOString() } }],
+  });
+  if (saved.ok) return;
+  console.error('Masterclass UTMs not saved', email, saved.error);
+  // The log may work when this table did not. Recorded so the lead can be fixed to Paid by hand.
+  await airtable(LOG_TABLE, 'POST', {
+    records: [{ fields: { Email: email, Status: 'Check Source', Problem: 'utms_not_saved', 'Last Error': saved.error + ' ' + JSON.stringify(utms), Page: page, 'Created At': new Date().toISOString() } }],
+  });
+}
+
+// One attempt at the next session. { ok } or { ok: false, problem, error }.
+async function registerLead(lead) {
+  const webinar = await wj('/webinar', {});
+  if (!webinar.ok) return { ok: false, problem: 'webinarjam_down', error: webinar.error };
+  const session = nextSchedule(webinar.data.webinar && webinar.data.webinar.schedules, new Date());
+  if (!session) return { ok: false, problem: 'no_upcoming_session', error: 'No future session is scheduled in WebinarJam' };
+  const reg = await wj('/register', { ...lead, schedule: String(session.schedule) });
+  if (!reg.ok) return { ok: false, problem: 'register_failed', error: reg.error };
+  return { ok: true, session: session.date };
+}
+
+// Registers everything waiting in the log.
+async function retryPending(res) {
+  const query = encodeURIComponent("{Status}='Pending'");
+  const list = await airtable(LOG_TABLE + '?maxRecords=50&filterByFormula=' + query, 'GET');
+  if (!list.ok) {
+    console.error('Masterclass log not readable', list.error);
+    return res.status(500).json({ ok: false });
   }
+  let recovered = 0;
+  const records = list.data.records || [];
+  for (const rec of records) {
+    const f = rec.fields;
+    const fields = { first_name: f['First Name'], email: f.Email, phone_country_code: f['Phone Code'], phone: f.Phone };
+    if (f['Last Name']) fields.last_name = f['Last Name'];
+    if (f.IP) fields.ip_address = f.IP;
+    const result = await registerLead(fields);
+    const attempts = (f.Attempts || 0) + 1;
+    const update = { Attempts: attempts, 'Updated At': new Date().toISOString() };
+    if (result.ok) {
+      update.Status = 'Recovered';
+      recovered++;
+    } else {
+      update.Problem = result.problem;
+      update['Last Error'] = result.error;
+      if (attempts >= GIVE_UP_AFTER) update.Status = 'Gave Up';
+      console.error('Masterclass lead still not registered', f.Email, result.error);
+    }
+    await airtable(LOG_TABLE + '/' + rec.id, 'PATCH', { fields: update });
+  }
+  return res.status(200).json({ ok: true, pending: records.length, recovered });
 }
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
+  if (req.method === 'GET') return retryPending(res);
   if (req.method !== 'POST') return res.status(405).json({ ok: false });
 
   const body = req.body || {};
@@ -100,33 +182,33 @@ export default async function handler(req, res) {
   const phone = parsePhone(body.phone, String(req.headers['x-vercel-ip-country'] || '').toUpperCase());
   if (!phone) return res.status(400).json({ ok: false, error: 'bad_phone' });
 
+  const fields = { first_name: firstName, ...(lastName ? { last_name: lastName } : {}), email, ...phone };
+  const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  if (ip) fields.ip_address = ip;
+  const page = String(body.page || '').slice(0, 60);
+
   try {
-    const webinar = await wj('/webinar', {});
-    const session = nextSchedule(webinar.data.webinar && webinar.data.webinar.schedules, new Date());
-    if (!session) return res.status(502).json({ ok: false, error: 'no_session' });
-
-    const fields = {
-      first_name: firstName,
-      ...(lastName ? { last_name: lastName } : {}),
-      email,
-      ...phone,
-      schedule: String(session.schedule),
-    };
-    const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
-    if (ip) fields.ip_address = ip;
-
+    // UTMs first, so the poller can never see this registrant before their UTMs exist.
     const utms = {};
-    UTM_KEYS.forEach((k) => { if (body[k]) utms[k] = String(body[k]).slice(0, 200); });
-    await saveUtms(email, utms, String(body.page || '').slice(0, 60));
+    UTM_KEYS.forEach((k) => { if (body[k]) utms[k] = String(body[k]).slice(0, 500); });
+    await saveUtms(email, utms, page);
 
-    const reg = await wj('/register', fields);
-    if (!reg.ok) {
-      console.error('WebinarJam register failed', reg.data && reg.data.message, reg.data && reg.data.errors);
-      return res.status(502).json({ ok: false, error: 'register_failed' });
-    }
-    return res.status(200).json({ ok: true, session: session.date });
+    const result = await registerLead(fields);
+    if (result.ok) return res.status(200).json({ ok: true, session: result.session });
+
+    console.error('WebinarJam register failed', email, result.problem, result.error);
+    const logged = await airtable(LOG_TABLE, 'POST', {
+      records: [{ fields: {
+        Email: email, Status: 'Pending', Problem: result.problem, 'Last Error': result.error, Attempts: 0,
+        'First Name': firstName, 'Last Name': lastName, 'Phone Code': phone.phone_country_code, Phone: phone.phone,
+        IP: ip, Page: page, 'Created At': new Date().toISOString(),
+      } }],
+    });
+    if (logged.ok) return res.status(200).json({ ok: true, queued: true });
+    console.error('Masterclass log not saved', email, logged.error);
+    return res.status(502).json({ ok: false, error: 'register_failed' });
   } catch (err) {
-    console.error('WebinarJam register error', err);
+    console.error('WebinarJam register error', email, err);
     return res.status(502).json({ ok: false, error: 'register_failed' });
   }
 }

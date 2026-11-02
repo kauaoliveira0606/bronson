@@ -5,7 +5,14 @@
       "destination": "https://whop.com/.well-known/apple-platform-integrator/apple-developer-merchantid-domain-association"
     }
   ],
+  "functions": {
+    "api/masterclass-register.js": { "maxDuration": 120 }
+  },
   "crons": [
+    {
+      "path": "/api/masterclass-register",
+      "schedule": "*/5 * * * *"
+    },
     {
       "path": "/api/stl-sync",
       "schedule": "*/5 * * * *"

@@ -1440,7 +1440,8 @@
     fetch('/api/masterclass-register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(lead)
+      body: JSON.stringify(lead),
+      signal: AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined
     }).then(function (r) { return r.json(); }).then(function (data) {
       if (data.error === 'bad_phone') {
         reset();
