@@ -770,6 +770,9 @@
     .green { color: var(--green); }
     .hero-subhead { font-size: clamp(1.02rem, 2vw, 1.22rem); font-weight: 500; color: #1e293b; max-width: 640px; margin: 0 auto; line-height: 1.55; }
     .hero-subhead b { color: var(--ink); font-weight: 700; }
+    .feature-pills { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 680px; margin: 22px auto 26px; padding: 0; }
+    .feature-pills li { padding: 7px 14px; background: #ffffff; border: 1px solid #d3e9da; border-radius: 999px; box-shadow: 0 2px 8px rgba(15,23,42,0.05); font-size: 0.85rem; font-weight: 600; line-height: 1.3; color: var(--ink); }
+    @media (max-width: 600px) { .feature-pills { gap: 6px; margin: 18px auto 22px; } .feature-pills li { padding: 6px 11px; font-size: 0.74rem; } }
     .hero-subhead .underline { text-decoration: underline; text-decoration-color: #f59e0b; text-decoration-thickness: 3px; text-underline-offset: 6px; }
 
     /* Countdown + sign-up, sitting straight on the hero (no card) */
@@ -955,13 +958,16 @@
   <div class="hero">
     <h1>Build a Subscription E&#8209;Commerce Brand to Turn Every Customer Into <span class="hl-pill" style="white-space: nowrap;">Monthly Income</span></h1>
     <p class="hero-subhead">In the live masterclass, I'll show you the exact MRR e-commerce system. No Lambos, no hype, no nonsense.</p>
+    <ul class="feature-pills">
+      <li>&#128230; Zero Bulk Inventory</li>
+      <li>MRR (Monthly Recurring Revenue)</li>
+      <li>1-3 hours a day</li>
+      <li>without needing an existing store or a product or a product idea</li>
+      <li>No tech experience</li>
+    </ul>
 
     <div class="register-block" id="register">
       <div class="form-card" id="form-card-top">
-        <div class="form-head">
-          <p class="cd-label">Live Event Starts In...</p>
-          <div class="countdown js-countdown"></div>
-        </div>
       </div>
     </div>
   </div>
