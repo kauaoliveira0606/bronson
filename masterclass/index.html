@@ -572,10 +572,19 @@
 
     .zoom { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
 
-    /* WebinarJam's floating "Webinar" bubble is hidden; the page's own buttons open its sign-up popup. */
-    .wj_embed_circle_wrapper { display: none !important; }
-    /* WebinarJam's embedded sign-up form in the hero card (it sets its own max-width). */
-    .form-card .wj-embed-wrapper { margin: 0 auto; border-radius: 14px; overflow: hidden; }
+    /* Sign-up popup: the page's own form, posts to /api/masterclass-register. */
+    .seat-modal { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(15, 23, 42, 0.6); }
+    .seat-modal.open { display: flex; }
+    .seat-dialog { position: relative; width: 100%; max-width: 480px; max-height: 100%; overflow-y: auto; background: #ffffff; border-radius: 16px; padding: 44px 32px 32px; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.3); }
+    .seat-close { position: absolute; top: 8px; right: 10px; width: 36px; height: 36px; border: 0; background: none; color: #94a3b8; font-size: 1.8rem; line-height: 1; cursor: pointer; }
+    .seat-form { display: flex; flex-direction: column; gap: 14px; }
+    .seat-form input { width: 100%; height: 58px; padding: 0 20px; background: #e8edf4; border: 1px solid #d3dbe7; border-radius: 12px; font-family: inherit; font-size: 16px; color: var(--ink); }
+    .seat-form input::placeholder { color: #475569; opacity: 1; }
+    .seat-form input:focus { outline: 2px solid #16a34a; outline-offset: 1px; background: #ffffff; }
+    .seat-submit { width: 100%; min-height: 68px; padding: 12px 20px; border: 0; border-radius: 12px; background: linear-gradient(180deg, #22c55e, #15803d); box-shadow: 0 8px 22px rgba(22, 163, 74, 0.35); color: #ffffff; font-family: inherit; font-size: 1.3rem; font-weight: 800; cursor: pointer; }
+    .seat-submit:disabled { opacity: 0.7; cursor: wait; }
+    .seat-error { margin: 0; color: #b91c1c; font-size: 0.9rem; line-height: 1.4; }
+    @media (max-width: 520px) { .seat-dialog { padding: 44px 20px 22px; } .seat-submit { font-size: 1.15rem; } }
     .form-card .form-head-below { margin-top: 22px; }
 
 
@@ -941,7 +950,7 @@
 <div class="nav-sticky">
   <div class="nav-bar">
     <span class="nav-label"><span class="nav-label-top"><span class="dot"></span>Live-Only Masterclass<span class="nav-label-colon">:</span></span> <span class="nav-date js-event-date"><span>Wednesday, October 28</span><span class="nav-date-sep"> &middot; </span><span>7:00 PM EST</span></span></span>
-    <a class="nav-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span></a>
+    <a class="nav-btn js-seat-open" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span></a>
   </div>
 </div>
 
@@ -1115,7 +1124,7 @@
   </div>
 
   <div class="cta-row">
-    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday, October 28 at 7 PM EST</span>. Live Only)</span></a>
+    <a class="cta-btn js-seat-open" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday, October 28 at 7 PM EST</span>. Live Only)</span></a>
   </div>
 </div>
 </div>
@@ -1162,7 +1171,7 @@
   </div>
   </div>
   <div class="cta-row">
-    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday, October 28 at 7 PM EST</span>. Live Only)</span></a>
+    <a class="cta-btn js-seat-open" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday, October 28 at 7 PM EST</span>. Live Only)</span></a>
   </div>
 </div>
 </div>
@@ -1233,7 +1242,7 @@
   <p class="section-desc">No hype. Just outcomes from students running the same model I'm teaching live.</p>
   <div class="win-cols js-wins"></div>
   <div class="cta-row">
-    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday, October 28 at 7 PM EST</span>. Live Only)</span></a>
+    <a class="cta-btn js-seat-open" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span><span class="cta-btn-sub">(<span class="js-event-short">Wednesday, October 28 at 7 PM EST</span>. Live Only)</span></a>
   </div>
 </div>
 </div>
@@ -1290,9 +1299,22 @@
   <img src="" alt="" />
 </div>
 
+<div class="seat-modal js-seat-modal" role="dialog" aria-modal="true" aria-label="Save your seat">
+  <div class="seat-dialog">
+    <button type="button" class="seat-close js-seat-close" aria-label="Close">&times;</button>
+    <form class="seat-form js-seat-form" novalidate>
+      <input type="text" name="first_name" placeholder="First Name*" aria-label="First name" autocomplete="given-name" maxlength="80" required />
+      <input type="email" name="email" placeholder="Email For Access Link*" aria-label="Email" autocomplete="email" inputmode="email" maxlength="200" required />
+      <input type="tel" name="phone" placeholder="Phone Number* (555-555-5555)" aria-label="Phone number" autocomplete="tel" inputmode="tel" maxlength="40" required />
+      <p class="seat-error js-seat-error" role="alert" hidden></p>
+      <button type="submit" class="seat-submit js-seat-submit">Yes! Lock In My Seat!</button>
+    </form>
+  </div>
+</div>
+
 <template id="optin-template">
   <div class="optin">
-    <a class="cta-btn js-wj-open" data-webinarHash="13q192ty" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener"><span class="js-submit-label">Save My Seat</span> <span aria-hidden="true">&rarr;</span></a>
+    <a class="cta-btn js-seat-open" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener"><span class="js-submit-label">Save My Seat</span> <span aria-hidden="true">&rarr;</span></a>
     <div class="trust-row">
       <span class="trust-badge dark"><img src="/paid/whop-icon.webp" alt="" /><span><span class="trust-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;<span class="half">&#9733;</span></span>4.7-Star Rated on Whop</span></span>
       <span class="trust-badge dark helped"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2l2.4 1.8 3-.2 1 2.8 2.5 1.6-.8 2.9.8 2.9-2.5 1.6-1 2.8-3-.2L12 22l-2.4-1.8-3 .2-1-2.8-2.5-1.6.8-2.9-.8-2.9 2.5-1.6 1-2.8 3 .2z"/><path fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M8.2 12.3l2.6 2.6 5-5.4"/></svg><span><span class="trust-kicker">Verified by Whop</span>208 Students Helped</span></span>
@@ -1355,10 +1377,10 @@
     { img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee96518f6c2cb9f8a2da5b.png', tag: 'Supplement Niche', title: '$100k+ months incoming', sub: 'Getting into the big numbers' }
   ];
 
-  /* ---------- Registration (WebinarJam) ---------- */
-  // Registration is handled by the WebinarJam embed loaded at the bottom of the page. It
-  // opens its sign-up popup from any element carrying data-webinarHash, so these buttons
-  // and its own floating bubble all open the same form.
+  /* ---------- Registration ---------- */
+  // Every Save My Seat button opens the form below. It registers through the WebinarJam API
+  // (/api/masterclass-register), with the page's UTMs; n8n bVSWLTEH1cHOsNDH picks it up from there.
+  var WJ_PAGE = 'https://event.webinarjam.com/8wgzn9/register/13q192ty';
   var template = document.getElementById('optin-template');
   ['form-card-top', 'form-card-bottom'].forEach(function (id) {
     var card = document.getElementById(id);
@@ -1367,15 +1389,75 @@
     if (id === 'form-card-top') optin.querySelector('.cta-btn').insertAdjacentHTML('beforeend', '<span class="cta-btn-sub">&#127873; Receive FREE VIP Gift:<br>Winning Product Research Checklist.</span>');
     card.appendChild(optin);
   });
-  document.querySelectorAll('.js-wj-open').forEach(function (btn) {
+
+  var seatModal = document.querySelector('.js-seat-modal');
+  var seatForm = document.querySelector('.js-seat-form');
+  var seatError = document.querySelector('.js-seat-error');
+  var seatSubmit = document.querySelector('.js-seat-submit');
+  var seatLabel = seatSubmit.textContent;
+  var seatSending = false;
+
+  function closeSeatModal() { seatModal.classList.remove('open'); }
+  function showSeatError(message) {
+    seatError.textContent = message;
+    seatError.hidden = false;
+  }
+  document.querySelectorAll('.js-seat-open').forEach(function (btn) {
     btn.addEventListener('click', function (e) {
-      // Keep the session they signed up for, for the confirmation pages.
+      e.preventDefault();
+      seatModal.classList.add('open');
+      seatForm.elements.first_name.focus();
+    });
+  });
+  document.querySelector('.js-seat-close').addEventListener('click', closeSeatModal);
+  seatModal.addEventListener('click', function (e) { if (e.target === seatModal) closeSeatModal(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSeatModal(); });
+
+  seatForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (seatSending) return;
+    var fname = seatForm.elements.first_name.value.trim();
+    var email = seatForm.elements.email.value.trim();
+    var phone = seatForm.elements.phone.value.trim();
+    if (!fname) return showSeatError('Please enter your first name.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showSeatError('Please enter a valid email address.');
+    if (phone.replace(/\D/g, '').length < 7) return showSeatError('Please enter your phone number.');
+
+    var query = new URLSearchParams(window.location.search);
+    var lead = { fname: fname, email: email, phone: phone };
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(function (k) {
+      if (query.get(k)) lead[k] = query.get(k);
+    });
+
+    seatSending = true;
+    seatError.hidden = true;
+    seatSubmit.disabled = true;
+    seatSubmit.textContent = 'Locking In Your Seat...';
+    function reset() {
+      seatSending = false;
+      seatSubmit.disabled = false;
+      seatSubmit.textContent = seatLabel;
+    }
+    fetch('/api/masterclass-register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(lead)
+    }).then(function (r) { return r.json(); }).then(function (data) {
+      if (data.error === 'bad_phone') {
+        reset();
+        return showSeatError('Please check your phone number. Outside the US? Start with + and your country code.');
+      }
+      if (!data.ok) throw new Error('register failed');
+      // Kept here, not in the URL, so the name never reaches the pixels through the page address.
       try {
+        window.sessionStorage.setItem('mc_fname', fname);
         window.sessionStorage.setItem('mc_when', formatSession(session));
         window.sessionStorage.setItem('mc_at', session.toISOString());
       } catch (err) {}
-      // Popup when the embed has loaded; otherwise the link opens WebinarJam's own page.
-      if (document.getElementById('wj_registration_frame')) e.preventDefault();
+      window.location.href = '/masterclass-confirmation?done=1';
+    }).catch(function () {
+      // Never lose the lead: WebinarJam's own page still takes the sign-up, with the UTMs.
+      window.location.href = WJ_PAGE + window.location.search;
     });
   });
 
@@ -1430,7 +1512,7 @@
   }
 
   var session = nextSession(new Date());
-  // The embedded form submits without a button click, so store the session up front too.
+  // Stored up front for the confirmation pages.
   try {
     window.sessionStorage.setItem('mc_when', formatSession(session));
     window.sessionStorage.setItem('mc_at', session.toISOString());
@@ -1508,8 +1590,6 @@
   }).join('');
 
 </script>
-
-<script src="https://event.webinarjam.com/register/13q192ty/embed-bar?buttonText=Save%20My%20Seat%20%E2%86%92&buttonBgColor=%2300ff25&buttonBgOpacity=0.95&barBgColor=%23ffffff&barBgOpacity=1&type=bubble&formTemplate=2&formColor=3"></script>
 
 </body>
 </html>
