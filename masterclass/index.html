@@ -583,8 +583,12 @@
     .seat-form input:focus { outline: 2px solid #16a34a; outline-offset: 1px; background: #ffffff; }
     .seat-submit { width: 100%; min-height: 68px; padding: 12px 20px; border: 0; border-radius: 12px; background: linear-gradient(180deg, #22c55e, #15803d); box-shadow: 0 8px 22px rgba(22, 163, 74, 0.35); color: #ffffff; font-family: inherit; font-size: 1.3rem; font-weight: 800; cursor: pointer; }
     .seat-submit:disabled { opacity: 0.7; cursor: wait; }
-    .seat-q-head { margin-top: 8px; }
-    .seat-q-sub { margin: 0; font-size: 0.95rem; line-height: 1.4; color: #475569; }
+    /* Phone field: the long label is an overlay so it can wrap; it hides once they type. */
+    .seat-tel { position: relative; }
+    .seat-tel-ph { position: absolute; left: 21px; right: 16px; top: 0; height: 58px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; font-size: 16px; line-height: 1.25; color: #475569; pointer-events: none; }
+    .seat-tel-ph small { font-size: 12.5px; color: #64748b; }
+    .seat-tel input:not(:placeholder-shown) + .seat-tel-ph { display: none; }
+    .seat-tel-note { margin: 6px 0 0 4px; font-size: 0.8rem; color: #64748b; }
     .seat-error { margin: 0; color: #b91c1c; font-size: 0.9rem; line-height: 1.4; }
     @media (max-width: 520px) { .seat-dialog { padding: 44px 20px 22px; } .seat-submit { font-size: 1.15rem; } }
     .form-card .form-head-below { margin-top: 22px; }
@@ -1324,10 +1328,11 @@
     <form class="seat-form js-seat-form" novalidate>
       <input type="text" name="first_name" placeholder="First Name*" aria-label="First name" autocomplete="given-name" maxlength="80" required />
       <input type="email" name="email" placeholder="Email For Access Link*" aria-label="Email" autocomplete="email" inputmode="email" maxlength="200" required />
-      <div class="seat-q-head">
-        <p class="seat-q-sub">A quick heads-up before we go live at <span class="js-reminder-when">7 PM EST on Wednesday</span>.</p>
+      <div class="seat-tel">
+        <input type="tel" name="phone" placeholder=" " aria-label="Phone number (For quick heads-up before we go live)" autocomplete="tel" inputmode="tel" maxlength="40" required />
+        <span class="seat-tel-ph" aria-hidden="true">Phone number <small>(For quick heads-up before we go live)</small></span>
+        <p class="seat-tel-note">No Spam</p>
       </div>
-      <input type="tel" name="phone" placeholder="Phone Number* (555-555-5555)" aria-label="Phone number" autocomplete="tel" inputmode="tel" maxlength="40" required />
       <p class="seat-error js-seat-error" role="alert" hidden></p>
       <button type="submit" class="seat-submit js-seat-submit">Yes! Lock In My Seat!</button>
     </form>
@@ -1568,7 +1573,7 @@
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric'
   }).format(session) + ' at ' + MASTERCLASS_SHORT_TIME;
   document.querySelectorAll('.js-event-short').forEach(function (el) { el.textContent = shortLabel; });
-  // Phone step in the sign-up popup: "tonight" on the day, the weekday otherwise.
+  // Hero button start time: "tonight" on the day, the weekday otherwise.
   var nyDay = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' });
   var reminderWhen = MASTERCLASS_SHORT_TIME + (nyDay.format(session) === nyDay.format(new Date())
     ? ' tonight'
