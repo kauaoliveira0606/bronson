@@ -791,6 +791,8 @@
     .fill-note { font-size: 0.85rem; color: var(--body); margin-bottom: 18px; }
     .optin { display: flex; flex-direction: column; align-items: center; gap: 16px; }
     .optin .cta-btn { width: auto; min-width: 250px; border-radius: 999px; }
+    .cta-btn-when { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; }
+    .vip-gift { margin: -4px 0 0; font-size: 0.88rem; font-weight: 600; line-height: 1.4; color: var(--ink); text-align: center; }
     .optin { border: 0; padding: 0; margin: 0; }
     .event-date { font-family: 'Manrope', sans-serif; font-weight: 700; color: var(--ink); }
 
@@ -1381,8 +1383,12 @@
   ['form-card-top', 'form-card-bottom'].forEach(function (id) {
     var card = document.getElementById(id);
     var optin = template.content.cloneNode(true);
-    // The hero button carries the VIP gift line under its label.
-    if (id === 'form-card-top') optin.querySelector('.cta-btn').insertAdjacentHTML('beforeend', '<span class="cta-btn-sub">&#127873; Receive FREE VIP Gift:<br>Winning Product Research Checklist.</span>');
+    // The hero button carries the start time under its label, with the VIP gift line below the button.
+    if (id === 'form-card-top') {
+      var heroBtn = optin.querySelector('.cta-btn');
+      heroBtn.insertAdjacentHTML('beforeend', '<span class="cta-btn-sub cta-btn-when">Starting <span class="js-reminder-when">7 PM EST on Wednesday</span></span>');
+      heroBtn.insertAdjacentHTML('afterend', '<p class="vip-gift">&#127873; Receive FREE VIP Gift: Winning Product Research Checklist.</p>');
+    }
     card.appendChild(optin);
   });
 
