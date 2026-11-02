@@ -2,9 +2,12 @@
 // passes name, email, phone and UTMs; this registers them through the WebinarJam API for the next
 // scheduled session. The n8n poller (bVSWLTEH1cHOsNDH) picks them up from there.
 // WebinarJam requires first name, email and phone. Anything else failing here makes the page
-// fall back to the WebinarJam registration page, so nobody gets stuck.
+// show an error or fall back, so nobody gets stuck.
+// The WebinarJam API does not store UTMs, so they go to Airtable first and the poller merges
+// them in by email. That is what makes an ad sign-up count as paid.
 
 const WEBINAR_ID = '2';
+const UTM_TABLE = 'https://api.airtable.com/v0/appiMw8gpaLv2WITA/Masterclass%20Form%20UTMs';
 const API = 'https://api.webinarjam.com/webinarjam';
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 
@@ -68,6 +71,21 @@ function parsePhone(raw, country) {
   return valid ? { phone_country_code: '+' + code, phone: digits } : null;
 }
 
+// A failure here must not cost the sign-up, so it only logs.
+async function saveUtms(email, utms, page) {
+  if (!Object.keys(utms).length) return;
+  try {
+    const r = await fetch(UTM_TABLE, {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + process.env.AIRTABLE_TOKEN, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ records: [{ fields: { Email: email.toLowerCase(), ...utms, Page: page, 'Created At': new Date().toISOString() } }] }),
+    });
+    if (!r.ok) console.error('Masterclass UTMs not saved', r.status, await r.text());
+  } catch (err) {
+    console.error('Masterclass UTMs not saved', err);
+  }
+}
+
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') return res.status(405).json({ ok: false });
@@ -96,7 +114,10 @@ export default async function handler(req, res) {
     };
     const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
     if (ip) fields.ip_address = ip;
-    UTM_KEYS.forEach((k) => { if (body[k]) fields[k] = String(body[k]).slice(0, 200); });
+
+    const utms = {};
+    UTM_KEYS.forEach((k) => { if (body[k]) utms[k] = String(body[k]).slice(0, 200); });
+    await saveUtms(email, utms, String(body.page || '').slice(0, 60));
 
     const reg = await wj('/register', fields);
     if (!reg.ok) {

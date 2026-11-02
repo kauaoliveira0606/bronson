@@ -1380,7 +1380,6 @@
   /* ---------- Registration ---------- */
   // Every Save My Seat button opens the form below. It registers through the WebinarJam API
   // (/api/masterclass-register), with the page's UTMs; n8n bVSWLTEH1cHOsNDH picks it up from there.
-  var WJ_PAGE = 'https://event.webinarjam.com/8wgzn9/register/13q192ty';
   var template = document.getElementById('optin-template');
   ['form-card-top', 'form-card-bottom'].forEach(function (id) {
     var card = document.getElementById(id);
@@ -1424,7 +1423,7 @@
     if (phone.replace(/\D/g, '').length < 7) return showSeatError('Please enter your phone number.');
 
     var query = new URLSearchParams(window.location.search);
-    var lead = { fname: fname, email: email, phone: phone };
+    var lead = { fname: fname, email: email, phone: phone, page: window.location.pathname };
     ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(function (k) {
       if (query.get(k)) lead[k] = query.get(k);
     });
@@ -1456,8 +1455,8 @@
       } catch (err) {}
       window.location.href = '/masterclass-confirmation?done=1';
     }).catch(function () {
-      // Never lose the lead: WebinarJam's own page still takes the sign-up, with the UTMs.
-      window.location.href = WJ_PAGE + window.location.search;
+      reset();
+      showSeatError('Something went wrong saving your seat. Please try again.');
     });
   });
 
