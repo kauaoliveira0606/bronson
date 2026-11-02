@@ -1319,7 +1319,7 @@
       <input type="email" name="email" placeholder="Email For Access Link*" aria-label="Email" autocomplete="email" inputmode="email" maxlength="200" required />
       <div class="seat-q-head">
         <p class="seat-q-title">Where should we text your reminder?</p>
-        <p class="seat-q-sub">A quick heads-up before we go live at 8PM ET tonight.</p>
+        <p class="seat-q-sub">A quick heads-up before we go live at <span class="js-reminder-when">7 PM EST on Wednesday</span>.</p>
       </div>
       <input type="tel" name="phone" placeholder="Phone Number* (555-555-5555)" aria-label="Phone number" autocomplete="tel" inputmode="tel" maxlength="40" required />
       <p class="seat-error js-seat-error" role="alert" hidden></p>
@@ -1565,6 +1565,12 @@
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric'
   }).format(session) + ' at ' + MASTERCLASS_SHORT_TIME;
   document.querySelectorAll('.js-event-short').forEach(function (el) { el.textContent = shortLabel; });
+  // Phone step in the sign-up popup: "tonight" on the day, the weekday otherwise.
+  var nyDay = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' });
+  var reminderWhen = MASTERCLASS_SHORT_TIME + (nyDay.format(session) === nyDay.format(new Date())
+    ? ' tonight'
+    : ' on ' + new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'long' }).format(session));
+  document.querySelectorAll('.js-reminder-when').forEach(function (el) { el.textContent = reminderWhen; });
 
   var countdowns = document.querySelectorAll('.js-countdown');
   function pad(n) { return String(n).padStart(2, '0'); }
