@@ -703,27 +703,24 @@
       pointer-events: none;
     }
     .hero-band > * { position: relative; }
-    .nav-sticky { position: sticky; top: 0; z-index: 50; height: 0; padding: 0 20px; display: flow-root; }
-    .nav-sticky .nav-bar { margin-top: 16px; box-shadow: 0 8px 28px rgba(15,23,42,0.12); }
+    .nav-sticky { position: sticky; top: 0; z-index: 50; height: 0; display: flow-root; }
     .hero-band { padding-top: calc(16px + var(--nav-h, 66px)); }
 
+    /* Full-width strip flush to the top edge, one centered line. */
     .nav-bar {
-      max-width: 1170px;
-      margin: 0 auto;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      background: #ffffff;
-      border-radius: 10px;
-      padding: 10px 12px 10px 22px;
-      box-shadow: 0 6px 24px rgba(15,23,42,0.06);
+      justify-content: center;
+      padding: 11px 16px;
+      background: linear-gradient(180deg, #22c55e, #15803d);
+      box-shadow: 0 2px 10px rgba(15,23,42,0.15);
+      text-align: center;
     }
-    .nav-label { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; row-gap: 2px; min-width: 0; font-size: 0.78rem; letter-spacing: 0.6px; text-transform: uppercase; }
-    .nav-label-top { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; color: var(--green); white-space: nowrap; }
-    .nav-label .dot { margin-right: 0; background: var(--green-bright); }
+    .nav-label { display: inline-flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; row-gap: 2px; font-family: 'Manrope', 'Inter', sans-serif; font-size: 0.82rem; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: #ffffff; }
+    .nav-label-top { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .nav-label .dot { margin-right: 0; background: #ffffff; }
     .nav-label-colon { margin-left: -8px; }
-    .nav-date { font-weight: 500; letter-spacing: 0.3px; color: var(--ink); white-space: nowrap; }
+    .nav-date { white-space: nowrap; }
     .nav-btn, .cta-btn {
       display: inline-block;
       text-align: center;
@@ -894,20 +891,11 @@
     }
     @media (max-width: 600px) {
       .hero-band { padding: calc(12px + var(--nav-h, 76px)) 14px 0; }
-      .nav-sticky { padding: 0 14px; }
-      .nav-sticky .nav-bar { margin-top: 12px; }
-      .nav-bar { padding: 8px 8px 8px 16px; }
+      .nav-bar { padding: 9px 12px; }
       .nav-btn { font-size: 0.78rem; padding: 10px 14px; }
       .hero { padding: 19px 2px 60px; }
       .hero h1 { letter-spacing: -0.8px; line-height: 1.18; }
-      /* Two tidy lines on phones: the label, then the date. */
-      .nav-label { flex-direction: column; align-items: flex-start; gap: 2px; font-size: 0.7rem; }
-      .nav-label-colon { display: none; }
-      .nav-label-top { letter-spacing: 0.2px; }
-      .nav-date { font-size: 0.66rem; letter-spacing: 0.2px; line-height: 1.35; }
-      .nav-date > span { display: block; }
-      .nav-date > .nav-date-sep { display: none; }
-      .nav-bar { flex-wrap: wrap; }
+      .nav-label { font-size: 0.68rem; letter-spacing: 0.3px; line-height: 1.35; }
       .trust-row { flex-wrap: nowrap; gap: 6px; }
       .trust-badge { font-size: 0.64rem; gap: 5px; }
       .trust-badge.dark { padding: 4px 10px 4px 4px; }
@@ -926,16 +914,21 @@
       .optin .cta-btn { width: 100%; }
       .cta-box { padding: 40px 18px; border-radius: 22px; }
     }
-    /* Headline highlight: glossy green pill behind the key phrase, one pill per wrapped line. */
+    /* Headline highlight: hand-drawn green swoosh under the key phrase. */
     .hl-pill {
-      color: #fff;
-      background: linear-gradient(180deg, #2bcf68 0%, #16a34a 100%);
-      padding: 0 0.2em 0.04em;
-      border-radius: 0.2em;
-      -webkit-box-decoration-break: clone;
-      box-decoration-break: clone;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 0 rgba(6,78,35,0.3), 0 10px 24px -8px rgba(22,163,74,0.55);
-      text-shadow: 0 1px 1px rgba(6,78,35,0.25);
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.12em;
+    }
+    .hl-pill::after {
+      content: "";
+      position: absolute;
+      left: -2%;
+      right: -2%;
+      bottom: -0.12em;
+      height: 0.32em;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 24' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%2322c55e'/%3E%3Cstop offset='1' stop-color='%2315803d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M4 16C60 6 150 3 296 8c-60 1-150 5-230 13' fill='none' stroke='url(%23g)' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+      pointer-events: none;
     }
   </style>
 <script type="text/javascript">
@@ -952,7 +945,6 @@
 <div class="nav-sticky">
   <div class="nav-bar">
     <span class="nav-label"><span class="nav-label-top"><span class="dot"></span>Live-Only Masterclass<span class="nav-label-colon">:</span></span> <span class="nav-date js-event-date"><span>Wednesday, October 28</span><span class="nav-date-sep"> &middot; </span><span>7:00 PM EST</span></span></span>
-    <a class="nav-btn js-seat-open" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span></a>
   </div>
 </div>
 
