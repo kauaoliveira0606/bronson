@@ -919,7 +919,7 @@ async function renderChallenges() {
   function actionHTML(c) {
     const status = statusByTitle[c.title];
     if (!c.repeatable && status === 'pending') {
-      return `<button class="btn btn-outline btn-sm" disabled>Pending Review</button>`;
+      return `<button class="btn btn-outline btn-sm" disabled>Pending · approved within 1 hour</button>`;
     }
     if (!c.repeatable && status === 'approved') {
       return `<button class="btn btn-outline btn-sm" disabled>Approved ✓</button>`;
@@ -983,28 +983,23 @@ function withTimeout(promise, ms, label) {
   ]);
 }
 
-// Submissions are approved on the spot. With no reviewer in the loop, one-time
+// Submissions start pending and /api/ht-auto-approve approves them (and adds
+// the points) an hour later unless an admin got to them first. One-time
 // challenges only pay once and a weekly challenge pays once a day at most.
 async function awardChallenge(c, email, proof_url) {
   const emailFilter = `email=eq.${encodeURIComponent(email)}`;
   const [profRows, subRows] = await Promise.all([
     sbSelect('ht_profiles', emailFilter),
-    sbSelect('ht_submissions', `${emailFilter}&status=eq.approved&category=eq.${encodeURIComponent(c.title)}`),
+    sbSelect('ht_submissions', `${emailFilter}&status=in.(approved,pending)&category=eq.${encodeURIComponent(c.title)}`),
   ]);
   const prof = Array.isArray(profRows) ? profRows[0] : null;
   if (!prof) throw new Error('your account could not be loaded');
   const today = localDate(new Date());
   const done = (Array.isArray(subRows) ? subRows : []).filter(r => !c.repeatable || localDate(new Date(r.created_at)) === today);
-  if (done.length) throw new Error(c.repeatable ? 'you already got points for this today' : 'you already got points for this');
+  if (done.length) throw new Error(c.repeatable ? 'you already submitted this today' : 'you already submitted this');
 
-  const before = prof.points || 0;
-  const updated = await sbUpdate('ht_profiles', emailFilter, { points: before + c.points });
-  if (!updated.ok) throw new Error('your points could not be saved');
-  const inserted = await sbInsert('ht_submissions', { email, category: c.title, description: c.title, proof_url, points_value: c.points, status: 'approved', reviewed_at: new Date().toISOString() });
-  if (!inserted.ok) {
-    await sbUpdate('ht_profiles', emailFilter, { points: before });
-    throw new Error(`Request failed (${inserted.status})`);
-  }
+  const inserted = await sbInsert('ht_submissions', { email, category: c.title, description: c.title, proof_url, points_value: c.points, status: 'pending' });
+  if (!inserted.ok) throw new Error(`Request failed (${inserted.status})`);
 }
 
 async function submitProofModal() {
@@ -1047,6 +1042,7 @@ async function renderMySubmissions() {
     : s === 'rejected'
     ? `<span style="font-size:11px;color:#f87171;font-weight:700;background:rgba(239,68,68,.15);border-radius:6px;padding:3px 9px">Rejected</span>`
     : `<span style="font-size:11px;color:#fbbf24;font-weight:700;background:rgba(234,179,8,.15);border-radius:6px;padding:3px 9px">Pending</span>`;
+  const autoAt = r => new Date(new Date(r.created_at).getTime() + 3600000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
   wrap.innerHTML = rows.map(r => {
     const match = CHALLENGES.find(c => c.title === r.category);
     return `
@@ -1059,6 +1055,7 @@ async function renderMySubmissions() {
         <div style="text-align:right;flex-shrink:0">
           ${statusPill(r.status)}
           ${r.status === 'approved' && r.points_value ? `<div style="font-size:11px;color:var(--yellow);font-weight:700;margin-top:4px">+${r.points_value} pts</div>` : ''}
+          ${r.status === 'pending' && r.created_at ? `<div style="font-size:11px;color:var(--text3);margin-top:4px">+${r.points_value} pts around ${autoAt(r)}</div>` : ''}
         </div>
       </div>
       ${r.status === 'rejected' ? `
@@ -1231,7 +1228,7 @@ async function loadAdminSubmissions() {
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;">
             <div style="flex:1;min-width:0;">
               <div style="font-size:14px;font-weight:700;">${s.email}</div>
-              <div style="font-size:11px;color:var(--text3);margin-top:2px;">${s.category} &middot; ${s.created_at ? new Date(s.created_at).toLocaleDateString() : ''}</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px;">${s.category} &middot; ${s.created_at ? new Date(s.created_at).toLocaleDateString() : ''}${s.status === 'pending' && s.created_at ? ` &middot; auto-approves around ${new Date(new Date(s.created_at).getTime() + 3600000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}` : ''}</div>
             </div>
             <div style="display:flex;gap:6px;flex-shrink:0;align-items:center;">
               ${s.status === 'approved'
@@ -1259,6 +1256,15 @@ async function adminSetApproval(email, value, btn) {
   loadAdminApprovals();
 }
 
+async function claimPending(id, body) {
+  const res = await fetch(`${SB_URL}/ht_submissions?id=eq.${id}&status=eq.pending`, {
+    method: 'PATCH', headers: { ...sbHeaders, 'Prefer': 'return=representation' },
+    body: JSON.stringify({ ...body, reviewed_at: new Date().toISOString() }),
+  });
+  const rows = res.ok ? await res.json() : [];
+  return rows.length > 0;
+}
+
 async function adminReviewSubmission(id, status, btn) {
   btn.disabled = true; btn.textContent = '...';
   if (status === 'approved') {
@@ -1283,11 +1289,16 @@ async function adminReviewSubmission(id, status, btn) {
         loadAdminSubmissions();
         return;
       }
-      await sbUpdate('ht_profiles', `email=eq.${encodeURIComponent(sub.email)}`, { points: (prof.points || 0) + pointsAwarded });
-      await sbUpdate('ht_submissions', `id=eq.${id}`, { status, points_value: pointsAwarded, reviewed_at: new Date().toISOString() });
+      // Only award if this click is what moved it out of pending; the
+      // hourly auto-approve may have already paid it.
+      if (await claimPending(id, { status, points_value: pointsAwarded })) {
+        await sbUpdate('ht_profiles', `email=eq.${encodeURIComponent(sub.email)}`, { points: (prof.points || 0) + pointsAwarded });
+      } else {
+        alert('This submission was already reviewed (it may have just auto-approved).');
+      }
     }
-  } else {
-    await sbUpdate('ht_submissions', `id=eq.${id}`, { status, reviewed_at: new Date().toISOString() });
+  } else if (!(await claimPending(id, { status }))) {
+    alert('This submission was already reviewed (it may have just auto-approved).');
   }
   loadAdminSubmissions();
 }
