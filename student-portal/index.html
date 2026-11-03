@@ -449,6 +449,7 @@ a{color:inherit}
 
       <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
         <div class="nav-item admin-subtab active" data-admin="approve" onclick="switchAdminTab('approve')" style="display:inline-flex">Approve People</div>
+        <div class="nav-item admin-subtab" data-admin="students" onclick="switchAdminTab('students')" style="display:inline-flex">Students</div>
         <div class="nav-item admin-subtab" data-admin="points" onclick="switchAdminTab('points')" style="display:inline-flex">Point System</div>
         <div class="nav-item admin-subtab" data-admin="knowledge" onclick="switchAdminTab('knowledge')" style="display:inline-flex">Bronson AI Knowledge Base</div>
       </div>
@@ -456,6 +457,11 @@ a{color:inherit}
       <div id="admin-tab-approve">
         <div class="card-label" style="margin-bottom:10px">Pending / Approved Students</div>
         <div class="card" style="padding:14px" id="admin-user-list">Loading...</div>
+      </div>
+
+      <div id="admin-tab-students" style="display:none">
+        <div class="card-label" style="margin-bottom:10px">Every Student · Points &amp; Submissions</div>
+        <div id="admin-student-list">Loading...</div>
       </div>
 
       <div id="admin-tab-points" style="display:none">
@@ -691,11 +697,13 @@ function switchView(name) {
 function switchAdminTab(name) {
   document.querySelectorAll('.admin-subtab').forEach(t => t.classList.toggle('active', t.dataset.admin === name));
   document.getElementById('admin-tab-approve').style.display   = name === 'approve'   ? '' : 'none';
+  document.getElementById('admin-tab-students').style.display  = name === 'students'  ? '' : 'none';
   document.getElementById('admin-tab-points').style.display    = name === 'points'    ? '' : 'none';
   document.getElementById('admin-tab-knowledge').style.display = name === 'knowledge' ? '' : 'none';
   // Re-fetch every time so a submission/signup that came in after admin
   // logged in actually shows up, instead of only ever loading once.
   if (name === 'approve') loadAdminApprovals();
+  if (name === 'students') loadAdminStudents();
   if (name === 'points') loadAdminSubmissions();
   if (name === 'knowledge') loadAdminKnowledge();
 }
@@ -1232,7 +1240,8 @@ async function loadAdminSubmissions() {
             </div>
             <div style="display:flex;gap:6px;flex-shrink:0;align-items:center;">
               ${s.status === 'approved'
-                ? `<span style="font-size:11px;color:#4ade80;font-weight:700;background:rgba(34,197,94,.15);border-radius:6px;padding:4px 10px;">Approved &middot; +${s.points_value} pts</span>`
+                ? `<span style="font-size:11px;color:#4ade80;font-weight:700;background:rgba(34,197,94,.15);border-radius:6px;padding:4px 10px;">Approved &middot; +${s.points_value} pts</span>
+                   <button onclick="adminRejectApproved(${s.id},this,loadAdminSubmissions)" class="btn btn-outline btn-sm">Reject</button>`
                 : s.status === 'rejected'
                 ? `<span style="font-size:11px;color:#f87171;font-weight:700;background:rgba(239,68,68,.15);border-radius:6px;padding:4px 10px;">Rejected</span>`
                 : `<input type="number" id="pts-${s.id}" value="${s.points_value || 0}" style="width:60px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:6px;padding:5px 7px;color:var(--text);font-size:12px">
@@ -1301,6 +1310,93 @@ async function adminReviewSubmission(id, status, btn) {
     alert('This submission was already reviewed (it may have just auto-approved).');
   }
   loadAdminSubmissions();
+}
+
+/* ══════ ADMIN: STUDENTS (points + every submission with proof) ══════ */
+const adminOpenStudents = new Set();
+function statusBadge(s) {
+  if (s.status === 'approved') return `<span style="font-size:11px;color:#4ade80;font-weight:700;background:rgba(34,197,94,.15);border-radius:6px;padding:4px 10px;">Approved &middot; +${s.points_value || 0} pts</span>`;
+  if (s.status === 'rejected') return `<span style="font-size:11px;color:#f87171;font-weight:700;background:rgba(239,68,68,.15);border-radius:6px;padding:4px 10px;">Rejected</span>`;
+  return `<span style="font-size:11px;color:#fbbf24;font-weight:700;background:rgba(234,179,8,.15);border-radius:6px;padding:4px 10px;">Pending</span>`;
+}
+async function loadAdminStudents() {
+  const list = document.getElementById('admin-student-list');
+  list.innerHTML = 'Loading...';
+  try {
+    const [profiles, subs] = await Promise.all([
+      sbSelect('ht_profiles', 'order=points.desc.nullslast'),
+      sbSelect('ht_submissions', 'order=created_at.desc'),
+    ]);
+    if (!Array.isArray(profiles) || !profiles.length) { list.innerHTML = '<div class="card-sub">No students yet.</div>'; return; }
+    const byEmail = {};
+    (Array.isArray(subs) ? subs : []).forEach(s => { const k = (s.email || '').toLowerCase(); (byEmail[k] = byEmail[k] || []).push(s); });
+    list.innerHTML = profiles.map((u, i) => {
+      const mine = byEmail[(u.email || '').toLowerCase()] || [];
+      const count = st => mine.filter(s => s.status === st).length;
+      const key = encodeURIComponent(u.email || '');
+      const open = adminOpenStudents.has(u.email);
+      return `
+      <div class="card" style="padding:14px;margin-bottom:8px">
+        <div onclick="toggleAdminStudent('${key}')" style="display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;">
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${i + 1}. ${escapeHtml(u.name || u.email)}${u.name ? ` <span style="color:var(--text3);font-weight:400">${escapeHtml(u.email)}</span>` : ''}</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:2px;">${mine.length} submission${mine.length === 1 ? '' : 's'} &middot; ${count('approved')} approved &middot; ${count('pending')} pending &middot; ${count('rejected')} rejected</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+            <div style="font-size:18px;font-weight:800;color:var(--yellow)">${u.points || 0} <span style="font-size:11px;font-weight:600;color:var(--text3)">pts</span></div>
+            <span style="color:var(--text3);font-size:12px">${open ? '▲' : '▼'}</span>
+          </div>
+        </div>
+        <div id="stu-${key}" style="display:${open ? '' : 'none'};margin-top:12px;border-top:1px solid var(--border);padding-top:12px;">
+          ${mine.length ? mine.map(s => `
+            <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+                <div style="min-width:0;">
+                  <div style="font-size:13px;font-weight:700;">${escapeHtml(s.category || '')}</div>
+                  <div style="font-size:11px;color:var(--text3);margin-top:2px;">Submitted ${s.created_at ? new Date(s.created_at).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : ''}</div>
+                </div>
+                <div style="display:flex;gap:6px;align-items:center;">
+                  ${statusBadge(s)}
+                  ${s.status !== 'rejected' ? `<button onclick="event.stopPropagation();adminRejectAny(${s.id},'${s.status}',this)" class="btn btn-outline btn-sm">Reject</button>` : ''}
+                </div>
+              </div>
+              ${renderProofPreview(s.proof_url)}
+            </div>`).join('') : '<div class="card-sub">No submissions yet.</div>'}
+        </div>
+      </div>`;
+    }).join('');
+  } catch (e) {
+    list.innerHTML = '<div class="card-sub" style="color:var(--red)">Error loading students.</div>';
+  }
+}
+function toggleAdminStudent(key) {
+  const email = decodeURIComponent(key);
+  if (adminOpenStudents.has(email)) adminOpenStudents.delete(email); else adminOpenStudents.add(email);
+  const el = document.getElementById(`stu-${key}`);
+  if (el) el.style.display = adminOpenStudents.has(email) ? '' : 'none';
+}
+async function adminRejectAny(id, status, btn) {
+  if (status === 'approved') return adminRejectApproved(id, btn, loadAdminStudents);
+  btn.disabled = true; btn.textContent = '...';
+  if (!(await claimPending(id, { status: 'rejected' }))) alert('This submission was already reviewed (it may have just auto-approved). Refresh and reject it again.');
+  loadAdminStudents();
+}
+// Rejecting an already-approved submission takes its points back off the student.
+async function adminRejectApproved(id, btn, reload) {
+  if (!confirm('Reject this approved submission? Its points will be taken off the student.')) return;
+  btn.disabled = true; btn.textContent = '...';
+  const res = await fetch(`${SB_URL}/ht_submissions?id=eq.${id}&status=eq.approved`, {
+    method: 'PATCH', headers: { ...sbHeaders, 'Prefer': 'return=representation' },
+    body: JSON.stringify({ status: 'rejected', reviewed_at: new Date().toISOString() }),
+  });
+  const rows = res.ok ? await res.json() : [];
+  const sub = rows[0];
+  if (!sub) { alert('Could not reject it (it may already be rejected).'); reload(); return; }
+  if (sub.email && sub.points_value) {
+    const [prof] = await sbSelect('ht_profiles', `email=eq.${encodeURIComponent(sub.email)}`);
+    if (prof) await sbUpdate('ht_profiles', `email=eq.${encodeURIComponent(sub.email)}`, { points: Math.max(0, (prof.points || 0) - sub.points_value) });
+  }
+  reload();
 }
 
 /* ══════ BRONSON AI CHAT ══════ */
