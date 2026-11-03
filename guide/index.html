@@ -302,6 +302,7 @@
     }
     .spoint h4 { font-size: 16.5px; font-weight: 800; margin-bottom: 3px; }
     .spoint p { font-size: 15px; color: var(--text-dim); }
+    .spoint p + p { margin-top: 6px; }
 
     .story-side { position: sticky; top: 90px; display: grid; gap: 18px; }
     .video-caption {
@@ -368,6 +369,18 @@
     .pillar-num { font-family: var(--mono); font-size: 12px; font-weight: 800; color: var(--blue); margin-bottom: 12px; }
     .pillar-card h3 { font-size: 17px; font-weight: 800; margin-bottom: 6px; }
     .pillar-card p { font-size: 14px; color: var(--text-dim); line-height: 1.55; }
+
+    .diff-anchor { position: relative; top: -90px; }
+    .diff-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 40px; }
+    @media (max-width: 760px) { .diff-grid { grid-template-columns: 1fr; } }
+    .diff-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--blue);
+      border-radius: 12px; padding: 24px 22px; box-shadow: var(--shadow);
+    }
+    .diff-card h3 { font-size: 17px; font-weight: 800; margin-bottom: 10px; }
+    .diff-card p { font-size: 14.5px; color: var(--text-dim); line-height: 1.55; }
+    .diff-card p + p { margin-top: 10px; }
+    .diff-k { display: block; font-family: var(--mono); font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); margin-bottom: 2px; }
 
     .yes-banner {
       margin-top: 18px; background: var(--bg-card); color: var(--text);
@@ -654,6 +667,7 @@
       <a href="#model">The Model</a>
       <a href="#program">The Method</a>
       <a href="#whats-included">What You Get</a>
+      <a href="#different">Why Us</a>
       <a href="#roadmap">Roadmap</a>
       <a href="#proof">Proof</a>
       <a href="#faq-videos">FAQ Videos</a>
@@ -765,14 +779,15 @@
     <div class="story-copy">
       <span class="eyebrow reveal">Welcome From Bronson</span>
       <h2 class="reveal">The Story Behind <span class="accent">The Inner Table</span></h2>
-      <p class="lead reveal d1">I ran ads for other people's stores before I ever owned one. This is the short version of how that turned into a repeatable framework for building a brand, and why I built The Inner Table around it.</p>
+      <p class="lead reveal d1">I did not start with an online business. I started on a construction site, trading my body for a paycheck. This is the short version of how I got from there to a repeatable framework for building a brand, and why I built The Inner Table around it.</p>
       <div class="story-points">
-        <div class="spoint reveal d1"><div class="ico">1</div><div><h4>Ran ads for other people first</h4><p>Senior year of college I started an ads agency and scaled several ecommerce brands to real numbers. The clients made money. I proved the model worked before I put a dollar of my own on the line.</p></div></div>
-        <div class="spoint reveal d2"><div class="ico">2</div><div><h4>Backed myself and built my own brand</h4><p>The agency proved the machine worked, so I stopped running it for other people. I cancelled my internships and went all in on building a brand I actually owned.</p></div></div>
-        <div class="spoint reveal d3"><div class="ico">3</div><div><h4>The testing trap</h4><p>At first I did it the way everyone teaches: test product after product, find a winner, watch it die in three weeks, repeat. The knowledge was there. The process was not. I was a product researcher, not a business owner.</p></div></div>
-        <div class="spoint reveal d4"><div class="ico">4</div><div><h4>The shift: one proven product</h4><p>Everything changed when I stopped testing. I picked one product on numbers, data and facts, proven demand and a proven category. I put my logo and packaging on it from day one and went all in on scaling that one brand.</p></div></div>
-        <div class="spoint reveal"><div class="ico">5</div><div><h4>Treating it like a brand, not a store</h4><p>$9k month one. $40k month two. $2.5M in year one on the same single product, all documented publicly on social media. Not rented from a supplier. An actual asset I could sell.</p></div></div>
-        <div class="spoint reveal"><div class="ico">6</div><div><h4>Building the mentorship</h4><p>I built The Inner Table to hand serious people that same framework, the same supplier and tool access, and the 1-on-1 accountability I wish I had, so they skip the years of trial and error I went through.</p></div></div>
+        <div class="spoint reveal d1"><div class="ico">1</div><div><h4>Working construction in college</h4><p>Physical labor, long days, and a paycheck that stopped the second I stopped. No e-commerce experience. No marketing skills. Nothing I did all day translated to the online space.</p><p>If you work with your hands or a 9-to-5 right now, that is exactly where I was.</p></div></div>
+        <div class="spoint reveal d2"><div class="ico">2</div><div><h4>Learned ads on other people's stores</h4><p>Senior year I started running ads for ecommerce brands and scaled several of them to real numbers. The clients made money. I proved the model worked before I put a dollar of my own on the line.</p></div></div>
+        <div class="spoint reveal d3"><div class="ico">3</div><div><h4>Backed myself and built my own brand</h4><p>Once I knew the machine worked, I stopped running it for other people. I cancelled my internships and went all in on building a brand I actually owned.</p></div></div>
+        <div class="spoint reveal d4"><div class="ico">4</div><div><h4>The testing trap</h4><p>At first I did it the way everyone teaches: test product after product, find a winner, watch it die in three weeks, repeat. The knowledge was there. The process was not. I was a product researcher, not a business owner.</p></div></div>
+        <div class="spoint reveal"><div class="ico">5</div><div><h4>The shift: one proven product</h4><p>Everything changed when I stopped testing. I picked one product on numbers, data and facts, proven demand and a proven category. I put my logo and packaging on it from day one and went all in on scaling that one brand.</p></div></div>
+        <div class="spoint reveal"><div class="ico">6</div><div><h4>Treating it like a brand, not a store</h4><p>$9k month one. $40k month two. $2.5M in year one on the same single product, all documented publicly on social media. Not rented from a supplier. An actual asset I could sell.</p></div></div>
+        <div class="spoint reveal"><div class="ico">7</div><div><h4>Building the mentorship</h4><p>I built The Inner Table to hand serious people that same framework, the same supplier and tool access, and the 1-on-1 accountability I wish I had, so they skip the years of trial and error I went through.</p></div></div>
       </div>
     </div>
     <div class="story-side">
@@ -1104,6 +1119,32 @@
 
     <div class="data-note reveal">
       <strong>The product is usually not the problem. The testing loop is.</strong> Beginners burn months and ad budget hunting for a winner that dies in three weeks. Bronson's fix is the opposite: pick one product on data, put your brand on it, and put one hundred percent of your energy into scaling that one brand. The people who commit to one thing get there faster, not slower.
+    </div>
+
+    <div id="different" class="diff-anchor"></div>
+    <h2 class="reveal" style="margin-top:72px;">What Makes The Inner Table <span class="accent">Different</span></h2>
+    <p class="lead reveal d1">Comparing programs? Here is the contrast in one place.</p>
+    <div class="diff-grid">
+      <div class="diff-card reveal d1">
+        <h3>Bronson's personal phone</h3>
+        <p><span class="diff-k">What it is</span>Direct access to Bronson by phone, plus three live Zoom calls a week.</p>
+        <p><span class="diff-k">Why it matters</span>Most programs give you a Discord and a support ticket. When you are stuck, you hear from the person who built the brand, not a dead chat.</p>
+      </div>
+      <div class="diff-card reveal d2">
+        <h3>An active operator, not a retired guru</h3>
+        <p><span class="diff-k">What it is</span>Bronson is scaling a seven figure brand right now.</p>
+        <p><span class="diff-k">Why it matters</span>Most teachers made their money years ago and teach from memory. Platforms change every few months, so you get what is working this year.</p>
+      </div>
+      <div class="diff-card reveal d3">
+        <h3>The one-product framework</h3>
+        <p><span class="diff-k">What it is</span>You pick one product on data, put your brand on it, and commit.</p>
+        <p><span class="diff-k">Why it matters</span>Most programs teach testing product after product. That burns months and ad budget. You build one brand from day one instead.</p>
+      </div>
+      <div class="diff-card reveal d4">
+        <h3>A built-in exit strategy</h3>
+        <p><span class="diff-k">What it is</span>We help you grow and sell your brand for 3x to 5x yearly profit, and partner on the exit with a 10% profit split.</p>
+        <p><span class="diff-k">Why it matters</span>Most programs stop at your first sales. We only win big when you sell, so we are building an asset with you, not a job.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1462,7 +1503,7 @@
   <div class="wrap">
     <span class="eyebrow reveal">What Happens Next</span>
     <h2 class="reveal">Prep For Your Call</h2>
-    <p class="lead reveal d1" style="margin:0 auto; max-width:640px;">The call runs about 30 to 45 minutes. We cover where you are now, where you want to go, and whether the program is the right fit to get you there. Check each item off as you go:</p>
+    <p class="lead reveal d1" style="margin:0 auto; max-width:640px;">The call runs about 30 to 45 minutes. We cover where you are now, where you want to go, and whether the program is the right fit to get you there. It is a two-way fit check: we are deciding if we can get you the result, and you are deciding if we are the right people to build with. Check each item off as you go:</p>
 
     <div class="checklist reveal d2">
       <div class="check-progress" id="checkProgress"><strong>0 of 6</strong> complete</div>
