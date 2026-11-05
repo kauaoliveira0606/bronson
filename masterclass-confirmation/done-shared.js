@@ -5,7 +5,7 @@
   // Masterclass schedule: weekly, day of week (0 = Sunday) at HOUR:00 New York time.
   // MASTERCLASS_DATE (New York date) pins the next session to that day until it starts.
   // Keep in step with the constants in /masterclass/index.html.
-  var MASTERCLASS_DATE = '2026-11-04';
+  var MASTERCLASS_DATE = Date.now() < Date.UTC(2026, 10, 5, 5) ? '2026-11-04' : '2026-11-18'; // Nov 4 through midnight ET tonight, then Nov 18 (no Nov 11 session)
   var MASTERCLASS_DAY = 3;
   var MASTERCLASS_HOUR = 19;
   var MASTERCLASS_TIME_LABEL = '7PM EST';

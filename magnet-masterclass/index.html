@@ -1205,7 +1205,7 @@
     </details>
     <details class="faq-item">
       <summary>Will there be a replay?</summary>
-      <p>No. This is live only, and here's why: I answer questions in real time, and a recording of a Q&amp;A isn't a Q&amp;A. If you want in, show up <span class="js-event-short">Wednesday, October 28 at 7 PM EST</span>.</p>
+      <p>No. This is live only, and here's why: I answer questions in real time, and a recording of a Q&amp;A isn't a Q&amp;A. If you want in, show up <span class="js-event-short">Wednesday, November 18 at 7 PM EST</span>.</p>
     </details>
     <details class="faq-item">
       <summary>Do I need a store or a product before the masterclass?</summary>
@@ -1368,7 +1368,7 @@
 
   /* ---------- Schedule + countdown ---------- */
   // Keep in step with /masterclass/index.html.
-  var MASTERCLASS_DATE = '2026-11-04';
+  var MASTERCLASS_DATE = Date.now() < Date.UTC(2026, 10, 5, 5) ? '2026-11-04' : '2026-11-18'; // Nov 4 through midnight ET tonight, then Nov 18 (no Nov 11 session)
   var MASTERCLASS_DAY = 3;
   var MASTERCLASS_HOUR = 19;
   var MASTERCLASS_TIME_LABEL = '7:00 PM EST';

@@ -7,7 +7,8 @@
 // Schedule: weekly, day of week (0 = Sunday) at HOUR:00 New York time. MASTERCLASS_DATE
 // (New York date) pins the next session to that day until it starts.
 // Keep in step with /masterclass/index.html and /masterclass-confirmation/done-shared.js.
-const MASTERCLASS_DATE = '2026-11-04';
+// Nov 4 through midnight ET that night, then Nov 18 (no Nov 11 session). Read per request, not at boot.
+const masterclassDate = () => (Date.now() < Date.UTC(2026, 10, 5, 5) ? '2026-11-04' : '2026-11-18');
 const MASTERCLASS_DAY = 3;
 const MASTERCLASS_HOUR = 19;
 
@@ -38,6 +39,7 @@ function fromNyWall(wallUtc) {
 // The session stays "next" through the whole day it runs (New York time), so people
 // who are late still get today's session; it rolls to the following week at midnight.
 function nextSession(now) {
+  const MASTERCLASS_DATE = masterclassDate();
   if (MASTERCLASS_DATE) {
     const d = MASTERCLASS_DATE.split('-');
     const dayAfter = fromNyWall(Date.UTC(+d[0], +d[1] - 1, +d[2] + 1, 0, 0, 0));

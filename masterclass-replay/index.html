@@ -310,6 +310,8 @@
   // The replay comes down REPLAY_HOURS after the most recent session started.
   // MASTERCLASS_DATES (New York dates) are one-off sessions outside the weekly schedule.
   var MASTERCLASS_DATES = ['2026-10-18', '2026-10-28'];
+  // SKIPPED_DATES (New York dates) are weekly slots with no session (no Nov 11; next one is Nov 18).
+  var SKIPPED_DATES = ['2026-11-11'];
   var MASTERCLASS_DAY = 3;
   var MASTERCLASS_HOUR = 19;
   var REPLAY_HOURS = 48;
@@ -373,6 +375,7 @@
     var secsIntoDay = (+p.hour) * 3600 + (+p.minute) * 60 + (+p.second);
     if (back === 0 && secsIntoDay < MASTERCLASS_HOUR * 3600) back = 7;
     var wallUtc = Date.UTC(+p.year, +p.month - 1, +p.day - back, MASTERCLASS_HOUR, 0, 0);
+    while (SKIPPED_DATES.indexOf(new Date(wallUtc).toISOString().slice(0, 10)) !== -1) wallUtc -= 7 * 86400000;
     var guess = new Date(wallUtc - nyOffset(new Date(wallUtc)));
     var last = new Date(wallUtc - nyOffset(guess));
     MASTERCLASS_DATES.forEach(function (ymd) {
