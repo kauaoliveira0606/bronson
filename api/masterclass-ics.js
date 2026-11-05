@@ -7,8 +7,8 @@
 // Schedule: weekly, day of week (0 = Sunday) at HOUR:00 New York time. MASTERCLASS_DATE
 // (New York date) pins the next session to that day until it starts.
 // Keep in step with /masterclass/index.html and /masterclass-confirmation/done-shared.js.
-// Nov 4 through midnight ET that night, then Nov 18 (no Nov 11 session). Read per request, not at boot.
-const masterclassDate = () => (Date.now() < Date.UTC(2026, 10, 5, 5) ? '2026-11-04' : '2026-11-18');
+// Next pinned session (no Nov 11 session).
+const masterclassDate = () => '2026-11-18';
 const MASTERCLASS_DAY = 3;
 const MASTERCLASS_HOUR = 19;
 

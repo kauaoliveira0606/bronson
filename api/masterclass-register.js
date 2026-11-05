@@ -58,6 +58,9 @@ function airtable(url, method, body) {
   });
 }
 
+// Sign-ups go to this session or later (user, 2026-11-04: next masterclass is Nov 18, not Nov 4).
+const EARLIEST_SESSION = '2026-11-18 00:00';
+
 // Schedule dates are New York wall-clock strings ("2026-11-04 19:00"), so they compare as text.
 function nextSchedule(schedules, now) {
   const p = {};
@@ -67,7 +70,7 @@ function nextSchedule(schedules, now) {
   }).formatToParts(now).forEach((x) => { p[x.type] = x.value; });
   const nowNy = p.year + '-' + p.month + '-' + p.day + ' ' + p.hour + ':' + p.minute;
   return (schedules || [])
-    .filter((s) => /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(s.date || '') && s.date > nowNy)
+    .filter((s) => /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(s.date || '') && s.date > nowNy && s.date >= EARLIEST_SESSION)
     .sort((a, b) => (a.date < b.date ? -1 : 1))[0];
 }
 
