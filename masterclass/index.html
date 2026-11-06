@@ -954,6 +954,40 @@
     .qa-quote-head { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; font-weight: 600; color: var(--ink); }
     .qa-quote-icon { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; background: #64748b; color: #ffffff; font-size: 0.7rem; font-weight: 800; }
     .cover-row .qa-quote .qa-quote-text { margin-top: 6px; font-size: 0.9rem; line-height: 1.5; color: #334155; }
+    /* Registration countdown card under the hero trust badges */
+    .reg-close { max-width: 460px; margin: 22px auto 0; padding: 18px 16px 16px; border-radius: 16px; background: linear-gradient(180deg, #f0fdf4, #f7fdf9); border: 1px solid #bbf7d0; box-shadow: 0 12px 30px -20px rgba(22,163,74,.45); text-align: center; }
+    .reg-close-when { display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.05rem; color: #0f172a; }
+    .reg-close-when svg { color: #16a34a; flex: none; }
+    .reg-close-lbl { margin: 12px 0 10px; font-size: .74rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #475569; }
+    .reg-close .countdown { margin: 0 auto; gap: 10px; }
+    .reg-close .cd-cell { width: 72px; background: #ecfdf3; border: 1px solid #86efac; border-radius: 12px; padding: 10px 4px 8px; }
+    .reg-close .cd-num { color: #16a34a; font-size: 1.7rem; font-weight: 800 !important; font-family: 'Manrope', sans-serif; }
+    .reg-close .cd-lbl { color: #475569; margin-top: 2px; }
+    @media (max-width: 420px) { .reg-close .cd-cell { width: 64px; } .reg-close .cd-num { font-size: 1.45rem; } }
+    /* Unique mechanism inside the headline: same size, green with a marker highlight */
+    .hero h1 .mech { color: #15803d; white-space: nowrap; padding: 0 .04em; margin: 0 -.04em; border-radius: .18em; background: linear-gradient(180deg, transparent 52%, rgba(34,197,94,.28) 52%, rgba(34,197,94,.28) 92%, transparent 92%); }
+    .hero h1 .h1-q4 { color: #16a34a; }
+    /* Reorder Engine step tags on the cover cards */
+    .cover-head { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .cover-step { display: inline-flex; align-items: center; height: 34px; padding: 0 12px; border-radius: 10px; border: 1px solid #bbf7d0; background: #ffffff; font-family: 'Manrope', sans-serif; font-size: 0.82rem; font-weight: 700; color: #475569; letter-spacing: 0.2px; }
+    .cover-step b { color: #15803d; font-weight: 800; margin-left: 4px; text-transform: uppercase; letter-spacing: 0.8px; }
+    /* Top bar: label and time on one line, stacked on phones */
+    .nav-sep { white-space: pre; }
+    /* One line on every screen */
+    .nav-label { flex-wrap: nowrap; white-space: nowrap; }
+    @media (max-width: 600px) { .nav-label { font-size: 0.62rem; letter-spacing: 0.2px; gap: 4px; } .nav-label-top { gap: 5px; } }
+    @media (max-width: 360px) { .nav-label { font-size: 0.56rem; letter-spacing: 0; } }
+    .hero-subhead .mech { color: #15803d; font-weight: 800; white-space: nowrap; }
+    /* Save My Seat button in the sticky top bar: label left, button right */
+    .nav-bar { justify-content: space-between; gap: 12px; padding: 9px max(16px, calc((100% - 1100px) / 2)); text-align: left; }
+    .nav-seat { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: 999px; background: #ffffff; color: #15803d; font-family: 'Manrope', 'Inter', sans-serif; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; text-decoration: none; white-space: nowrap; box-shadow: 0 2px 8px rgba(6,78,35,0.25); transition: transform .15s ease, box-shadow .2s ease; }
+    .nav-seat:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(6,78,35,0.3); }
+    @media (max-width: 600px) {
+      .nav-bar { padding: 8px 12px; gap: 8px; }
+      .nav-label { flex-direction: column; align-items: flex-start; gap: 1px; font-size: 0.66rem; }
+      .nav-sep { display: none; }
+      .nav-seat { padding: 8px 12px; font-size: 0.68rem; letter-spacing: 0.3px; }
+    }
   </style>
 <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
@@ -968,7 +1002,8 @@
 <!-- Sticky top bar: zero height so it floats over the hero; the hero pads itself by its height (--nav-h). -->
 <div class="nav-sticky">
   <div class="nav-bar">
-    <span class="nav-label"><span class="nav-label-top"><span class="dot"></span>Masterclass<span class="nav-label-colon">:</span></span> <span class="nav-date js-event-date"><span>Wednesday, November 18</span><span class="nav-date-sep"> &middot; </span><span>7:00 PM EST</span></span></span>
+    <span class="nav-label"><span class="nav-label-top"><span class="dot"></span>Live With Bronson Sysum</span><span class="nav-sep"> &middot; </span><span class="nav-date js-nav-when">This Wednesday at 7:00 PM EST</span></span>
+    <a class="nav-seat js-seat-open" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span></a>
   </div>
 </div>
 
@@ -976,7 +1011,7 @@
   <!-- HERO -->
   <div class="hero">
     <h1>Build a Subscription E&#8209;Commerce Brand to Turn Every Customer Into <span class="hl-pill" style="white-space: nowrap;">Monthly Income</span></h1>
-    <p class="hero-subhead">I'll show you the exact MRR (Monthly Recurring Revenue) e&#8209;commerce system. No Lambos, no hype, no nonsense. Even if you don't have a product or store right now.</p>
+    <p class="hero-subhead">Get the exact 3&#8209;Step <span class="mech">"Reorder Engine"</span> System behind Bronson's $600K/month brand. Even if you don't have a product or store.</p>
     <ul class="feature-pills">
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg><span class="fp-label">Bulk Inventory</span><span class="fp-value">Zero</span></li>
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="fp-label">Time Needed</span><span class="fp-value">1-3 Hours/Day</span></li>
@@ -993,7 +1028,7 @@
 <div class="band">
 <!-- WHAT WE'LL COVER -->
 <div class="section wide">
-  <p class="section-label">On This Live Masterclass</p>
+  <p class="section-label">The Reorder Engine: Pick, Launch, Stack</p>
   <h2 class="section-title">What We'll Cover <span class="green">Live</span></h2>
 
   <div class="cover-list">
@@ -1029,7 +1064,7 @@
         <div class="caption">Winning Product + Your Store</div>
       </div>
       <div>
-        <div class="cover-num">01</div>
+        <div class="cover-head"><div class="cover-num">01</div><span class="cover-step">Reorder Engine &middot; Step 1: <b>The Pick</b></span></div>
         <h3>How To Find A Winning Product And Build Your Store, Even If Your Last Attempt Didn't Work</h3>
         <p>No more guessing what to sell or testing a new product every week.</p>
         <p>I'll show you how to find one product people already buy every month and put your own brand on it.</p>
@@ -1070,7 +1105,7 @@
         <div class="caption">Traffic + Your First Sales</div>
       </div>
       <div>
-        <div class="cover-num">02</div>
+        <div class="cover-head"><div class="cover-num">02</div><span class="cover-step">Reorder Engine &middot; Step 2: <b>The Launch</b></span></div>
         <h3>How To Get Traffic And Your First Sales Without Wasting Your Budget Or Quitting Your Job</h3>
         <p>Most people burn through their money on ads before they know what works.</p>
         <p>I'll show you how to get your first sales on a small budget.</p>
@@ -1104,7 +1139,7 @@
         <div class="caption">MRR (Monthly Recurring Revenue)</div>
       </div>
       <div>
-        <div class="cover-num">03</div>
+        <div class="cover-head"><div class="cover-num">03</div><span class="cover-step">Reorder Engine &middot; Step 3: <b>The Stack</b></span></div>
         <h3>How To Turn Every Customer Into Monthly Income</h3>
         <p>Most stores sell something once, then have to go find a brand new customer.</p>
         <p>You'll sell stuff people use up and reorder, like supplements.</p>
@@ -1231,7 +1266,7 @@
     </details>
     <details class="faq-item">
       <summary>I've tried e-commerce before and it didn't work. How is this different?</summary>
-      <p>Most ecom models make you start from zero every month because every sale is a one-time sale. This model sells things people use up and reorder, so the same customer pays you again next month. And you're not testing 50 products hoping one sticks. One product, one brand, built to compound.</p>
+      <p>Most ecom models make you start from zero every month because every sale is a one-time sale. This model sells things people use up and reorder, so the same customer pays you again next month. And you're not testing 50 products hoping one sticks. That's the Reorder Engine: one product, one brand, built to compound.</p>
     </details>
     <details class="faq-item">
       <summary>Why should I trust you?</summary>
@@ -1261,7 +1296,7 @@
 <!-- STUDENT WINS -->
 <div class="section wide">
   <p class="section-label">Student Wins</p>
-  <h2 class="section-title">People Just Like You Who Followed The System</h2>
+  <h2 class="section-title">People Just Like You Who Followed The Reorder Engine</h2>
   <p class="section-desc">No hype. Just outcomes from students running the same model I'm teaching live.</p>
   <div class="win-cols js-wins"></div>
   <div class="cta-row">
@@ -1281,7 +1316,7 @@
         <div class="event-date js-event-date">Wednesday, November 18 &middot; 7:00 PM EST</div>
         <p class="cd-label">Live Event Starts In...</p>
         <div class="countdown js-countdown"></div>
-        <p class="fill-note"><span class="dot"></span>Live only. &#127873; Receive FREE VIP Gift: Winning Product Research Checklist.</p>
+        <p class="fill-note"><span class="dot"></span>Live only. &#127873; FREE ATTENDEE BONUS ($197 VALUE):<br>Private Winning Product Research Checklist.</p>
       </div>
     </div>
   </div>
@@ -1415,7 +1450,11 @@
     if (id === 'form-card-top') {
       var heroBtn = optin.querySelector('.cta-btn');
       heroBtn.insertAdjacentHTML('beforeend', '<span class="cta-btn-sub cta-btn-when">Starting <span class="js-reminder-when">7 PM EST on Wednesday</span></span>');
-      heroBtn.insertAdjacentHTML('afterend', '<p class="vip-gift">&#127873; Receive FREE VIP Gift: Winning Product Research Checklist.</p>');
+      heroBtn.insertAdjacentHTML('afterend', '<p class="vip-gift">&#127873; FREE ATTENDEE BONUS ($197 VALUE):<br>Private Winning Product Research Checklist.</p>');
+      // Registration countdown under the trust badges (hero only; the bottom form has its own).
+      optin.querySelector('.trust-row').insertAdjacentHTML('afterend',
+        '<div class="reg-close"><div class="reg-close-when"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="js-event-date">Wednesday, November 18 &middot; 7:00 PM EST</span></div>' +
+        '<p class="reg-close-lbl">Registrations Close In</p><div class="countdown js-countdown"></div></div>');
     }
     card.appendChild(optin);
   });
@@ -1556,7 +1595,19 @@
   }
   paintSeats();
 
+  // Top bar: "This Wednesday at 7:00 PM EST" when the session is within the week, the full date otherwise.
+  function paintNavWhen() {
+    var nyDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' });
+    var days = Math.round((Date.parse(nyDate.format(session)) - Date.parse(nyDate.format(new Date()))) / 864e5);
+    var weekday = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'long' }).format(session);
+    // More than a week out, "This Wednesday" would point at the wrong week, so show the short date.
+    var when = days < 7
+      ? 'This ' + weekday
+      : new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric' }).format(session);
+    document.querySelectorAll('.js-nav-when').forEach(function (el) { el.textContent = when + ' at ' + MASTERCLASS_TIME_LABEL; });
+  }
   function paintDate() {
+    paintNavWhen();
     document.querySelectorAll('.js-event-date').forEach(function (el) {
       el.textContent = formatSession(session);
       // The top bar splits day and time into two lines on phones.
