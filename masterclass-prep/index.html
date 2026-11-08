@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Masterclass Prep | The Inner Table</title>
+  <meta name="description" content="Everything you need to show up ready for Bronson's live masterclass on subscription-based e-commerce." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/logo-180.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0f172a;
+      --body: #1e293b;
+      --muted: #475569;
+      --green: #16a34a;
+      --green-fill: #22c55e;
+      --green-dark: #15803d;
+      --tint: #f0fdf4;
+      --tint-2: #dcfce7;
+      --line: #bbf7d0;
+      --card: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--body);
+      line-height: 1.6;
+      background:
+        radial-gradient(900px 520px at 12% -8%, rgba(34,197,94,.16), transparent 60%),
+        radial-gradient(800px 480px at 95% 4%, rgba(22,163,74,.12), transparent 60%),
+        repeating-linear-gradient(118deg, transparent 0 150px, rgba(22,163,74,.05) 150px 152px),
+        linear-gradient(180deg, #f2faf5 0, #f8faf9 900px, #fcfdfc 100%);
+      overflow-x: clip;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; }
+    h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ink); letter-spacing: -0.5px; line-height: 1.18; }
+    .g { color: var(--green); }
+    .hl { color: var(--green); font-weight: 700; }
+
+    .topbar { display: flex; align-items: center; justify-content: center; gap: 9px; padding: 11px 16px; background: rgba(255,255,255,.75); border-bottom: 1px solid #e5e7eb; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .78rem; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #334155; }
+    .topbar img { height: 22px; width: auto; }
+
+    .wrap { max-width: 880px; margin: 0 auto; padding: 32px 16px 80px; }
+    .card { background: var(--card); border-radius: 18px; box-shadow: 0 1px 2px rgba(15,23,42,.05), 0 18px 40px -22px rgba(15,23,42,.22); padding: 44px 48px; margin-top: 28px; }
+    .card:first-child { margin-top: 0; }
+    .card > h2 { text-align: center; font-size: clamp(1.6rem, 4.4vw, 2.3rem); }
+    .center { text-align: center; }
+
+    /* Hero */
+    .hero h1 { text-align: center; font-size: clamp(1.8rem, 5vw, 2.6rem); }
+    .eyebrow-link { display: block; text-align: center; margin-top: 22px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--green); }
+    .toc { list-style: none; max-width: 520px; margin: 20px auto 0; }
+    .toc li { display: flex; align-items: center; gap: 12px; padding: 11px 0; font-size: 1.08rem; font-weight: 600; color: var(--ink); border-bottom: 1px solid #f1f5f9; }
+    .toc li:last-child { border-bottom: 0; }
+    .toc a { text-decoration: none; }
+    .toc a:hover { color: var(--green); }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green-fill); flex: none; }
+
+    /* Steps */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 28px; counter-reset: step; }
+    .step { border: 1.5px solid var(--line); border-radius: 14px; overflow: hidden; background: #fff; display: flex; flex-direction: column; counter-increment: step; }
+    .step[hidden] { display: none; }
+    .step-num { background: var(--tint); border-bottom: 1.5px solid var(--line); text-align: center; padding: 10px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--green-dark); }
+    .step-num::before { content: counter(step); }
+    .step-body { padding: 18px 18px 20px; flex: 1; display: flex; flex-direction: column; }
+    .step h3 { font-size: 1.12rem; }
+    .step p { margin-top: 8px; font-size: .98rem; }
+    .step .actions { margin-top: auto; padding-top: 16px; display: flex; flex-direction: column; gap: 9px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 18px; border-radius: 10px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: .98rem; text-decoration: none; transition: transform .15s, background .15s; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-green { color: #fff; background: linear-gradient(180deg, #2bcf68, #16a34a); box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 8px 18px -10px rgba(22,163,74,.7); }
+    .btn-outline { color: var(--green-dark); background: var(--tint); border: 2px solid var(--green-fill); }
+    .btn-outline:hover { background: var(--tint-2); }
+    .btn-dark { color: #fff; background: #0b0b0b; border-radius: 999px; }
+
+    /* Timeline */
+    .timeline { position: relative; margin-top: 30px; padding-left: 34px; }
+    .timeline::before { content: ""; position: absolute; left: 9px; top: 6px; bottom: 6px; width: 2px; background: var(--line); }
+    .tl { position: relative; background: var(--tint); border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; margin-top: 18px; }
+    .tl:first-child { margin-top: 0; }
+    .tl::before { content: ""; position: absolute; left: -31px; top: 30px; width: 14px; height: 14px; border-radius: 50%; background: var(--green-fill); box-shadow: 0 0 0 4px #fff; }
+    .tl h3 { font-size: clamp(1.25rem, 3.4vw, 1.6rem); }
+    .tl p { margin-top: 10px; font-size: 1.02rem; }
+    .tl .media { margin-top: 16px; display: grid; gap: 12px; }
+    .media.three { align-items: start; }
+    .tl .media img { border-radius: 10px; background: #fff; box-shadow: 0 8px 20px -14px rgba(15,23,42,.35); }
+    .media.two { grid-template-columns: 1fr 1fr; }
+    .media.three { grid-template-columns: repeat(3, 1fr); }
+    .stat-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .stat { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; min-width: 140px; flex: 1; }
+    .stat b { display: block; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.5rem; color: var(--green); line-height: 1.1; }
+    .stat span { font-size: .85rem; color: var(--muted); }
+    .bronson-row { display: grid; grid-template-columns: 200px 1fr; gap: 20px; align-items: center; margin-top: 14px; }
+    .bronson-row img { border-radius: 12px; }
+
+    .callout { margin-top: 26px; background: #eef7ff; border: 1px solid #cfe6ff; border-radius: 14px; padding: 20px; }
+    .callout h3 { font-size: 1.15rem; display: flex; gap: 10px; align-items: center; }
+    .video { position: relative; aspect-ratio: 16 / 9; margin-top: 14px; border-radius: 12px; overflow: hidden; background: #000; }
+    .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+    .proofs { columns: 3 240px; column-gap: 14px; margin-top: 26px; }
+    .proof { break-inside: avoid; margin: 0 0 14px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; overflow: hidden; box-shadow: 0 10px 26px -18px rgba(15,23,42,.35); }
+    .proof figcaption { padding: 14px 16px 12px; }
+    .proof .num { display: block; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--green); line-height: 1.15; }
+    .proof b { display: block; margin-top: 4px; font-size: .92rem; color: var(--ink); }
+    .proof p { margin-top: 3px; font-size: .9rem; color: var(--muted); line-height: 1.45; }
+    .proof img, .proof vturb-smartplayer { display: block; width: 100%; }
+    /* Wins */
+    .quotes { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 26px; }
+    .quote { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px 18px; }
+    .stars { color: #f59e0b; letter-spacing: 2px; font-size: .95rem; }
+    .quote .num { display: block; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.35rem; color: var(--green); line-height: 1.15; }
+    .quote p { margin-top: 6px; font-size: .98rem; color: var(--ink); }
+    .quote b { display: block; margin-top: 8px; font-size: .85rem; color: var(--muted); font-weight: 600; }
+    .wins { columns: 3 220px; column-gap: 12px; margin-top: 16px; }
+    .wins img { width: 100%; margin-bottom: 12px; border-radius: 10px; break-inside: avoid; box-shadow: 0 8px 20px -14px rgba(15,23,42,.35); }
+    .disclaim { margin-top: 12px; font-size: .8rem; color: var(--muted); text-align: center; }
+
+    /* Split cards */
+    .split { display: grid; grid-template-columns: 1.15fr 1fr; gap: 0; padding: 0; overflow: hidden; }
+    .split .copy { padding: 40px 40px; }
+    .split .copy h2 { text-align: center; font-size: clamp(1.5rem, 4vw, 2.1rem); }
+    .split .visual { background: var(--tint); display: flex; align-items: center; justify-content: center; padding: 26px; }
+    ul.bul { margin-top: 20px; padding-left: 20px; }
+    ul.bul li { margin-top: 10px; font-size: 1.02rem; }
+    .viz { width: 100%; max-width: 330px; background: #fff; border: 2px solid var(--ink); border-radius: 18px; padding: 22px 20px; text-align: center; }
+    .viz .big { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 2.6rem; color: var(--ink); line-height: 1; }
+    .viz .lbl { font-weight: 700; color: var(--ink); margin-top: 6px; }
+    .viz .arrow { color: var(--green); font-size: 1.4rem; margin: 6px 0; }
+    .months { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 14px; }
+    .months span { background: var(--tint); border: 1px solid var(--line); border-radius: 8px; padding: 7px 0; font-size: .74rem; font-weight: 700; color: var(--green-dark); }
+    .viz .note { margin-top: 14px; padding-top: 12px; border-top: 1px dashed #cbd5e1; font-size: .82rem; color: var(--muted); }
+    .season { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+    .season div { border-radius: 12px; padding: 12px 8px; font-weight: 700; font-size: .88rem; color: var(--ink); background: var(--tint); border: 1px solid var(--line); }
+    .season div i { display: block; font-style: normal; font-size: 1.4rem; }
+    .season .ny { grid-column: 1 / -1; background: #fff7ed; border-color: #fed7aa; }
+
+    /* Covering */
+    .checks { list-style: none; margin-top: 24px; }
+    .checks li { display: flex; gap: 12px; margin-top: 14px; font-size: 1.06rem; color: var(--ink); }
+    .checks li::before { content: ""; flex: none; width: 20px; height: 20px; margin-top: 4px; border: 2px solid var(--green-fill); border-radius: 6px; }
+    .no-box { margin-top: 26px; background: var(--tint-2); border-radius: 14px; padding: 22px 24px; }
+    .no-box h3 { font-size: 1.15rem; }
+    .no-box p { margin-top: 10px; }
+    .no-box .key { font-weight: 700; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* FAQ */
+    .faq-intro h2 { text-align: left !important; }
+    .faq-intro h2 u { text-decoration-color: var(--green-fill); text-underline-offset: 6px; }
+    .faq h2 { text-align: left !important; font-size: clamp(1.35rem, 3.6vw, 1.9rem) !important; }
+
+    /* Final steps */
+    .final .steps .step-num { display: none; }
+    .final .circle { width: 48px; height: 48px; margin: 18px auto 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--green-fill); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.2rem; }
+    .final .circle::before { content: counter(step); }
+    .final .step h3 { text-align: center; margin-top: 10px; }
+
+    footer { max-width: 880px; margin: 0 auto; padding: 0 16px 50px; font-size: .78rem; color: var(--muted); text-align: center; }
+
+    @media (max-width: 720px) {
+      .wrap { padding: 18px 14px 60px; }
+      .card { padding: 28px 18px; border-radius: 16px; margin-top: 20px; }
+      .split { grid-template-columns: 1fr; padding: 0; }
+      .split .copy { padding: 28px 18px; }
+      .split .visual { padding: 20px 16px 24px; }
+      .timeline { padding-left: 24px; }
+      .timeline::before { left: 5px; }
+      .tl { padding: 18px 16px; }
+      .tl::before { left: -25px; }
+      .bronson-row { grid-template-columns: 1fr; }
+      .bronson-row img { max-width: 220px; margin: 0 auto; }
+      .media.three { grid-template-columns: 1fr 1fr; }
+      .toc li { font-size: 1rem; }
+      .wins { columns: 2; column-gap: 10px; }
+      .proofs { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">The Inner Table · Masterclass Prep</div>
+
+<main class="wrap">
+
+  <!-- Hero -->
+  <section class="card hero">
+    <h1>Congrats On Saving Your Seat For The <span class="g">Masterclass!</span> 🎉</h1>
+    <p class="center" style="margin-top:14px;font-size:1.08rem;">Live on <b class="js-when">Monday, November 16th @ 7:00 PM ET</b></p>
+    <span class="eyebrow-link">Everything to get you ready before the masterclass:</span>
+    <ul class="toc">
+      <li><span class="dot"></span><a href="#steps">How to show up properly</a></li>
+      <li><span class="dot"></span><a href="#who">Who I am and what I've built</a></li>
+      <li><span class="dot"></span><a href="#wins">Proof this is real</a></li>
+      <li><span class="dot"></span><a href="#covering">What we're covering</a></li>
+      <li><span class="dot"></span><a href="#faq">The most common questions I get before this masterclass</a></li>
+    </ul>
+  </section>
+
+  <!-- Steps -->
+  <section class="card" id="steps">
+    <h2>Complete These Simple Steps To <span class="g">Show Up Properly</span></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <h3>Add it to your calendar</h3>
+          <p>Add the masterclass to your calendar right now. We've also sent the access details to your email. Open it and add the event to your calendar <b>NOW</b> so you don't miss the live session.</p>
+          <div class="actions">
+            <a class="btn btn-outline js-cal-google" target="_blank" rel="noopener">Google Calendar</a>
+            <a class="btn btn-outline js-cal-outlook" target="_blank" rel="noopener">Outlook Calendar</a>
+            <a class="btn btn-outline js-cal-yahoo" target="_blank" rel="noopener">Yahoo Calendar</a>
+          </div>
+        </div>
+      </div>
+      <div class="step js-pass-step" hidden>
+        <div class="step-num"></div>
+        <div class="step-body">
+          <h3>Get your pass</h3>
+          <p>Your pass puts the masterclass on your lock screen a few hours before we start, with the join link one tap away.</p>
+          <div class="actions"><a class="btn btn-dark js-pass" href="#">Get My Pass</a></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <h3>Find my email</h3>
+          <p>Search your inbox for the email from me with your masterclass details.</p>
+          <p>Not there? Check promotions or spam, then drag it into your main inbox so you get every reminder.</p>
+          <div class="actions"><a class="btn btn-green" href="https://mail.google.com/mail/u/0/#search/masterclass+in%3Aanywhere" target="_blank" rel="noopener">Open Gmail</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who am I -->
+  <section class="card" id="who">
+    <h2>Who Am I?</h2>
+    <div class="timeline">
+      <div class="tl">
+        <h3>My name is Bronson. My subscription brand does over <span class="g">$600,000 a month</span>, and I still run it every single day:</h3>
+        <div class="bronson-row">
+          <img src="/masterclass/bronson.webp" alt="Bronson, founder of The Inner Table" width="720" height="900" />
+          <div>
+            <p>I'm not a guru who made his money teaching. I'm an operator.</p>
+            <p>Same model I'll show you on the masterclass. One product people reorder every month, with my own brand on it.</p>
+            <div class="stat-row">
+              <div class="stat"><b>$600K+</b><span>a month, my brand</span></div>
+              <div class="stat"><b>208</b><span>students helped</span></div>
+              <div class="stat"><b>4.7★</b><span>rated on Whop</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl">
+        <h3>But it wasn't always like this....</h3>
+        <p>I grew up in Michigan, quite literally in the middle of nowhere. No rich parents. Not the nicest school.</p>
+        <p>I played college basketball until an injury took it away. Everything I was working towards, gone, just like that.</p>
+        <p>So I went into construction. 10 to 12 hour shifts, an hour-long commute, and my body breaking down.</p>
+      </div>
+
+      <div class="tl">
+        <h3>I started with no product, no store, and honestly no clue what I was doing...</h3>
+        <p>On a random night in my last year of college I came across subscription-based e-commerce on YouTube.</p>
+        <p>I got obsessed. Every hour after class and after work went into learning it.</p>
+        <p>I picked one product, put my brand on it, and went all in. My first year did <span class="hl">$1,156,733</span>.</p>
+      </div>
+
+      <div class="tl">
+        <h3>And I've helped a bunch of other people build their own brands with this exact model:</h3>
+        <div class="media three">
+          <img src="/13.webp" alt="Student win: Ryan, $20K month" width="720" height="1208" />
+          <img src="/14.webp" alt="Student win: Jaden, $8K day" width="1024" height="1024" />
+          <img src="/15.webp" alt="Student win: Tyler, $100K in 2 weeks" width="1024" height="1024" />
+        </div>
+        <div class="media" style="margin-top:12px;"><img src="/pre1on1prep/6.webp" alt="Student win: $30,000 in 23 days" width="1200" height="496" /></div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <h3>ⓘ Learn more about me and my story by watching this video:</h3>
+      <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/eA7I6V26uPA" title="I made $1,156,733 my first year doing branded e-com" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+    </div>
+  </section>
+
+  <!-- Wins -->
+  <section class="card" id="wins">
+    <h2>Results People Have Gotten With <span class="g">MRR E&#8209;Commerce</span></h2>
+    <p class="center" style="margin-top:12px;font-size:1.05rem;">Everyday people who picked one product, put their brand on it, and built monthly recurring revenue.</p>
+    <div class="proofs">
+      <figure class="proof"><figcaption><span class="num">$500/day</span><b>Zach</b><p>“I’m already doing $500/day in sales.”</p></figcaption><vturb-smartplayer id="vid-6a06402316c0af42e4012ebf" data-vturb="6a06402316c0af42e4012ebf" style="display:block;width:100%;"></vturb-smartplayer></figure>
+      <figure class="proof"><figcaption><span class="num">$16,000+</span><b>Dan</b><p>“I’ve made over $16,000 since I’ve started, not that long ago.”</p></figcaption><vturb-smartplayer id="vid-6a0640174d688ba705672fa5" data-vturb="6a0640174d688ba705672fa5" style="display:block;width:100%;"></vturb-smartplayer></figure>
+      <figure class="proof"><figcaption><span class="num">$20K/month</span><b>Ryan</b><p>Went from a job he hated to $20K a month with his own brand.</p></figcaption><img src="/13.webp" alt="$20K/month: Ryan" /></figure>
+      <figure class="proof"><figcaption><span class="num">$100K in 2 weeks</span><b>Tyler</b><p>No prior e-commerce experience.</p></figcaption><img src="/15.webp" alt="$100K in 2 weeks: Tyler" /></figure>
+      <figure class="proof"><figcaption><span class="num">$30K in 23 days</span><b>Supplement brand</b><p>$30,000 in revenue in the last 23 days.</p></figcaption><img src="/pre1on1prep/6.webp" alt="$30K in 23 days: Supplement brand" /></figure>
+      <figure class="proof"><figcaption><span class="num">$100K+ months incoming</span><b>Supplement brand</b><p>Getting into the big numbers.</p></figcaption><img src="/pre1on1prep/12.webp" alt="$100K+ months incoming: Supplement brand" /></figure>
+      <figure class="proof"><figcaption><span class="num">8.79x ROAS</span><b>Skin care brand</b><p>TikTok ads crushing it.</p></figcaption><img src="/pre1on1prep/7.webp" alt="8.79x ROAS: Skin care brand" /></figure>
+      <figure class="proof"><figcaption><span class="num">3.61x ROAS</span><b>Organic hair &amp; skin care brand</b><p>Ripping sales with Meta ads.</p></figcaption><img src="/pre1on1prep/11.webp" alt="3.61x ROAS: Organic hair &amp; skin care brand" /></figure>
+      <figure class="proof"><figcaption><span class="num">3.59x ROAS</span><b>Under 1 month in</b><p>Already scaling.</p></figcaption><img src="/pre1on1prep/8.webp" alt="3.59x ROAS: Under 1 month in" /></figure>
+      <figure class="proof"><figcaption><span class="num">$968 by midday</span><b>Ryan</b><p>“I was exactly where all of you are now less than 7 months ago.”</p></figcaption><img src="/wins/win-352.webp" alt="$968 by midday: Ryan" /></figure>
+      <figure class="proof"><figcaption><span class="num">$184 day</span><b>Layman</b><p>After bumping the ad budget to $72 a day.</p></figcaption><img src="/wins/win-353.webp" alt="$184 day: Layman" /></figure>
+      <figure class="proof"><figcaption><span class="num">$112 day</span><b>Armen</b><p>“This is how we finished day 3 of running ads!”</p></figcaption><img src="/wins/win-354.webp" alt="$112 day: Armen" /></figure>
+      <figure class="proof"><figcaption><span class="num">First order in a week</span><b>Darian</b><p>“Got my first order on my supplement brand only a week in.”</p></figcaption><img src="/wins/win-362.webp" alt="First order in a week: Darian" /></figure>
+      <figure class="proof"><figcaption><span class="num">Live results</span><b>Current results</b><p>No old screenshots here.</p></figcaption><img src="/pre1on1prep/9.webp" alt="Live results: Current results" /></figure>
+    </div>
+    <p class="disclaim">Results shown are individual and not typical. Your results depend on your effort, experience and market conditions.</p>
+  </section>
+
+  <!-- Timing -->
+  <section class="card split">
+    <div class="copy">
+      <h2>Truthfully, there has never been a better time to start than <span class="g">RIGHT NOW</span></h2>
+      <ul class="bul">
+        <li>We're in <span class="hl">Q4, the biggest shopping season of the year</span>. Black Friday, Cyber Monday and Christmas are all stacked into the next few weeks.</li>
+        <li>Right after that comes <span class="hl">January</span>. New Year's resolutions, and everyone starts buying health and wellness products.</li>
+        <li>A customer you get this season doesn't buy once. With a subscription product <span class="hl">they keep reordering into the new year</span>.</li>
+        <li>Start now and you're building your brand while everyone else waits until "after the holidays".</li>
+      </ul>
+    </div>
+    <div class="visual">
+      <div class="viz">
+        <div class="big">Q4</div>
+        <div class="lbl">the biggest shopping season of the year</div>
+        <div class="season">
+          <div><i>🏷️</i>Black Friday</div>
+          <div><i>🛒</i>Cyber Monday</div>
+          <div><i>🎁</i>Christmas</div>
+          <div><i>💪</i>New Year</div>
+        </div>
+        <div class="note">Then the reorders keep coming every month after.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catch -->
+  <section class="card">
+    <h2>What's the catch? <span class="g">Why are you doing this</span>?</h2>
+    <ul class="bul" style="max-width:720px;margin-left:auto;margin-right:auto;">
+      <li>Let me be upfront about why I'm doing this.</li>
+      <li>At the end of the masterclass, I'm going to invite you to <span class="hl">work with me and my team</span>, where we help you build your brand with the <span class="hl">Reorder Engine</span> step by step.</li>
+      <li>But here's the part that matters. <span class="hl">You do not have to join anything.</span></li>
+      <li>Everything I teach on the masterclass, <span class="hl">the Product Pick, the Launch, the Stack, the Engine</span>, you can take it, execute it on your own, and never speak to me again.</li>
+      <li>Genuinely, that's fine. The training works whether you work with me or not.</li>
+      <li>I'm only here for the people who want to <span class="hl">skip the guessing</span> and do it with someone who's already built it</li>
+    </ul>
+  </section>
+
+  <!-- Covering -->
+  <section class="card" id="covering">
+    <h2>Here's What We're Covering On <span class="g">The Masterclass</span></h2>
+    <ul class="checks">
+      <li><span>How I went from construction shifts to a subscription brand doing <span class="hl">over $600K a month</span> with one product</span></li>
+      <li><span>How to find <span class="hl">one winning product</span> people already buy every month, and put your own brand on it</span></li>
+      <li><span>How to build your store, <span class="hl">even if you've never made a website</span> in your life</span></li>
+      <li><span>How to get traffic and your first sales <span class="hl">on a small budget</span>, without quitting your job</span></li>
+      <li><span>How to turn every customer into <span class="hl">monthly income</span></span></li>
+      <li><span>A <span class="hl">live Q&amp;A</span> with me at the end. No question is too basic.</span></li>
+    </ul>
+    <div class="no-box">
+      <h3>And No...</h3>
+      <p>You don't need to buy any inventory...</p>
+      <p>You don't need to be tech savvy or have ever sold anything online...</p>
+      <p>You don't need a big budget or to quit your job...</p>
+      <p class="key">You just need one proven product people reorder every month, and a real brand built around it</p>
+      <p>(which is exactly what I'll be showing you live on the masterclass)</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="card faq-intro" id="faq">
+    <h2>Now let me answer the <u>top 5 most common questions</u> I get asked before a masterclass like this...</h2>
+  </section>
+
+  <section class="card faq">
+    <h2>1) Is this dropshipping?</h2>
+    <ul class="bul">
+      <li>No, and I want to be clear about that.</li>
+      <li>I'm not teaching the $5 product, chase-the-trend, burn-and-repeat stuff you've seen everywhere.</li>
+      <li>You're building a real subscription-based e-commerce brand around a product people <em>already buy every month</em>.</li>
+      <li>Evergreen, not trendy. Customers reorder from you, which is what makes the income compound.</li>
+    </ul>
+  </section>
+
+  <section class="card faq">
+    <h2>2) I tried e-commerce before and it didn't work</h2>
+    <ul class="bul">
+      <li>Most e-commerce models make you start from zero every month, because every sale is a one-time sale.</li>
+      <li>This model sells things people use up and reorder, so the same customer pays you again next month.</li>
+      <li>And you're not testing 50 products hoping one sticks. <em>One product, one brand, built to compound.</em></li>
+      <li>I'll show you exactly how on the masterclass.</li>
+    </ul>
+  </section>
+
+  <section class="card faq">
+    <h2>3) Can I do this alongside my job?</h2>
+    <ul class="bul">
+      <li>Yes. It takes about an hour or two a day.</li>
+      <li>I built mine after class and after 10 to 12 hour construction shifts.</li>
+      <li>That's enough when you're following a plan instead of guessing.</li>
+      <li>You shouldn't quit your job to start this. You can once it's <em>out-earning</em> your paycheck.</li>
+    </ul>
+  </section>
+
+  <section class="card faq">
+    <h2>4) Do I need inventory or a lot of money to start?</h2>
+    <ul class="bul">
+      <li>No inventory. You don't buy or store any stock upfront.</li>
+      <li>Orders are fulfilled and shipped for you as customers buy, so you're never paying for product before it sells.</li>
+      <li>On the masterclass I'll show you how to get your first sales <em>on a small budget</em> without burning money on ads.</li>
+    </ul>
+  </section>
+
+  <section class="card faq">
+    <h2>5) Will there be a replay?</h2>
+    <ul class="bul">
+      <li>No. This is live only.</li>
+      <li>I answer questions in real time, and a recording of a Q&amp;A isn't a Q&amp;A.</li>
+      <li>If you want in, show up live on <b class="js-when">Monday, November 16th @ 7:00 PM ET</b>.</li>
+    </ul>
+  </section>
+
+  <!-- Final -->
+  <section class="card final">
+    <h2>See You On The <span class="g">Masterclass!!</span></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num"></div><div class="circle"></div>
+        <div class="step-body">
+          <h3>Add the event to your calendar</h3>
+          <div class="actions">
+            <a class="btn btn-outline js-cal-google" target="_blank" rel="noopener">Google Calendar</a>
+            <a class="btn btn-outline js-cal-outlook" target="_blank" rel="noopener">Outlook Calendar</a>
+            <a class="btn btn-outline js-cal-yahoo" target="_blank" rel="noopener">Yahoo Calendar</a>
+          </div>
+        </div>
+      </div>
+      <div class="step js-pass-step" hidden>
+        <div class="step-num"></div><div class="circle"></div>
+        <div class="step-body">
+          <h3>Get your pass</h3>
+          <div class="actions"><a class="btn btn-dark js-pass" href="#">Get My Pass</a></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div><div class="circle"></div>
+        <div class="step-body">
+          <h3>Show up live</h3>
+          <p class="center"><b class="js-when">Monday, November 16th @ 7:00 PM ET</b></p>
+          <div class="actions"><a class="btn btn-green js-join" target="_blank" rel="noopener">Masterclass Link</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Results mentioned are not typical. Individual results will vary based on effort, experience, background, and market conditions. This masterclass is for educational purposes only. We make no guarantees of income or business outcomes.<br /><br />
+  © 2026 Ad-Ventur Inc. · The Inner Table. All rights reserved.
+</footer>
+
+<script>
+(function () {
+  // Wallet pass link. Leave empty to hide the "Get your pass" steps.
+  var PASS_URL = 'https://www.koconsultings.com/wallet/e/itm-7f3k2q?src=masterclass-prep';
+
+  // Masterclass schedule. Keep in step with /masterclass-confirmation/done-shared.js.
+  var MASTERCLASS_DATE = '2026-11-16';
+  var MASTERCLASS_DAY = 1;
+  var MASTERCLASS_HOUR = 19;
+  var MASTERCLASS_MINUTES = 90;
+  var EVENT_TITLE = 'Live Masterclass: Subscription Based E-commerce with Bronson';
+  var JOIN_URL = 'https://event.webinarjam.com/8wgzn9/go/live/13q192tyipsxs4';
+  var EVENT_DETAILS = 'Join the masterclass here: ' + JOIN_URL;
+
+  function nyParts(date) {
+    var out = {};
+    new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', weekday: 'short' })
+      .formatToParts(date).forEach(function (p) { out[p.type] = p.value; });
+    return out;
+  }
+  function nyOffset(date) {
+    var p = nyParts(date);
+    return Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second) - Math.floor(date.getTime() / 1000) * 1000;
+  }
+  function nyWallUtc(wallUtc) {
+    var guess = new Date(wallUtc - nyOffset(new Date(wallUtc)));
+    return new Date(wallUtc - nyOffset(guess));
+  }
+  function nyWall(ymd, hour) { var d = ymd.split('-'); return nyWallUtc(Date.UTC(+d[0], +d[1] - 1, +d[2], hour, 0, 0)); }
+  function nyDayAfter(date) { var p = nyParts(date); return nyWallUtc(Date.UTC(+p.year, +p.month - 1, +p.day + 1, 0, 0, 0)); }
+  function nextSession(now) {
+    if (MASTERCLASS_DATE) {
+      var fixed = nyWall(MASTERCLASS_DATE, MASTERCLASS_HOUR);
+      if (nyDayAfter(fixed).getTime() > now.getTime()) return fixed;
+    }
+    var p = nyParts(now);
+    var dow = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday);
+    var s = nyWallUtc(Date.UTC(+p.year, +p.month - 1, +p.day + (MASTERCLASS_DAY - dow + 7) % 7, MASTERCLASS_HOUR, 0, 0));
+    if (nyDayAfter(s).getTime() <= now.getTime()) s = new Date(s.getTime() + 7 * 864e5);
+    return s;
+  }
+
+  var start = nextSession(new Date());
+  var end = new Date(start.getTime() + MASTERCLASS_MINUTES * 60000);
+
+  // "Monday, November 16th @ 7:00 PM ET"
+  var parts = {};
+  new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true })
+    .formatToParts(start).forEach(function (x) { parts[x.type] = x.value; });
+  var d = +parts.day, sfx = (d % 100 >= 11 && d % 100 <= 13) ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[d % 10] || 'th');
+  var label = parts.weekday + ', ' + parts.month + ' ' + d + sfx + ' @ ' + parts.hour + ':' + parts.minute + ' ' + parts.dayPeriod + ' ET';
+  document.querySelectorAll('.js-when').forEach(function (el) { el.textContent = label; });
+
+  function stamp(x) { return x.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); }
+  var enc = encodeURIComponent;
+  var links = {
+    google: 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + enc(EVENT_TITLE) + '&dates=' + stamp(start) + '/' + stamp(end) + '&details=' + enc(EVENT_DETAILS) + '&location=' + enc(JOIN_URL),
+    outlook: 'https://outlook.live.com/calendar/0/deeplink/compose?path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&subject=' + enc(EVENT_TITLE) + '&startdt=' + enc(start.toISOString()) + '&enddt=' + enc(end.toISOString()) + '&body=' + enc(EVENT_DETAILS) + '&location=' + enc(JOIN_URL),
+    yahoo: 'https://calendar.yahoo.com/?v=60&title=' + enc(EVENT_TITLE) + '&st=' + stamp(start) + '&et=' + stamp(end) + '&desc=' + enc(EVENT_DETAILS) + '&in_loc=' + enc(JOIN_URL)
+  };
+  Object.keys(links).forEach(function (k) {
+    document.querySelectorAll('.js-cal-' + k).forEach(function (a) { a.href = links[k]; });
+  });
+  document.querySelectorAll('.js-join').forEach(function (a) { a.href = JOIN_URL; });
+
+  if (PASS_URL) {
+    document.querySelectorAll('.js-pass').forEach(function (a) { a.href = PASS_URL; });
+    document.querySelectorAll('.js-pass-step').forEach(function (s) { s.hidden = false; });
+  }
+  // VTurb players for the proof videos.
+  document.querySelectorAll('vturb-smartplayer[data-vturb]').forEach(function (el) {
+    var v = document.createElement('script');
+    v.src = 'https://scripts.converteai.net/acd61d31-54ac-4e72-a977-21cc9e8d1153/players/' + el.getAttribute('data-vturb') + '/v4/player.js';
+    v.async = true;
+    document.head.appendChild(v);
+  });
+})();
+</script>
+</body>
+</html>

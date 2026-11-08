@@ -22,7 +22,7 @@
   <link rel="icon" type="image/png" href="/logo-180.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=Open+Sans:wght@400;600;700&family=Plus+Jakarta+Sans:wght@700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/masterclass-confirmation/done.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -247,6 +247,92 @@
       .give h3 { font-size: 1.35rem; }
       .co-card { padding: 20px 18px 24px; }
     }
+
+    /* Progress bar at the top of the confirmed view */
+    .done-progress { height: 22px; border-radius: 999px; background: #f0fdf4; border: 1px solid #bbf7d0; overflow: hidden; margin: 0 auto 26px; }
+    .done-progress-fill { height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%); display: flex; align-items: center; justify-content: center; animation: doneProgress 1.4s cubic-bezier(.22,1,.36,1) .2s forwards; }
+    .done-progress-fill span { font-family: 'Manrope', sans-serif; font-size: .9rem; font-weight: 800; color: #fff; }
+    @keyframes doneProgress { to { width: 73%; } }
+    .done-after-video { font-family: 'Manrope', sans-serif; font-size: .95rem; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: #16a34a; margin-top: 18px; }
+    .done-after-video + .done-arrow { margin-top: 8px; }
+    .done-cal-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 16px; }
+    .done-cal-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 16px; border: 2px solid #22c55e; border-radius: 8px; background: #f0fdf4; color: #15803d; font-family: 'Manrope', sans-serif; font-size: .98rem; font-weight: 700; text-decoration: none; transition: background .15s, transform .15s; }
+    .done-cal-btn:hover { background: #dcfce7; transform: translateY(-1px); }
+    .done-step-card .done-cal-note { text-align: center; margin-top: 16px; }
+    .done h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; letter-spacing: -0.6px; }
+    #done .done-lead { display: none; }
+    body { overflow-x: clip; }
+    .done-topbar { width: 100vw; margin: -40px 0 22px calc(50% - 50vw); padding: 11px 16px; background: rgba(255,255,255,.7); border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; gap: 9px; font-family: 'Manrope', sans-serif; font-size: .8rem; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #334155; }
+    .done-topbar i { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 0 0 rgba(239,68,68,.5); animation: doneDot 1.8s infinite; }
+    @keyframes doneDot { 70% { box-shadow: 0 0 0 7px rgba(239,68,68,0); } 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); } }
+    @media (max-width: 600px) { .done-topbar { margin-top: -14px; margin-bottom: 16px; font-size: .74rem; } }
+    .done-step-card .done-center { text-align: center; }
+    .done-pass { text-align: center; margin: 4px 0 16px; }
+    .done-pass-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 15px 20px; border-radius: 999px; background: #0b0b0b; color: #fff; font-family: 'Manrope', sans-serif; font-size: 1.05rem; font-weight: 700; text-decoration: none; transition: transform .15s; }
+    .done-pass-btn:hover { transform: translateY(-1px); }
+    .done-overview-video { margin: 4px 0 16px; padding: 5px; border-radius: 14px; background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .done-overview-video > * { border-radius: 10px; overflow: hidden; }
+    .done-overview-soon { aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center; background: #0b1b26; color: rgba(255,255,255,.7); font-weight: 600; font-size: .95rem; }
+    .done-step-card .done-btn { margin-top: 14px; text-decoration: none; }
+    .prep-mock { position: relative; display: block; margin: 8px auto 22px; max-width: 420px; text-decoration: none; color: inherit; transition: transform .25s; }
+    .prep-mock:hover { transform: translateY(-3px); }
+    .prep-sheet { position: absolute; inset: 0; border-radius: 14px; background: #fff; border: 1px solid #d1fae5; }
+    .prep-sheet-back { transform: rotate(-4deg) translate(-6px, 6px); background: #dcfce7; }
+    .prep-sheet-mid { transform: rotate(2.5deg) translate(5px, 4px); background: #f0fdf4; }
+    .prep-doc { position: relative; display: block; border-radius: 14px; overflow: hidden; background: #fff; border: 1px solid #bbf7d0; box-shadow: 0 22px 44px -22px rgba(22,163,74,.55), 0 2px 6px rgba(15,23,42,.06); text-align: left; }
+    .prep-doc-bar { display: flex; align-items: center; gap: 5px; padding: 9px 12px; background: #f8faf9; border-bottom: 1px solid #e5e7eb; }
+    .prep-doc-bar > span { width: 8px; height: 8px; border-radius: 50%; background: #e2e8f0; }
+    .prep-doc-bar > span:first-child { background: #f87171; } .prep-doc-bar > span:nth-child(2) { background: #fbbf24; } .prep-doc-bar > span:nth-child(3) { background: #4ade80; }
+    .prep-doc-bar b { margin-left: 8px; font-size: .72rem; font-weight: 600; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .prep-doc-body { display: block; padding: 18px 20px 18px; background: radial-gradient(260px 120px at 100% 0, rgba(34,197,94,.14), transparent 70%), #fff; }
+    .prep-doc-tag { display: inline-block; padding: 4px 10px; border-radius: 999px; background: #dcfce7; color: #15803d; font-family: 'Manrope', sans-serif; font-size: .7rem; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; }
+    .prep-doc-title { display: block; margin-top: 10px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.15rem; line-height: 1.25; color: #0b1b26; letter-spacing: -.3px; }
+    .prep-doc-title em { font-style: normal; color: #16a34a; }
+    .prep-doc-list { display: block; margin-top: 12px; }
+    .prep-doc-list > span { display: flex; align-items: center; gap: 9px; padding: 7px 0; border-top: 1px solid #f1f5f9; font-size: .92rem; font-weight: 600; color: #1e293b; }
+    .prep-doc-list i { flex: none; width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(180deg, #2bcf68, #16a34a); display: flex; align-items: center; justify-content: center; }
+    .prep-doc-read { display: block; margin-top: 10px; font-size: .8rem; font-weight: 700; color: #16a34a; }
+    .mrr-results { margin-top: 56px; text-align: center; }
+    .mrr-eyebrow { display: inline-block; padding: 6px 14px; border-radius: 999px; background: #dcfce7; color: #15803d; font-family: 'Manrope', sans-serif; font-size: .78rem; font-weight: 800; letter-spacing: 1.3px; text-transform: uppercase; }
+    .mrr-results h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: clamp(1.7rem, 5.6vw, 2.5rem); line-height: 1.18; letter-spacing: -.5px; color: #0b1b26; margin-top: 14px; }
+    .mrr-results h2 span { color: #16a34a; }
+    .mrr-sub { margin-top: 12px; font-size: 1.05rem; color: #1e293b; }
+    .mrr-feature { margin-top: 26px; background: #fff; border-radius: 16px; padding: 8px 8px 14px; box-shadow: 0 18px 40px -22px rgba(15,23,42,.3); }
+    .mrr-yt { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; }
+    .mrr-yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .mrr-feature > b { display: block; margin-top: 12px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.05rem; color: #0b1b26; }
+    .mrr-vids { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .mrr-vid { background: #fff; border-radius: 14px; padding: 6px 6px 12px; box-shadow: 0 12px 30px -20px rgba(15,23,42,.3); }
+    .mrr-vid vturb-smartplayer { border-radius: 10px; overflow: hidden; }
+    .mrr-vid b { display: block; margin-top: 10px; font-family: 'Plus Jakarta Sans', sans-serif; color: #0b1b26; }
+    .mrr-vid span { display: block; padding: 2px 6px 0; font-size: .86rem; color: #475569; line-height: 1.4; }
+    .mrr-wins { columns: 2; column-gap: 12px; margin-top: 16px; text-align: left; }
+    .mrr-win { break-inside: avoid; margin: 0 0 12px; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 12px 30px -20px rgba(15,23,42,.3); border: 1px solid #e2e8f0; }
+    .mrr-win figcaption { padding: 12px 14px 10px; }
+    .mrr-win figcaption b { display: block; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.05rem; color: #16a34a; line-height: 1.2; }
+    .mrr-win figcaption span { display: block; margin-top: 3px; font-size: .86rem; font-weight: 700; color: #0b1b26; }
+    .mrr-win figcaption i { display: block; margin-top: 2px; font-style: normal; font-size: .82rem; color: #475569; line-height: 1.4; }
+    .mrr-win img { display: block; width: 100%; height: auto; }
+    .mrr-disclaim { margin-top: 10px; font-size: .78rem; color: #64748b; }
+    @media (max-width: 420px) { .mrr-vids { gap: 8px; } .mrr-wins { column-gap: 8px; } .mrr-win figcaption { padding: 10px 10px 8px; } }
+    /* Mobile layout for the confirmed view */
+    @media (max-width: 600px) {
+      .done { padding: 14px 14px 60px; }
+      .done-progress { height: 18px; margin-bottom: 18px; }
+      .done-progress-fill span { font-size: .78rem; }
+      .done h1 { font-size: 1.6rem; line-height: 1.22; letter-spacing: -0.4px; }
+      .done-video { margin-top: 16px; padding: 5px; border-radius: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; box-shadow: 0 10px 26px -14px rgba(22,163,74,.45); }
+      .done-video vturb-smartplayer, .done-video .vturb-player-placeholder { border-radius: 12px; overflow: hidden; }
+      .done-after-video { font-size: .82rem; margin-top: 14px; }
+      .done-arrow { height: 34px; }
+      .done-step { margin-top: 26px; }
+      .done-step-pill { font-size: 1.05rem; min-width: 104px; }
+      .done-step-icon { width: 40px; height: 45px; margin-top: 12px; }
+      .done-step h2, .done-faq h2 { font-size: 1.55rem; line-height: 1.22; }
+      .done-step-card { margin-top: 16px; padding: 20px 16px; }
+      .done-cal-btns { gap: 8px; }
+      .done-cal-btn { flex: 1 1 100%; justify-content: center; }
+    }
   </style>
   <script>!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);</script>
   <script>
@@ -280,35 +366,80 @@
 
 <!-- CONFIRMED (after purchase or no thanks) -->
 <div class="done" id="done" hidden>
-  <h1>You're Officially Registered<span class="js-fname"></span>!</h1>
+  <div class="done-topbar"><i></i>Well done! You took action</div>
+  <div class="done-progress" role="progressbar" aria-valuenow="73" aria-valuemin="0" aria-valuemax="100"><div class="done-progress-fill"><span>73%</span></div></div>
+  <h1>You're Officially Registered For <span class="js-done-date"></span><span class="js-fname"></span>!</h1>
 
-  <div class="js-done-shared" data-lead="Complete These 3 Quick Steps To Lock In Your VIP Seat &amp; Be Fully Set Up For The Masterclass"></div>
+  <div class="js-done-shared" data-after-video="Follow the steps below now!" data-cal-buttons data-faq-step data-renumber data-faq-heading="Get Your Questions Answered About The &lt;span&gt;Masterclass&lt;/span&gt;" data-cal-note="We've also sent the masterclass access details to your email. Please open the email and add the event to your calendar NOW so you don't miss the live session." data-faq-titles='{"Tokyo Versus The Small City":"MRR E-commerce vs Dropshipping","The Treadmill Versus The Machine":"Why Most People Failed Before","What 10 Subscribers A Day Actually Looks Like":"The Math Behind MRR E-commerce","The Three Numbers That Tell You Everything (Ads Are Simple)":"How Simple The Data Can Be","Why I Don&#39;t Record These":"Why I Don&#39;t Do Replays"}'></div>
+
+  <!-- Results section (this page only) -->
+  <section class="mrr-results">
+    <div class="mrr-eyebrow">Real People. Real Results.</div>
+    <h2>Results People Have Gotten With <span>MRR E&#8209;Commerce</span></h2>
+    <p class="mrr-sub">Everyday people who picked one product, put their brand on it, and built monthly recurring revenue.</p>
+
+
+    <div class="mrr-wins">
+      <figure class="mrr-win"><figcaption><b>$20K Month</b><span>Ryan</span><i>Scaled from zero in his first 90 days</i></figcaption><img src="/13.webp" alt="$20K Month: Ryan" /></figure>
+      <figure class="mrr-win"><figcaption><b>$100K In 2 Weeks</b><span>Tyler</span><i>No prior e-commerce experience</i></figcaption><img src="/15.webp" alt="$100K In 2 Weeks: Tyler" /></figure>
+      <figure class="mrr-win"><figcaption><b>$30K In 23 Days</b><span>$30,000 revenue</span><i>In the last 23 days</i></figcaption><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee920b8f6c2c4ed1a2d580.png" alt="$30K In 23 Days: $30,000 revenue" /></figure>
+      <figure class="mrr-win"><figcaption><b>$100K+ Months Incoming</b><span>Supplement brand</span><i>Getting into the big numbers</i></figcaption><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee96518f6c2cb9f8a2da5b.png" alt="$100K+ Months Incoming: Supplement brand" /></figure>
+      <figure class="mrr-win"><figcaption><b>8.79x ROAS</b><span>Skin care brand</span><i>TikTok ads crushing it</i></figcaption><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee9318918308897e0d8c9b.png" alt="8.79x ROAS: Skin care brand" /></figure>
+      <figure class="mrr-win"><figcaption><b>3.59x ROAS</b><span>Under 1 month in</span><i>Already scaling</i></figcaption><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee939558590276507f9c6c.png" alt="3.59x ROAS: Under 1 month in" /></figure>
+      <figure class="mrr-win"><figcaption><b>3.61x ROAS</b><span>Organic hair &amp; skin care brand</span><i>Ripping sales with Meta ads</i></figcaption><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95b6e416f131f1a415da.png" alt="3.61x ROAS: Organic hair &amp; skin care brand" /></figure>
+      <figure class="mrr-win"><figcaption><b>First Drop Sold Out</b><span>Clothing brand</span><i>Strong ROAS on the first run</i></figcaption><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee95224930c4210b003576.png" alt="First Drop Sold Out: Clothing brand" /></figure>
+      <figure class="mrr-win"><figcaption><b>Live Results</b><span>Current results</span><i>No old screenshots here</i></figcaption><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/COotKpt86Tsar2SeLpWc/media/67ee946b918308652f0d8de4.png" alt="Live Results: Current results" /></figure>
+      <figure class="mrr-win"><figcaption><b>$1,020 In 30 Days</b><span>Shock</span><i>18 orders in the last 30 days</i></figcaption><img src="/wins/win-357.webp" alt="$1,020 In 30 Days: Shock" /></figure>
+      <figure class="mrr-win"><figcaption><b>$968 By Midday</b><span>Ryan</span><i>“I was exactly where all of you are now less than 7 months ago.”</i></figcaption><img src="/wins/win-352.webp" alt="$968 By Midday: Ryan" /></figure>
+      <figure class="mrr-win"><figcaption><b>Best Day So Far</b><span>Layman: $184 day</span><i>After bumping the ad budget to $72 a day</i></figcaption><img src="/wins/win-353.webp" alt="Best Day So Far: Layman: $184 day" /></figure>
+      <figure class="mrr-win"><figcaption><b>Day 3 Of Ads</b><span>Armen: $112 day</span><i>“This is how we finished day 3 of running ads!”</i></figcaption><img src="/wins/win-354.webp" alt="Day 3 Of Ads: Armen: $112 day" /></figure>
+      <figure class="mrr-win"><figcaption><b>First Order In A Week</b><span>Darian</span><i>“Got my first order on my supplement brand only a week in”</i></figcaption><img src="/wins/win-362.webp" alt="First Order In A Week: Darian" /></figure>
+      <figure class="mrr-win"><figcaption><b>First Order</b><span>Issac</span><i>“Got my first order on my supplement brand”</i></figcaption><img src="/wins/win-361.webp" alt="First Order: Issac" /></figure>
+      <figure class="mrr-win"><figcaption><b>First Sale</b><span>AkatsukiShinobi</span><i>“First sale came thru! It can only be up from here”</i></figcaption><img src="/wins/win-351.webp" alt="First Sale: AkatsukiShinobi" /></figure>
+      <figure class="mrr-win"><figcaption><b>2 Weeks In</b><span>Alex</span><i>“Finally got my first couple orders”</i></figcaption><img src="/wins/win-356.webp" alt="2 Weeks In: Alex" /></figure>
+      <figure class="mrr-win"><figcaption><b>First Orders</b><span>Grif</span><i>“God did!!!”</i></figcaption><img src="/wins/win-350.webp" alt="First Orders: Grif" /></figure>
+    </div>
+    <p class="mrr-disclaim">Results shown are individual and not typical. Your results depend on your effort, experience, and market conditions.</p>
+  </section>
+
 </div>
 
-<!-- VIP gift card, placed above Step 1 by done-shared.js -->
-<template id="done-before-step1">
-  <div class="vip-lock">
-    <div class="vip-lock-head">
-      <span class="vip-lock-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5" fill="currentColor"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>
-      <div>
-        <div class="vip-lock-eyebrow">&#127873; Your VIP Gift</div>
-        <h3>The Winning Product Research Checklist</h3>
-      </div>
+
+<!-- Extra steps above "Check Your Email", placed by done-shared.js -->
+<template id="done-before-email">
+  <div class="done-step">
+    <div class="done-step-pill">STEP</div>
+    <svg class="done-step-icon" width="52" height="58" viewBox="0 0 52 58" fill="none" aria-hidden="true"><rect x="4" y="9" width="44" height="42" rx="8" stroke="#16a34a" stroke-width="5"/><path d="M4 19h36" stroke="#16a34a" stroke-width="5"/><rect x="30" y="27" width="18" height="12" rx="4" fill="#16a34a"/></svg>
+    <h2>Get Your <span>Pass</span> On Your Phone</h2>
+    <div class="done-step-card">
+      <div class="done-pass"><a class="done-pass-btn js-wallet-pass" href="https://www.koconsultings.com/wallet/e/itm-7f3k2q?src=masterclass-confirmation"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="3"/><path d="M3 9h14"/><rect x="14" y="12" width="7" height="4" rx="1.5"/></svg>Get My Pass</a></div>
+      <p class="done-center">Your pass puts the masterclass on your lock screen a few hours before we start, with the join link one tap away. Tap the button to get it onto your iPhone.</p>
     </div>
-    <div class="vip-lock-body">
-      <div class="vip-lock-status"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5" fill="currentColor"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><span>Locked until <b>Wednesday @ 7:00 PM EST</b></span></div>
-      <p class="vip-lock-live"><b>You have to show up live to get it.</b> It's only given out during the live masterclass.</p>
-      <p class="vip-lock-label">What's inside</p>
-      <ul class="vip-lock-list">
-          <li><i><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2l2.6 2.6L10 3.4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span>The 5 signs a product will get <b>reordered every month</b></span></li>
-          <li><i><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2l2.6 2.6L10 3.4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span>How to tell if people want it <b>before you spend a dollar</b> on ads</span></li>
-          <li><i><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2l2.6 2.6L10 3.4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span>The red flags that mean <b>&ldquo;skip this product&rdquo;</b></span></li>
-      </ul>
-      <div class="vip-lock-foot">Follow the steps below so you don't miss it <span aria-hidden="true">&darr;</span></div>
+  </div>
+
+  <div class="done-step">
+    <div class="done-step-pill">STEP</div>
+    <svg class="done-step-icon" width="52" height="58" viewBox="0 0 52 58" fill="none" aria-hidden="true"><path d="M10 3h22l13 13v36a3 3 0 0 1-3 3H10a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3z" stroke="#16a34a" stroke-width="5" stroke-linejoin="round"/><path d="M31 3v14h14" stroke="#16a34a" stroke-width="5" stroke-linejoin="round"/><path d="M16 30h20M16 39h20M16 48h12" stroke="#16a34a" stroke-width="5" stroke-linecap="round"/></svg>
+    <h2>Go Through The <span>Masterclass Overview</span></h2>
+    <div class="done-step-card">
+      <a class="prep-mock" href="/masterclass-prep" target="_blank" rel="noopener" aria-label="Open the masterclass resource document">
+        <span class="prep-sheet prep-sheet-back"></span>
+        <span class="prep-sheet prep-sheet-mid"></span>
+        <span class="prep-doc">
+          <span class="prep-doc-bar"><span></span><span></span><span></span><b>ad-ventur.com/masterclass-prep</b></span>
+          <span class="prep-doc-body">
+            <span class="prep-doc-tag">Masterclass Prep</span>
+            <span class="prep-doc-title">Everything To Get You Ready Before The <em>Masterclass</em></span>
+            <span class="prep-doc-list"><span><i><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2l2.6 2.6L10 3.4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></i>How to show up properly</span><span><i><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2l2.6 2.6L10 3.4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Who I am and what I've built</span><span><i><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2l2.6 2.6L10 3.4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Proof this is real</span><span><i><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2l2.6 2.6L10 3.4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></i>What we're covering</span><span><i><svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2l2.6 2.6L10 3.4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Top 5 questions, answered</span></span>
+            <span class="prep-doc-read">5 min read &rarr;</span>
+          </span>
+        </span>
+      </a>
+      <p class="done-center">Everything you need to show up fully prepared before the masterclass is on this document. Make sure to go through it.</p>
+      <div class="done-center"><a class="done-btn" href="/masterclass-prep" target="_blank" rel="noopener">Access Masterclass Resource Document</a></div>
     </div>
   </div>
 </template>
-
 
 <div id="offer">
 

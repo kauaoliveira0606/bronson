@@ -5,8 +5,8 @@
   // Masterclass schedule: weekly, day of week (0 = Sunday) at HOUR:00 New York time.
   // MASTERCLASS_DATE (New York date) pins the next session to that day until it starts.
   // Keep in step with the constants in /masterclass/index.html.
-  var MASTERCLASS_DATE = '2026-11-18';
-  var MASTERCLASS_DAY = 3;
+  var MASTERCLASS_DATE = '2026-11-16';
+  var MASTERCLASS_DAY = 1;
   var MASTERCLASS_HOUR = 19;
   var MASTERCLASS_TIME_LABEL = '7PM EST';
   var MASTERCLASS_MINUTES = 90;
@@ -27,6 +27,7 @@
   <div class="done-video">
     <vturb-smartplayer id="vid-6ac7b9d6e1c65eaf9183ec88" data-vturb="6ac7b9d6e1c65eaf9183ec88" style="display: block; margin: 0 auto; width: 100%;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 56.25% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>
   </div>
+  __AFTER_VIDEO__
   <svg class="done-arrow" width="26" height="46" viewBox="0 0 26 46" fill="none" aria-hidden="true"><path d="M13 2v40M3 31l10 11 10-11" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
 
   __BEFORE_STEP1__
@@ -57,6 +58,7 @@
     </div>
   </div>
 
+  __BEFORE_EMAIL__
   <div class="done-step">
     <div class="done-step-pill">STEP 3:</div>
     ${ICON}
@@ -117,14 +119,55 @@
     // A page can put its own block above Step 1 with <template id="done-before-step1">.
     var tpl = document.getElementById('done-before-step1');
     var before = tpl ? tpl.innerHTML : '';
+    // A page can put its own steps above the email step with <template id="done-before-email">.
+    var tplEmail = document.getElementById('done-before-email');
+    var beforeEmail = tplEmail ? tplEmail.innerHTML : '';
     // A page can set its own lead line with data-lead.
     var lead = el.getAttribute('data-lead') ||
       "Before you close this tab, complete these __STEPS__ steps to make sure you're <b>fully set up for the masterclass</b>";
+    // A page can add a line right below the video with data-after-video.
+    var afterVideo = el.getAttribute('data-after-video');
     el.innerHTML = html
       .replace('__LEAD__', lead)
+      .replace('__AFTER_VIDEO__', afterVideo ? '<p class="done-after-video">' + afterVideo + '</p>' : '')
       .replace('__BEFORE_STEP1__', before)
+      .replace('__BEFORE_EMAIL__', beforeEmail)
       .replace('__STEPS__', STEP_WORDS[steps] || steps)
-      .replace('__FAQ_STEP__', extra ? '<div class="done-step-pill">STEP 4:</div>' + ICON : '');
+      .replace('__FAQ_STEP__', (extra || el.hasAttribute('data-faq-step')) ? '<div class="done-step-pill">STEP 4:</div>' + ICON : '');
+    // A page can set its own FAQ headline with data-faq-heading (HTML allowed).
+    var faqHeading = el.getAttribute('data-faq-heading');
+    if (faqHeading) el.querySelectorAll('.done-faq h2').forEach(function (h) { h.innerHTML = faqHeading; });
+    // With data-renumber, step pills are numbered in page order (for pages that add steps).
+    if (el.hasAttribute('data-renumber')) {
+      el.querySelectorAll('.done-step-pill').forEach(function (p, i) { p.textContent = 'STEP ' + (i + 1) + ':'; });
+    }
+    // A page can rename FAQ video titles with data-faq-titles='{"Old title":"New title"}'.
+    var titles = {};
+    try { titles = JSON.parse(el.getAttribute('data-faq-titles') || '{}'); } catch (e) {}
+    el.querySelectorAll('.done-bk-title').forEach(function (t) {
+      if (titles[t.textContent]) t.textContent = titles[t.textContent];
+    });
+    // A page can swap the calendar dropdown for Google / Outlook / Yahoo buttons with data-cal-buttons.
+    if (el.hasAttribute('data-cal-buttons')) {
+      var svg = function (inner) { return '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + inner + '</svg>'; };
+      var calIcon = svg('<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>');
+      var mailIcon = svg('<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>');
+      var gridIcon = svg('<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>');
+      el.querySelectorAll('.done-cal').forEach(function (c) {
+        c.className = 'done-cal-btns';
+        c.innerHTML =
+          '<a class="done-cal-btn js-cal-google" target="_blank" rel="noopener">' + calIcon + 'Google Calendar</a>' +
+          '<a class="done-cal-btn js-cal-outlook" target="_blank" rel="noopener">' + mailIcon + 'Outlook Calendar</a>' +
+          '<a class="done-cal-btn js-cal-yahoo" target="_blank" rel="noopener">' + gridIcon + 'Yahoo Calendar</a>';
+        var note = el.getAttribute('data-cal-note');
+        if (note) {
+          var p = document.createElement('p');
+          p.className = 'done-cal-note';
+          p.textContent = note;
+          c.parentNode.insertBefore(p, c.nextSibling);
+        }
+      });
+    }
   });
 
   // VTurb videos. Any <vturb-smartplayer data-vturb="PLAYER_ID"> in the markup above gets its
@@ -204,6 +247,15 @@
 
   var dayLabel = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric' }).format(start);
   document.querySelectorAll('.js-done-when').forEach(function (el) { el.textContent = dayLabel + ' @' + MASTERCLASS_TIME_LABEL; });
+  // Headline date, e.g. "Monday, November 16th @ 7:00 PM ET" (any .js-done-date on the page).
+  (function () {
+    var parts = {};
+    new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true })
+      .formatToParts(start).forEach(function (x) { parts[x.type] = x.value; });
+    var d = +parts.day, sfx = (d % 100 >= 11 && d % 100 <= 13) ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[d % 10] || 'th');
+    var label = parts.weekday + ', ' + parts.month + ' ' + d + sfx + ' @ ' + parts.hour + ':' + parts.minute + ' ' + parts.dayPeriod + ' ET';
+    document.querySelectorAll('.js-done-date').forEach(function (el) { el.textContent = label; });
+  })();
 
   /* ---------- Add to calendar ---------- */
   function stamp(d) { return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); }
@@ -218,6 +270,19 @@
 
   document.querySelectorAll('.js-cal-google').forEach(function (a) { a.href = google; });
   document.querySelectorAll('.js-cal-ics').forEach(function (a) { a.href = icsHref; });
+  var outlook = 'https://outlook.live.com/calendar/0/deeplink/compose?path=%2Fcalendar%2Faction%2Fcompose&rru=addevent' +
+    '&subject=' + encodeURIComponent(EVENT_TITLE) +
+    '&startdt=' + encodeURIComponent(start.toISOString()) +
+    '&enddt=' + encodeURIComponent(end.toISOString()) +
+    '&body=' + encodeURIComponent(EVENT_DETAILS) +
+    '&location=' + encodeURIComponent(JOIN_URL);
+  var yahoo = 'https://calendar.yahoo.com/?v=60' +
+    '&title=' + encodeURIComponent(EVENT_TITLE) +
+    '&st=' + stamp(start) + '&et=' + stamp(end) +
+    '&desc=' + encodeURIComponent(EVENT_DETAILS) +
+    '&in_loc=' + encodeURIComponent(JOIN_URL);
+  document.querySelectorAll('.js-cal-outlook').forEach(function (a) { a.href = outlook; });
+  document.querySelectorAll('.js-cal-yahoo').forEach(function (a) { a.href = yahoo; });
   /* ---------- Open email buttons ---------- */
   // Phones open the mail app itself; desktop Gmail opens the web inbox searched for the email.
   // Apple Mail (message://) only exists on iPhone, iPad and Mac, so it's hidden elsewhere.

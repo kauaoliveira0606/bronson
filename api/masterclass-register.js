@@ -58,8 +58,8 @@ function airtable(url, method, body) {
   });
 }
 
-// Sign-ups go to this session or later (user, 2026-11-04: next masterclass is Nov 18, not Nov 4).
-const EARLIEST_SESSION = '2026-11-18 00:00';
+// Sign-ups go to this session or later (user, 2026-11-08: next masterclass is Mon Nov 16, 7 PM ET).
+const EARLIEST_SESSION = '2026-11-16 00:00';
 
 // Schedule dates are New York wall-clock strings ("2026-11-04 19:00"), so they compare as text.
 function nextSchedule(schedules, now) {
