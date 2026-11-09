@@ -31,7 +31,7 @@
   <svg class="done-arrow" width="26" height="46" viewBox="0 0 26 46" fill="none" aria-hidden="true"><path d="M13 2v40M3 31l10 11 10-11" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
 
   __BEFORE_STEP1__
-  <div class="done-step" style="margin-top:18px;">
+  <div class="done-step" data-step="calendar" style="margin-top:18px;">
     <div class="done-step-pill">STEP 1:</div>
     ${ICON}
     <h2>Add The Date And Time To Your <span>Calendar</span></h2>
@@ -48,7 +48,7 @@
     </div>
   </div>
 
-  <div class="done-step">
+  <div class="done-step" data-step="intake">
     <div class="done-step-pill">STEP 2:</div>
     ${ICON}
     <h2>Fill Out This Short Masterclass <span>Intake Form</span></h2>
@@ -59,7 +59,7 @@
   </div>
 
   __BEFORE_EMAIL__
-  <div class="done-step">
+  <div class="done-step" data-step="email">
     <div class="done-step-pill">STEP 3:</div>
     ${ICON}
     <h2>Check Your <span>Email</span></h2>
@@ -137,6 +137,23 @@
     // A page can set its own FAQ headline with data-faq-heading (HTML allowed).
     var faqHeading = el.getAttribute('data-faq-heading');
     if (faqHeading) el.querySelectorAll('.done-faq h2').forEach(function (h) { h.innerHTML = faqHeading; });
+    // A page can reorder its steps with data-step-order="key,key,..." (data-step names on each
+    // .done-step, template steps included). Listed steps go first in that order, before the FAQ.
+    var order = (el.getAttribute('data-step-order') || '').split(',').map(function (k) { return k.trim(); }).filter(Boolean);
+    if (order.length) {
+      var first = el.querySelector('.done-step');
+      first.style.marginTop = '';
+      var cursor = document.createComment('steps');
+      first.parentNode.insertBefore(cursor, first);
+      order.forEach(function (k) {
+        var step = el.querySelector('.done-step[data-step="' + k + '"]');
+        if (!step) return;
+        cursor.parentNode.insertBefore(step, cursor.nextSibling);
+        cursor = step;
+      });
+      var lead = el.querySelector('.done-step');
+      if (lead) lead.style.marginTop = '18px';
+    }
     // With data-renumber, step pills are numbered in page order (for pages that add steps).
     if (el.hasAttribute('data-renumber')) {
       el.querySelectorAll('.done-step-pill').forEach(function (p, i) { p.textContent = 'STEP ' + (i + 1) + ':'; });
