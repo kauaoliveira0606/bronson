@@ -155,6 +155,8 @@
     .faq h2 { text-align: left !important; font-size: clamp(1.35rem, 3.6vw, 1.9rem) !important; }
 
     /* Final steps */
+    #intake p { margin-top: 12px; text-align: center; }
+    .intake-form { margin-top: 22px; }
     .final .steps .step-num { display: none; }
     .final .circle { width: 48px; height: 48px; margin: 18px auto 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--green-fill); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.2rem; }
     .final .circle::before { content: counter(step); }
@@ -424,6 +426,13 @@
     </ul>
   </section>
 
+  <!-- Intake form -->
+  <section class="card" id="intake">
+    <h2>Fill Out This Short Masterclass <span class="g">Intake Form</span></h2>
+    <p>Before we go live, I want to know exactly where you're at so I can cover what you actually need. It takes two minutes.</p>
+    <div class="intake-form" data-tf-live="01M453GA9Q861X9SJ62YMKE8NJ"></div>
+  </section>
+
   <!-- Final -->
   <section class="card final">
     <h2>See You On The <span class="g">Masterclass!!</span></h2>
@@ -542,5 +551,6 @@
   });
 })();
 </script>
+<script src="https://embed.typeform.com/next/embed.js"></script>
 </body>
 </html>
