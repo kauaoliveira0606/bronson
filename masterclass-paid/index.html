@@ -585,6 +585,7 @@
     .seat-form input:focus { outline: 2px solid #16a34a; outline-offset: 1px; background: #ffffff; }
     .seat-submit { width: 100%; min-height: 68px; padding: 12px 20px; border: 0; border-radius: 12px; background: linear-gradient(180deg, #22c55e, #15803d); box-shadow: 0 8px 22px rgba(22, 163, 74, 0.35); color: #ffffff; font-family: inherit; font-size: 1.3rem; font-weight: 800; cursor: pointer; }
     .seat-submit:disabled { opacity: 0.7; cursor: wait; }
+    .seat-tel-label { display: block; margin: 0 0 6px 4px; font-size: 0.88rem; font-weight: 700; line-height: 1.3; color: var(--ink); }
     .seat-tel-note { margin: 6px 0 0 4px; font-size: 0.8rem; color: #64748b; }
     .seat-error { margin: 0; color: #b91c1c; font-size: 0.9rem; line-height: 1.4; }
     @media (max-width: 520px) { .seat-dialog { padding: 44px 20px 22px; } .seat-submit { font-size: 1.15rem; } }
@@ -872,12 +873,9 @@
     /* Final call to action */
     .faq { max-width: 760px; margin: 40px auto 0; display: grid; gap: 12px; }
     .faq-item { background: #ffffff; border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; }
-    .faq-item summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; font-family: 'Manrope', 'Inter', sans-serif; font-size: 1.02rem; font-weight: 700; color: var(--ink); }
-    .faq-item summary::-webkit-details-marker { display: none; }
-    .faq-item summary::after { content: "+"; flex: none; width: 26px; height: 26px; border-radius: 50%; background: rgba(22,163,74,0.12); color: var(--green); font-size: 1.1rem; font-weight: 700; line-height: 26px; text-align: center; }
-    .faq-item[open] summary::after { content: "\2212"; }
+    .faq-q { padding: 18px 22px 8px; font-family: 'Manrope', 'Inter', sans-serif; font-size: 1.02rem; font-weight: 700; line-height: 1.35; color: var(--ink); }
     .faq-item p { padding: 0 22px 20px; color: var(--body); line-height: 1.6; }
-    @media (max-width: 600px) { .faq-item summary { padding: 16px 18px; font-size: 0.96rem; } .faq-item p { padding: 0 18px 18px; } }
+    @media (max-width: 600px) { .faq-q { padding: 16px 18px 6px; font-size: 0.96rem; } .faq-item p { padding: 0 18px 18px; } }
     .cta-box {
       background:
         radial-gradient(520px 300px at 15% 0%, rgba(34,197,94,0.18), transparent 65%),
@@ -1238,54 +1236,54 @@
   <p class="section-label">FAQ</p>
   <h2 class="section-title">Questions People Ask Before They Register</h2>
   <div class="faq">
-    <details class="faq-item">
-      <summary>How long is the masterclass?</summary>
+    <div class="faq-item">
+      <h3 class="faq-q">How long is the masterclass?</h3>
       <p>Plan for about an hour, plus live Q&amp;A at the end. Bring your questions, because we stay on until they're answered.</p>
-    </details>
-    <details class="faq-item">
-      <summary>Will there be a replay?</summary>
+    </div>
+    <div class="faq-item">
+      <h3 class="faq-q">Will there be a replay?</h3>
       <p>No. This is live only, and here's why: I answer questions in real time, and a recording of a Q&amp;A isn't a Q&amp;A. If you want in, show up <span class="js-event-short">Monday, November 16 at 7 PM EST</span>.</p>
-    </details>
-    <details class="faq-item">
-      <summary>Do I need a store or a product before the masterclass?</summary>
+    </div>
+    <div class="faq-item">
+      <h3 class="faq-q">Do I need a store or a product before the masterclass?</h3>
       <p>No. We start from zero. You'll see how to pick the product, build the store, and get your first sales, all inside the training.</p>
-    </details>
-    <details class="faq-item">
-      <summary>Do you need any inventory?</summary>
+    </div>
+    <div class="faq-item">
+      <h3 class="faq-q">Do you need any inventory?</h3>
       <p>No. You don't buy or store any stock upfront. Orders are fulfilled and shipped for you as customers buy, so you're never paying for product before it sells.</p>
-    </details>
-    <details class="faq-item">
-      <summary>What do I need to have ready?</summary>
+    </div>
+    <div class="faq-item">
+      <h3 class="faq-q">What do I need to have ready?</h3>
       <p>A laptop or desktop and a couple hours a day. If you can use email and browse the internet, you've got the tech skills for this.</p>
-    </details>
-    <details class="faq-item">
-      <summary>Is this dropshipping?</summary>
+    </div>
+    <div class="faq-item">
+      <h3 class="faq-q">Is this dropshipping?</h3>
       <p>No, and I want to be clear about that. I'm not teaching the Alibaba $5 product, chase-the-trend, burn-and-repeat stuff you've seen everywhere. You're building a real subscription-based e-commerce brand around a product people already buy every month. Evergreen, not trendy. Customers reorder from you, which is what makes the income compound.</p>
-    </details>
-    <details class="faq-item">
-      <summary>I've tried e-commerce before and it didn't work. How is this different?</summary>
+    </div>
+    <div class="faq-item">
+      <h3 class="faq-q">I've tried e-commerce before and it didn't work. How is this different?</h3>
       <p>Most ecom models make you start from zero every month because every sale is a one-time sale. This model sells things people use up and reorder, so the same customer pays you again next month. And you're not testing 50 products hoping one sticks. That's the Reorder Engine: one product, one brand, built to compound.</p>
-    </details>
-    <details class="faq-item">
-      <summary>Why should I trust you?</summary>
+    </div>
+    <div class="faq-item">
+      <h3 class="faq-q">Why should I trust you?</h3>
       <p>Fair question. I built my own subscription brand from scratch while working construction and going to college, and it does over $600,000 a month in revenue now. I'm 4.7-star rated on Whop with 208 students helped, and I'm an official Shopify partner. I don't teach anything I haven't done myself.</p>
-    </details>
-    <details class="faq-item">
-      <summary>Is this a get rich quick thing?</summary>
+    </div>
+    <div class="faq-item">
+      <h3 class="faq-q">Is this a get rich quick thing?</h3>
       <p>No, and if that's what you're looking for, this isn't for you. This is a real business that takes consistent work, usually 1 to 2 hours a day. What it gives you is a clear path instead of guessing.</p>
-    </details>
-    <details class="faq-item">
-      <summary>How much time do I need?</summary>
+    </div>
+    <div class="faq-item">
+      <h3 class="faq-q">How much time do I need?</h3>
       <p>About an hour or two a day. I built mine after class and after 10 to 12 hour construction shifts. That's enough when you're following a plan instead of guessing.</p>
-    </details>
-    <details class="faq-item">
-      <summary>Do I need any tech experience?</summary>
+    </div>
+    <div class="faq-item">
+      <h3 class="faq-q">Do I need any tech experience?</h3>
       <p>No. AI builds the store, generates the images, and writes the copy. You make the decisions on product and brand, and the heavy lifting on the build is handled for you.</p>
-    </details>
-    <details class="faq-item">
-      <summary>How fast until I see my first sale?</summary>
+    </div>
+    <div class="faq-item">
+      <h3 class="faq-q">How fast until I see my first sale?</h3>
       <p>It depends on how fast you execute, but we've seen people land their first sale in under a week, and under two weeks is very doable. I'll walk you through the exact sequence on the masterclass.</p>
-    </details>
+    </div>
   </div>
 </div>
 </div>
@@ -1371,8 +1369,9 @@
       <input type="text" name="first_name" placeholder="First Name*" aria-label="First name" autocomplete="given-name" maxlength="80" required />
       <input type="email" name="email" placeholder="Email For Access Link*" aria-label="Email" autocomplete="email" inputmode="email" maxlength="200" required />
       <div class="seat-tel">
-        <input type="tel" name="phone" placeholder="Phone Number*" aria-label="Phone number" autocomplete="tel" inputmode="tel" maxlength="40" required />
-        <p class="seat-tel-note">For a quick heads-up before we go live. No spam.</p>
+        <label class="seat-tel-label" for="seat-phone">Mobile Number (For live room link &amp; event alerts)*</label>
+        <input type="tel" id="seat-phone" name="phone" placeholder="(555) 000-0000" aria-label="Mobile number" autocomplete="tel" inputmode="tel" maxlength="40" required />
+        <p class="seat-tel-note">&#128274; Event reminders only. No spam calls, we don&#8217;t sell your info, and you can opt out in 1 click.</p>
       </div>
       <p class="seat-error js-seat-error" role="alert" hidden></p>
       <button type="submit" class="seat-submit js-seat-submit">Yes! Lock In My Seat!</button>
