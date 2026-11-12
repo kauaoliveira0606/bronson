@@ -575,6 +575,8 @@
     /* Sign-up popup: the page's own form, posts to /api/masterclass-register. */
     .seat-modal { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(15, 23, 42, 0.6); }
     .seat-modal.open { display: flex; }
+    html.seat-lock, html.seat-lock body { overflow: hidden; }
+    .seat-dialog { overscroll-behavior: contain; }
     .seat-dialog { position: relative; width: 100%; max-width: 480px; max-height: 100%; overflow-y: auto; background: #ffffff; border-radius: 16px; padding: 44px 32px 32px; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.3); }
     .seat-close { position: absolute; top: 8px; right: 10px; width: 36px; height: 36px; border: 0; background: none; color: #94a3b8; font-size: 1.8rem; line-height: 1; cursor: pointer; }
     .seat-form { display: flex; flex-direction: column; gap: 14px; }
@@ -583,11 +585,6 @@
     .seat-form input:focus { outline: 2px solid #16a34a; outline-offset: 1px; background: #ffffff; }
     .seat-submit { width: 100%; min-height: 68px; padding: 12px 20px; border: 0; border-radius: 12px; background: linear-gradient(180deg, #22c55e, #15803d); box-shadow: 0 8px 22px rgba(22, 163, 74, 0.35); color: #ffffff; font-family: inherit; font-size: 1.3rem; font-weight: 800; cursor: pointer; }
     .seat-submit:disabled { opacity: 0.7; cursor: wait; }
-    /* Phone field: the long label is an overlay so it can wrap; it hides once they type. */
-    .seat-tel { position: relative; }
-    .seat-tel-ph { position: absolute; left: 21px; right: 16px; top: 0; height: 58px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; font-size: 16px; line-height: 1.25; color: #475569; pointer-events: none; }
-    .seat-tel-ph small { font-size: 12.5px; color: #64748b; }
-    .seat-tel input:not(:placeholder-shown) + .seat-tel-ph { display: none; }
     .seat-tel-note { margin: 6px 0 0 4px; font-size: 0.8rem; color: #64748b; }
     .seat-error { margin: 0; color: #b91c1c; font-size: 0.9rem; line-height: 1.4; }
     @media (max-width: 520px) { .seat-dialog { padding: 44px 20px 22px; } .seat-submit { font-size: 1.15rem; } }
@@ -1364,9 +1361,8 @@
       <input type="text" name="first_name" placeholder="First Name*" aria-label="First name" autocomplete="given-name" maxlength="80" required />
       <input type="email" name="email" placeholder="Email For Access Link*" aria-label="Email" autocomplete="email" inputmode="email" maxlength="200" required />
       <div class="seat-tel">
-        <input type="tel" name="phone" placeholder=" " aria-label="Phone number (For quick heads-up before we go live)" autocomplete="tel" inputmode="tel" maxlength="40" required />
-        <span class="seat-tel-ph" aria-hidden="true">Phone number <small>(For quick heads-up before we go live)</small></span>
-        <p class="seat-tel-note">No Spam</p>
+        <input type="tel" name="phone" placeholder="Phone Number*" aria-label="Phone number" autocomplete="tel" inputmode="tel" maxlength="40" required />
+        <p class="seat-tel-note">For a quick heads-up before we go live. No spam.</p>
       </div>
       <p class="seat-error js-seat-error" role="alert" hidden></p>
       <button type="submit" class="seat-submit js-seat-submit">Yes! Lock In My Seat!</button>
@@ -1466,7 +1462,12 @@
   var seatLabel = seatSubmit.textContent;
   var seatSending = false;
 
-  function closeSeatModal() { seatModal.classList.remove('open'); }
+  // Lock the page behind the popup while it is open.
+  new MutationObserver(function () {
+    document.documentElement.classList.toggle('seat-lock', seatModal.classList.contains('open'));
+  }).observe(seatModal, { attributes: true, attributeFilter: ['class'] });
+
+  function closeSeatModal() { seatModal.classList.remove('open'); seatError.hidden = true; }
   function showSeatError(message) {
     seatError.textContent = message;
     seatError.hidden = false;
@@ -1474,11 +1475,28 @@
   document.querySelectorAll('.js-seat-open').forEach(function (btn) {
     btn.addEventListener('click', function (e) {
       e.preventDefault();
+      seatError.hidden = true;
       seatModal.classList.add('open');
       seatForm.elements.first_name.focus();
     });
   });
   document.querySelector('.js-seat-close').addEventListener('click', closeSeatModal);
+
+  // Exit intent: once per visit, open the sign-up popup when they are about to leave.
+  var exitShown = false;
+  try { exitShown = sessionStorage.getItem('seatExitShown') === '1'; } catch (err) {}
+  function showExitPopup() {
+    if (exitShown || seatModal.classList.contains('open')) return;
+    exitShown = true;
+    try { sessionStorage.setItem('seatExitShown', '1'); } catch (err) {}
+    seatModal.classList.add('open');
+  }
+  document.documentElement.addEventListener('mouseleave', function (e) { if (e.clientY <= 0) showExitPopup(); });
+  if (!exitShown && window.matchMedia && matchMedia('(pointer: coarse)').matches) {
+    // Phones: the first back press opens the popup, the next one leaves normally.
+    history.pushState({ seatExit: 1 }, '');
+    window.addEventListener('popstate', function () { showExitPopup(); });
+  }
   seatModal.addEventListener('click', function (e) { if (e.target === seatModal) closeSeatModal(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSeatModal(); });
 
@@ -1490,6 +1508,14 @@
     var phone = seatForm.elements.phone.value.trim();
     if (!fname) return showSeatError('Please enter your first name.');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showSeatError('Please enter a valid email address.');
+    var typos = { 'gmial.com': 'gmail.com', 'gmai.com': 'gmail.com', 'gmal.com': 'gmail.com', 'gma.com': 'gmail.com', 'gmail.con': 'gmail.com', 'gmail.co': 'gmail.com', 'gmail.cm': 'gmail.com', 'gma.con': 'gmail.com', 'gmaill.com': 'gmail.com', 'gnail.com': 'gmail.com', 'gmail.comm': 'gmail.com', 'yaho.com': 'yahoo.com', 'yahooo.com': 'yahoo.com', 'yahoo.con': 'yahoo.com', 'yahoo.co': 'yahoo.com', 'hotmial.com': 'hotmail.com', 'hotmail.con': 'hotmail.com', 'hotmai.com': 'hotmail.com', 'outlok.com': 'outlook.com', 'outlook.con': 'outlook.com', 'icloud.con': 'icloud.com', 'iclod.com': 'icloud.com' };
+    var at = email.lastIndexOf('@');
+    var fixed = typos[email.slice(at + 1).toLowerCase()];
+    if (fixed) {
+      var suggestion = email.slice(0, at + 1) + fixed;
+      seatForm.elements.email.value = suggestion;
+      return showSeatError('We fixed a typo in your email: ' + suggestion + '. Check it, then tap the button again.');
+    }
     if (phone.replace(/\D/g, '').length < 7) return showSeatError('Please enter your phone number.');
 
     var query = new URLSearchParams(window.location.search);
