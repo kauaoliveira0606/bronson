@@ -872,9 +872,12 @@
     /* Final call to action */
     .faq { max-width: 760px; margin: 40px auto 0; display: grid; gap: 12px; }
     .faq-item { background: #ffffff; border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; }
-    .faq-q { padding: 18px 22px 8px; font-family: 'Manrope', 'Inter', sans-serif; font-size: 1.02rem; font-weight: 700; line-height: 1.35; color: var(--ink); }
+    .faq-item summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; font-family: 'Manrope', 'Inter', sans-serif; font-size: 1.02rem; font-weight: 700; color: var(--ink); }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { content: "+"; flex: none; width: 26px; height: 26px; border-radius: 50%; background: rgba(22,163,74,0.12); color: var(--green); font-size: 1.1rem; font-weight: 700; line-height: 26px; text-align: center; }
+    .faq-item[open] summary::after { content: "\2212"; }
     .faq-item p { padding: 0 22px 20px; color: var(--body); line-height: 1.6; }
-    @media (max-width: 600px) { .faq-q { padding: 16px 18px 6px; font-size: 0.96rem; } .faq-item p { padding: 0 18px 18px; } }
+    @media (max-width: 600px) { .faq-item summary { padding: 16px 18px; font-size: 0.96rem; } .faq-item p { padding: 0 18px 18px; } }
     .cta-box {
       background:
         radial-gradient(520px 300px at 15% 0%, rgba(34,197,94,0.18), transparent 65%),
@@ -1235,34 +1238,34 @@
   <p class="section-label">FAQ</p>
   <h2 class="section-title">Questions People Ask Before They Register</h2>
   <div class="faq">
-    <div class="faq-item">
-      <h3 class="faq-q">Do I need a store or a product before the masterclass?</h3>
+    <details class="faq-item">
+      <summary>Do I need a store or a product before the masterclass?</summary>
       <p>No. We start from zero. You'll see how to pick the product, build the store, and get your first sales, all inside the training.</p>
-    </div>
-    <div class="faq-item">
-      <h3 class="faq-q">Do you need any inventory?</h3>
+    </details>
+    <details class="faq-item">
+      <summary>Do you need any inventory?</summary>
       <p>No. You don't buy or store any stock upfront. Orders are fulfilled and shipped for you as customers buy, so you're never paying for product before it sells.</p>
-    </div>
-    <div class="faq-item">
-      <h3 class="faq-q">Is this dropshipping?</h3>
+    </details>
+    <details class="faq-item">
+      <summary>Is this dropshipping?</summary>
       <p>No, and I want to be clear about that. I'm not teaching the Alibaba $5 product, chase-the-trend, burn-and-repeat stuff you've seen everywhere. You're building a real subscription-based e-commerce brand around a product people already buy every month. Evergreen, not trendy. Customers reorder from you, which is what makes the income compound.</p>
-    </div>
-    <div class="faq-item">
-      <h3 class="faq-q">I've tried e-commerce before and it didn't work. How is this different?</h3>
+    </details>
+    <details class="faq-item">
+      <summary>I've tried e-commerce before and it didn't work. How is this different?</summary>
       <p>Most ecom models make you start from zero every month because every sale is a one-time sale. This model sells things people use up and reorder, so the same customer pays you again next month. And you're not testing 50 products hoping one sticks. That's the Reorder Engine: one product, one brand, built to compound.</p>
-    </div>
-    <div class="faq-item">
-      <h3 class="faq-q">How much time do I need?</h3>
+    </details>
+    <details class="faq-item">
+      <summary>How much time do I need?</summary>
       <p>About an hour or two a day. I built mine after class and after 10 to 12 hour construction shifts. That's enough when you're following a plan instead of guessing.</p>
-    </div>
-    <div class="faq-item">
-      <h3 class="faq-q">Do I need any tech experience?</h3>
+    </details>
+    <details class="faq-item">
+      <summary>Do I need any tech experience?</summary>
       <p>No. AI builds the store, generates the images, and writes the copy. You make the decisions on product and brand, and the heavy lifting on the build is handled for you.</p>
-    </div>
-    <div class="faq-item">
-      <h3 class="faq-q">How fast until I see my first sale?</h3>
+    </details>
+    <details class="faq-item">
+      <summary>How fast until I see my first sale?</summary>
       <p>It depends on how fast you execute, but we've seen people land their first sale in under a week, and under two weeks is very doable. I'll walk you through the exact sequence on the masterclass.</p>
-    </div>
+    </details>
   </div>
 </div>
 </div>
