@@ -575,6 +575,8 @@
     /* Sign-up popup: the page's own form, posts to /api/masterclass-register. */
     .seat-modal { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(15, 23, 42, 0.6); }
     .seat-modal.open { display: flex; }
+    html.seat-lock, html.seat-lock body { overflow: hidden; }
+    .seat-dialog { overscroll-behavior: contain; }
     .seat-dialog { position: relative; width: 100%; max-width: 480px; max-height: 100%; overflow-y: auto; background: #ffffff; border-radius: 16px; padding: 44px 32px 32px; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.3); }
     .seat-close { position: absolute; top: 8px; right: 10px; width: 36px; height: 36px; border: 0; background: none; color: #94a3b8; font-size: 1.8rem; line-height: 1; cursor: pointer; }
     .seat-form { display: flex; flex-direction: column; gap: 14px; }
@@ -1457,6 +1459,11 @@
   var seatSubmit = document.querySelector('.js-seat-submit');
   var seatLabel = seatSubmit.textContent;
   var seatSending = false;
+
+  // Lock the page behind the popup while it is open.
+  new MutationObserver(function () {
+    document.documentElement.classList.toggle('seat-lock', seatModal.classList.contains('open'));
+  }).observe(seatModal, { attributes: true, attributeFilter: ['class'] });
 
   function closeSeatModal() { seatModal.classList.remove('open'); seatError.hidden = true; }
   function showSeatError(message) {
