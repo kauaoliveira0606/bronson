@@ -583,11 +583,6 @@
     .seat-form input:focus { outline: 2px solid #16a34a; outline-offset: 1px; background: #ffffff; }
     .seat-submit { width: 100%; min-height: 68px; padding: 12px 20px; border: 0; border-radius: 12px; background: linear-gradient(180deg, #22c55e, #15803d); box-shadow: 0 8px 22px rgba(22, 163, 74, 0.35); color: #ffffff; font-family: inherit; font-size: 1.3rem; font-weight: 800; cursor: pointer; }
     .seat-submit:disabled { opacity: 0.7; cursor: wait; }
-    /* Phone field: the long label is an overlay so it can wrap; it hides once they type. */
-    .seat-tel { position: relative; }
-    .seat-tel-ph { position: absolute; left: 21px; right: 16px; top: 0; height: 58px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; font-size: 16px; line-height: 1.25; color: #475569; pointer-events: none; }
-    .seat-tel-ph small { font-size: 12.5px; color: #64748b; }
-    .seat-tel input:not(:placeholder-shown) + .seat-tel-ph { display: none; }
     .seat-tel-note { margin: 6px 0 0 4px; font-size: 0.8rem; color: #64748b; }
     .seat-error { margin: 0; color: #b91c1c; font-size: 0.9rem; line-height: 1.4; }
     @media (max-width: 520px) { .seat-dialog { padding: 44px 20px 22px; } .seat-submit { font-size: 1.15rem; } }
@@ -1362,9 +1357,8 @@
       <input type="text" name="first_name" placeholder="First Name*" aria-label="First name" autocomplete="given-name" maxlength="80" required />
       <input type="email" name="email" placeholder="Email For Access Link*" aria-label="Email" autocomplete="email" inputmode="email" maxlength="200" required />
       <div class="seat-tel">
-        <input type="tel" name="phone" placeholder=" " aria-label="Phone number (For quick heads-up before we go live)" autocomplete="tel" inputmode="tel" maxlength="40" required />
-        <span class="seat-tel-ph" aria-hidden="true">Phone number <small>(For quick heads-up before we go live)</small></span>
-        <p class="seat-tel-note">No Spam</p>
+        <input type="tel" name="phone" placeholder="Phone Number*" aria-label="Phone number" autocomplete="tel" inputmode="tel" maxlength="40" required />
+        <p class="seat-tel-note">For a quick heads-up before we go live. No spam.</p>
       </div>
       <p class="seat-error js-seat-error" role="alert" hidden></p>
       <button type="submit" class="seat-submit js-seat-submit">Yes! Lock In My Seat!</button>
@@ -1477,6 +1471,24 @@
     });
   });
   document.querySelector('.js-seat-close').addEventListener('click', closeSeatModal);
+
+  // Exit intent: once per visit, open the sign-up popup when they are about to leave.
+  var exitShown = false;
+  try { exitShown = sessionStorage.getItem('seatExitShown') === '1'; } catch (err) {}
+  function showExitPopup() {
+    if (exitShown || seatModal.classList.contains('open')) return;
+    exitShown = true;
+    try { sessionStorage.setItem('seatExitShown', '1'); } catch (err) {}
+    seatModal.classList.add('open');
+  }
+  document.documentElement.addEventListener('mouseleave', function (e) { if (e.clientY <= 0) showExitPopup(); });
+  if (!exitShown) {
+    // Phones: the back button opens the popup instead of leaving.
+    history.pushState({ seatExit: 1 }, '');
+    window.addEventListener('popstate', function () {
+      if (!exitShown) { showExitPopup(); history.pushState({ seatExit: 1 }, ''); }
+    });
+  }
   seatModal.addEventListener('click', function (e) { if (e.target === seatModal) closeSeatModal(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSeatModal(); });
 
