@@ -64,6 +64,7 @@
     ${ICON}
     <h2>Check Your <span>Email</span></h2>
     <div class="done-step-card">
+      <img class="done-email-img" src="/masterclass-confirmation/email-inbox-confirmed.webp" width="762" height="432" alt="Gmail inbox showing the email: [CONFIRMED] Your seat for the masterclass (+ access link)" />
       <p>Find the email from me with your masterclass details. Don't see it in the next few minutes?</p>
       <p>Check promotions or spam, then drag it into your main inbox so you get every reminder.</p>
       <p>I will be sending exclusive pre-training breakdowns. So you get the most out of the masterclass.</p>
