@@ -1024,6 +1024,11 @@
     @media (prefers-reduced-motion: reduce) { .hero-band::before { animation: none; } }
     .hero h1, .section-title { font-family: 'Fraunces', Georgia, serif; font-weight: 600; letter-spacing: -1.4px; line-height: 1.1; }
     @media (max-width: 600px) { .hero h1, .section-title { letter-spacing: -0.8px; } }
+    /* Top bar: Monday time on top, the full gift line under it */
+    .nav-bar .nav-label { flex-direction: column; align-items: flex-start; gap: 2px; white-space: normal; }
+    .nav-bar .nav-sep { display: none; }
+    .nav-gift { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.3px; line-height: 1.3; opacity: 0.95; text-align: left; }
+    @media (max-width: 600px) { .nav-gift { font-size: 0.58rem; letter-spacing: 0.1px; } }
   </style>
 <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
@@ -1038,7 +1043,7 @@
 <!-- Sticky top bar: zero height so it floats over the hero; the hero pads itself by its height (--nav-h). -->
 <div class="nav-sticky">
   <div class="nav-bar">
-    <span class="nav-label"><span class="nav-label-top"><span class="dot"></span>Free Attendee Bonus</span><span class="nav-sep"> &middot; </span><span class="nav-date js-nav-when">This Monday at 7:00 PM EST</span></span>
+    <span class="nav-label"><span class="nav-label-top"><span class="dot"></span><span class="nav-date js-nav-when">This Monday at 7:00 PM EST</span></span><span class="nav-gift">&#127873; Free Attendee Bonus ($197 Value): Private Winning Product Research Checklist</span></span>
     <a class="nav-seat js-seat-open" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span></a>
   </div>
 </div>
