@@ -146,6 +146,9 @@ strong{color:var(--ink);font-weight:600}
 .ico svg{width:30px;height:30px}
 .bonus .ico{width:72px;height:72px}
 .bonus .ico svg{width:34px;height:34px}
+.gift{display:flex;flex-direction:column;gap:10px}
+.gift p{font-size:.92rem;margin:0;color:var(--ink)}
+@media(max-width:720px){.bonus .shots{grid-template-columns:1fr!important}}
 </style>
 </head>
 <body>
@@ -326,7 +329,11 @@ strong{color:var(--ink);font-weight:600}
   <div class="bonus"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15 8a5 5 0 0 1 0 8M18 5a9 9 0 0 1 0 14"/></svg></div>
     <div><h3>The Complete Ads Blueprint</h3>
     <p>Step-by-step ad training for Facebook, TikTok, Google, and Amazon, with the exact ad account setup and a swipe file of ads proven to work. Swap in your product and launch.</p>
-    <img class="shot dark" src="img/ads-win.webp" alt="Student ad results"></div></div>
+    <ul class="tick" style="margin-top:14px">
+      <li>Facebook ads, step by step, with screen share</li><li>Budget, ad setup, and creatives</li>
+      <li>TikTok</li><li>Google</li><li>Amazon</li><li>Exact ad account setup</li>
+    </ul>
+    <img class="shot dark" src="img/ads-win-top.webp" alt="Student shares first sales after testing ads from the roadmap" style="margin-top:14px"></div></div>
 
   <div class="bonus"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
     <div><h3>The 14-Day Launch Playbook</h3>
@@ -335,7 +342,11 @@ strong{color:var(--ink);font-weight:600}
 
   <div class="bonus"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg></div>
     <div><h3>The 90-Day Scaling Challenge to $1K a Day</h3>
-    <p>One specific action for every day, from Day 1 through Day 90. Complete the challenge and Bronson personally gives you $1,000 to support your journey even more.</p></div></div>
+    <p>One specific action for every day, from Day 1 through Day 90. You either hit the goal or you know exactly where you fell short and why. No confusion. No guessing. Just execution.</p>
+    <div class="shots" style="grid-template-columns:1.3fr 1fr;gap:14px;margin-top:14px">
+      <img class="shot dark" src="img/roadmap-doc.webp" alt="Day 18 of the 90-day challenge">
+      <div class="gift"><img class="shot dark" src="img/black-card.webp" alt="Black card" style="margin:0"><p><b>Complete the challenge and Bronson personally gives you $1,000</b> to support your journey even more.</p></div>
+    </div></div></div>
 </div>
 </section>
 
