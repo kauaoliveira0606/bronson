@@ -390,7 +390,12 @@
     .rating-line img { width: 28px; height: 28px; border-radius: 8px; }
     .rating-line .t-stars { color: #facc15; letter-spacing: 1px; margin-right: 8px; }
     .rating-line b { font-family: var(--head); font-size: 0.95rem; }
-    .order-card { padding-bottom: 0; overflow: hidden; }
+    .order-card { overflow: visible; border-top: 0; border-radius: 22px; }
+    .order-mock { margin: -135px -10px 6px; position: relative; z-index: 2; }
+    .order-mock svg { display: block; width: 100%; height: auto; }
+    .order-card h2 { font-family: var(--head); font-size: 0.8rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--green-dark); margin: 8px 0 4px; }
+    .order-checkout { border-radius: 0 0 22px 22px; }
+    .order-card { padding-bottom: 0; }
     .order-card .rating-line { margin: 18px 0 20px; padding-top: 18px; border-top: 1px solid #e5e7eb; }
     .order-checkout { margin: 0 -22px; padding: 22px 22px 26px; border-top: 1px solid #e5e7eb; background: #fff; }
     .final-sub { text-align: center; font-size: 1.15rem; color: var(--body); margin-top: 16px; }
@@ -620,9 +625,10 @@
   </div>
 </section>
 
-<section class="section tinted" id="checkout" style="scroll-margin-top:0;">
+<section class="section tinted" id="checkout" style="scroll-margin-top:0;padding-top:170px;">
   <div class="col">
     <div class="order-card">
+      <div class="order-mock js-mock"></div>
       <h2>Your Order</h2>
       <div class="order-line"><span>The Subscription-First E&#8209;commerce Mini Course</span><s>$297</s></div>
       <div class="order-line"><span>The Subscription Store Templates</span><s>$200</s></div>
