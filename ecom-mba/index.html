@@ -92,10 +92,11 @@ strong{color:var(--ink);font-weight:600}
 .checkin span{display:block;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--green);margin-bottom:2px}
 .bonus-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:22px}
 .bonus{display:grid;grid-template-columns:72px 1fr;gap:20px;align-items:start;padding:24px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#fff,#f6fbf8)}
-.bonus .shot{max-width:none!important}
+.bonus .shot{max-width:100%!important}
 .bonus .cover{width:96px}
 .bonus .shot{margin-top:14px}
 .steps{counter-reset:s;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.steps.one{grid-template-columns:1fr}
 .steps li{counter-increment:s;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px 14px 56px;position:relative;color:var(--ink);font-weight:500}
 .steps li:before{content:counter(s);position:absolute;left:16px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--green-bright);color:#fff;font-weight:700;font-size:.9rem;display:flex;align-items:center;justify-content:center}
 .guar{background:linear-gradient(160deg,#f3fbf5,#e0f3e6);border:1px solid #c6e6d0}
@@ -151,10 +152,11 @@ body.present #deck{display:block;max-width:1180px;margin:0 auto;padding:24px 24p
 #deck .slide>.pill{justify-self:start}
 #deck .slide>.stats{width:100%}
 #deck .slide.card{padding:52px 60px}
-#deck .bonus-grid{grid-template-columns:1fr}
+#deck .bonus-grid{grid-template-columns:minmax(0,1fr)}
+#deck .bonus>div{min-width:0}
 #deck .bonus{grid-template-columns:130px 1fr;padding:30px}
 #deck .bonus .cover{width:130px}
-#deck .bonus .shot{max-height:52vh;width:100%;object-fit:contain}
+#deck .bonus .shot{height:44vh;width:auto;max-width:100%;max-height:none;object-fit:contain;display:block}
 #deck .item{border-top:0;padding:18px 0 0}
 #deck .item{grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);column-gap:48px}
 #deck .item .shot{width:100%;max-height:68vh;object-fit:contain;margin:0 auto}
@@ -175,7 +177,7 @@ body.present #modeBtn{display:none}
 @media(max-width:980px){
   #deck .item{grid-template-columns:1fr}
   #deck .item>.shots{grid-template-columns:1fr}
-  #deck .bonus{grid-template-columns:64px 1fr}
+  #deck .bonus{grid-template-columns:64px minmax(0,1fr)}
   #deck .bonus .ico{width:64px;height:64px}
 }
 @media(max-width:720px){
@@ -190,7 +192,7 @@ body.present #modeBtn{display:none}
 .ico svg{width:30px;height:30px}
 .bonus .ico{width:72px;height:72px}
 .bonus .ico svg{width:34px;height:34px}
-#deck .bonus{grid-template-columns:84px 1fr}
+#deck .bonus{grid-template-columns:84px minmax(0,1fr)}
 #deck .bonus .ico{width:84px;height:84px}
 #deck .bonus .ico svg{width:40px;height:40px}
 </style>
@@ -373,7 +375,7 @@ body.present #modeBtn{display:none}
   <div class="bonus"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15 8a5 5 0 0 1 0 8M18 5a9 9 0 0 1 0 14"/></svg></div>
     <div><h3>The Complete Ads Blueprint</h3>
     <p>Step-by-step ad training for Facebook, TikTok, Google, and Amazon, with the exact ad account setup and a swipe file of ads proven to work. Swap in your product and launch.</p>
-    <div class="shots"><img class="shot dark" src="img/ads-wins.webp" alt="Students launching ads"><img class="shot dark" src="img/ads-win.webp" alt="Student ad results"></div></div></div>
+    <img class="shot dark" src="img/ads-win.webp" alt="Student ad results"></div></div>
 
   <div class="bonus"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
     <div><h3>The 14-Day Launch Playbook</h3>
@@ -391,7 +393,6 @@ body.present #modeBtn{display:none}
   <span class="pill">Student results</span>
   <h2>Results From People Who Followed the Playbook</h2>
   <img class="shot dark" src="img/results-three.webp" alt="Student results after following the launch playbook">
-  <img class="shot dark" src="img/ads-wins.webp" alt="Students launching their first ads" style="margin-top:12px">
   <p class="note">Individual results vary. These are student examples, not guaranteed or typical outcomes.</p>
 </section>
 
@@ -449,11 +450,10 @@ body.present #modeBtn{display:none}
 <section class="card">
   <span class="pill g">Next steps</span>
   <h2>Getting You Started</h2>
-  <ol class="steps">
-    <li>Choose how you want to get started with your closer.</li>
-    <li>Complete your enrollment and get access.</li>
-    <li>Book your 1:1 onboarding call and get your personalized game plan.</li>
-    <li>Start Day 1 of the roadmap.</li>
+  <ol class="steps one">
+    <li>Enrolling in the intro program and getting instant access.</li>
+    <li>Booking your 1-on-1 onboarding call with Bronson and getting your personalized game plan.</li>
+    <li>Day 3: starting Day 1 of the roadmap.</li>
   </ol>
 </section>
 
