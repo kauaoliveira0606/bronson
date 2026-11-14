@@ -61,7 +61,7 @@ strong{color:var(--ink);font-weight:600}
 .hero .art{align-self:stretch;background:radial-gradient(500px 300px at 30% 10%,rgba(34,197,94,.22),transparent 65%),linear-gradient(160deg,#f6fbf8,#e3f4ea);display:flex;align-items:center;justify-content:center;padding:28px}
 .hero .mark{font-family:'Manrope',sans-serif;font-weight:800;font-size:3.6rem;line-height:.95;letter-spacing:-.04em;color:var(--ink);text-align:center;background:#fff;border-radius:22px;padding:34px 40px;box-shadow:var(--shadow)}
 .hero .mark span{color:var(--green)}
-.hero .art img{width:100%;max-width:300px;display:block;background:#fff;border-radius:18px;padding:10px;box-shadow:var(--shadow)}
+.hero .art img{width:100%;max-width:300px;padding:26px!important;display:block;background:#fff;border-radius:18px;padding:10px;box-shadow:var(--shadow)}
 .promise{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
 .chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:.84rem;font-weight:600;color:var(--ink)}
 .chip b{color:var(--green)}
@@ -161,6 +161,21 @@ strong{color:var(--ink);font-weight:600}
 .bc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:48px;align-items:center}
 .bc-img .shot{border-radius:20px}
 @media(max-width:820px){.bc{grid-template-columns:1fr;gap:26px}}
+.wall{columns:3;column-gap:14px;margin-top:16px}
+.wall .shot{break-inside:avoid;margin:0 0 14px}
+@media(max-width:820px){.wall{columns:2}}
+@media(max-width:520px){.wall{columns:1}}
+.guar{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:0;padding:0;overflow:hidden;align-items:stretch}
+.g-photo{position:relative;min-height:520px;background:#cfe8d8}
+.g-photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.g-sign{position:absolute;left:7%;right:7%;bottom:6%;background:#fffdf7;border:1px solid #e3dcc8;border-radius:12px;padding:20px 22px 16px;text-align:center;box-shadow:0 18px 40px rgba(15,23,42,.35);transform:rotate(-2deg)}
+.gs-t{font-family:'Manrope',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.02em;color:var(--ink)}
+.gs-l{height:2px;background:var(--green);width:60%;margin:8px auto 10px}
+.g-sign p{font-size:.88rem;color:#334155;margin:0 0 6px;line-height:1.4}
+.g-sign p b{color:var(--green-dark)}
+.g-sign .gs-f{font-weight:700;color:var(--ink);margin:8px 0 0}
+.g-txt{padding:48px 52px}
+@media(max-width:820px){.guar{grid-template-columns:1fr}.g-photo{min-height:420px}.g-txt{padding:28px 20px}}
 </style>
 </head>
 <body>
@@ -177,7 +192,7 @@ strong{color:var(--ink);font-weight:600}
       <span class="chip"><b>90 days</b> to get there</span>
     </div>
   </div>
-  <div class="art"><div class="mark">Ecom<br><span>MBA</span></div></div>
+  <div class="art"><img src="img/ecom-logo.webp" alt="Ecom MBA"></div>
 </section>
 
 <!-- 2. What the offer isn't -->
@@ -289,6 +304,13 @@ strong{color:var(--ink);font-weight:600}
       <p>The AI Bronson built, trained on everything he knows about e-commerce: over a hundred coaching calls, conversations with students, and his entire curriculum. Instant feedback on any roadblock, any time of night.</p></div></div>
     <img class="shot dark" src="img/ai-example.webp" alt="Bronson AI answering a student">
   </div>
+
+  <div class="item">
+    <div class="head"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/></svg></div>
+      <div><h3>The Ecom MBA Certification</h3>
+      <p>Complete the program and receive your Ecom MBA Certification, proof of the skills you built as an e-commerce brand builder.</p></div></div>
+    <img class="shot" src="img/certificate.webp" alt="Ecom MBA Certification">
+  </div>
 </section>
 
 <!-- Pillar 3 -->
@@ -382,24 +404,33 @@ strong{color:var(--ink);font-weight:600}
   <span class="pill">Student results</span>
   <h2>Results From People Who Followed the Playbook</h2>
   <img class="shot dark" src="img/results-three.webp" alt="Student results after following the launch playbook">
+  <div class="wall"><img class="shot dark" src="/wins/win-349.webp" alt="Student win"><img class="shot dark" src="/wins/win-358.webp" alt="Student win"><img class="shot dark" src="/wins/win-359.webp" alt="Student win"><img class="shot dark" src="/wins/win-351.webp" alt="Student win"><img class="shot dark" src="/wins/win-348.webp" alt="Student win"><img class="shot dark" src="/wins/win-353.webp" alt="Student win"><img class="shot dark" src="/wins/win-356.webp" alt="Student win"><img class="shot dark" src="/wins/win-352.webp" alt="Student win"><img class="shot dark" src="/wins/win-357.webp" alt="Student win"></div>
   <p class="note">Individual results vary. These are student examples, not guaranteed or typical outcomes.</p>
 </section>
 
 <!-- Guarantee -->
 <section class="card guar">
-  <span class="pill g">The guarantee</span>
-  <h2>The 6-Month Guarantee</h2>
-  <p class="big">In 6 months, if you haven't made your investment back, <b>we work with you for free until you double your investment.</b></p>
-  <p>We don't go back to where you were before. We put extra effort into making sure you succeed. The people who do the work always get results, so Bronson is betting on you doing the work.</p>
-  <div class="sub">Here's how it works</div>
-  <ol class="steps">
-    <li>You show up to the weekly coaching calls.</li>
-    <li>You follow the 14-day launch roadmap and the scaling roadmap.</li>
-    <li>You ask us questions. You seek help.</li>
-    <li>You follow the plan for 6 months.</li>
-    <li>You do the actual work.</li>
-  </ol>
-  <p class="quote">We don't give up on you.</p>
+  <div class="g-photo">
+    <img src="img/bronson.webp" alt="Bronson">
+    <div class="g-sign"><div class="gs-t">The Guarantee</div><div class="gs-l"></div>
+      <p>In <b>6 months</b>, if you haven't made your investment back, we work with you <b>for free</b> until you double it.</p>
+      <p class="gs-f">Do the work. We've got you.</p></div>
+  </div>
+  <div class="g-txt">
+    <span class="pill g">The guarantee</span>
+    <h2>The 6-Month Guarantee</h2>
+    <p class="big">In 6 months, if you haven't made your investment back, <b>we work with you for free until you double your investment.</b></p>
+    <p>We don't go back to where you were before. We put extra effort into making sure you succeed. The people who do the work always get results, so Bronson is betting on you doing the work.</p>
+    <div class="sub">Here's how it works</div>
+    <ol class="steps one">
+      <li>You show up to the weekly coaching calls.</li>
+      <li>You follow the 14-day launch roadmap and the scaling roadmap.</li>
+      <li>You ask us questions. You seek help.</li>
+      <li>You follow the plan for 6 months.</li>
+      <li>You do the actual work.</li>
+    </ol>
+    <p class="quote">We don't give up on you.</p>
+  </div>
 </section>
 
 <!-- Pricing -->
@@ -440,9 +471,9 @@ strong{color:var(--ink);font-weight:600}
   <span class="pill g">Next steps</span>
   <h2>Getting You Started</h2>
   <ol class="steps one">
-    <li>Enrolling in the intro program and getting instant access.</li>
+    <li>Enrolling you into the program and getting instant access.</li>
     <li>Booking your 1-on-1 onboarding call with Bronson and getting your personalized game plan.</li>
-    <li>Day 3: starting Day 1 of the roadmap.</li>
+    <li>Starting Day 1 of the roadmap.</li>
   </ol>
 </section>
 
