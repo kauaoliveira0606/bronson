@@ -148,6 +148,8 @@ body.present #deck{display:block;max-width:1180px;margin:0 auto;padding:24px 24p
 #deck .slide{display:none;min-height:calc(100vh - 150px);align-content:center;animation:fade .35s ease}
 #deck .slide.active{display:grid}
 #deck .slide>*{min-width:0}
+#deck .slide>.pill{justify-self:start}
+#deck .slide>.stats{width:100%}
 #deck .slide.card{padding:52px 60px}
 #deck .bonus-grid{grid-template-columns:1fr}
 #deck .bonus{grid-template-columns:130px 1fr;padding:30px}
