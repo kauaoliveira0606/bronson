@@ -4,49 +4,64 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Inner Table Partnership</title>
+<title>Ecom MBA Partnership</title>
 <link rel="icon" type="image/png" href="/logo-180.png">
 <link rel="apple-touch-icon" href="/logo-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#cfe6e4;
-  --card:#faf8f3;
-  --ink:#0e1630;
-  --muted:#4b5468;
-  --green:#1f9d4d;
-  --green-soft:#dff1e5;
-  --line:#e6e1d4;
-  --navy:#0e1630;
+  --card:#ffffff;
+  --ink:#0f172a;
+  --muted:#475569;
+  --green:#16a34a;
+  --green-bright:#22c55e;
+  --green-dark:#15803d;
+  --green-soft:#dcfce7;
+  --line:rgba(15,23,42,.09);
+  --navy:#0f172a;
+  --shadow:0 10px 30px rgba(15,23,42,.07),0 1px 2px rgba(15,23,42,.04);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  background:var(--bg);
-  background-image:linear-gradient(180deg,#c3e0e3 0,#d7ebe2 60%,#e3f1e6 100%);
-  background-attachment:fixed;
+  background:#fcfdfc;
   color:var(--ink);
   font-family:'Inter',system-ui,sans-serif;
   line-height:1.55;
   -webkit-font-smoothing:antialiased;
+  position:relative;
 }
-.wrap{max-width:860px;margin:0 auto;padding:40px 16px 80px;display:flex;flex-direction:column;gap:22px}
-.card{background:var(--card);border-radius:24px;padding:44px 48px;box-shadow:0 1px 0 rgba(14,22,48,.04),0 10px 30px rgba(14,22,48,.06)}
-.pill{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#1c5d6e;background:#d3e8ee;border-radius:6px;padding:5px 10px;margin-bottom:18px}
-.pill.g{color:#126b34;background:var(--green-soft)}
-h1{font-size:2.6rem;line-height:1.08;font-weight:700;letter-spacing:-.025em;margin-bottom:18px}
-h2{font-size:2rem;line-height:1.15;font-weight:700;letter-spacing:-.02em;margin-bottom:14px}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(900px 480px at 18% 0%,rgba(34,197,94,.20),transparent 62%),
+    radial-gradient(760px 520px at 100% 30%,rgba(22,163,74,.14),transparent 60%),
+    linear-gradient(180deg,#f2faf5 0%,#f8faf9 100%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:repeating-linear-gradient(118deg,transparent 0 150px,rgba(22,163,74,.07) 150px 152px);
+}
+h1,h2,h3,.stat .n,.amt,.big,.num{font-family:'Manrope','Inter',sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:32px 24px 80px;display:flex;flex-direction:column;gap:24px}
+.card{background:var(--card);border-radius:24px;padding:48px 56px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.pill{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green-dark);background:var(--green-soft);border-radius:6px;padding:5px 10px;margin-bottom:18px}
+.pill.g{color:#fff;background:var(--green)}
+h1{font-size:3.2rem;line-height:1.08;font-weight:700;letter-spacing:-.025em;margin-bottom:18px}
+h2{font-size:2.3rem;line-height:1.15;font-weight:700;letter-spacing:-.02em;margin-bottom:14px}
 h3{font-size:1.15rem;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
 p{color:var(--muted);font-size:1.02rem;margin-bottom:12px}
 p:last-child{margin-bottom:0}
 strong{color:var(--ink);font-weight:600}
-.lead{font-size:1.1rem}
-.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:36px;align-items:center;padding:0;overflow:hidden}
-.hero .txt{padding:48px 0 48px 48px}
-.hero .art{align-self:stretch;background:linear-gradient(160deg,#ffffff,#e6f3ea);display:flex;align-items:center;justify-content:center;padding:28px}
-.hero .art img{width:100%;max-width:260px;display:block}
+.lead{font-size:1.15rem}
+.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:36px;align-items:center;padding:0;overflow:hidden}
+.hero .txt{padding:56px 0 56px 56px}
+.hero .art{align-self:stretch;background:radial-gradient(500px 300px at 30% 10%,rgba(34,197,94,.22),transparent 65%),linear-gradient(160deg,#f6fbf8,#e3f4ea);display:flex;align-items:center;justify-content:center;padding:28px}
+.hero .mark{font-family:'Manrope',sans-serif;font-weight:800;font-size:3.6rem;line-height:.95;letter-spacing:-.04em;color:var(--ink);text-align:center;background:#fff;border-radius:22px;padding:34px 40px;box-shadow:var(--shadow)}
+.hero .mark span{color:var(--green)}
+.hero .art img{width:100%;max-width:300px;display:block;background:#fff;border-radius:18px;padding:10px;box-shadow:var(--shadow)}
 .promise{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
 .chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:.84rem;font-weight:600;color:var(--ink)}
 .chip b{color:var(--green)}
@@ -54,42 +69,46 @@ strong{color:var(--ink);font-weight:600}
 .stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 16px;text-align:center}
 .stat .n{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;color:var(--green);line-height:1.1}
 .stat .l{font-size:.82rem;color:var(--muted);margin-top:4px}
-.pillars{display:flex;flex-direction:column;gap:12px;margin-top:20px}
-.pillar-row{display:flex;gap:18px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+.pillar-row{display:flex;flex-direction:column;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px}
 .num{flex:none;width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
 .pillar-row p{margin:0;font-size:.97rem}
-.item{display:grid;grid-template-columns:1fr;gap:16px;padding:26px 0;border-top:1px solid var(--line)}
-.item:first-of-type{border-top:0;padding-top:6px}
+.pillar-row .num{background:var(--green)}
+.item{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);column-gap:44px;row-gap:16px;padding:32px 0;border-top:1px solid var(--line);align-items:start}
+.item>.shot,.item>.shots{grid-column:2;grid-row:1 / span 4;align-self:center}
+.item>*:not(.shot):not(.shots){grid-column:1}
+.item:first-of-type{border-top:0;padding-top:10px}
 .item .head{display:flex;gap:16px;align-items:flex-start}
-.cover{flex:none;width:62px;height:auto;border-radius:6px;box-shadow:0 8px 16px rgba(14,22,48,.18)}
+.cover{flex:none;width:72px;height:auto;border-radius:6px;box-shadow:0 8px 16px rgba(14,22,48,.18)}
 .item .head p{margin:0}
-.shot{width:100%;display:block;border-radius:14px;border:1px solid var(--line);background:#fff}
-.shots{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.shot{width:100%;display:block;border-radius:14px;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow)}
+.shots{display:grid;grid-template-columns:1fr;gap:12px;align-items:start}
 .shot.dark{border-color:#1b2238}
-.quote{border-left:3px solid var(--green);padding:4px 0 4px 16px;margin:4px 0;color:var(--ink);font-weight:600;font-size:1.02rem}
-.tick{list-style:none;margin:6px 0 2px;display:grid;grid-template-columns:1fr 1fr;gap:8px 20px}
+.quote{font-family:'Manrope','Inter',sans-serif;border-left:3px solid var(--green);padding:4px 0 4px 16px;margin:4px 0;color:var(--ink);font-weight:600;font-size:1.02rem}
+.tick{list-style:none;margin:6px 0 2px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px 20px}
 .tick li{font-size:.95rem;color:var(--ink);padding-left:26px;position:relative}
 .tick li:before{content:"";position:absolute;left:0;top:3px;width:17px;height:17px;border-radius:50%;background:var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 6.8' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat}
-.checkin{background:transparent;box-shadow:none;border:1.5px dashed #8fb7b9;padding:18px 24px;text-align:center;color:#2c5560;font-weight:600;font-size:.95rem}
-.checkin span{display:block;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#5a8a90;margin-bottom:2px}
-.bonus{display:grid;grid-template-columns:96px 1fr;gap:18px;align-items:start;padding:22px 0;border-top:1px solid var(--line)}
-.bonus:first-of-type{border-top:0;padding-top:6px}
+.checkin{background:transparent;box-shadow:none;border:1.5px dashed rgba(22,163,74,.45);padding:20px 24px;text-align:center;color:var(--green-dark);font-weight:600;font-size:.95rem}
+.checkin span{display:block;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--green);margin-bottom:2px}
+.bonus-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:22px}
+.bonus{display:grid;grid-template-columns:72px 1fr;gap:20px;align-items:start;padding:24px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#fff,#f6fbf8)}
+.bonus .shot{max-width:none!important}
 .bonus .cover{width:96px}
 .bonus .shot{margin-top:14px}
-.steps{counter-reset:s;list-style:none;display:flex;flex-direction:column;gap:10px;margin:16px 0}
+.steps{counter-reset:s;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
 .steps li{counter-increment:s;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px 14px 56px;position:relative;color:var(--ink);font-weight:500}
-.steps li:before{content:counter(s);position:absolute;left:16px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-weight:700;font-size:.9rem;display:flex;align-items:center;justify-content:center}
-.guar{background:linear-gradient(160deg,#f3fbf5,#e4f4e9);border:1px solid #cfe8d7}
+.steps li:before{content:counter(s);position:absolute;left:16px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--green-bright);color:#fff;font-weight:700;font-size:.9rem;display:flex;align-items:center;justify-content:center}
+.guar{background:linear-gradient(160deg,#f3fbf5,#e0f3e6);border:1px solid #c6e6d0}
 .big{font-size:1.45rem;line-height:1.3;font-weight:700;letter-spacing:-.01em;color:var(--ink);margin-bottom:12px}
 .big b{color:var(--green)}
 .note{font-size:.82rem;color:#7a8296;margin-top:12px}
-.rcp{display:grid;grid-template-columns:1fr 1fr;gap:10px 22px;margin-top:18px}
+.rcp{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 22px;margin-top:18px}
 .rcp div{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 16px;font-size:.93rem;font-weight:600}
-.rcp i{flex:none;font-style:normal;font-size:.72rem;font-weight:800;color:#fff;background:var(--green);border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center}
+.rcp i{flex:none;font-style:normal;font-size:.72rem;font-weight:800;color:#fff;background:var(--green-bright);border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center}
 .rcp small{display:block;color:var(--muted);font-weight:400;font-size:.8rem;margin-top:1px}
 .sub{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--muted);margin:26px 0 4px}
-.price{text-align:center;background:var(--navy);color:#fff}
-.price .pill{background:rgba(255,255,255,.12);color:#9fe3b6}
+.price{text-align:center;background:linear-gradient(160deg,#0f172a,#14301f);color:#fff;border:0}
+.price .pill{background:rgba(255,255,255,.12);color:#86efac}
 .price h2{color:#fff}
 .price p{color:#b8c0d6}
 .price .amt{font-size:4.2rem;font-weight:800;letter-spacing:-.04em;line-height:1;margin:14px 0 6px;color:#fff}
@@ -98,20 +117,77 @@ strong{color:var(--ink);font-weight:600}
 .price li{color:#e6ebf7;font-size:.97rem;padding-left:26px;position:relative}
 .price li:before{content:"";position:absolute;left:0;top:3px;width:17px;height:17px;border-radius:50%;background:#2fbf63 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 6.8' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat}
 .foot{text-align:center;font-size:.78rem;color:#5c7a80;padding-top:6px}
+@media(max-width:980px){
+  .item{grid-template-columns:1fr}
+  .item>.shot,.item>.shots{grid-column:1;grid-row:auto}
+  .rcp{grid-template-columns:1fr 1fr}
+  .bonus-grid,.steps{grid-template-columns:1fr}
+}
 @media(max-width:720px){
-  .card{padding:30px 22px;border-radius:20px}
+  .wrap{padding:16px 12px 60px;gap:16px}
+  .card{padding:28px 20px;border-radius:20px}
   h1{font-size:2rem}
   h2{font-size:1.55rem}
   .hero{grid-template-columns:1fr;gap:0}
   .hero .txt{padding:30px 22px 8px}
   .hero .art{padding:22px;order:-1}
-  .hero .art img{max-width:150px}
+  .hero .mark{font-family:'Manrope',sans-serif;font-weight:800;font-size:3.6rem;line-height:.95;letter-spacing:-.04em;color:var(--ink);text-align:center;background:#fff;border-radius:22px;padding:34px 40px;box-shadow:var(--shadow)}
+.hero .mark span{color:var(--green)}
+.hero .art img{max-width:150px}
   .stats{grid-template-columns:1fr;}
-  .tick,.rcp,.shots{grid-template-columns:1fr}
+  .pillars,.rcp{grid-template-columns:1fr}
   .bonus{grid-template-columns:70px 1fr;gap:14px}
   .bonus .cover{width:70px}
   .price .amt{font-size:3.2rem}
 }
+
+/* ---------- Present mode (slide by slide) ---------- */
+#deck{display:none}
+body.present .wrap{display:none}
+body.present #deck{display:block;max-width:1180px;margin:0 auto;padding:24px 24px 110px}
+#deck .slide{display:none;min-height:calc(100vh - 150px);align-content:center;animation:fade .35s ease}
+#deck .slide.active{display:grid}
+#deck .slide>*{min-width:0}
+#deck .slide.card{padding:52px 60px}
+#deck .bonus-grid{grid-template-columns:1fr}
+#deck .bonus{grid-template-columns:130px 1fr;padding:30px}
+#deck .bonus .cover{width:130px}
+#deck .bonus .shot{max-height:46vh;width:auto;max-width:100%}
+#deck .item{border-top:0;padding:18px 0 0}
+#deck .item .shot,#deck .item .shots .shot{max-height:52vh;width:auto;max-width:100%;margin:0 auto}
+#deck .item>.shots{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#deck .item>.shots .shot{width:100%;max-height:none}
+#deck h2{font-size:2.5rem}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#bar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:12px 20px;align-items:center;gap:14px}
+body.present #bar{display:flex}
+#bar .prog{flex:1;height:6px;border-radius:99px;background:rgba(15,23,42,.08);overflow:hidden}
+#bar .prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green-bright),var(--green-dark));transition:width .3s}
+#bar button,#modeBtn{font-family:'Manrope',sans-serif;font-weight:800;font-size:.85rem;border:0;border-radius:999px;padding:10px 20px;cursor:pointer;background:linear-gradient(180deg,#2bcf68,#16a34a);color:#fff;box-shadow:0 8px 20px -8px rgba(22,163,74,.6)}
+#bar button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none}
+#bar .ct{font-weight:700;font-size:.85rem;color:var(--muted);min-width:56px;text-align:center}
+#modeBtn{position:fixed;top:14px;right:16px;z-index:60}
+body.present #modeBtn{display:none}
+@media(max-width:980px){
+  #deck .item>.shots{grid-template-columns:1fr}
+  #deck .bonus{grid-template-columns:64px 1fr}
+  #deck .bonus .ico{width:64px;height:64px}
+}
+@media(max-width:720px){
+  body.present #deck{padding:12px 12px 100px}
+  #deck .slide{min-height:calc(100vh - 120px)}
+  #deck .slide.card{padding:26px 18px}
+  #deck h2{font-size:1.7rem}
+  #deck .item .shot{max-height:none}
+}
+
+.ico{flex:none;width:64px;height:64px;border-radius:18px;background:linear-gradient(160deg,#2bcf68,#15803d);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 22px -8px rgba(22,163,74,.55)}
+.ico svg{width:30px;height:30px}
+.bonus .ico{width:72px;height:72px}
+.bonus .ico svg{width:34px;height:34px}
+#deck .bonus{grid-template-columns:84px 1fr}
+#deck .bonus .ico{width:84px;height:84px}
+#deck .bonus .ico svg{width:40px;height:40px}
 </style>
 </head>
 <body>
@@ -121,14 +197,14 @@ strong{color:var(--ink);font-weight:600}
 <section class="card hero">
   <div class="txt">
     <span class="pill">Partnership Opportunity</span>
-    <h1>The Inner Table Partnership</h1>
+    <h1>The Ecom MBA Partnership</h1>
     <p class="lead">Build your subscription e-commerce brand alongside Bronson, using the same system behind his $600,000 a month brand, with one clear action for every day of your first 90 days.</p>
     <div class="promise">
       <span class="chip"><b>$1,000 a day</b> in monthly recurring revenue</span>
       <span class="chip"><b>90 days</b> to get there</span>
     </div>
   </div>
-  <div class="art"><img src="/logo-400.webp" alt="The Inner Table"></div>
+  <div class="art"><div class="mark">Ecom<br><span>MBA</span></div></div>
 </section>
 
 <!-- 2. What the offer isn't -->
@@ -161,7 +237,7 @@ strong{color:var(--ink);font-weight:600}
   <div class="pillars">
     <div class="pillar-row"><div class="num">1</div><div><h3>The Roadmap</h3><p>The 90-day plan, the step-by-step curriculum, and your personalized game plan.</p></div></div>
     <div class="pillar-row"><div class="num">2</div><div><h3>The Coaching &amp; Accountability Engine</h3><p>Live calls three times a week, one-on-one access to Bronson, monthly brand audits, and Bronson AI.</p></div></div>
-    <div class="pillar-row"><div class="num">3</div><div><h3>The Ecosystem</h3><p>The Inner Table community and the in-person mastermind weekend.</p></div></div>
+    <div class="pillar-row"><div class="num">3</div><div><h3>The Ecosystem</h3><p>The Ecom MBA community and the in-person mastermind weekend.</p></div></div>
   </div>
 </section>
 
@@ -172,14 +248,14 @@ strong{color:var(--ink);font-weight:600}
   <p class="lead">The exact plan from your first day to $1,000 a day, built around your situation.</p>
 
   <div class="item">
-    <div class="head"><img class="cover" src="img/c1.webp" alt="">
+    <div class="head"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></div>
       <div><h3>1-on-1 Personalized Strategy Breakdown</h3>
       <p>We look at your budget, your time, and your goals, then build your personalized game plan. What works for you may not work for the next person, so everything is tailored to you.</p></div></div>
     <img class="shot" src="img/calls-video.webp" alt="Personalized strategy breakdown calls">
   </div>
 
   <div class="item">
-    <div class="head"><img class="cover" src="img/c6.webp" alt="">
+    <div class="head"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg></div>
       <div><h3>The Fast Track Curriculum</h3>
       <p>Step-by-step modules with screen share. Nothing in here is three years old, and it is updated constantly.</p></div></div>
     <p class="quote">You don't need experience. You don't need to be technical. You need to follow the steps.</p>
@@ -193,7 +269,7 @@ strong{color:var(--ink);font-weight:600}
   </div>
 
   <div class="item">
-    <div class="head"><div class="num" style="width:62px;height:62px;border-radius:10px;font-size:.78rem;line-height:1.1;text-align:center">90<br>DAY</div>
+    <div class="head"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3 3 5v16l6-2 6 2 6-2V3l-6 2z"/><path d="M9 3v16M15 5v16"/></svg></div>
       <div><h3>The 90-Day Scaling Roadmap</h3>
       <p>The core of the Reorder Engine. Every day for 90 days, one specific action is laid out for you. The goal is $1,000 a day in monthly recurring revenue, and you either hit it or you know exactly where you fell short and why.</p></div></div>
     <img class="shot dark" src="img/roadmap-doc.webp" alt="Day 18 of the 90-day roadmap">
@@ -209,7 +285,7 @@ strong{color:var(--ink);font-weight:600}
   <p class="lead">Six months of people in your corner, so you are never stuck guessing.</p>
 
   <div class="item">
-    <div class="head"><img class="cover" src="img/c2.webp" alt="">
+    <div class="head"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3z"/><path d="M17 10l5-3v10l-5-3"/></svg></div>
       <div><h3>3 Live Coaching Calls a Week</h3>
       <p>That is 72 live calls over six months. You will see what a $600,000 a month brand looks like from the inside, and take the same principles into your own store.</p></div></div>
     <img class="shot dark" src="img/calls-72.webp" alt="72 live coaching calls over six months">
@@ -220,21 +296,21 @@ strong{color:var(--ink);font-weight:600}
   </div>
 
   <div class="item">
-    <div class="head"><div class="num" style="width:62px;height:62px;border-radius:10px;font-size:.72rem;line-height:1.1;text-align:center">1-ON<br>1</div>
+    <div class="head"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
       <div><h3>One-on-One Access to Bronson</h3>
       <p>Whenever you're stuck or have a question, you have support when needed. Not some random person, the coach actually doing the numbers.</p></div></div>
     <img class="shot dark" src="img/access-chart.webp" alt="Student sharing results after one-on-one support" style="max-width:420px">
   </div>
 
   <div class="item">
-    <div class="head"><img class="cover" src="img/c3.webp" alt="">
+    <div class="head"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div>
       <div><h3>The Monthly Brand X-Ray</h3>
       <p>You can't fix what you can't see. Every month Bronson records a personalized video looking at your store, your ads, your websites, and your offer, and tells you exactly what to fix before it costs you money.</p></div></div>
     <img class="shot" src="img/xray.webp" alt="Monthly brand X-ray video review">
   </div>
 
   <div class="item">
-    <div class="head"><img class="cover" src="img/c7.webp" alt="">
+    <div class="head"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg></div>
       <div><h3>Bronson AI</h3>
       <p>The AI Bronson built, trained on everything he knows about e-commerce: over a hundred coaching calls, conversations with students, and his entire curriculum. Instant feedback on any roadblock, any time of night.</p></div></div>
     <div class="shots">
@@ -253,14 +329,14 @@ strong{color:var(--ink);font-weight:600}
   <p class="lead">You become the product of the five people closest to you. So we put you in the right room.</p>
 
   <div class="item">
-    <div class="head"><img class="cover" src="img/c4.webp" alt="">
-      <div><h3>The Inner Table Community</h3>
+    <div class="head"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></div>
+      <div><h3>The Ecom MBA Community</h3>
       <p>You're surrounded by people on the exact same path, people who get it and won't look at you like you're crazy for trying to build something. Share progress, see what others are applying to their stores, and keep winning together.</p></div></div>
     <img class="shot dark" src="img/community.webp" alt="Students sharing wins in the community">
   </div>
 
   <div class="item">
-    <div class="head"><img class="cover" src="img/c5.webp" alt="">
+    <div class="head"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></div>
       <div><h3>The In-Person Mastermind Weekend</h3>
       <p>On a call you get the strategy. In person you get the full picture: how Bronson thinks, how he makes decisions, and who the other top students are.</p></div></div>
     <ul class="tick">
@@ -280,34 +356,36 @@ strong{color:var(--ink);font-weight:600}
   <h2>Fast-Start Bonuses</h2>
   <p class="lead">Six assets so you skip the guessing and launch faster.</p>
 
-  <div class="bonus"><img class="cover" src="img/b1.webp" alt="">
+  <div class="bonus-grid">
+<div class="bonus"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8z"/><circle cx="7" cy="7" r="1.5"/></svg></div>
     <div><h3>The Winning Subscription Product Cheat Sheet</h3>
     <p>A list of 30+ products proven to work on a subscription model, plus Bronson's exact criteria for picking your own. The decision gets made fast, not in weeks.</p>
     <img class="shot" src="img/product-sheet.webp" alt="Product cheat sheet example" style="max-width:520px"></div></div>
 
-  <div class="bonus"><img class="cover" src="img/b2.webp" alt="">
+  <div class="bonus"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
     <div><h3>Plug-and-Play Store Templates</h3>
     <p>The actual store layouts Bronson and other winning brands use right now. Product goes here, images go here, copy goes here. You plug yours in and go live.</p>
     <img class="shot" src="img/template-swipe.webp" alt="Store template swipe file" style="max-width:340px"></div></div>
 
-  <div class="bonus"><img class="cover" src="img/b3.webp" alt="">
+  <div class="bonus"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
     <div><h3>The Trusted Supplier Handoff</h3>
     <p>The supplier connections Bronson uses for his $600,000 a month brand. Skip the bad samples and late shipments, and start with a supplier that is already proven.</p>
     <img class="shot dark" src="img/supplier-chat.webp" alt="Supplier list shared inside the program"></div></div>
 
-  <div class="bonus"><img class="cover" src="img/b4.webp" alt="">
+  <div class="bonus"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15 8a5 5 0 0 1 0 8M18 5a9 9 0 0 1 0 14"/></svg></div>
     <div><h3>The Complete Ads Blueprint</h3>
     <p>Step-by-step ad training for Facebook, TikTok, Google, and Amazon, with the exact ad account setup and a swipe file of ads proven to work. Swap in your product and launch.</p>
     <div class="shots"><img class="shot dark" src="img/ads-wins.webp" alt="Students launching ads"><img class="shot dark" src="img/ads-win.webp" alt="Student ad results"></div></div></div>
 
-  <div class="bonus"><img class="cover" src="img/b5.webp" alt="">
+  <div class="bonus"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
     <div><h3>The 14-Day Launch Playbook</h3>
     <p>Day 1 to Day 14, what to do and in what order. You open the playbook, do the day's action, and close the laptop. On Day 14, you launch.</p>
     <img class="shot" src="img/playbook-doc.webp" alt="Launch playbook Day 1" style="max-width:380px"></div></div>
 
-  <div class="bonus"><img class="cover" src="img/b6.webp" alt="">
+  <div class="bonus"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg></div>
     <div><h3>The 90-Day Scaling Challenge to $1K a Day</h3>
     <p>One specific action for every day, from Day 1 through Day 90. Complete the challenge and Bronson personally gives you $1,000 to support your journey even more.</p></div></div>
+</div>
 </section>
 
 <!-- Results -->
@@ -362,7 +440,7 @@ strong{color:var(--ink);font-weight:600}
 
 <section class="card price">
   <span class="pill">Your investment</span>
-  <h2>The Inner Table Partnership</h2>
+  <h2>The Ecom MBA Partnership</h2>
   <div class="amt">$6,800</div>
   <ul>
     <li>Everything in the three pillars</li>
@@ -383,7 +461,44 @@ strong{color:var(--ink);font-weight:600}
   </ol>
 </section>
 
-<p class="foot">The Inner Table</p>
+<p class="foot">Ecom MBA</p>
 </main>
+<div id="deck"></div>
+<div id="bar"><button class="ghost" id="prev">Back</button><div class="prog"><i></i></div><div class="ct" id="ct"></div><button id="next">Next</button><button class="ghost" id="doc">Scroll view</button></div>
+<button id="modeBtn" class="ghost" style="display:none">Present</button>
+<script>
+(function(){
+  var main=document.querySelector('main'),deck=document.getElementById('deck'),slides=[],cur=0;
+  function mk(nodes){var c=document.createElement('section');c.className='card slide';nodes.forEach(function(n){c.appendChild(n.cloneNode(true))});return c}
+  main.querySelectorAll(':scope > section').forEach(function(sec){
+    var items=sec.querySelectorAll(':scope > .item'),grid=sec.querySelector(':scope > .bonus-grid');
+    if(items.length){
+      var head=[];for(var n=sec.firstElementChild;n&&!n.classList.contains('item');n=n.nextElementSibling)head.push(n);
+      items.forEach(function(it){slides.push(mk(head.concat([it])))});
+    }else if(grid){
+      var head2=[];for(var m=sec.firstElementChild;m&&m!==grid;m=m.nextElementSibling)head2.push(m);
+      grid.querySelectorAll('.bonus').forEach(function(b){var g=document.createElement('div');g.className='bonus-grid';g.appendChild(b.cloneNode(true));slides.push(mk(head2.concat([g])))});
+    }else{var c=sec.cloneNode(true);c.classList.add('slide');slides.push(c)}
+  });
+  slides.forEach(function(s){deck.appendChild(s)});
+  function show(i){cur=Math.max(0,Math.min(slides.length-1,i));slides.forEach(function(s,k){s.classList.toggle('active',k===cur)});
+    document.getElementById('ct').textContent=(cur+1)+' / '+slides.length;
+    document.querySelector('#bar .prog i').style.width=((cur+1)/slides.length*100)+'%';window.scrollTo(0,0);
+    try{history.replaceState(null,'','#'+(cur+1))}catch(e){}}
+  function mode(p){document.body.classList.toggle('present',p);document.getElementById('modeBtn').style.display=p?'none':'block';if(p)show(cur)}
+  document.getElementById('prev').onclick=function(){show(cur-1)};
+  document.getElementById('next').onclick=function(){show(cur+1)};
+  document.getElementById('doc').onclick=function(){mode(false)};
+  document.getElementById('modeBtn').onclick=function(){mode(true)};
+  document.addEventListener('keydown',function(e){if(!document.body.classList.contains('present'))return;
+    if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].indexOf(e.key)>-1){e.preventDefault();show(cur+1)}
+    else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].indexOf(e.key)>-1){e.preventDefault();show(cur-1)}
+    else if(e.key==='Escape')mode(false)});
+  var x0=null;document.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+  document.addEventListener('touchend',function(e){if(x0===null||!document.body.classList.contains('present'))return;var d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>60)show(cur+(d<0?1:-1));x0=null},{passive:true});
+  var h=parseInt((location.hash||'').slice(1),10);if(h)cur=h-1;
+  mode(!/mode=doc/.test(location.search));
+})();
+</script>
 </body>
 </html>
