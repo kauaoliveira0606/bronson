@@ -334,6 +334,16 @@
       .done-cal-btn { flex: 1 1 100%; justify-content: center; }
     }
 
+    .hero { position: relative; background:
+      radial-gradient(520px 360px at 8% 62%, rgba(34,197,94,0.20), transparent 70%),
+      radial-gradient(560px 380px at 95% 38%, rgba(56,189,248,0.20), transparent 70%),
+      radial-gradient(520px 320px at 55% 96%, rgba(250,204,21,0.18), transparent 70%); }
+    .hero h1 { font-weight: 800; letter-spacing: -0.8px; max-width: 640px; }
+    .hl-pill { display: inline-block; background: linear-gradient(135deg, #22c55e, #15803d); color: #fff; border-radius: 14px; padding: 0 14px 4px; margin: 4px 0; box-shadow: 0 8px 22px -8px rgba(21,128,61,0.55); }
+    .hero-sub2 { font-size: 1.12rem; line-height: 1.6; color: var(--body); max-width: 520px; margin: 22px auto 0; }
+    .hero-sub2 b { color: var(--text); font-weight: 700; }
+    .hero-mock { max-width: 560px; margin: 8px auto 0; }
+    .hero-mock svg { display: block; width: 100%; height: auto; }
     /* ── OFFER LAYOUT (comparison, countdown, order summary, sticky bar) ── */
     .event-line { margin-top: 18px; font-size: 1rem; color: var(--body); }
     .event-line b { color: var(--text); }
@@ -349,6 +359,10 @@
     .vs-you { background: #fff; border-top: 5px solid var(--green-dark); }
     .vs-you h3 { color: var(--green-dark); }
     .vs-you li::before { content: "\2713"; color: var(--green-dark); }
+    .vs-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .vs-head h3 { margin-bottom: 0; }
+    .vs-pill { flex: none; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; border-radius: 100px; padding: 5px 11px; background: rgba(240,85,90,0.12); color: #c0343a; }
+    .vs-you .vs-pill { background: #dcfce7; color: #15803d; }
     .vs-badge { align-self: center; width: 44px; height: 44px; border-radius: 50%; background: #0b1b26; color: #fff; font-family: var(--head); font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; }
     .vs-close { text-align: center; font-family: var(--head); font-size: 1.2rem; font-weight: 600; line-height: 1.4; margin-top: 26px; }
     .vs-close b { color: var(--green-dark); }
@@ -516,8 +530,9 @@
   </div>
   <div class="col">
     <p class="lead-bold" style="margin-top:22px;">This $27 offer expires when the masterclass starts <span class="js-mc-day">Monday</span>.</p>
-    <h1>Walk Into The Masterclass With Your Store <span class="acc">Already Taking Shape</span></h1>
-    <div class="mock js-mock" data-price="1" style="margin-top:22px;"></div>
+    <h1>Walk Into The Masterclass With Your Store <span class="hl-pill">Already Taking Shape</span></h1>
+    <p class="hero-sub2">Not more theory. A plug-and-play kit built to go with the masterclass. <b>The whole model in one short mini course. The store templates you just fill in. The full interview with a student who built a successful subscription-based e&#8209;commerce business...</b></p>
+    <div class="mock js-mock hero-mock"></div>
     <a class="btn" href="#checkout">YES! I Want Instant Access</a>
     <div class="trust">
       <img src="/paid/whop-icon.webp" alt="Whop" />
@@ -535,22 +550,24 @@
     <h2 class="h2 sm">You'll Walk In Ahead Of Everyone Else.</h2>
     <div class="vs-grid">
       <div class="vs-col vs-them">
-        <h3>Everyone Else</h3>
+        <div class="vs-head"><h3>Everyone Else</h3><span class="vs-pill">Walked In Unprepared</span></div>
         <ul>
-          <li>Sits through the masterclass and gets fired up</li>
-          <li>Opens a brand new store and sees an empty page</li>
-          <li>Has no idea what goes on the home page or the product page</li>
+          <li>They sit through the masterclass and get fired up</li>
+          <li>They open a brand new store and see an empty page</li>
+          <li>They have no idea what goes on the home page or the product page</li>
+          <li>They leave the masterclass with a plan but no store</li>
           <li>A month later, the store still isn't live</li>
         </ul>
       </div>
       <div class="vs-badge">VS</div>
       <div class="vs-col vs-you">
-        <h3>You</h3>
+        <div class="vs-head"><h3>You</h3><span class="vs-pill">Walked In Ready</span></div>
         <ul>
-          <li>Already watched the mini course</li>
-          <li>Plug your product into plug-and-play store templates</li>
-          <li>Know exactly where everything goes, subscribe button included</li>
-          <li>Have your store taking shape right after the masterclass</li>
+          <li>You walk in already understanding how subscription e&#8209;commerce works</li>
+          <li>You know where everything goes in your store, subscribe button included</li>
+          <li>You ask the questions that actually move your store forward</li>
+          <li>You leave the masterclass ready to execute IMMEDIATELY</li>
+          <li>You know exactly what to do in your first 48 hours</li>
         </ul>
       </div>
     </div>
@@ -709,7 +726,7 @@
 
 <div class="sticky-bar" id="sticky-bar">
   <div class="sticky-in">
-    <div class="sticky-mock js-mock"></div>
+    <div class="sticky-mock js-box"></div>
     <div class="sticky-txt"><b>The Subscription Store Starter Kit</b><span>$27 one time</span></div>
     <a class="sticky-btn" href="#checkout">Get it</a>
   </div>
@@ -839,39 +856,76 @@
   });
 
   /* ---------- Product mockups ---------- */
+  var KIT_DEFS = '<defs>' +
+    '<linearGradient id="kf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22c55e"/><stop offset="1" stop-color="#0f6b32"/></linearGradient>' +
+    '<linearGradient id="ks" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0f6b32"/><stop offset="1" stop-color="#084a22"/></linearGradient>' +
+    '<linearGradient id="kt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86efac"/><stop offset="1" stop-color="#22c55e"/></linearGradient>' +
+    '<linearGradient id="kr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fcd877"/><stop offset="1" stop-color="#d98e04"/></linearGradient>' +
+    '<filter id="kshadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#0b3d20" flood-opacity="0.28"/></filter>' +
+    '</defs>';
+  function kitBoxSvg() {
+    return '<g filter="url(#kshadow)">' +
+      '<polygon points="240,150 280,128 470,128 430,150" fill="url(#kt)"/>' +
+      '<polygon points="430,150 470,128 470,378 430,400" fill="url(#ks)"/>' +
+      '<rect x="240" y="150" width="190" height="250" fill="url(#kf)"/>' +
+      '<rect x="240" y="262" width="190" height="30" fill="url(#kr)"/>' +
+      '<polygon points="430,262 470,240 470,270 430,292" fill="#b87803"/>' +
+      '<polygon points="337,128 357,128 357,150 337,150" fill="url(#kr)" opacity="0"/>' +
+      '<path d="M335 262c-30-34-66-22-52-2 10 14 40 8 52 2z" fill="url(#kr)"/>' +
+      '<path d="M335 262c30-34 66-22 52-2-10 14-40 8-52 2z" fill="url(#kr)"/>' +
+      '<circle cx="335" cy="266" r="11" fill="#f5c451" stroke="#b87803" stroke-width="2"/>' +
+      '<text x="335" y="184" font-family="Manrope, sans-serif" font-size="13" font-weight="800" fill="#fff" text-anchor="middle" letter-spacing="3">THE</text>' +
+      '<text x="335" y="210" font-family="Manrope, sans-serif" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">SUBSCRIPTION</text>' +
+      '<text x="335" y="244" font-family="Manrope, sans-serif" font-size="30" font-weight="800" fill="#fff" text-anchor="middle">STORE</text>' +
+      '<text x="335" y="338" font-family="Manrope, sans-serif" font-size="24" font-weight="800" fill="#fcd877" text-anchor="middle">STARTER</text>' +
+      '<text x="335" y="366" font-family="Manrope, sans-serif" font-size="24" font-weight="800" fill="#fcd877" text-anchor="middle">KIT</text>' +
+      '</g>';
+  }
   function mockSvg(withPrice) {
-    return '<svg viewBox="0 0 500 ' + (withPrice ? 350 : 310) + '" role="img" aria-label="The Subscription Store Starter Kit: mini course, store templates and the Winner Debrief">' +
-      '<defs><linearGradient id="mk' + (withPrice ? 'p' : 'n') + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#bbf7d0"/></linearGradient></defs>' +
-      // laptop
-      '<rect x="140" y="10" width="310" height="212" rx="12" fill="#111"/>' +
-      '<rect x="152" y="22" width="286" height="188" rx="4" fill="#f8fafc"/>' +
-      '<rect x="264" y="34" width="162" height="34" rx="5" fill="#bbf7d0"/>' +
-      '<rect x="204" y="38" width="46" height="9" rx="4.5" fill="#16a34a"/><rect x="204" y="56" width="38" height="7" rx="3.5" fill="#e5e7eb"/>' +
-      '<rect x="264" y="82" width="74" height="60" rx="5" fill="#e5e7eb"/><rect x="348" y="82" width="78" height="8" rx="4" fill="#d1d5db"/><rect x="348" y="98" width="56" height="8" rx="4" fill="#e5e7eb"/><rect x="348" y="118" width="64" height="18" rx="9" fill="#22c55e"/>' +
-      '<rect x="204" y="86" width="46" height="7" rx="3.5" fill="#e5e7eb"/><rect x="204" y="102" width="38" height="7" rx="3.5" fill="#e5e7eb"/><rect x="204" y="118" width="46" height="7" rx="3.5" fill="#e5e7eb"/>' +
-      '<rect x="120" y="222" width="350" height="12" rx="6" fill="#9ca3af"/>' +
-      // book
-      '<rect x="20" y="36" width="170" height="250" rx="4" fill="url(#mk' + (withPrice ? 'p' : 'n') + ')" stroke="#d1d5db"/>' +
-      '<rect x="20" y="36" width="9" height="250" fill="#9ca3af"/>' +
-      '<text x="44" y="84" font-family="Manrope, sans-serif" font-size="19" font-weight="700" fill="#0b1b26">The</text>' +
-      '<text x="44" y="108" font-family="Manrope, sans-serif" font-size="19" font-weight="800" fill="#16a34a">Subscription</text>' +
-      '<text x="44" y="132" font-family="Manrope, sans-serif" font-size="19" font-weight="800" fill="#0b1b26">Store</text>' +
-      '<text x="44" y="156" font-family="Manrope, sans-serif" font-size="19" font-weight="800" fill="#0b1b26">Starter Kit</text>' +
-      '<rect x="44" y="170" width="22" height="3" fill="#16a34a"/>' +
-      '<text x="44" y="194" font-family="Manrope, sans-serif" font-size="7" font-weight="700" letter-spacing="3" fill="#6b7280">MINI COURSE</text>' +
-      // video card
-      '<rect x="300" y="170" width="184" height="116" rx="6" fill="#f0fdf4" stroke="#d1d5db"/>' +
-      '<text x="316" y="200" font-family="Manrope, sans-serif" font-size="13" font-weight="700" fill="#0b1b26">The</text>' +
-      '<text x="316" y="217" font-family="Manrope, sans-serif" font-size="13" font-weight="800" fill="#16a34a">Winner</text>' +
-      '<text x="316" y="234" font-family="Manrope, sans-serif" font-size="13" font-weight="800" fill="#0b1b26">Debrief</text>' +
-      '<circle cx="436" cy="214" r="19" fill="#16a34a"/><path d="M430 204v20l16-10z" fill="#fff"/>' +
-      '<rect x="316" y="262" width="150" height="3" rx="1.5" fill="#d1d5db"/><rect x="316" y="262" width="46" height="3" rx="1.5" fill="#16a34a"/>' +
+    var rows = '';
+    for (var r = 0; r < 6; r++) {
+      var y = 246 + r * 22;
+      rows += '<rect x="80" y="' + y + '" width="132" height="17" rx="3" fill="' + (r === 0 ? '#dcfce7' : '#f3f4f6') + '"/>' +
+        '<circle cx="90" cy="' + (y + 8.5) + '" r="5.5" fill="#16a34a"/>' +
+        '<rect x="102" y="' + (y + 5) + '" width="' + (70 + (r * 13) % 36) + '" height="6" rx="3" fill="#cbd5e1"/>';
+    }
+    return '<svg viewBox="0 0 700 ' + (withPrice ? 560 : 500) + '" role="img" aria-label="The Subscription Store Starter Kit: mini course, store templates and the Winner Debrief">' + KIT_DEFS +
+      // tablet
+      '<g transform="rotate(-9 140 330)" filter="url(#kshadow)">' +
+      '<rect x="62" y="196" width="170" height="270" rx="14" fill="#111827"/>' +
+      '<rect x="70" y="204" width="154" height="254" rx="8" fill="#fff"/>' +
+      '<rect x="70" y="204" width="154" height="30" rx="8" fill="#16a34a"/>' +
+      '<text x="147" y="224" font-family="Manrope, sans-serif" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">Mini Course</text>' + rows +
+      '<rect x="80" y="400" width="132" height="6" rx="3" fill="#e5e7eb"/><rect x="80" y="400" width="44" height="6" rx="3" fill="#16a34a"/>' +
+      '</g>' +
+      // phone
+      '<g transform="rotate(8 545 250)" filter="url(#kshadow)">' +
+      '<rect x="500" y="150" width="96" height="190" rx="16" fill="#111827"/>' +
+      '<rect x="506" y="156" width="84" height="178" rx="11" fill="url(#kf)"/>' +
+      '<rect x="534" y="160" width="28" height="5" rx="2.5" fill="#111827"/>' +
+      '<circle cx="548" cy="236" r="24" fill="#fff"/><path d="M541 224v24l21-12z" fill="#16a34a"/>' +
+      '<text x="548" y="290" font-family="Manrope, sans-serif" font-size="9" font-weight="800" fill="#fff" text-anchor="middle">The Winner</text>' +
+      '<text x="548" y="302" font-family="Manrope, sans-serif" font-size="9" font-weight="800" fill="#fff" text-anchor="middle">Debrief</text>' +
+      '</g>' +
+      kitBoxSvg() +
+      // template sheet
+      '<g transform="rotate(-6 590 400)" filter="url(#kshadow)">' +
+      '<rect x="508" y="330" width="156" height="150" rx="4" fill="#fff"/>' +
+      '<rect x="508" y="330" width="156" height="22" rx="4" fill="#16a34a"/>' +
+      '<text x="586" y="345" font-family="Manrope, sans-serif" font-size="9" font-weight="800" fill="#fff" text-anchor="middle" letter-spacing="1">STORE TEMPLATE</text>' +
+      '<rect x="520" y="364" width="60" height="6" rx="3" fill="#cbd5e1"/><rect x="520" y="378" width="132" height="14" rx="2" fill="#f1f5f9"/>' +
+      '<rect x="520" y="400" width="60" height="6" rx="3" fill="#cbd5e1"/><rect x="520" y="414" width="132" height="14" rx="2" fill="#f1f5f9"/>' +
+      '<rect x="520" y="436" width="60" height="6" rx="3" fill="#cbd5e1"/><rect x="520" y="450" width="132" height="14" rx="2" fill="#f1f5f9"/>' +
+      '</g>' +
       (withPrice ?
-        '<g transform="rotate(-4 250 300)"><rect x="165" y="262" width="170" height="78" rx="4" fill="#16a34a"/>' +
-        '<text x="250" y="290" font-family="Manrope, sans-serif" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">Today Only Price:</text>' +
-        '<text x="250" y="324" font-family="Manrope, sans-serif" font-size="30" font-weight="800" fill="#fff" text-anchor="middle">Only $27</text></g>' : '') +
+        '<g transform="rotate(-3 350 520)"><rect x="240" y="476" width="220" height="70" rx="8" fill="#16a34a"/>' +
+        '<text x="350" y="500" font-family="Manrope, sans-serif" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">Today Only Price:</text>' +
+        '<text x="350" y="533" font-family="Manrope, sans-serif" font-size="28" font-weight="800" fill="#fff" text-anchor="middle">Only $27</text></g>' : '') +
       '</svg>';
   }
+  document.querySelectorAll('.js-box').forEach(function (el) {
+    el.innerHTML = '<svg viewBox="225 118 260 296" aria-hidden="true">' + KIT_DEFS + kitBoxSvg() + '</svg>';
+  });
   document.querySelectorAll('.js-mock').forEach(function (el) { el.innerHTML = mockSvg(!!el.getAttribute('data-price')); });
 
   var TAB_ICONS = {
