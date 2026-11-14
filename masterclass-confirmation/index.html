@@ -333,6 +333,67 @@
       .done-cal-btns { gap: 8px; }
       .done-cal-btn { flex: 1 1 100%; justify-content: center; }
     }
+
+    /* ── OFFER LAYOUT (comparison, countdown, order summary, sticky bar) ── */
+    .event-line { margin-top: 18px; font-size: 1rem; color: var(--body); }
+    .event-line b { color: var(--text); }
+    .vs-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: stretch; margin-top: 30px; }
+    .vs-col { border-radius: 10px; padding: 20px 18px; box-shadow: 0 6px 24px -8px rgba(15,23,42,0.14); }
+    .vs-col h3 { font-family: var(--head); font-size: 1.25rem; font-weight: 800; margin-bottom: 12px; }
+    .vs-col ul { list-style: none; }
+    .vs-col li { position: relative; padding-left: 26px; font-size: 1rem; line-height: 1.45; margin-top: 12px; }
+    .vs-col li::before { position: absolute; left: 0; top: 0; font-weight: 800; }
+    .vs-them { background: #fff; border-top: 5px solid var(--red); }
+    .vs-them li { color: var(--body); }
+    .vs-them li::before { content: "\2715"; color: var(--red); }
+    .vs-you { background: #fff; border-top: 5px solid var(--green-dark); }
+    .vs-you h3 { color: var(--green-dark); }
+    .vs-you li::before { content: "\2713"; color: var(--green-dark); }
+    .vs-badge { align-self: center; width: 44px; height: 44px; border-radius: 50%; background: #0b1b26; color: #fff; font-family: var(--head); font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; }
+    .vs-close { text-align: center; font-family: var(--head); font-size: 1.2rem; font-weight: 600; line-height: 1.4; margin-top: 26px; }
+    .vs-close b { color: var(--green-dark); }
+    .countdown-card { background: #fff; border-radius: 10px; border-top: 5px solid var(--green-dark); box-shadow: 0 6px 24px -8px rgba(15,23,42,0.14); padding: 24px 18px 26px; text-align: center; }
+    .cd-title { font-family: var(--head); font-size: 1.3rem; font-weight: 800; }
+    .cd-row { display: flex; justify-content: center; gap: 12px; margin-top: 16px; }
+    .cd-row div { min-width: 64px; background: #0b1b26; color: #fff; border-radius: 8px; padding: 10px 6px 8px; }
+    .cd-row b { display: block; font-family: var(--head); font-size: 1.9rem; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+    .cd-row span { font-size: 0.68rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; opacity: 0.8; }
+    .cd-note { margin-top: 16px; font-size: 1rem; color: var(--body); }
+    .val-row { display: flex; justify-content: center; align-items: center; gap: 14px; margin-top: 20px; font-family: var(--head); font-weight: 800; }
+    .val-row .val { color: var(--text2); text-decoration: line-through; font-size: 1.05rem; }
+    .val-row .val-now { background: var(--tint); border: 1px solid rgba(22,163,74,0.4); color: var(--green-dark); border-radius: 100px; padding: 5px 14px; font-size: 1.05rem; }
+    .order-card { background: #fff; border-radius: 10px; border-top: 5px solid var(--green-dark); box-shadow: 0 6px 24px -8px rgba(15,23,42,0.14); padding: 24px 22px 26px; }
+    .order-card h2 { font-family: var(--head); font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+    .order-line, .order-total { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px 0; border-bottom: 1px solid #e5e7eb; font-size: 1rem; }
+    .order-line s, .order-total s { color: var(--text2); white-space: nowrap; }
+    .order-total { font-weight: 700; border-bottom: 0; }
+    .order-total.due { font-family: var(--head); font-size: 1.35rem; font-weight: 800; border-top: 2px solid #0b1b26; margin-top: 4px; }
+    .order-total.due b { color: var(--green-dark); font-size: 1.7rem; }
+    .order-bullets { list-style: none; margin-top: 12px; }
+    .order-bullets li { position: relative; padding-left: 26px; font-size: 0.95rem; color: var(--body); margin-top: 8px; }
+    .order-bullets li::before { content: "\2713"; position: absolute; left: 0; color: var(--green-dark); font-weight: 800; }
+    .rating-line { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 22px; }
+    .rating-line img { width: 28px; height: 28px; border-radius: 8px; }
+    .rating-line .t-stars { color: #facc15; letter-spacing: 1px; margin-right: 8px; }
+    .rating-line b { font-family: var(--head); font-size: 0.95rem; }
+    .final-sub { text-align: center; font-size: 1.15rem; color: var(--body); margin-top: 16px; }
+    .sticky-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; background: #fff; border-top: 1px solid #e5e7eb; box-shadow: 0 -6px 20px rgba(15,23,42,0.1); padding: 10px 16px; transition: transform .25s; }
+    .sticky-bar.off { transform: translateY(110%); }
+    .sticky-in { max-width: 598px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+    .sticky-mock { flex: none; width: 58px; }
+    .sticky-mock svg { display: block; width: 100%; height: auto; }
+    .sticky-txt { flex: 1; min-width: 0; line-height: 1.25; }
+    .sticky-txt b { display: block; font-family: var(--head); font-size: 0.95rem; }
+    .sticky-txt span { font-size: 0.82rem; color: var(--body); }
+    .sticky-btn { flex: none; background: var(--green-dark); color: #fff; font-family: var(--head); font-weight: 800; padding: 12px 22px; border-radius: 8px; }
+    #offer { padding-bottom: 0; }
+    footer { padding-bottom: 96px; }
+    @media (max-width: 640px) {
+      .vs-grid { grid-template-columns: 1fr; }
+      .vs-badge { margin: 0 auto; }
+      .cd-row { gap: 8px; }
+      .cd-row div { min-width: 58px; }
+    }
   </style>
   <script>!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);</script>
   <script>
@@ -443,22 +504,21 @@
 
 <div id="offer">
 
-<div class="band">The Subscription Store Starter Kit</div>
+<div class="band">One Thing Before The Masterclass</div>
 
 <header class="hero">
   <div class="col" style="max-width:700px;">
     <div class="progress"><span>Almost Complete...</span></div>
     <div class="wait-box" style="margin-top:22px;">
       <div class="wait">WAIT!</div>
-      <p>Registration Is Almost Complete. Read The Following Page Carefully.</p>
+      <p>Before We Confirm Your Seat!</p>
     </div>
   </div>
   <div class="col">
-    <h1>The #1 Reason Most People <span class="acc">Never Launch</span> Their Store Has Nothing To Do With What They Know</h1>
-    <p class="lead-bold">It's the blank page. The people who actually get a store live don't start from scratch. They start with a store that's already laid out for them.</p>
-    <p class="lead">This is the complete plug-and-play Subscription Store Starter Kit, so your store is already taking shape before the masterclass even starts.</p>
-    <p class="price-line">And it's yours for just <span class="acc">$27</span> as of <u class="js-today">today</u></p>
-    <a class="btn" href="#checkout">Yes! I Want The Starter Kit For Just $27!</a>
+    <p class="lead-bold" style="margin-top:22px;">This $27 offer expires when the masterclass starts <span class="js-mc-day">Monday</span>.</p>
+    <h1>Walk Into The Masterclass With Your Store <span class="acc">Already Taking Shape</span></h1>
+    <div class="mock js-mock" data-price="1" style="margin-top:22px;"></div>
+    <a class="btn" href="#checkout">YES! I Want Instant Access</a>
     <div class="trust">
       <img src="/paid/whop-icon.webp" alt="Whop" />
       <div>
@@ -466,120 +526,52 @@
         <div class="t-label">4.7-Star Rated<br>On Whop</div>
       </div>
     </div>
-    <svg class="arrow" width="26" height="46" viewBox="0 0 26 46" fill="none" aria-hidden="true"><path d="M13 2v40M3 31l10 11 10-11" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <p class="event-line">Live Masterclass: <b class="js-done-date"></b></p>
   </div>
 </header>
 
-<section class="section story">
+<section class="section" style="padding-top:34px;">
   <div class="col">
-    <h2 class="h2">Picture This...</h2>
-    <p>It's the day after the masterclass.</p>
-    <p>You get home from your shift. You open your laptop, ready to build.</p>
-    <p>And for the first time, you actually know what you're doing.</p>
-    <p>You know the model. You know what kind of product you want. You're fired up.</p>
-    <p>So you open up a brand new store.</p>
-    <div class="callout">And what you find is an empty page, a blinking cursor, and no idea what goes where.</div>
-    <p>What goes on the home page?</p>
-    <p>What should the product page say?</p>
-    <p>How do you even set up the subscription part?</p>
-    <p>You watch a couple of videos. You get tired.</p>
-    <p>You tell yourself you'll finish it this weekend.</p>
-    <p>Then your next shift comes.</p>
-    <p class="b">A month later the store still isn't live. And you were this close...</p>
-
-    <h2 class="h2" style="margin-top:44px;">And That's Where Most People Lose.</h2>
-    <div class="empty-store">
-      <svg viewBox="0 0 550 330" role="img" aria-label="Illustration: an empty online store with zero products">
-        <defs><linearGradient id="es" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14532d"/><stop offset="1" stop-color="#0a0a0a"/></linearGradient></defs>
-        <rect width="550" height="330" fill="url(#es)"/>
-        <rect x="70" y="46" width="410" height="238" rx="14" fill="#fff"/>
-        <rect x="70" y="46" width="410" height="30" rx="14" fill="#f3f4f6"/><rect x="70" y="62" width="410" height="14" fill="#f3f4f6"/>
-        <circle cx="90" cy="61" r="4.5" fill="#ef4444"/><circle cx="106" cy="61" r="4.5" fill="#f59e0b"/><circle cx="122" cy="61" r="4.5" fill="#22c55e"/>
-        <rect x="150" y="54" width="190" height="14" rx="7" fill="#e5e7eb"/>
-        <rect x="110" y="104" width="330" height="120" rx="10" fill="none" stroke="#d1d5db" stroke-width="2.5" stroke-dasharray="9 8"/>
-        <text x="275" y="158" font-family="Manrope, sans-serif" font-size="26" font-weight="800" fill="#0b1b26" text-anchor="middle">0 Products</text>
-        <text x="275" y="186" font-family="Geist, sans-serif" font-size="15" font-weight="600" fill="#f0555a" text-anchor="middle">Nothing to sell yet</text>
-        <rect x="110" y="242" width="150" height="12" rx="6" fill="#e5e7eb"/><rect x="110" y="260" width="96" height="10" rx="5" fill="#eef0f2"/>
-      </svg>
+    <h2 class="h2 sm">You'll Walk In Ahead Of Everyone Else.</h2>
+    <div class="vs-grid">
+      <div class="vs-col vs-them">
+        <h3>Everyone Else</h3>
+        <ul>
+          <li>Sits through the masterclass and gets fired up</li>
+          <li>Opens a brand new store and sees an empty page</li>
+          <li>Has no idea what goes on the home page or the product page</li>
+          <li>A month later, the store still isn't live</li>
+        </ul>
+      </div>
+      <div class="vs-badge">VS</div>
+      <div class="vs-col vs-you">
+        <h3>You</h3>
+        <ul>
+          <li>Already watched the mini course</li>
+          <li>Plug your product into plug-and-play store templates</li>
+          <li>Know exactly where everything goes, subscribe button included</li>
+          <li>Have your store taking shape right after the masterclass</li>
+        </ul>
+      </div>
     </div>
-    <p>They learn the system. They get excited. They finally know what to build.</p>
-    <p>And then they sit down in front of an empty store and freeze.</p>
-    <p>The masterclass did its job. The blank page didn't.</p>
-
-    <h2 class="h2" style="margin-top:44px;">Here's What <span class="acc">Nobody Tells You.</span></h2>
-    <div class="card top" style="margin-top:26px;">
-      <p>Building a store from scratch is the slowest part of this whole thing. And it has nothing to do with whether your business works.</p>
-      <p>Picking the layout. Writing the product page. Figuring out where the subscribe button goes.</p>
-      <p class="b">None of that makes you money. A live store with the right product on it does.</p>
-      <p>The masterclass shows you the model. But the model only pays you once the store actually exists.</p>
-    </div>
+    <p class="vs-close">The only difference between those two columns? <b>This $27 kit.</b></p>
   </div>
 </section>
 
 <section class="section tinted">
   <div class="col">
-    <div class="panel">
-      <h2 class="h2">That's The Moment Most People Get Stuck.</h2>
-      <div class="not-box">
-        <div class="x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg></div>
-        <p>...NOT because the model doesn't work.</p>
+    <div class="countdown-card">
+      <div class="cd-title">Live Masterclass Starts In...</div>
+      <div class="cd-row">
+        <div><b class="js-cd" data-u="d">--</b><span>Days</span></div>
+        <div><b class="js-cd" data-u="h">--</b><span>Hours</span></div>
+        <div><b class="js-cd" data-u="m">--</b><span>Mins</span></div>
+        <div><b class="js-cd" data-u="s">--</b><span>Secs</span></div>
       </div>
-      <div class="not-box">
-        <div class="x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg></div>
-        <p>...NOT because they're not smart enough.</p>
-      </div>
-      <p class="b">But because they tried to build the whole thing from a blank page, alone, after work.</p>
-      <p>The masterclass teaches you the system. That's what it's built for and it works.</p>
-      <p>But the system only matters once your store is up.</p>
-      <p>And right now, most people never get that far...</p>
+      <p class="cd-note">This $27 offer disappears when the masterclass starts.</p>
     </div>
-  </div>
-</section>
-
-<section class="section" style="padding-top:56px;">
-  <div class="col">
-    <div class="intro-head">Introducing...</div>
-    <div class="card top intro-card center">
-      <div class="mock js-mock"></div>
-      <h2>The Subscription Store Starter Kit</h2>
-      <p>The complete plug-and-play kit that gets your subscription store set up, before the masterclass even starts.</p>
-      <p>This isn't more theory to sit through.</p>
-      <p>You're getting the mini course and the store templates, so you just follow along and fill in the blanks.</p>
-    </div>
-
-    <h2 class="h2 gives-head">It Gives You:</h2>
-    <div class="give" style="margin-top:0;">
-      <div class="tick"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3>A store that's laid out for you, not explained to you</h3>
-      <p>(plug-and-play templates, so you fill in the blanks and never start from an empty page)</p>
-    </div>
-    <div class="give">
-      <div class="tick"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3>The whole model in one short mini course</h3>
-      <p>(so you walk into the masterclass already knowing how subscription-first e&#8209;commerce works)</p>
-    </div>
-    <div class="give">
-      <div class="tick"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3>A real example to follow</h3>
-      <p>(the full interview with a student who built a successful subscription-based e&#8209;commerce business)</p>
-    </div>
-
-    <div class="story center">
-      <p>You don't have to figure it out on your own. You don't have to guess what goes on the page. You don't have to stare at an empty store after a long shift.</p>
-    </div>
-    <h2 class="h2 sm" style="margin-top:22px;">You just watch the mini course, plug in the templates, and your store is taking shape.</h2>
-  </div>
-</section>
-
-<section class="section tinted">
-  <div class="col">
-    <h2 class="h2 sm">This Is What Happens When The Store Actually Gets Built.</h2>
-    <div class="proof-grid js-proof"></div>
-    <div class="muted-caps" style="text-align:center;margin-top:14px;">Results not typical &middot; Individual results vary</div>
-    <h2 class="h2 sm" style="margin-top:34px;">They Didn't Have A Secret Talent. They Just Got Their Store Built.</h2>
-    <div style="max-width:444px;margin:0 auto;">
-      <a class="btn big" href="#checkout">Yes! I Want The Starter Kit For Just $27!</a>
-      <a class="no-thanks" href="?done=1">No thanks, I'll set up my store on my own</a>
+    <div style="max-width:444px;margin:22px auto 0;">
+      <a class="btn big" href="#checkout">YES! I Want Instant Access</a>
     </div>
   </div>
 </section>
@@ -591,37 +583,61 @@
       <div class="tab js-tab" data-title="Subscription-First|Mini Course" data-icon="play"></div>
       <h3>The Subscription-First E&#8209;commerce Mini Course</h3>
       <p>The whole subscription-first model, start to finish, in a short course you can watch before the masterclass. So nothing I teach live goes over your head, and you show up ready to build.</p>
+      <div class="val-row"><span class="val">$497 Value</span><span class="val-now">Today: $12</span></div>
     </div>
     <div class="item">
       <div class="tab js-tab" data-title="Plug-And-Play|Store Templates" data-icon="grid"></div>
       <h3>The Subscription Store Templates</h3>
       <p>Plug-and-play templates for a subscription based e&#8209;commerce store. Fill in the blanks, follow the structure, and it's done. No guessing, and no staring at an empty page wondering what should go where.</p>
+      <div class="val-row"><span class="val">$297 Value</span><span class="val-now">Today: $9</span></div>
     </div>
     <div class="item">
       <div class="tab js-tab" data-title="The Winner|Debrief" data-icon="film"></div>
       <h3>The Winner Debrief</h3>
       <p>A full pre-recorded interview with a student who built a successful subscription-based e&#8209;commerce business. Not a highlight reel but the full conversation: where they started, what they changed, and what happened after.</p>
+      <div class="val-row"><span class="val">$197 Value</span><span class="val-now">Today: $6</span></div>
     </div>
+  </div>
+</section>
 
-    <h2 class="h2 sm" style="margin-top:44px;">Let Me Be Straight With You For A Second.</h2>
-    <div class="story">
-      <p>I don't normally give this away for <b style="color:#000;">$27.</b></p>
-      <p>This is the same subscription-first model I teach my students.</p>
-      <p>But you just registered for the masterclass. You took action. And I want to make sure you walk in with your store already taking shape, not starting from zero.</p>
-      <p>So you can have the mini course, the store templates, and the Winner Debrief for just <b style="color:#000;">$27.</b></p>
-      <p>Twenty-seven dollars.</p>
-      <p>Less than a tank of gas.</p>
-      <p>Except this changes what you do the day after the masterclass.</p>
+<section class="section tinted">
+  <div class="col">
+    <div class="order-card">
+      <h2>Your Order</h2>
+      <div class="order-line"><span>The Subscription-First E&#8209;commerce Mini Course</span><s>$497</s></div>
+      <div class="order-line"><span>The Subscription Store Templates</span><s>$297</s></div>
+      <div class="order-line"><span>The Winner Debrief</span><s>$197</s></div>
+      <div class="order-total value"><span>Total Value</span><s>$991</s></div>
+      <div class="order-total due"><span>Total Due Today</span><b>$27</b></div>
+      <ul class="order-bullets">
+        <li>One payment. Not a subscription.</li>
+        <li>Instant access to everything, by email.</li>
+        <li>Your masterclass seat is saved either way.</li>
+        <li>Secure payment. 100% protected and safe.</li>
+      </ul>
     </div>
+    <div class="rating-line">
+      <img src="/paid/whop-icon.webp" alt="Whop" />
+      <div><span class="t-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span><b>4.7-Star Rated On Whop</b></div>
+    </div>
+  </div>
+</section>
 
-    <h2 class="h2 sm" style="margin-top:44px;">But Here's The Catch.</h2>
-    <div class="story">
-      <p>This is a <u>one-time offer on this page.</u></p>
-      <p>This price is for people who just registered and want to walk in prepared.</p>
-      <p>The masterclass will teach you the system. But the system works better when your store is already set up.</p>
-      <p><u>The question is...</u></p>
-      <p>Do you want to walk into the masterclass with the mini course watched, your templates loaded, <b style="color:#000;">and your store already taking shape?</b></p>
-      <p>Or do you want to figure it out on your own afterwards, staring at an empty store after work?</p>
+<section class="section tinted" style="padding-top:0;">
+  <div class="col">
+    <h2 class="h2 sm">This Is What Happens When The Store Actually Gets Built.</h2>
+    <div class="proof-grid js-proof"></div>
+    <div class="muted-caps" style="text-align:center;margin-top:14px;">Results not typical &middot; Individual results vary</div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:56px;">
+  <div class="col">
+    <h2 class="h2">Get This Before The Masterclass Starts.</h2>
+    <p class="final-sub">Instant access. One payment. Nothing ships.</p>
+    <div style="max-width:444px;margin:22px auto 0;">
+      <a class="btn big" href="#checkout">YES! I Want Instant Access</a>
+      <a class="no-thanks" href="?done=1">No thanks, I'll pass on the Starter Kit and risk showing up unprepared</a>
     </div>
   </div>
 </section>
@@ -690,6 +706,14 @@
     </div>
   </div>
 </section>
+
+<div class="sticky-bar" id="sticky-bar">
+  <div class="sticky-in">
+    <div class="sticky-mock js-mock"></div>
+    <div class="sticky-txt"><b>The Subscription Store Starter Kit</b><span>$27 one time</span></div>
+    <a class="sticky-btn" href="#checkout">Get it</a>
+  </div>
+</div>
 
 </div>
 
@@ -889,6 +913,34 @@
     lightboxImg.alt = z.getAttribute('aria-label') || '';
     lightbox.classList.add('open');
   });
+
+  /* ---------- Countdown + sticky bar ---------- */
+  (function () {
+    var cds = document.querySelectorAll('.js-cd');
+    var start = null;
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function tick() {
+      if (!start) return;
+      var t = Math.max(0, Math.floor((start.getTime() - Date.now()) / 1000));
+      var v = { d: Math.floor(t / 86400), h: Math.floor(t % 86400 / 3600), m: Math.floor(t % 3600 / 60), s: t % 60 };
+      cds.forEach(function (el) { el.textContent = pad(v[el.getAttribute('data-u')]); });
+    }
+    function init() {
+      start = window.mcStart;
+      if (!start) return;
+      var day = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'long' }).format(start);
+      document.querySelectorAll('.js-mc-day').forEach(function (el) { el.textContent = day; });
+      tick();
+    }
+    if (window.mcStart) init(); else document.addEventListener('mc-start', init);
+    setInterval(tick, 1000);
+
+    var bar = document.getElementById('sticky-bar');
+    var co = document.getElementById('checkout');
+    if (bar && co && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (e) { bar.classList.toggle('off', e[0].isIntersecting); }).observe(co);
+    }
+  })();
 
   /* ---------- Clean registration params out of the URL ---------- */
   // CompleteRegistration fires from the Meta Pixel code in the head.

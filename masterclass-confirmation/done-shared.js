@@ -262,6 +262,8 @@
   // A session saved before the pinned date (e.g. an earlier sign-up in this tab) is stale.
   if (MASTERCLASS_DATE && start.getTime() < nyWall(MASTERCLASS_DATE, MASTERCLASS_HOUR).getTime()) start = nextSession(new Date());
   var end = new Date(start.getTime() + MASTERCLASS_MINUTES * 60000);
+  window.mcStart = start;
+  document.dispatchEvent(new Event('mc-start'));
 
   var dayLabel = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric' }).format(start);
   document.querySelectorAll('.js-done-when').forEach(function (el) { el.textContent = dayLabel + ' @' + MASTERCLASS_TIME_LABEL; });
