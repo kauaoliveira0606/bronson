@@ -149,6 +149,10 @@ strong{color:var(--ink);font-weight:600}
 .gift{display:flex;flex-direction:column;gap:10px}
 .gift p{font-size:.92rem;margin:0;color:var(--ink)}
 @media(max-width:720px){.bonus .shots{grid-template-columns:1fr!important}}
+.meet{display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1fr);gap:48px;align-items:center}
+.meet-photo{padding:14px;border-radius:24px;background:linear-gradient(135deg,#22c55e 0%,#15803d 100%);box-shadow:var(--shadow)}
+.meet-photo img{display:block;width:100%;height:auto;border-radius:14px}
+@media(max-width:820px){.meet{grid-template-columns:1fr;gap:26px}.meet-photo{max-width:380px;margin:0 auto}}
 </style>
 </head>
 <body>
@@ -178,16 +182,19 @@ strong{color:var(--ink);font-weight:600}
 </section>
 
 <!-- 3. Meet your mentor -->
-<section class="card">
-  <span class="pill g">Meet your mentor</span>
-  <h2>Bronson</h2>
-  <p>Everything inside this partnership is backed by data, and Bronson runs this business himself because he genuinely loves it.</p>
-  <div class="stats">
-    <div class="stat"><div class="n">$600K+</div><div class="l">a month in revenue with his own brand</div></div>
-    <div class="stat"><div class="n">100+</div><div class="l">coaching calls and student conversations</div></div>
-    <div class="stat"><div class="n">6 months</div><div class="l">of direct access to him and his team</div></div>
+<section class="card meet">
+  <div class="meet-photo"><img src="img/bronson.webp" width="720" height="900" alt="Bronson, founder"></div>
+  <div class="meet-txt">
+    <span class="pill g">Meet your mentor</span>
+    <h2>Bronson</h2>
+    <p class="lead">Everything inside this partnership is backed by data, and Bronson runs this business himself because he genuinely loves it.</p>
+    <div class="stats">
+      <div class="stat"><div class="n">$600K+</div><div class="l">a month in revenue with his own brand</div></div>
+      <div class="stat"><div class="n">100+</div><div class="l">coaching calls and student conversations</div></div>
+      <div class="stat"><div class="n">6 months</div><div class="l">of direct access to him and his team</div></div>
+    </div>
+    <p class="quote">A coach with skin in the game and a system backed by numbers.</p>
   </div>
-  <p class="quote">A coach with skin in the game and a system backed by numbers.</p>
 </section>
 
 <!-- Pillar overview -->
