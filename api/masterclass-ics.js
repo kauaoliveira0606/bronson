@@ -64,7 +64,7 @@ export default function handler(req, res) {
   }
 
   const ics = [
-    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//The Inner Table//Masterclass//EN', 'METHOD:PUBLISH',
+    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Ecom MBA//Masterclass//EN', 'METHOD:PUBLISH',
     'BEGIN:VEVENT',
     'UID:masterclass-' + stamp(start) + '@ad-ventur.com', 'DTSTAMP:' + stamp(new Date()),
     'DTSTART:' + stamp(start), 'DTEND:' + stamp(end),
