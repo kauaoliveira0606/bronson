@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Inner Table Partnership</title>
+<link rel="icon" type="image/png" href="/logo-180.png">
+<link rel="apple-touch-icon" href="/logo-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#cfe6e4;
+  --card:#faf8f3;
+  --ink:#0e1630;
+  --muted:#4b5468;
+  --green:#1f9d4d;
+  --green-soft:#dff1e5;
+  --line:#e6e1d4;
+  --navy:#0e1630;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  background-image:linear-gradient(180deg,#c3e0e3 0,#d7ebe2 60%,#e3f1e6 100%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:860px;margin:0 auto;padding:40px 16px 80px;display:flex;flex-direction:column;gap:22px}
+.card{background:var(--card);border-radius:24px;padding:44px 48px;box-shadow:0 1px 0 rgba(14,22,48,.04),0 10px 30px rgba(14,22,48,.06)}
+.pill{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#1c5d6e;background:#d3e8ee;border-radius:6px;padding:5px 10px;margin-bottom:18px}
+.pill.g{color:#126b34;background:var(--green-soft)}
+h1{font-size:2.6rem;line-height:1.08;font-weight:700;letter-spacing:-.025em;margin-bottom:18px}
+h2{font-size:2rem;line-height:1.15;font-weight:700;letter-spacing:-.02em;margin-bottom:14px}
+h3{font-size:1.15rem;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
+p{color:var(--muted);font-size:1.02rem;margin-bottom:12px}
+p:last-child{margin-bottom:0}
+strong{color:var(--ink);font-weight:600}
+.lead{font-size:1.1rem}
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:36px;align-items:center;padding:0;overflow:hidden}
+.hero .txt{padding:48px 0 48px 48px}
+.hero .art{align-self:stretch;background:linear-gradient(160deg,#ffffff,#e6f3ea);display:flex;align-items:center;justify-content:center;padding:28px}
+.hero .art img{width:100%;max-width:260px;display:block}
+.promise{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+.chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:.84rem;font-weight:600;color:var(--ink)}
+.chip b{color:var(--green)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0}
+.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 16px;text-align:center}
+.stat .n{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;color:var(--green);line-height:1.1}
+.stat .l{font-size:.82rem;color:var(--muted);margin-top:4px}
+.pillars{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.pillar-row{display:flex;gap:18px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.num{flex:none;width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.pillar-row p{margin:0;font-size:.97rem}
+.item{display:grid;grid-template-columns:1fr;gap:16px;padding:26px 0;border-top:1px solid var(--line)}
+.item:first-of-type{border-top:0;padding-top:6px}
+.item .head{display:flex;gap:16px;align-items:flex-start}
+.cover{flex:none;width:62px;height:auto;border-radius:6px;box-shadow:0 8px 16px rgba(14,22,48,.18)}
+.item .head p{margin:0}
+.shot{width:100%;display:block;border-radius:14px;border:1px solid var(--line);background:#fff}
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.shot.dark{border-color:#1b2238}
+.quote{border-left:3px solid var(--green);padding:4px 0 4px 16px;margin:4px 0;color:var(--ink);font-weight:600;font-size:1.02rem}
+.tick{list-style:none;margin:6px 0 2px;display:grid;grid-template-columns:1fr 1fr;gap:8px 20px}
+.tick li{font-size:.95rem;color:var(--ink);padding-left:26px;position:relative}
+.tick li:before{content:"";position:absolute;left:0;top:3px;width:17px;height:17px;border-radius:50%;background:var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 6.8' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat}
+.checkin{background:transparent;box-shadow:none;border:1.5px dashed #8fb7b9;padding:18px 24px;text-align:center;color:#2c5560;font-weight:600;font-size:.95rem}
+.checkin span{display:block;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#5a8a90;margin-bottom:2px}
+.bonus{display:grid;grid-template-columns:96px 1fr;gap:18px;align-items:start;padding:22px 0;border-top:1px solid var(--line)}
+.bonus:first-of-type{border-top:0;padding-top:6px}
+.bonus .cover{width:96px}
+.bonus .shot{margin-top:14px}
+.steps{counter-reset:s;list-style:none;display:flex;flex-direction:column;gap:10px;margin:16px 0}
+.steps li{counter-increment:s;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px 14px 56px;position:relative;color:var(--ink);font-weight:500}
+.steps li:before{content:counter(s);position:absolute;left:16px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-weight:700;font-size:.9rem;display:flex;align-items:center;justify-content:center}
+.guar{background:linear-gradient(160deg,#f3fbf5,#e4f4e9);border:1px solid #cfe8d7}
+.big{font-size:1.45rem;line-height:1.3;font-weight:700;letter-spacing:-.01em;color:var(--ink);margin-bottom:12px}
+.big b{color:var(--green)}
+.note{font-size:.82rem;color:#7a8296;margin-top:12px}
+.rcp{display:grid;grid-template-columns:1fr 1fr;gap:10px 22px;margin-top:18px}
+.rcp div{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 16px;font-size:.93rem;font-weight:600}
+.rcp i{flex:none;font-style:normal;font-size:.72rem;font-weight:800;color:#fff;background:var(--green);border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center}
+.rcp small{display:block;color:var(--muted);font-weight:400;font-size:.8rem;margin-top:1px}
+.sub{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--muted);margin:26px 0 4px}
+.price{text-align:center;background:var(--navy);color:#fff}
+.price .pill{background:rgba(255,255,255,.12);color:#9fe3b6}
+.price h2{color:#fff}
+.price p{color:#b8c0d6}
+.price .amt{font-size:4.2rem;font-weight:800;letter-spacing:-.04em;line-height:1;margin:14px 0 6px;color:#fff}
+.price .amt small{font-size:1rem;font-weight:500;color:#b8c0d6;letter-spacing:0;margin-left:6px}
+.price ul{list-style:none;display:inline-flex;flex-direction:column;gap:8px;margin:18px 0 6px;text-align:left}
+.price li{color:#e6ebf7;font-size:.97rem;padding-left:26px;position:relative}
+.price li:before{content:"";position:absolute;left:0;top:3px;width:17px;height:17px;border-radius:50%;background:#2fbf63 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 6.8' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat}
+.foot{text-align:center;font-size:.78rem;color:#5c7a80;padding-top:6px}
+@media(max-width:720px){
+  .card{padding:30px 22px;border-radius:20px}
+  h1{font-size:2rem}
+  h2{font-size:1.55rem}
+  .hero{grid-template-columns:1fr;gap:0}
+  .hero .txt{padding:30px 22px 8px}
+  .hero .art{padding:22px;order:-1}
+  .hero .art img{max-width:150px}
+  .stats{grid-template-columns:1fr;}
+  .tick,.rcp,.shots{grid-template-columns:1fr}
+  .bonus{grid-template-columns:70px 1fr;gap:14px}
+  .bonus .cover{width:70px}
+  .price .amt{font-size:3.2rem}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<!-- 1. Offer headline + promise -->
+<section class="card hero">
+  <div class="txt">
+    <span class="pill">Partnership Opportunity</span>
+    <h1>The Inner Table Partnership</h1>
+    <p class="lead">Build your subscription e-commerce brand alongside Bronson, using the same system behind his $600,000 a month brand, with one clear action for every day of your first 90 days.</p>
+    <div class="promise">
+      <span class="chip"><b>$1,000 a day</b> in monthly recurring revenue</span>
+      <span class="chip"><b>90 days</b> to get there</span>
+    </div>
+  </div>
+  <div class="art"><img src="/logo-400.webp" alt="The Inner Table"></div>
+</section>
+
+<!-- 2. What the offer isn't -->
+<section class="card">
+  <h2>This Isn't Another Course…</h2>
+  <p>Most courses hand everyone the same plan, and most of what you find online is outdated or pieces that don't connect.</p>
+  <p>But your budget, your time, and your goals aren't the next person's. So we build a personalized game plan around you.</p>
+  <p><strong>You get coached by someone who is actively doing over $600,000 a month</strong> with his own brand. Real answers, in real time, from a current system.</p>
+  <p>When you hit a wall, you are not left guessing for a week. You have a coach, a community, and an AI trained on everything he knows.</p>
+</section>
+
+<!-- 3. Meet your mentor -->
+<section class="card">
+  <span class="pill g">Meet your mentor</span>
+  <h2>Bronson</h2>
+  <p>Everything inside this partnership is backed by data, and Bronson runs this business himself because he genuinely loves it.</p>
+  <div class="stats">
+    <div class="stat"><div class="n">$600K+</div><div class="l">a month in revenue with his own brand</div></div>
+    <div class="stat"><div class="n">100+</div><div class="l">coaching calls and student conversations</div></div>
+    <div class="stat"><div class="n">6 months</div><div class="l">of direct access to him and his team</div></div>
+  </div>
+  <p class="quote">A coach with skin in the game and a system backed by numbers.</p>
+</section>
+
+<!-- Pillar overview -->
+<section class="card">
+  <span class="pill">Partnership details</span>
+  <h2>The 3 Pillars of the Partnership</h2>
+  <p>Each pillar builds on the last, so you always know what comes next.</p>
+  <div class="pillars">
+    <div class="pillar-row"><div class="num">1</div><div><h3>The Roadmap</h3><p>The 90-day plan, the step-by-step curriculum, and your personalized game plan.</p></div></div>
+    <div class="pillar-row"><div class="num">2</div><div><h3>The Coaching &amp; Accountability Engine</h3><p>Live calls three times a week, one-on-one access to Bronson, monthly brand audits, and Bronson AI.</p></div></div>
+    <div class="pillar-row"><div class="num">3</div><div><h3>The Ecosystem</h3><p>The Inner Table community and the in-person mastermind weekend.</p></div></div>
+  </div>
+</section>
+
+<!-- Pillar 1 -->
+<section class="card">
+  <span class="pill g">Pillar 1</span>
+  <h2>The Roadmap</h2>
+  <p class="lead">The exact plan from your first day to $1,000 a day, built around your situation.</p>
+
+  <div class="item">
+    <div class="head"><img class="cover" src="img/c1.webp" alt="">
+      <div><h3>1-on-1 Personalized Strategy Breakdown</h3>
+      <p>We look at your budget, your time, and your goals, then build your personalized game plan. What works for you may not work for the next person, so everything is tailored to you.</p></div></div>
+    <img class="shot" src="img/calls-video.webp" alt="Personalized strategy breakdown calls">
+  </div>
+
+  <div class="item">
+    <div class="head"><img class="cover" src="img/c6.webp" alt="">
+      <div><h3>The Fast Track Curriculum</h3>
+      <p>Step-by-step modules with screen share. Nothing in here is three years old, and it is updated constantly.</p></div></div>
+    <p class="quote">You don't need experience. You don't need to be technical. You need to follow the steps.</p>
+    <img class="shot" src="img/curriculum.webp" alt="Fast Track Curriculum modules">
+    <ul class="tick">
+      <li>The mindset mastery</li><li>The winning product formula</li>
+      <li>How to build a high-converting store</li><li>Ads mastery</li>
+      <li>Organic mastery</li><li>Ad creation mastery</li>
+      <li>Expanding your brand into other markets</li><li>Coaching call recordings library</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <div class="head"><div class="num" style="width:62px;height:62px;border-radius:10px;font-size:.78rem;line-height:1.1;text-align:center">90<br>DAY</div>
+      <div><h3>The 90-Day Scaling Roadmap</h3>
+      <p>The core of the Reorder Engine. Every day for 90 days, one specific action is laid out for you. The goal is $1,000 a day in monthly recurring revenue, and you either hit it or you know exactly where you fell short and why.</p></div></div>
+    <img class="shot dark" src="img/roadmap-doc.webp" alt="Day 18 of the 90-day roadmap">
+  </div>
+</section>
+
+<section class="card checkin"><span>Quick check-in</span>Does the roadmap make sense so far, and does it feel like what you've been missing?</section>
+
+<!-- Pillar 2 -->
+<section class="card">
+  <span class="pill g">Pillar 2</span>
+  <h2>The Coaching &amp; Accountability Engine</h2>
+  <p class="lead">Six months of people in your corner, so you are never stuck guessing.</p>
+
+  <div class="item">
+    <div class="head"><img class="cover" src="img/c2.webp" alt="">
+      <div><h3>3 Live Coaching Calls a Week</h3>
+      <p>That is 72 live calls over six months. You will see what a $600,000 a month brand looks like from the inside, and take the same principles into your own store.</p></div></div>
+    <img class="shot dark" src="img/calls-72.webp" alt="72 live coaching calls over six months">
+    <ul class="tick">
+      <li>Bronson breaks down his own brand</li><li>Live Q&amp;A on what you're struggling with</li>
+      <li>Brand breakdowns of other students</li><li>Recordings of every call</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <div class="head"><div class="num" style="width:62px;height:62px;border-radius:10px;font-size:.72rem;line-height:1.1;text-align:center">1-ON<br>1</div>
+      <div><h3>One-on-One Access to Bronson</h3>
+      <p>Whenever you're stuck or have a question, you have support when needed. Not some random person, the coach actually doing the numbers.</p></div></div>
+    <img class="shot dark" src="img/access-chart.webp" alt="Student sharing results after one-on-one support" style="max-width:420px">
+  </div>
+
+  <div class="item">
+    <div class="head"><img class="cover" src="img/c3.webp" alt="">
+      <div><h3>The Monthly Brand X-Ray</h3>
+      <p>You can't fix what you can't see. Every month Bronson records a personalized video looking at your store, your ads, your websites, and your offer, and tells you exactly what to fix before it costs you money.</p></div></div>
+    <img class="shot" src="img/xray.webp" alt="Monthly brand X-ray video review">
+  </div>
+
+  <div class="item">
+    <div class="head"><img class="cover" src="img/c7.webp" alt="">
+      <div><h3>Bronson AI</h3>
+      <p>The AI Bronson built, trained on everything he knows about e-commerce: over a hundred coaching calls, conversations with students, and his entire curriculum. Instant feedback on any roadblock, any time of night.</p></div></div>
+    <div class="shots">
+      <img class="shot dark" src="img/ai-chat.webp" alt="Bronson AI chat">
+      <img class="shot dark" src="img/ai-example.webp" alt="Bronson AI answering a student">
+    </div>
+  </div>
+</section>
+
+<section class="card checkin"><span>Quick check-in</span>Can you see how having Bronson and his team in your corner changes the next 90 days?</section>
+
+<!-- Pillar 3 -->
+<section class="card">
+  <span class="pill g">Pillar 3</span>
+  <h2>The Ecosystem</h2>
+  <p class="lead">You become the product of the five people closest to you. So we put you in the right room.</p>
+
+  <div class="item">
+    <div class="head"><img class="cover" src="img/c4.webp" alt="">
+      <div><h3>The Inner Table Community</h3>
+      <p>You're surrounded by people on the exact same path, people who get it and won't look at you like you're crazy for trying to build something. Share progress, see what others are applying to their stores, and keep winning together.</p></div></div>
+    <img class="shot dark" src="img/community.webp" alt="Students sharing wins in the community">
+  </div>
+
+  <div class="item">
+    <div class="head"><img class="cover" src="img/c5.webp" alt="">
+      <div><h3>The In-Person Mastermind Weekend</h3>
+      <p>On a call you get the strategy. In person you get the full picture: how Bronson thinks, how he makes decisions, and who the other top students are.</p></div></div>
+    <ul class="tick">
+      <li>All-expenses-paid weekend for top students</li><li>See under the hood of his business and operations</li>
+      <li>Local events</li><li>Content</li>
+    </ul>
+    <div class="shots">
+      <img class="shot" src="img/mastermind-room.webp" alt="Mastermind weekend room">
+      <img class="shot dark" src="img/mastermind-portal.webp" alt="Top 3 join Bronson for an in-person mastermind">
+    </div>
+  </div>
+</section>
+
+<!-- DFY bonuses -->
+<section class="card">
+  <span class="pill">Done for you</span>
+  <h2>Fast-Start Bonuses</h2>
+  <p class="lead">Six assets so you skip the guessing and launch faster.</p>
+
+  <div class="bonus"><img class="cover" src="img/b1.webp" alt="">
+    <div><h3>The Winning Subscription Product Cheat Sheet</h3>
+    <p>A list of 30+ products proven to work on a subscription model, plus Bronson's exact criteria for picking your own. The decision gets made fast, not in weeks.</p>
+    <img class="shot" src="img/product-sheet.webp" alt="Product cheat sheet example" style="max-width:520px"></div></div>
+
+  <div class="bonus"><img class="cover" src="img/b2.webp" alt="">
+    <div><h3>Plug-and-Play Store Templates</h3>
+    <p>The actual store layouts Bronson and other winning brands use right now. Product goes here, images go here, copy goes here. You plug yours in and go live.</p>
+    <img class="shot" src="img/template-swipe.webp" alt="Store template swipe file" style="max-width:340px"></div></div>
+
+  <div class="bonus"><img class="cover" src="img/b3.webp" alt="">
+    <div><h3>The Trusted Supplier Handoff</h3>
+    <p>The supplier connections Bronson uses for his $600,000 a month brand. Skip the bad samples and late shipments, and start with a supplier that is already proven.</p>
+    <img class="shot dark" src="img/supplier-chat.webp" alt="Supplier list shared inside the program"></div></div>
+
+  <div class="bonus"><img class="cover" src="img/b4.webp" alt="">
+    <div><h3>The Complete Ads Blueprint</h3>
+    <p>Step-by-step ad training for Facebook, TikTok, Google, and Amazon, with the exact ad account setup and a swipe file of ads proven to work. Swap in your product and launch.</p>
+    <div class="shots"><img class="shot dark" src="img/ads-wins.webp" alt="Students launching ads"><img class="shot dark" src="img/ads-win.webp" alt="Student ad results"></div></div></div>
+
+  <div class="bonus"><img class="cover" src="img/b5.webp" alt="">
+    <div><h3>The 14-Day Launch Playbook</h3>
+    <p>Day 1 to Day 14, what to do and in what order. You open the playbook, do the day's action, and close the laptop. On Day 14, you launch.</p>
+    <img class="shot" src="img/playbook-doc.webp" alt="Launch playbook Day 1" style="max-width:380px"></div></div>
+
+  <div class="bonus"><img class="cover" src="img/b6.webp" alt="">
+    <div><h3>The 90-Day Scaling Challenge to $1K a Day</h3>
+    <p>One specific action for every day, from Day 1 through Day 90. Complete the challenge and Bronson personally gives you $1,000 to support your journey even more.</p></div></div>
+</section>
+
+<!-- Results -->
+<section class="card">
+  <span class="pill">Student results</span>
+  <h2>Results From People Who Followed the Playbook</h2>
+  <img class="shot dark" src="img/results-three.webp" alt="Student results after following the launch playbook">
+  <img class="shot dark" src="img/ads-wins.webp" alt="Students launching their first ads" style="margin-top:12px">
+  <p class="note">Individual results vary. These are student examples, not guaranteed or typical outcomes.</p>
+</section>
+
+<!-- Guarantee -->
+<section class="card guar">
+  <span class="pill g">The guarantee</span>
+  <h2>The 6-Month Guarantee</h2>
+  <p class="big">In 6 months, if you haven't made your investment back, <b>we work with you for free until you double your investment.</b></p>
+  <p>We don't go back to where you were before. We put extra effort into making sure you succeed. The people who do the work always get results, so Bronson is betting on you doing the work.</p>
+  <div class="sub">Here's how it works</div>
+  <ol class="steps">
+    <li>You show up to the weekly coaching calls.</li>
+    <li>You follow the 14-day launch roadmap and the scaling roadmap.</li>
+    <li>You ask us questions. You seek help.</li>
+    <li>You follow the plan for 6 months.</li>
+    <li>You do the actual work.</li>
+  </ol>
+  <p class="quote">We don't give up on you.</p>
+</section>
+
+<section class="card checkin"><span>Temp check</span>Before we talk about the investment: does this feel like what you're looking for?</section>
+
+<!-- Pricing -->
+<section class="card">
+  <span class="pill">Investment</span>
+  <h2>Everything You Get</h2>
+  <div class="rcp">
+    <div><i>01</i><span>90-day step-by-step daily scaling roadmap<small>to $1K a day</small></span></div>
+    <div><i>05</i><span>Monthly brand audit breakdowns<small>your store, ads, websites, and offer</small></span></div>
+    <div><i>02</i><span>Six months of full program access</span></div>
+    <div><i>06</i><span>Community access<small>the five closest people to you</small></span></div>
+    <div><i>03</i><span>1:1 onboarding call<small>with a personalized game plan</small></span></div>
+    <div><i>07</i><span>In-person mastermind weekend</span></div>
+    <div><i>04</i><span>Three live coaching calls a week</span></div>
+    <div><i>08</i><span>Bronson AI</span></div>
+  </div>
+  <div class="sub">Plus the fast-start bonuses</div>
+  <ul class="tick">
+    <li>Winning Subscription Product Cheat Sheet</li><li>Plug-and-Play Store Templates</li>
+    <li>Trusted Supplier Handoff</li><li>Complete Ads Blueprint</li>
+    <li>14-Day Launch Playbook</li><li>90-Day Scaling Challenge to $1K a Day</li>
+  </ul>
+</section>
+
+<section class="card price">
+  <span class="pill">Your investment</span>
+  <h2>The Inner Table Partnership</h2>
+  <div class="amt">$6,800</div>
+  <ul>
+    <li>Everything in the three pillars</li>
+    <li>All six fast-start bonuses</li>
+    <li>The 6-month guarantee</li>
+  </ul>
+</section>
+
+<!-- Next steps -->
+<section class="card">
+  <span class="pill g">Next steps</span>
+  <h2>Getting You Started</h2>
+  <ol class="steps">
+    <li>Choose how you want to get started with your closer.</li>
+    <li>Complete your enrollment and get access.</li>
+    <li>Book your 1:1 onboarding call and get your personalized game plan.</li>
+    <li>Start Day 1 of the roadmap.</li>
+  </ol>
+</section>
+
+<p class="foot">The Inner Table</p>
+</main>
+</body>
+</html>
