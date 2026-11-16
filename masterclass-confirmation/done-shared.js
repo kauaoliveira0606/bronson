@@ -16,7 +16,7 @@
   try {
     var encJoin = window.sessionStorage.getItem('mc_join');
     var encTime = window.sessionStorage.getItem('mc_time');
-    if (encJoin && /^https:\/\/[^/]*aevent\.(online|com)\//.test(encJoin)) JOIN_URL = encJoin;
+    if (encJoin && /^https:\/\/(joinevent\.link|[^/]*aevent\.(online|com))\//.test(encJoin)) JOIN_URL = encJoin;
     if (encTime && /^\d{1,2}(:\d{2})?[AP]M EST$/.test(encTime)) MASTERCLASS_TIME_LABEL = encTime;
   } catch (e) {}
   var EVENT_DETAILS = 'Join the masterclass here: ' + JOIN_URL;
@@ -294,7 +294,7 @@
   // A real .ics URL (not a data: link) so iPhone Safari opens its Add to Calendar sheet.
   var icsHref = '/api/masterclass-ics?start=' + encodeURIComponent(start.toISOString()) +
     '&end=' + encodeURIComponent(end.toISOString()) +
-    (JOIN_URL.indexOf('aevent.') !== -1 ? '&join=' + encodeURIComponent(JOIN_URL) : '');
+    (JOIN_URL !== 'https://event.webinarjam.com/8wgzn9/go/live/13q192tyipsxs4' ? '&join=' + encodeURIComponent(JOIN_URL) : '');
 
   document.querySelectorAll('.js-cal-google').forEach(function (a) { a.href = google; });
   document.querySelectorAll('.js-cal-ics').forEach(function (a) { a.href = icsHref; });

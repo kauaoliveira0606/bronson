@@ -55,11 +55,11 @@ function stamp(d) {
   return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 }
 
-// Encore registrants pass their own AEvent join link; only AEvent hosts are accepted.
+// Encore registrants pass their own AEvent join link; only AEvent hosts (joinevent.link, aevent.online/.com) are accepted.
 function joinFor(req) {
   try {
     const u = new URL(String(req.query.join || ''));
-    if (u.protocol === 'https:' && /(^|\.)aevent\.(online|com)$/.test(u.hostname)) return u.toString();
+    if (u.protocol === 'https:' && /^(joinevent\.link|(.+\.)?aevent\.(online|com))$/.test(u.hostname)) return u.toString();
   } catch (e) { /* fall through */ }
   return JOIN_URL;
 }
