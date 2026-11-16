@@ -1671,6 +1671,8 @@
   try {
     window.sessionStorage.setItem('mc_when', formatSession(session));
     window.sessionStorage.setItem('mc_at', session.toISOString());
+    // Not an Encore visit: drop anything /encore saved earlier in this tab.
+    ['mc_encore', 'mc_join', 'mc_time'].forEach(function (k) { window.sessionStorage.removeItem(k); });
   } catch (err) {}
   function paintSeats() {
     var today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());

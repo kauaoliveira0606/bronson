@@ -1607,6 +1607,7 @@
         window.sessionStorage.setItem('mc_when', formatSession(session));
         window.sessionStorage.setItem('mc_at', session.toISOString());
         window.sessionStorage.setItem('mc_time', MASTERCLASS_SHORT_TIME.replace(' ', ''));
+        window.sessionStorage.setItem('mc_encore', '1');
         if (data.joinURL) window.sessionStorage.setItem('mc_join', data.joinURL); else window.sessionStorage.removeItem('mc_join');
       } catch (err) {}
       window.location.href = '/masterclass-confirmation?done=1';

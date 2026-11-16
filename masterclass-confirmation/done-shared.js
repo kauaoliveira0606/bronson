@@ -331,4 +331,16 @@
   document.querySelectorAll('.js-cal-toggle').forEach(function (btn) {
     btn.addEventListener('click', function () { btn.parentNode.querySelector('.js-cal-menu').classList.toggle('open'); });
   });
+  /* ---------- Encore sign-ups ---------- */
+  // /encore sets mc_encore. Those visitors get the Encore Apple Wallet pass and the Encore prep
+  // page (their own schedule and join link). Everyone else (the Monday masterclass) is untouched.
+  try {
+    if (window.sessionStorage.getItem('mc_encore') === '1') {
+      document.querySelectorAll('a.js-wallet-pass').forEach(function (a) {
+        a.href = 'https://www.koconsultings.com/wallet/e/enc-5r8k3w?src=encore-confirmation';
+      });
+      document.querySelectorAll('a[href="/masterclass-prep"]').forEach(function (a) { a.href = '/encore-prep'; });
+      document.querySelectorAll('.prep-doc-bar b').forEach(function (b) { b.textContent = 'ad-ventur.com/encore-prep'; });
+    }
+  } catch (e) {}
 })();
