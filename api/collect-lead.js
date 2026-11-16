@@ -21,6 +21,8 @@ module.exports = async function handler(req, res) {
     lt:   'https://kauaoliveira06.app.n8n.cloud/webhook/free-course-lt-optin',
     paid: 'https://kauaoliveira06.app.n8n.cloud/webhook/free-course-paid-optin',
     masterclass: 'https://kauaoliveira06.app.n8n.cloud/webhook/masterclass-optin',
+    // Encore sessions (AEvent). n8n HiYBMTsmhwFh0tRb registers them in AEvent, then GHL + Discord.
+    encore: 'https://kauaoliveira06.app.n8n.cloud/webhook/encore-optin',
   };
 
   const url = urls[webhook];
@@ -29,7 +31,13 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Unknown webhook' });
   }
 
-  const payload = webhook === 'masterclass'
+  const payload = webhook === 'encore'
+    ? {
+        name, email, phone: phone || '',
+        masterclassDate: body.masterclassDate, masterclassLabel: body.masterclassLabel, pageUrl: body.pageUrl, source: 'encore',
+        utm_source: body.utm_source, utm_medium: body.utm_medium, utm_campaign: body.utm_campaign, utm_term: body.utm_term, utm_content: body.utm_content,
+      }
+    : webhook === 'masterclass'
     ? {
         name: name || '', email, phone: phone || '',
         capital: body.capital || '',
@@ -39,6 +47,24 @@ module.exports = async function handler(req, res) {
         masterclassDate: body.masterclassDate, masterclassLabel: body.masterclassLabel, pageUrl: body.pageUrl, source: 'masterclass',
       }
     : { name, email, phone };
+
+  // Encore: n8n answers right after AEvent registers them, with their personal join link.
+  if (webhook === 'encore') {
+    try {
+      const nRes = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(25000),
+      });
+      const data = await nRes.json().catch(() => ({}));
+      if (!nRes.ok) return res.status(502).json({ error: 'register_failed' });
+      return res.status(200).json({ ok: true, joinURL: typeof data.joinURL === 'string' ? data.joinURL : '' });
+    } catch (e) {
+      console.error('Encore n8n call failed:', e);
+      return res.status(502).json({ error: 'register_failed' });
+    }
+  }
 
   try {
     const zRes = await fetch(url, {

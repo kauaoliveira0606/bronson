@@ -12,6 +12,13 @@
   var MASTERCLASS_MINUTES = 90;
   var EVENT_TITLE = 'Live Masterclass: Subscription Based E-commerce with Bronson';
   var JOIN_URL = 'https://event.webinarjam.com/8wgzn9/go/live/13q192tyipsxs4';
+  // Encore sign-ups (/encore) bring their own AEvent join link and start time label.
+  try {
+    var encJoin = window.sessionStorage.getItem('mc_join');
+    var encTime = window.sessionStorage.getItem('mc_time');
+    if (encJoin && /^https:\/\/[^/]*aevent\.(online|com)\//.test(encJoin)) JOIN_URL = encJoin;
+    if (encTime && /^\d{1,2}(:\d{2})?[AP]M EST$/.test(encTime)) MASTERCLASS_TIME_LABEL = encTime;
+  } catch (e) {}
   var EVENT_DETAILS = 'Join the masterclass here: ' + JOIN_URL;
 
   var ICON = '<svg class="done-step-icon" width="52" height="58" viewBox="0 0 52 58" fill="none" aria-hidden="true">' +
@@ -286,7 +293,8 @@
     '&location=' + encodeURIComponent(JOIN_URL);
   // A real .ics URL (not a data: link) so iPhone Safari opens its Add to Calendar sheet.
   var icsHref = '/api/masterclass-ics?start=' + encodeURIComponent(start.toISOString()) +
-    '&end=' + encodeURIComponent(end.toISOString());
+    '&end=' + encodeURIComponent(end.toISOString()) +
+    (JOIN_URL.indexOf('aevent.') !== -1 ? '&join=' + encodeURIComponent(JOIN_URL) : '');
 
   document.querySelectorAll('.js-cal-google').forEach(function (a) { a.href = google; });
   document.querySelectorAll('.js-cal-ics').forEach(function (a) { a.href = icsHref; });

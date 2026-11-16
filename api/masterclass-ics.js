@@ -55,7 +55,17 @@ function stamp(d) {
   return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 }
 
+// Encore registrants pass their own AEvent join link; only AEvent hosts are accepted.
+function joinFor(req) {
+  try {
+    const u = new URL(String(req.query.join || ''));
+    if (u.protocol === 'https:' && /(^|\.)aevent\.(online|com)$/.test(u.hostname)) return u.toString();
+  } catch (e) { /* fall through */ }
+  return JOIN_URL;
+}
+
 export default function handler(req, res) {
+  const join = joinFor(req);
   let start = new Date(String(req.query.start || ''));
   if (isNaN(start.getTime())) start = nextSession(new Date());
   let end = new Date(String(req.query.end || ''));
@@ -68,7 +78,7 @@ export default function handler(req, res) {
     'BEGIN:VEVENT',
     'UID:masterclass-' + stamp(start) + '@ad-ventur.com', 'DTSTAMP:' + stamp(new Date()),
     'DTSTART:' + stamp(start), 'DTEND:' + stamp(end),
-    'SUMMARY:' + EVENT_TITLE, 'DESCRIPTION:' + EVENT_DETAILS, 'LOCATION:' + JOIN_URL, 'URL:' + JOIN_URL,
+    'SUMMARY:' + EVENT_TITLE, 'DESCRIPTION:' + (join === JOIN_URL ? EVENT_DETAILS : 'Join the masterclass here: ' + join), 'LOCATION:' + join, 'URL:' + join,
     'BEGIN:VALARM', 'TRIGGER:-PT30M', 'ACTION:DISPLAY', 'DESCRIPTION:' + EVENT_TITLE, 'END:VALARM',
     'END:VEVENT', 'END:VCALENDAR',
   ].join('\r\n');
