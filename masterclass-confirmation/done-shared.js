@@ -5,7 +5,7 @@
   // Masterclass schedule: weekly, day of week (0 = Sunday) at HOUR:00 New York time.
   // MASTERCLASS_DATE (New York date) pins the next session to that day until it starts.
   // Keep in step with the constants in /masterclass/index.html.
-  var MASTERCLASS_DATE = '2026-11-16';
+  var MASTERCLASS_DATE = '2026-11-23';
   var MASTERCLASS_DAY = 1;
   var MASTERCLASS_HOUR = 19;
   var MASTERCLASS_TIME_LABEL = '7PM EST';
@@ -274,7 +274,7 @@
 
   var dayLabel = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric' }).format(start);
   document.querySelectorAll('.js-done-when').forEach(function (el) { el.textContent = dayLabel + ' @' + MASTERCLASS_TIME_LABEL; });
-  // Headline date, e.g. "Monday, November 16th @ 7:00 PM ET" (any .js-done-date on the page).
+  // Headline date, e.g. "Monday, November 23rd @ 7:00 PM ET" (any .js-done-date on the page).
   (function () {
     var parts = {};
     new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true })
