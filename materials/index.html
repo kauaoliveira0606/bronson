@@ -676,8 +676,8 @@
 
   <!-- Got Questions -->
   <section class="questions-section">
-    <h2 style="font-size: clamp(1rem, 5.5vw, 2.8rem); font-weight: 900; text-align: center; margin-bottom: 20px; word-break: keep-all; overflow-wrap: break-word;">Everything you need to know about us will be here.</h2>
-    <p class="q-sub">This page is dedicated to give you as much information possible about us, how the program works, and how we can help find success in Ecom by working 1-1</p>
+    <h2 style="font-size: clamp(1rem, 5.5vw, 2.8rem); font-weight: 900; text-align: center; margin-bottom: 20px; word-break: keep-all; overflow-wrap: break-word;">Congrats<span id="hero-name"></span>. You just booked your call!</h2>
+    <p class="q-sub">Watch this video below before moving forward. It will give you the clear next steps.</p>
 
     <div class="video-border-wrap" style="max-width: 860px; margin: 32px auto 0;">
       <div class="video-wrap">
@@ -964,7 +964,7 @@
     if (name) {
       name = decodeURIComponent(name).trim();
       name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-      document.getElementById('hero-name').textContent = name + ', ';
+      document.getElementById('hero-name').textContent = ' ' + name;
     }
   })();
 </script>
