@@ -147,6 +147,13 @@
     if (faqHeading) el.querySelectorAll('.done-faq h2').forEach(function (h) { h.innerHTML = faqHeading; });
     // A page can reorder its steps with data-step-order="key,key,..." (data-step names on each
     // .done-step, template steps included). Listed steps go first in that order, before the FAQ.
+    // The Apple Wallet step only shows on iPhone / iPad. Everyone else (Android, desktop) skips it,
+    // and data-renumber below closes the gap in the step numbers.
+    var ua = navigator.userAgent || '';
+    var isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (!isIOS) {
+      el.querySelectorAll('.done-step[data-step="wallet"]').forEach(function (s) { s.parentNode.removeChild(s); });
+    }
     var order = (el.getAttribute('data-step-order') || '').split(',').map(function (k) { return k.trim(); }).filter(Boolean);
     if (order.length) {
       var first = el.querySelector('.done-step');
