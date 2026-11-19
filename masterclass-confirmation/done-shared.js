@@ -142,7 +142,8 @@
     if (videoId) {
       var ratio = el.getAttribute('data-video-ratio') || '56.25';
       var maxW = el.getAttribute('data-video-max-width');
-      pageHtml = html.replace(
+      if (maxW) pageHtml = pageHtml.replace('<div class="done-video">', '<div class="done-video" style="max-width: ' + maxW + '; margin-left: auto; margin-right: auto;">');
+      pageHtml = pageHtml.replace(
         /<vturb-smartplayer id="vid-6ac7b9d6e1c65eaf9183ec88"[\s\S]*?<\/vturb-smartplayer>/,
         '<vturb-smartplayer id="vid-' + videoId + '" data-vturb="' + videoId + '" style="display: block; margin: 0 auto; width: 100%;' + (maxW ? ' max-width: ' + maxW + ';' : '') + '"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: ' + ratio + '% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>'
       );
