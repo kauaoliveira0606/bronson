@@ -135,7 +135,19 @@
       "Before you close this tab, complete these __STEPS__ steps to make sure you're <b>fully set up for the masterclass</b>";
     // A page can add a line right below the video with data-after-video.
     var afterVideo = el.getAttribute('data-after-video');
-    el.innerHTML = html
+    // A page can swap the main video with data-video-id (+ optional data-video-ratio as a
+    // padding-top % and data-video-max-width), e.g. a vertical player.
+    var videoId = el.getAttribute('data-video-id');
+    var pageHtml = html;
+    if (videoId) {
+      var ratio = el.getAttribute('data-video-ratio') || '56.25';
+      var maxW = el.getAttribute('data-video-max-width');
+      pageHtml = html.replace(
+        /<vturb-smartplayer id="vid-6ac7b9d6e1c65eaf9183ec88"[\s\S]*?<\/vturb-smartplayer>/,
+        '<vturb-smartplayer id="vid-' + videoId + '" data-vturb="' + videoId + '" style="display: block; margin: 0 auto; width: 100%;' + (maxW ? ' max-width: ' + maxW + ';' : '') + '"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: ' + ratio + '% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>'
+      );
+    }
+    el.innerHTML = pageHtml
       .replace('__LEAD__', lead)
       .replace('__AFTER_VIDEO__', afterVideo ? '<p class="done-after-video">' + afterVideo + '</p>' : '')
       .replace('__BEFORE_STEP1__', before)
