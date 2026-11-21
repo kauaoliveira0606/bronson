@@ -1059,7 +1059,8 @@
     .nav-bar .nav-seat:hover { box-shadow: 0 10px 22px rgba(22,163,74,0.38); }
     .nav-bar .nav-date { display: block; line-height: 1.3; }
     .nav-bar .nav-line { display: block; white-space: nowrap; }
-    @media (max-width: 600px) { .nav-bar .nav-label .nav-line { font-size: min(0.62rem, 1.95vw); } }
+    @media (min-width: 601px) { .nav-bar .nav-line { display: inline; } }
+    @media (max-width: 600px) { .nav-bar .nav-label .nav-line { font-size: min(0.72rem, 2.7vw); } }
     /* Less air between the sticky bar and the headline */
     body .hero-band { padding-top: calc(4px + var(--nav-h, 66px)); }
     .hero-band .hero { padding-top: 14px; }
@@ -1098,8 +1099,10 @@
     .hero-video-caption { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; font-size: 0.9rem; font-weight: 600; color: #475569; text-align: center; }
     .hero-video-caption .dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; flex: none; box-shadow: 0 0 0 3px rgba(239,68,68,0.18); }
     /* Pull the hero Save My Seat button up under the video */
-    #register { margin-top: 14px; }
-    #form-card-top { margin-top: 2px; }
+    #register { margin-top: 10px; }
+    #form-card-top { margin-top: 0; }
+    .hero .hero-video { margin-top: 14px; }
+    @media (max-width: 600px) { #register { margin-top: 8px; } .hero .hero-video { margin-top: 10px; } }
     @media (max-width: 600px) { .hero-video { margin-top: 22px; } .hero-video-frame { border-radius: 12px; } .hero-video-caption { font-size: 0.82rem; } }
   </style>
 </head>
@@ -1108,7 +1111,7 @@
 <!-- Sticky top bar: zero height so it floats over the hero; the hero pads itself by its height (--nav-h). -->
 <div class="nav-sticky">
   <div class="nav-bar">
-    <span class="nav-label"><span class="nav-label-top"><span class="dot"></span><span class="nav-date"><span class="nav-line">This Monday's Live Masterclass</span><span class="nav-line">Reveals The New Model Of E-Commerce...</span></span></span></span>
+    <span class="nav-label"><span class="nav-label-top"><span class="dot"></span><span class="nav-date"><span class="nav-line">Free Live Masterclass:</span> <span class="nav-line js-nav-day">This Monday at 7 PM EST</span></span></span></span>
     <a class="nav-seat js-seat-open" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span></a>
   </div>
 </div>
@@ -1787,6 +1790,7 @@
       ? 'This ' + weekday
       : new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric' }).format(session);
     document.querySelectorAll('.js-nav-when').forEach(function (el) { el.textContent = when + ' at ' + MASTERCLASS_TIME_LABEL; });
+    document.querySelectorAll('.js-nav-day').forEach(function (el) { el.textContent = when + ' at ' + MASTERCLASS_TIME_LABEL.replace(':00', ''); });
   }
   function paintDate() {
     paintNavWhen();
