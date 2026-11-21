@@ -1061,8 +1061,9 @@
     .nav-bar .nav-line { display: block; white-space: nowrap; }
     @media (max-width: 600px) { .nav-bar .nav-label .nav-line { font-size: min(0.62rem, 1.95vw); } }
     /* Less air between the sticky bar and the headline */
-    .hero-band .hero { padding-top: 22px; }
-    @media (max-width: 600px) { .hero-band .hero { padding-top: 8px; } }
+    body .hero-band { padding-top: calc(4px + var(--nav-h, 66px)); }
+    .hero-band .hero { padding-top: 14px; }
+    @media (max-width: 600px) { body .hero-band { padding-top: var(--nav-h, 61px); } .hero-band .hero { padding-top: 6px; } }
     @media (max-width: 340px) { .nav-bar a.nav-seat { padding: 8px 7px; font-size: 0.58rem; letter-spacing: 0; } .nav-bar a.nav-seat span[aria-hidden] { display: none; } }
     @media (max-width: 380px) { .nav-bar .nav-label .nav-line { letter-spacing: 0; } .nav-bar a.nav-seat { padding: 9px 10px; font-size: 0.7rem; } .nav-bar { gap: 6px; padding-left: 10px; } }
     /* Sticky bar message is a sentence: let it wrap, keep the button on the right */
