@@ -1059,8 +1059,12 @@
     .nav-bar .nav-seat:hover { box-shadow: 0 10px 22px rgba(22,163,74,0.38); }
     .nav-bar .nav-date { display: block; line-height: 1.3; }
     .nav-bar .nav-line { display: block; white-space: nowrap; }
+    @media (max-width: 600px) { .nav-bar .nav-label .nav-line { font-size: min(0.62rem, 1.95vw); } }
+    /* Less air between the sticky bar and the headline */
+    .hero-band .hero { padding-top: 22px; }
+    @media (max-width: 600px) { .hero-band .hero { padding-top: 8px; } }
     @media (max-width: 340px) { .nav-bar a.nav-seat { padding: 8px 7px; font-size: 0.58rem; letter-spacing: 0; } .nav-bar a.nav-seat span[aria-hidden] { display: none; } }
-    @media (max-width: 380px) { .nav-bar .nav-label .nav-line { font-size: 0.5rem; letter-spacing: 0; } .nav-bar a.nav-seat { padding: 9px 10px; font-size: 0.7rem; } .nav-bar { gap: 6px; padding-left: 10px; } }
+    @media (max-width: 380px) { .nav-bar .nav-label .nav-line { letter-spacing: 0; } .nav-bar a.nav-seat { padding: 9px 10px; font-size: 0.7rem; } .nav-bar { gap: 6px; padding-left: 10px; } }
     /* Sticky bar message is a sentence: let it wrap, keep the button on the right */
     .nav-bar .nav-label { flex: 1 1 auto; min-width: 0; }
     .nav-bar .nav-label-top, .nav-bar .nav-date { white-space: normal; text-align: left; }
@@ -1103,7 +1107,7 @@
 <!-- Sticky top bar: zero height so it floats over the hero; the hero pads itself by its height (--nav-h). -->
 <div class="nav-sticky">
   <div class="nav-bar">
-    <span class="nav-label"><span class="nav-label-top"><span class="dot"></span><span class="nav-date"><span class="nav-line">This Monday's Live Masterclass</span><span class="nav-line">Reveals The New Model</span><span class="nav-line">Of E-Commerce...</span></span></span></span>
+    <span class="nav-label"><span class="nav-label-top"><span class="dot"></span><span class="nav-date"><span class="nav-line">This Monday's Live Masterclass</span><span class="nav-line">Reveals The New Model Of E-Commerce...</span></span></span></span>
     <a class="nav-seat js-seat-open" href="https://event.webinarjam.com/8wgzn9/register/13q192ty" target="_blank" rel="noopener">Save My Seat <span aria-hidden="true">&rarr;</span></a>
   </div>
 </div>
