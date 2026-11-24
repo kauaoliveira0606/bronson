@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/masterclass",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/.well-known/apple-developer-merchantid-domain-association",
