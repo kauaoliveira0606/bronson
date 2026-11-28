@@ -7,9 +7,9 @@
 // Schedule: weekly, day of week (0 = Sunday) at HOUR:00 New York time. MASTERCLASS_DATE
 // (New York date) pins the next session to that day until it starts.
 // Keep in step with /masterclass/index.html and /masterclass-confirmation/done-shared.js.
-// Next pinned session: Mon Nov 30, 7 PM ET; weekly on Mondays after that.
-const masterclassDate = () => '2026-11-30';
-const MASTERCLASS_DAY = 1;
+// Next pinned session: Thu Dec 3, 7 PM ET; weekly on Thursdays after that.
+const masterclassDate = () => '2026-12-03';
+const MASTERCLASS_DAY = 4;
 const MASTERCLASS_HOUR = 19;
 
 const EVENT_TITLE = 'Live Masterclass: Subscription Based E-commerce with Bronson';
